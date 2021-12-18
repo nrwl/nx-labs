@@ -19,7 +19,7 @@
       }
     },
     "build": {
-      "executor": "@nrwl/js:swc",
+      "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/nx-remix",
@@ -48,6 +48,16 @@
             "glob": "executors.json",
             "output": "."
           }
+        ]
+      }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "nx build nx-remix",
+          "node tools/scripts/publish.mjs nx-remix {args.ver} {args.tag}"
         ]
       }
     }

@@ -1,5 +1,7 @@
 import { execSync } from 'child_process';
 import {
+  readJson,
+  writeJson,
   addProjectConfiguration,
   formatFiles,
   GeneratorCallback,
@@ -20,6 +22,17 @@ export default async function (
     sourceRoot: `${options.projectRoot}/src`,
     tags: options.parsedTags,
   });
+
+  const nxJson = readJson(tree, 'nx.json');
+  nxJson.workspaceLayout = {
+    appsDir: 'packages',
+    libsDir: 'packages',
+  };
+  writeJson(tree, 'nx.json', nxJson);
+
+  tree.delete('apps');
+  tree.delete('libs');
+  tree.write('packages/.gitkeep', '');
 
   await formatFiles(tree);
 
