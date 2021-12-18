@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "name": "nx-remix",
+  "version": "0.0.1",
+  "generators": {
+    "nx-remix": {
+      "factory": "./src/generators/nx-remix/generator",
+      "schema": "./src/generators/nx-remix/schema.json",
+      "description": "nx-remix generator"
+    }
+  }
+}
