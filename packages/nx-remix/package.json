@@ -1,5 +1,5 @@
 {
-  "name": "nx-remix",
+  "name": "@nrwl/remix",
   "version": "REPLACE_ME",
   "main": "src/index.js",
   "generators": "./generators.json",

@@ -1,4 +1,5 @@
 export interface NxRemixGeneratorSchema {
-  project: string;
+  name: string;
   tags?: string;
+  skipFormat?: boolean;
 }
