@@ -5,6 +5,7 @@
   "generators": "./generators.json",
   "dependencies": {
     "@nrwl/devkit": "^13.3.9",
+    "@nrwl/react": "^13.3.9",
     "tslib": "^2.3.1"
   }
 }
