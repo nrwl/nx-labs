@@ -3,7 +3,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import chalk from 'chalk';
 
 let [, , name, version, tag] = process.argv;
-const validVersion = /^\d+\.\d+\.\d+$/;
+const validVersion = /^\d+\.\d+\.\d(-\w+\.\d+)?/;
 
 if (!version || !validVersion.test(version)) {
   console.error(chalk.red(`Invalid version`));
