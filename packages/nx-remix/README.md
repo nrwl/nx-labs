@@ -6,7 +6,6 @@
 npx create-nx-workspace@latest acme --preset=@nrwl/remix --project=demo
 ```
 
-
 Now, you can go into the `acme` folder and start development.
 
 ```bash
@@ -14,13 +13,17 @@ cd acme
 npx nx dev demo
 ```
 
+**Note:** This command runs the `dev` script in `apps/demo/package.json`.
+
+You can also run `nx build demo` and `nx start demo`.
+
 ## Adding new libraries
 
 ```bash
 npx nx g @nrwl/remix:lib mylib
 ```
 
-Importing in your app, and serve again.
+Import the new library in your app.
 
 ```typescript jsx
 // apps/demo/app/root.tsx
@@ -38,7 +41,22 @@ export default function App() {
     </Document>
   );
 }
+```
 
+Now, build and run install.
+
+```bash
+npx nx build mylib
+yarn
+
+# or with npm workspaces
+npm install -ws
+```
+
+Finally, serve the app again.
+
+```bash
+npx nx dev demo
 ```
 
 ## Contributing
