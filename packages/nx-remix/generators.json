@@ -8,6 +8,20 @@
       "factory": "./src/generators/preset/preset.impl",
       "schema": "./src/generators/preset/schema.json",
       "description": "Generate a new remix workspace"
+    },
+    "application": {
+      "factory": "./src/generators/application/application.impl",
+      "schema": "./src/generators/application/schema.json",
+      "description": "Generate a new remix application",
+      "aliases": ["app"],
+      "x-type": "application"
+    },
+    "library": {
+      "factory": "./src/generators/library/library.impl",
+      "schema": "./src/generators/library/schema.json",
+      "description": "Generate a new library",
+      "aliases": ["lib"],
+      "x-type": "library"
     }
   }
 }

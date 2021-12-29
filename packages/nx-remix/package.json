@@ -4,8 +4,9 @@
   "main": "src/index.js",
   "generators": "./generators.json",
   "dependencies": {
-    "@nrwl/devkit": "^13.3.9",
-    "@nrwl/react": "^13.3.9",
+    "@nrwl/devkit": "^13.4.1",
+    "@nrwl/js": "^13.4.1",
+    "@nrwl/react": "^13.4.1",
     "tslib": "^2.3.1"
   }
 }

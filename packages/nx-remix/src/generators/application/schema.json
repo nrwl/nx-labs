@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/schema",
   "cli": "nx",
-  "$id": "NxRemix",
-  "title": "",
+  "$id": "NxRemixApplication",
+  "title": "Create an Application",
   "type": "object",
   "properties": {
     "name": {
