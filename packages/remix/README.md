@@ -1,4 +1,4 @@
-<p style="text-align: center;"><img src="https://github.com/nrwl/nx-labs/raw/main/packages/nx-remix/nx-remix.png" width="600" alt="Nx - Smart, Fast and Extensible Build System"></p>
+<p style="text-align: center;"><img src="https://github.com/nrwl/nx-labs/raw/main/packages/remix/remix.png" width="600" alt="Nx - Smart, Fast and Extensible Build System"></p>
 
 Next generation full stack framework and build system together. Build better websites with [Remix](https://remix.run/) and [Nx](https://nx.dev).
 
@@ -92,10 +92,10 @@ npx nx dev demo
 
 ### Running unit tests
 
-Run `nx test nx-remix` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test remix` to execute the unit tests via [Jest](https://jestjs.io).
 
 ### Publishing
 
 ```bash
-nx publish nx-remix --ver=[version]
+nx publish remix --ver=[version]
 ```
