@@ -1,4 +1,5 @@
 import {
+  formatFiles,
   getProjects,
   joinPathFragments,
   names,
@@ -101,4 +102,6 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
     `
     );
   }
+
+  await formatFiles(tree);
 }
