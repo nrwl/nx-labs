@@ -1,9 +1,19 @@
 <p style="text-align: center;"><img src="https://github.com/nrwl/nx-labs/raw/main/packages/nx-remix/nx-remix.png" width="600" alt="Nx - Smart, Fast and Extensible Build System"></p>
 
-## Creating new workspace
+Next generation full stack framework and build system together. Build better websites with [Remix](https://remix.run/) and [Nx](https://nx.dev).
+
+Nx makes supercharges your builds, and the optional [Nx Cloud](https://nx.app) provide out-of-the-box distributed caching, distributed task execution, and valuable workspace insights.
+
+## Creating new Remix workspace
+
+Use `--project=@nrwl/remix` when creating new workspace.
+
+e.g.
 
 ```bash
-npx create-nx-workspace@latest acme --preset=@nrwl/remix --project=demo
+npx create-nx-workspace@latest acme \
+--preset=@nrwl/remix \
+--project=demo
 ```
 
 Now, you can go into the `acme` folder and start development.
@@ -17,7 +27,9 @@ npx nx dev demo
 
 You can also run `nx build demo` and `nx start demo`.
 
-## Adding new libraries
+## Workspace libraries
+
+The Remix setup leverages npm/yarn/pnpm workspaces and Nx buildable libraries.
 
 ```bash
 npx nx g @nrwl/remix:lib mylib
@@ -35,7 +47,7 @@ export default function App() {
   return (
     <Document>
       <Layout>
-        <Mylib/>
+        <Mylib />
         <Outlet />
       </Layout>
     </Document>
@@ -43,21 +55,13 @@ export default function App() {
 }
 ```
 
-Now, build and run install.
-
-```bash
-npx nx build mylib
-yarn
-
-# or with npm workspaces
-npm install -ws
-```
-
-Finally, serve the app again.
+Now, run the dev server again to see the new library in action!
 
 ```bash
 npx nx dev demo
 ```
+
+**Note:** You must restart the server if you make any changes to your library. Luckily, with Nx cache this operation should be super fast.
 
 ## Contributing
 
