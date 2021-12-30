@@ -10,7 +10,7 @@ describe('app', () => {
     tree.write(
       '.gitignore',
       `/node_modules
-  /dist`
+/dist`
     );
   });
 
@@ -53,10 +53,10 @@ describe('app', () => {
 
     const ignoreFile = tree.read('.gitignore').toString();
     expect(ignoreFile).toEqual(`node_modules
-  dist
-  # Remix files
-  apps/**/build
-  apps/**/.cache
+dist
+# Remix files
+apps/**/build
+apps/**/.cache
   `);
   });
 
