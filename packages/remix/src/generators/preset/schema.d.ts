@@ -1,4 +1,4 @@
-export interface NxRemixGeneratorSchema {
+export interface RemixGeneratorSchema {
   project: string;
   tags?: string;
 }

@@ -1,7 +1,7 @@
-import {NxRemixGeneratorSchema} from '../schema';
+import {RemixGeneratorSchema} from '../schema';
 import {names, Tree} from '@nrwl/devkit';
 
-export interface NormalizedSchema extends NxRemixGeneratorSchema {
+export interface NormalizedSchema extends RemixGeneratorSchema {
   projectName: string;
   projectRoot: string;
   parsedTags: string[];
@@ -9,7 +9,7 @@ export interface NormalizedSchema extends NxRemixGeneratorSchema {
 
 export function normalizeOptions(
   tree: Tree,
-  options: NxRemixGeneratorSchema
+  options: RemixGeneratorSchema
 ): NormalizedSchema {
   const name = names(options.project ?? 'webapp').fileName;
   const projectName = name;
