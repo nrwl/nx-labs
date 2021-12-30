@@ -43,9 +43,7 @@ export default async function (
     ignoreFile = ignoreFile.replace('/node_modules', 'node_modules');
   }
   if (ignoreFile.indexOf('# Remix files') === -1) {
-    ignoreFile = `${ignoreFile
-      .replace('/dist', 'dist')
-      .replace('/node_modules', 'node_modules')}
+    ignoreFile = `${ignoreFile}
 # Remix files
 apps/**/build
 apps/**/.cache
