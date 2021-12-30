@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'nx-remix',
+  displayName: 'remix',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/packages/nx-remix',
+  coverageDirectory: '../../coverage/packages/remix',
 };

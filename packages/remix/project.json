@@ -1,20 +1,20 @@
 {
-  "root": "packages/nx-remix",
-  "sourceRoot": "packages/nx-remix/src",
+  "root": "packages/remix",
+  "sourceRoot": "packages/remix/src",
   "projectType": "library",
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/nx-remix/**/*.ts"]
+        "lintFilePatterns": ["packages/remix/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/nx-remix"],
+      "outputs": ["coverage/packages/remix"],
       "options": {
-        "jestConfig": "packages/nx-remix/jest.config.js",
+        "jestConfig": "packages/remix/jest.config.js",
         "passWithNoTests": true
       }
     },
@@ -22,29 +22,29 @@
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/nx-remix",
-        "tsConfig": "packages/nx-remix/tsconfig.lib.json",
-        "packageJson": "packages/nx-remix/package.json",
-        "main": "packages/nx-remix/src/index.ts",
+        "outputPath": "dist/packages/remix",
+        "tsConfig": "packages/remix/tsconfig.lib.json",
+        "packageJson": "packages/remix/package.json",
+        "main": "packages/remix/src/index.ts",
         "assets": [
-          "packages/nx-remix/*.md",
+          "packages/remix/*.md",
           {
-            "input": "./packages/nx-remix/src",
+            "input": "./packages/remix/src",
             "glob": "**/!(*.ts)",
             "output": "./src"
           },
           {
-            "input": "./packages/nx-remix/src",
+            "input": "./packages/remix/src",
             "glob": "**/*.d.ts",
             "output": "./src"
           },
           {
-            "input": "./packages/nx-remix",
+            "input": "./packages/remix",
             "glob": "generators.json",
             "output": "."
           },
           {
-            "input": "./packages/nx-remix",
+            "input": "./packages/remix",
             "glob": "executors.json",
             "output": "."
           }
@@ -56,8 +56,8 @@
       "options": {
         "parallel": false,
         "commands": [
-          "nx build nx-remix",
-          "node tools/scripts/publish.mjs nx-remix {args.ver} {args.tag}"
+          "nx build remix",
+          "node tools/scripts/publish.mjs remix {args.ver} {args.tag}"
         ]
       }
     }
