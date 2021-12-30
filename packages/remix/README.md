@@ -52,6 +52,19 @@ You can then add your first app and run it:
 npx nx g @nrwl/remix:app demo
 ```
 
+## Adding new routes
+
+Add a new route with one command.
+
+```bash
+npx nx g route
+
+# e.g.
+npx nx g route foo/bar --project=demo
+```
+
+Browse to `http://localhost:3000/foo/bar` to see the new route.
+
 ## Workspace libraries
 
 The Remix setup leverages npm/yarn/pnpm workspaces and Nx buildable libraries.

@@ -27,6 +27,11 @@
       "description": "Generate a new library",
       "aliases": ["lib"],
       "x-type": "library"
+    },
+    "route": {
+      "factory": "./src/generators/route/route.impl",
+      "schema": "./src/generators/route/schema.json",
+      "description": "Generate a new route"
     }
   }
 }

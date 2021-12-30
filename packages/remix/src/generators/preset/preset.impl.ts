@@ -5,6 +5,7 @@ import { normalizeOptions } from './lib/normalize-options';
 import applicationGenerator from '../application/application.impl';
 import setupGenerator from '../setup/setup.impl';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+import { setDefaultCollection } from '@nrwl/workspace/src/utilities/set-default-collection';
 
 export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
   const options = normalizeOptions(tree, _options);
@@ -22,6 +23,8 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
 
   // No need for workspace.json in latest Nx
   tree.delete('workspace.json');
+
+  setDefaultCollection(tree, '@nrwl/remix');
 
   await formatFiles(tree);
 
