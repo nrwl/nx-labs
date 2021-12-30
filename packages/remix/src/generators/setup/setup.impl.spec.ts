@@ -60,13 +60,14 @@ apps/**/.cache
   `);
   });
 
-  it('should add dev dependency on build tasks', async () => {
+  it('should add dev and start dependencies', async () => {
     await setupGenerator(tree, {});
 
     let nxJson = readJson(tree, 'nx.json');
 
     expect(nxJson.targetDependencies).toEqual({
       dev: [{ projects: 'dependencies', target: 'build' }],
+      start: [{ projects: 'self', target: 'build' }],
     });
 
     // Existing entries
@@ -83,6 +84,7 @@ apps/**/.cache
     expect(nxJson.targetDependencies).toEqual({
       build: [{ projects: 'dependencies', target: 'build' }],
       dev: [{ projects: 'dependencies', target: 'build' }],
+      start: [{ projects: 'self', target: 'build' }],
     });
 
     // Existing dev entry
@@ -101,6 +103,7 @@ apps/**/.cache
         { projects: 'self', target: 'pre-dev' },
         { projects: 'dependencies', target: 'build' },
       ],
+      start: [{ projects: 'self', target: 'build' }],
     });
   });
 });

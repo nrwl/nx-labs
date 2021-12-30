@@ -25,7 +25,13 @@ npx nx dev demo
 
 **Note:** This command runs the `dev` script in `apps/demo/package.json`.
 
-You can also run `nx build demo` and `nx start demo`.
+Start the production server with one command.
+
+```bash
+npx nx start demo
+```
+
+**Note:** This will run the build before starting (as defined in `nx.json`).
 
 ## Existing workspaces
 

@@ -52,23 +52,11 @@ apps/**/.cache
   tree.write('.gitignore', ignoreFile);
 
   updateJson(tree, 'nx.json', (json) => {
-    if (Array.isArray(json.targetDependencies?.dev)) {
-      if (
-        !json.targetDependencies.dev.some(
-          (x) => x.target === 'build' && x.projects === 'dependencies'
-        )
-      ) {
-        json.targetDependencies.dev.push({
-          target: 'build',
-          projects: 'dependencies',
-        });
-      }
-    } else {
-      json.targetDependencies = {
-        ...json.targetDependencies,
-        dev: [{ target: 'build', projects: 'dependencies' }],
-      };
-    }
+    addTargetDependency(json, 'dev', {
+      target: 'build',
+      projects: 'dependencies',
+    });
+    addTargetDependency(json, 'start', { target: 'build', projects: 'self' });
     return json;
   });
 
@@ -77,4 +65,24 @@ apps/**/.cache
   return () => {
     // Reserved for additional processing needed
   };
+}
+
+function addTargetDependency(json, target, dep) {
+  if (Array.isArray(json.targetDependencies?.[target])) {
+    if (
+      !json.targetDependencies[target].some(
+        (x) => x.target === dep.target && x.projects === dep.projects
+      )
+    ) {
+      json.targetDependencies[target].push({
+        target: dep.target,
+        projects: dep.projects,
+      });
+    }
+  } else {
+    json.targetDependencies = {
+      ...json.targetDependencies,
+      [target]: [dep],
+    };
+  }
 }
