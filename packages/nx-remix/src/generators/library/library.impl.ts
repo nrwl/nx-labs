@@ -1,13 +1,13 @@
 import {
   detectPackageManager,
   GeneratorCallback,
+  getWorkspaceLayout,
   joinPathFragments,
   names,
-  readJson,
   readProjectConfiguration,
   Tree,
-  updateProjectConfiguration,
   updateJson,
+  updateProjectConfiguration,
 } from '@nrwl/devkit';
 import { libraryGenerator } from '@nrwl/react/src/generators/library/library';
 import { NxRemixGeneratorSchema } from './schema';
@@ -19,7 +19,8 @@ export default async function (tree: Tree, options: NxRemixGeneratorSchema) {
   const tasks: GeneratorCallback[] = [];
   const name = names(options.name).fileName;
   const pm = detectPackageManager();
-  const projectRoot = joinPathFragments('libs', name);
+  const { libsDir } = getWorkspaceLayout(tree);
+  const projectRoot = joinPathFragments(libsDir, name);
 
   const libGenTask = await libraryGenerator(tree, {
     name,

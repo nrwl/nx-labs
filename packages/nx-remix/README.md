@@ -27,6 +27,31 @@ npx nx dev demo
 
 You can also run `nx build demo` and `nx start demo`.
 
+## Existing workspaces
+
+You can add Remix to any existing Nx workspace.
+
+First, install the plugin:
+
+```bash
+npm install --save-dev @nrwl/remix
+
+# Or with yarn
+yarn add -D @nrwl/remix
+```
+
+Then, run the setup generator:
+
+```bash
+npx nx g @nrwl/remix:setup
+```
+
+You can then add your first app and run it:
+
+```bash
+npx nx g @nrwl/remix:app demo
+```
+
 ## Workspace libraries
 
 The Remix setup leverages npm/yarn/pnpm workspaces and Nx buildable libraries.
@@ -55,7 +80,7 @@ export default function App() {
 }
 ```
 
-Now, run the dev server again to see the new library in action!
+Now, run the dev server again to see the new library in action.
 
 ```bash
 npx nx dev demo
