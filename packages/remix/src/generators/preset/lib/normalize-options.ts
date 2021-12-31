@@ -1,5 +1,5 @@
-import {RemixGeneratorSchema} from '../schema';
-import {names, Tree} from '@nrwl/devkit';
+import { RemixGeneratorSchema } from '../schema';
+import { names, Tree } from '@nrwl/devkit';
 
 export interface NormalizedSchema extends RemixGeneratorSchema {
   projectName: string;
@@ -11,7 +11,15 @@ export function normalizeOptions(
   tree: Tree,
   options: RemixGeneratorSchema
 ): NormalizedSchema {
-  const name = names(options.project ?? 'webapp').fileName;
+  // There is a bug in Nx core where custom preset args are not passed correctly for boolean values, thus causing the name to be "commit" or "nx-cloud" when not passed.
+  // TODO(jack): revert this hack once Nx core is fixed for custom preset args.
+  const name = names(
+    options.project === 'commit' ||
+      options.project === 'nx-cloud' ||
+      !options.project
+      ? 'webapp'
+      : options.project
+  ).fileName;
   const projectName = name;
   const projectRoot = `packages/${name}`;
   const parsedTags = options.tags
