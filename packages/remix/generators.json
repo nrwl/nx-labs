@@ -7,12 +7,14 @@
     "preset": {
       "factory": "./src/generators/preset/preset.impl",
       "schema": "./src/generators/preset/schema.json",
-      "description": "Generate a new Remix workspace"
+      "description": "Generate a new Remix workspace",
+      "hidden": true
     },
     "setup": {
       "factory": "./src/generators/setup/setup.impl",
       "schema": "./src/generators/setup/schema.json",
-      "description": "Setup a Remix in an existing workspace"
+      "description": "Setup a Remix in an existing workspace",
+      "hidden": true
     },
     "application": {
       "factory": "./src/generators/application/application.impl",
