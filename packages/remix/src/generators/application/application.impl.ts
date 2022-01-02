@@ -6,6 +6,7 @@ import {
   GeneratorCallback,
   joinPathFragments,
   Tree,
+  updateJson,
 } from '@nrwl/devkit';
 import { NxRemixGeneratorSchema } from './schema';
 import { normalizeOptions } from './lib/normalize-options';
@@ -51,8 +52,21 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
     }
   );
 
+  const remixSetupCommand = 'remix setup node';
+
+  // update package json with postinstall command
+  updateJson(tree, 'package.json', (pkgJson) => {
+    pkgJson.scripts = pkgJson.scripts ?? {};
+    if (!pkgJson.scripts.postinstall) {
+      pkgJson.scripts.postinstall = remixSetupCommand;
+    } else if (!pkgJson.scripts.postinstall.includes(remixSetupCommand)) {
+      pkgJson.scripts.postinstall = `${pkgJson.scripts.postinstall} && ${remixSetupCommand}`;
+    }
+    return pkgJson;
+  });
+
   tasks.push(() => {
-    execSync('npx remix setup', {
+    execSync(`npx ${remixSetupCommand}`, {
       cwd: options.projectRoot,
       stdio: [0, 1, 2],
     });
