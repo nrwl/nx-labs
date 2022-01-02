@@ -6,7 +6,7 @@ Nx makes supercharges your builds, and the optional [Nx Cloud](https://nx.app) p
 
 ## Creating new Remix workspace
 
-Use `--project=@nrwl/remix` when creating new workspace.
+Use `--preset=@nrwl/remix` when creating new workspace.
 
 e.g.
 
