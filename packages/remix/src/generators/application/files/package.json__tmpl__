@@ -4,10 +4,10 @@
   "description": "",
   "license": "",
   "scripts": {
-    "build": "remix build",
-    "dev": "remix dev",
-    "postinstall": "remix setup node",
-    "start": "remix-serve build"
+    "build": "npx remix build",
+    "dev": "npx remix dev",
+    "postinstall": "npx remix setup node",
+    "start": "npx remix-serve build"
   },
   "dependencies": {
     "@remix-run/react": "^1.0.6",

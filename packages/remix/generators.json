@@ -5,35 +5,40 @@
   "extends": ["@nrwl/react"],
   "generators": {
     "preset": {
-      "factory": "./src/generators/preset/preset.impl",
+      "implementation": "./src/generators/preset/preset.impl",
       "schema": "./src/generators/preset/schema.json",
       "description": "Generate a new Remix workspace",
       "hidden": true
     },
     "setup": {
-      "factory": "./src/generators/setup/setup.impl",
+      "implementation": "./src/generators/setup/setup.impl",
       "schema": "./src/generators/setup/schema.json",
       "description": "Setup a Remix in an existing workspace",
       "hidden": true
     },
     "application": {
-      "factory": "./src/generators/application/application.impl",
+      "implementation": "./src/generators/application/application.impl",
       "schema": "./src/generators/application/schema.json",
       "description": "Generate a new Remix application",
       "aliases": ["app"],
       "x-type": "application"
     },
     "library": {
-      "factory": "./src/generators/library/library.impl",
+      "implementation": "./src/generators/library/library.impl",
       "schema": "./src/generators/library/schema.json",
       "description": "Generate a new library",
       "aliases": ["lib"],
       "x-type": "library"
     },
     "route": {
-      "factory": "./src/generators/route/route.impl",
+      "implementation": "./src/generators/route/route.impl",
       "schema": "./src/generators/route/schema.json",
       "description": "Generate a new route"
+    },
+    "cypress": {
+      "implementation": "./src/generators/cypress/cypress.impl",
+      "schema": "./src/generators/cypress/schema.json",
+      "description": "Generate a project for testing Remix apps using Cypress"
     }
   }
 }
