@@ -6,21 +6,25 @@ import {
   stripIndents,
   Tree,
 } from '@nrwl/devkit';
-import { RemixRouteSchema } from './schema';
+import {RemixRouteSchema} from './schema';
 
 export default async function (tree: Tree, options: RemixRouteSchema) {
-  const { fileName: routePath, className: componentName } = names(
+  const {fileName: routePath, className: componentName} = names(
     options.path.replace(/^\//, '').replace(/\/$/, '')
   );
+
+
   const projects = getProjects(tree);
   const project = projects.get(options.project);
+
+  const normalizedRoutePath = normalizeRoutePath(routePath, project.root)
 
   if (!project) throw new Error(`Project does not exist: ${options.project}`);
 
   const componentPath = joinPathFragments(
     project.root,
     'app/routes',
-    `${routePath}.tsx`
+    `${normalizedRoutePath}.tsx`
   );
 
   if (tree.exists(componentPath))
@@ -40,7 +44,7 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
 
     ${
       options.style === 'css'
-        ? `import stylesUrl from '~/styles/${routePath}.css';`
+        ? `import stylesUrl from '~/styles/${normalizedRoutePath}.css';`
         : ''
     }
 
@@ -86,7 +90,7 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
     const stylesheetPath = joinPathFragments(
       project.root,
       'app/styles',
-      `${routePath}.css`
+      `${normalizedRoutePath}.css`
     );
     tree.write(
       stylesheetPath,
@@ -104,4 +108,10 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
   }
 
   await formatFiles(tree);
+}
+
+function normalizeRoutePath(path: string, projectRoot: string) {
+  if (path.indexOf(projectRoot) === -1) return path
+  if (path.indexOf('/routes/') > -1) return path.substring(path.indexOf('/routes/') + 8)
+  return path.substring(projectRoot.length + 1)
 }
