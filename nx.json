@@ -1,5 +1,5 @@
 {
-  "npmScope": "nx-remix",
+  "npmScope": "nx-labs",
   "affected": {
     "defaultBase": "main"
   },
@@ -17,12 +17,7 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e"
-        ],
+        "cacheableOperations": ["build-base", "build", "lint", "test", "e2e"],
         "accessToken": "MDRmYzUxMmYtNTQwZi00MjZkLTg0ZTYtMzc5Y2RhOTE4YTc2fHJlYWQtd3JpdGU="
       }
     }
