@@ -1,0 +1,16 @@
+{
+  "root": "e2e/expo-e2e",
+  "projectType": "application",
+  "sourceRoot": "e2e/expo-e2e/src",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/nx-plugin:e2e",
+      "options": {
+        "target": "expo:build",
+        "jestConfig": "e2e/expo-e2e/jest.config.js"
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["expo"]
+}

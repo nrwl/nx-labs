@@ -1,0 +1,12 @@
+{
+  "name": "@nrwl/remix",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "generators": "./generators.json",
+  "dependencies": {
+    "@nrwl/devkit": "^13.4.3",
+    "@nrwl/js": "^13.4.3",
+    "@nrwl/react": "^13.4.3",
+    "tslib": "^2.3.1"
+  }
+}
