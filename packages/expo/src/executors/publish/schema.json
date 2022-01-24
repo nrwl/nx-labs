@@ -2,8 +2,8 @@
   "cli": "nx",
   "$id": "NxExpoPublish",
   "$schema": "http://json-schema.org/schema",
-  "title": "Deploy a project to Expo hosting",
-  "description": "Run Expo target options",
+  "title": "Publish for Expo",
+  "description": "Deploy a project to Expo hosting",
   "type": "object",
   "properties": {
     "path": {

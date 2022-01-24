@@ -9,8 +9,8 @@ export const expoSplashScreenVersion = '0.14.1';
 export const expoUpdatesVersion = '0.11.4';
 export const jestExpoVersion = '44.0.1';
 
-export const reactNativeVersion = '0.64.3';
-export const typesReactNativeVersion = '0.64.19';
+export const reactNativeVersion = '0.66.4';
+export const typesReactNativeVersion = '0.66.4';
 export const reactNativeWebVersion = '0.17.5';
 export const reactNativeGestureHandlerVersion = '1.10.3';
 export const reactNativeReanimatedVersion = '2.3.1';
