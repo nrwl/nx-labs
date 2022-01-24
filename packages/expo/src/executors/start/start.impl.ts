@@ -77,9 +77,11 @@ function createStartOptions(options: ExpoStartOptions) {
     } else if (k === 'https' && v === false) {
       acc.push(`--no-https`);
     } else if (!nxOptions.includes(k)) {
-      if (v === true) {
-        // when true, does not need to pass the value true, just need to pass the flag in kebob case
-        acc.push(`--${names(k).fileName}`);
+      if (typeof v === 'boolean') {
+        if (v === true) {
+          // when true, does not need to pass the value true, just need to pass the flag in kebob case
+          acc.push(`--${names(k).fileName}`);
+        }
       } else {
         acc.push(`--${names(k).fileName}`, v);
       }

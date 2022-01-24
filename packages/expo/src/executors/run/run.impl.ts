@@ -95,9 +95,11 @@ function createRunOptions(options: ExpoRunOptions) {
         if (v === false) {
           acc.push('--no-bundler');
         }
-      } else if (v === true) {
-        // when true, does not need to pass the value true, just need to pass the flag in kebob case
-        acc.push(`--${names(k).fileName}`);
+      } else if (typeof v === 'boolean') {
+        if (v === true) {
+          // when true, does not need to pass the value true, just need to pass the flag in kebob case
+          acc.push(`--${names(k).fileName}`);
+        }
       } else {
         acc.push(`--${names(k).fileName}`, v);
       }
