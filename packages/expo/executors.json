@@ -25,6 +25,16 @@
       "schema": "./src/executors/publish/schema.json",
       "description": "Deploy a project to Expo hosting"
     },
+    "publish-set": {
+      "implementation": "./src/executors/publish-set/publish-set.impl",
+      "schema": "./src/executors/publish-set/schema.json",
+      "description": "Specify the channel to serve a published release"
+    },
+    "rollback": {
+      "implementation": "./src/executors/rollback/rollback.impl",
+      "schema": "./src/executors/rollback/schema.json",
+      "description": "Undo an update to a channel"
+    },
     "run": {
       "implementation": "./src/executors/run/run.impl",
       "schema": "./src/executors/run/schema.json",
@@ -71,6 +81,16 @@
       "implementation": "./src/executors/publish/compat",
       "schema": "./src/executors/publish/schema.json",
       "description": "Deploy a project to Expo hosting"
+    },
+    "publish-set": {
+      "implementation": "./src/executors/publish-set/compact",
+      "schema": "./src/executors/publish-set/schema.json",
+      "description": "Specify the channel to serve a published release"
+    },
+    "rollback": {
+      "implementation": "./src/executors/rollback/compact",
+      "schema": "./src/executors/rollback/schema.json",
+      "description": "Undo an update to a channel"
     },
     "run": {
       "implementation": "./src/executors/run/compat",

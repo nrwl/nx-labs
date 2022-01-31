@@ -2,15 +2,10 @@
   "cli": "nx",
   "$id": "NxExpoPublish",
   "$schema": "http://json-schema.org/schema",
-  "title": "Deploy a project to Expo hosting",
-  "description": "Run Expo target options",
+  "title": "Publish for Expo",
+  "description": "Deploy a project to Expo hosting",
   "type": "object",
   "properties": {
-    "path": {
-      "type": "string",
-      "description": "Path of hosting URL",
-      "alias": "p"
-    },
     "quiet": {
       "type": "boolean",
       "description": "Suppress verbose output from the Metro bundler",
@@ -43,6 +38,5 @@
       "description": "The release channel to publish to. Default is 'default'.",
       "default": "default"
     }
-  },
-  "required": ["path"]
+  }
 }

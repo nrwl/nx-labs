@@ -61,9 +61,11 @@ function runCliBuild(
 function createRunOptions(options) {
   return Object.keys(options).reduce((acc, k) => {
     const v = options[k];
-    if (v === true) {
-      // when true, does not need to pass the value true, just need to pass the flag in kebob case
-      acc.push(`--${names(k).fileName}`);
+    if (typeof v === 'boolean') {
+      if (v === true) {
+        // when true, does not need to pass the value true, just need to pass the flag in kebob case
+        acc.push(`--${names(k).fileName}`);
+      }
     } else {
       acc.push(`--${names(k).fileName}`, v);
     }

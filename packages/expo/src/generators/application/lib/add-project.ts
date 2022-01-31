@@ -104,5 +104,15 @@ function getTargets(options: NormalizedSchema) {
     options: {},
   };
 
+  architect['publish-set'] = {
+    executor: '@nrwl/expo:publish-set',
+    options: {},
+  };
+
+  architect['rollback'] = {
+    executor: '@nrwl/expo:rollback',
+    options: {},
+  };
+
   return architect;
 }
