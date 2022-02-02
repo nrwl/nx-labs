@@ -83,6 +83,16 @@
       "options": {
         "command": "node ./tools/scripts/copy-readme.js expo"
       }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "nx build expo",
+          "node tools/scripts/publish.mjs expo {args.ver} {args.tag}"
+        ]
+      }
     }
   },
   "tags": []
