@@ -80,7 +80,7 @@ export async function gatsbyInitGenerator(host: Tree, schema: InitSchema) {
     tasks.push(jestTask);
   }
   if (!schema.e2eTestRunner || schema.e2eTestRunner === 'cypress') {
-    const cypressTask = cypressInitGenerator(host);
+    const cypressTask = cypressInitGenerator(host, {});
     tasks.push(cypressTask);
   }
 
