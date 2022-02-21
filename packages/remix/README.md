@@ -111,10 +111,10 @@ npx nx dev demo
 
 ### Running unit tests
 
-Run `nx test remix` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test demo` to execute the unit tests via [Jest](https://jestjs.io).
 
 ### Publishing
 
 ```bash
-nx publish remix --ver=[version]
+nx publish demo --ver=[version]
 ```
