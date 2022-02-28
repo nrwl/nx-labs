@@ -8,7 +8,7 @@ export const expoStructuredHeadersVersion = '2.1.1';
 export const expoSplashScreenVersion = '0.14.2';
 export const expoUpdatesVersion = '0.11.6';
 export const jestExpoVersion = '44.0.1';
-export const expoCliVersion = '5.1.2';
+export const expoCliVersion = '5.2.0';
 
 export const reactNativeVersion = '0.64.3';
 export const typesReactNativeVersion = '0.64.3';
@@ -24,3 +24,5 @@ export const metroVersion = '0.66.2';
 
 export const testingLibraryReactNativeVersion = '9.0.0';
 export const testingLibraryJestNativeVersion = '4.0.4';
+
+export const tsConfigPathsWebpackPluginVersion = '3.5.2';

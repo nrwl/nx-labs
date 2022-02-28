@@ -9,7 +9,7 @@ export function addGitIgnoreEntry(host: Tree) {
 
   let content = host.read('.gitignore')?.toString('utf-8').trimRight();
 
-  if (!/^\.expo$/gm.test(content)) {
+  if (!/\.expo\/$/gm.test(content)) {
     content = `${content}\n${gitIgnoreEntriesForExpo}\n`;
   }
 

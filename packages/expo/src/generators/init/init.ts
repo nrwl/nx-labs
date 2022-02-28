@@ -30,6 +30,7 @@ import {
   reactNativeSvgVersion,
   expoDevClientVersion,
   expoCliVersion,
+  tsConfigPathsWebpackPluginVersion,
 } from '../../utils/versions';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 
@@ -98,6 +99,7 @@ export function updateDependencies(host: Tree) {
       '@testing-library/jest-native': testingLibraryJestNativeVersion,
       'jest-expo': jestExpoVersion,
       'expo-cli': expoCliVersion,
+      'tsconfig-paths-webpack-plugin': tsConfigPathsWebpackPluginVersion,
     }
   );
 }

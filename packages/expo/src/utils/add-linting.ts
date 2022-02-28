@@ -43,7 +43,7 @@ export async function addLinting(
     joinPathFragments(appProjectRoot, '.eslintrc.json'),
     (json: ESLintLinter.Config) => {
       json = reactEslintJson;
-      json.ignorePatterns = ['!**/*', '.expo', 'node_modules'];
+      json.ignorePatterns = ['!**/*', '.expo', 'node_modules', 'web-build'];
 
       // Find the override that handles both TS and JS files.
       const commonOverride = json.overrides?.find((o) =>
