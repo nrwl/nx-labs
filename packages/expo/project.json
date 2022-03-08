@@ -26,7 +26,7 @@
       "outputs": ["coverage/packages/expo"]
     },
     "build-base": {
-      "executor": "@nrwl/node:package",
+      "executor": "@nrwl/js:tsc",
       "options": {
         "outputPath": "dist/packages/expo",
         "tsConfig": "packages/expo/tsconfig.lib.json",
