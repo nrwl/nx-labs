@@ -1,8 +1,8 @@
 {
   "cli": "nx",
-  "$id": "NxReactNativeLibrary",
+  "$id": "NxExpoLibrary",
   "$schema": "http://json-schema.org/schema",
-  "title": "Create a React Native Library for Nx",
+  "title": "Create a Expo Library for Nx",
   "type": "object",
   "examples": [
     {

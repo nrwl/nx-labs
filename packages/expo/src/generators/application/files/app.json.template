@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "<%= projectName %>",
+    "name": "<%= displayName %>",
     "slug": "<%= projectName %>",
     "version": "1.0.0",
     "orientation": "portrait",
