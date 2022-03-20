@@ -20,7 +20,7 @@
     "react-native-web": "*"
   },
   "scripts": {
-    "eas-build-pre-install": "cd <%= offsetFromRoot %> && <%= packageManager %> install && cp <%= packageLockFile %> ./<%= appProjectRoot %>/ && mv ./<%= appProjectRoot %>/eas.js ./index.js",
-    "eas-build-post-install": "cd <%= offsetFromRoot %> && nx sync-deps <%= projectName %> && nx ensure-symlink <%= projectName %>"
+    "eas-build-pre-install": "cd <%= offsetFromRoot %> && cp <%= packageLockFile %> ./<%= appProjectRoot %>/ && mv ./<%= appProjectRoot %>/eas.js ./index.js",
+    "postinstall": "rm -r node_modules && cd <%= offsetFromRoot %> && <%= packageManager %> install && npx nx sync-deps <%= projectName %> && npx nx ensure-symlink <%= projectName %>"
   }
 }
