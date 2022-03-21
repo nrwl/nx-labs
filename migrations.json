@@ -1,20 +1,44 @@
 {
   "migrations": [
     {
-      "version": "13.6.0-beta.0",
-      "description": "Remove old options that are no longer used",
+      "version": "13.9.0-beta.0",
+      "description": "Update the decorate-angular-cli script to require nx instead of @nrwl/cli",
       "cli": "nx",
-      "implementation": "./src/migrations/update-13-6-0/remove-old-task-runner-options",
+      "implementation": "./src/migrations/update-13-9-0/update-decorate-cli",
       "package": "@nrwl/workspace",
-      "name": "13-6-0-remove-old-task-runner-options"
+      "name": "13-9-0-update-decorate-cli"
     },
     {
-      "version": "13.5.0-beta.0",
+      "version": "13.9.0-beta.0",
+      "description": "Replace @nrwl/tao with nx",
       "cli": "nx",
-      "description": "buildTarget to test-ios and test-android for detox app",
-      "factory": "./src/migrations/update-13-5-0/add-build-target-test-13-5-0",
+      "implementation": "./src/migrations/update-13-9-0/replace-tao-with-nx",
+      "package": "@nrwl/workspace",
+      "name": "13-9-0-replace-tao-with-nx"
+    },
+    {
+      "cli": "nx",
+      "version": "13.8.5-beta.1",
+      "description": "Renames @nrwl/js:node to @nrwl/node:node",
+      "factory": "./src/migrations/update-13-8-5/update-node-executor",
+      "package": "@nrwl/js",
+      "name": "update-node-executor"
+    },
+    {
+      "cli": "nx",
+      "version": "13.8.5-beta.1",
+      "description": "Adjust .swcrc to .lib.swcrc",
+      "factory": "./src/migrations/update-13-8-5/update-swcrc",
+      "package": "@nrwl/js",
+      "name": "update-swcrc"
+    },
+    {
+      "version": "13.8.2-beta.0",
+      "cli": "nx",
+      "description": "remove deprecated @types/detox from package.json",
+      "factory": "./src/migrations/update-13-8-2/remove-types-detox-13-8-2",
       "package": "@nrwl/detox",
-      "name": "add-build-target-test-13-5-0"
+      "name": "remove-types-detox-13-8-2"
     }
   ]
 }
