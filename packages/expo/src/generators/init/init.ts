@@ -31,6 +31,7 @@ import {
   expoDevClientVersion,
   expoCliVersion,
   tsConfigPathsWebpackPluginVersion,
+  svgrWebpackVersion,
 } from '../../utils/versions';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 
@@ -100,6 +101,7 @@ export function updateDependencies(host: Tree) {
       'jest-expo': jestExpoVersion,
       'expo-cli': expoCliVersion,
       'tsconfig-paths-webpack-plugin': tsConfigPathsWebpackPluginVersion,
+      '@svgr/webpack': svgrWebpackVersion,
     }
   );
 }
