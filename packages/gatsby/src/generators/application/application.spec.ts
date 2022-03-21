@@ -1,7 +1,6 @@
-import { NxJsonConfiguration, readProjectConfiguration } from '@nrwl/devkit';
+import { NxJsonConfiguration, readProjectConfiguration, readJson, Tree } from '@nrwl/devkit';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 import { applicationGenerator } from './application';
-import { readJson, Tree } from '@nrwl/devkit';
 
 describe('app', () => {
   let tree: Tree;
@@ -232,7 +231,7 @@ describe('app', () => {
       standaloneConfig: false,
     });
 
-    expect(tree.read('apps/my-app/jest.config.js', 'utf-8')).toContain(
+    expect(tree.read('apps/my-app/jest.config.ts', 'utf-8')).toContain(
       `moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],`
     );
   });
@@ -244,7 +243,7 @@ describe('app', () => {
       standaloneConfig: false,
     });
 
-    expect(tree.read('apps/my-app/jest.config.js', 'utf-8')).toContain(
+    expect(tree.read('apps/my-app/jest.config.ts', 'utf-8')).toContain(
       `'^(?!.*\\\\.(js|jsx|ts|tsx|css|json)$)': '@nrwl/react/plugins/jest'`
     );
   });

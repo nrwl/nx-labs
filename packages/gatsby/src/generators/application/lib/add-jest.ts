@@ -13,6 +13,7 @@ export async function addJest(host: Tree, options: NormalizedSchema) {
     skipSerializers: true,
     setupFile: 'none',
     compiler: 'babel',
+    js: options.js
   });
 
   updateJson(host, `${options.projectRoot}/tsconfig.spec.json`, (json) => {
