@@ -17,8 +17,10 @@ export const reactNativeGestureHandlerVersion = '2.1.0';
 export const reactNativeReanimatedVersion = '2.3.1';
 export const reactNativeSafeAreaContextVersion = '3.3.2';
 export const reactNativeScreensVersion = '3.10.2';
+
 export const reactNativeSvgTransformerVersion = '1.0.0';
 export const reactNativeSvgVersion = '12.1.1';
+export const svgrWebpackVersion = '^5.5.0'
 
 export const metroVersion = '0.66.2';
 
