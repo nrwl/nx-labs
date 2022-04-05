@@ -34,6 +34,21 @@
       "description": "Generate a stylesheet",
       "enum": ["none", "css"],
       "default": "css"
+    },
+    "meta": {
+      "type": "boolean",
+      "description": "Generate a meta function",
+      "default": false
+    },
+    "action": {
+      "type": "boolean",
+      "description": "Generate an action function",
+      "default": false
+    },
+    "loader": {
+      "type": "boolean",
+      "description": "Generate a loader function",
+      "default": false
     }
   },
   "required": ["project", "path"]

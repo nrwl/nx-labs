@@ -35,6 +35,21 @@
       "schema": "./src/generators/route/schema.json",
       "description": "Generate a new route"
     },
+    "action": {
+      "implementation": "./src/generators/action/action.impl",
+      "schema": "./src/generators/route/schema.json",
+      "description": "Add an action function to an existing route"
+    },
+    "loader": {
+      "implementation": "./src/generators/loader/route.impl",
+      "schema": "./src/generators/loader/schema.json",
+      "description": "Add a loader function to an existing route"
+    },
+    "meta": {
+      "implementation": "./src/generators/meta/meta.impl",
+      "schema": "./src/generators/route/schema.json",
+      "description": "Add a meta function to an existing route"
+    },
     "cypress": {
       "implementation": "./src/generators/cypress/cypress.impl",
       "schema": "./src/generators/cypress/schema.json",
