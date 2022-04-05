@@ -8,11 +8,7 @@ describe('app', () => {
 
   beforeEach(() => {
     tree = createTreeWithEmptyWorkspace();
-    tree.write(
-      '.gitignore',
-      `/node_modules
-/dist`
-    );
+    tree.write('.gitignore', `/node_modules/dist`);
   });
 
   it('should add route component', async () => {
@@ -21,6 +17,9 @@ describe('app', () => {
       project: 'demo',
       path: 'path/to/example',
       style: 'css',
+      loader: true,
+      action: true,
+      meta: true,
     });
 
     const content = tree
@@ -39,6 +38,9 @@ describe('app', () => {
       project: 'demo',
       path: 'example',
       style: 'none',
+      loader: true,
+      action: true,
+      meta: true,
     });
 
     const content = tree.read('apps/demo/app/routes/example.tsx').toString();
@@ -52,6 +54,9 @@ describe('app', () => {
       project: 'demo',
       path: '/example/',
       style: 'css',
+      loader: true,
+      action: true,
+      meta: true,
     });
 
     const content = tree.read('apps/demo/app/routes/example.tsx').toString();
