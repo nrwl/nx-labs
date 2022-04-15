@@ -1,44 +1,36 @@
 {
   "migrations": [
     {
-      "version": "13.9.0-beta.0",
+      "version": "13.10.0-beta.0",
       "description": "Update the decorate-angular-cli script to require nx instead of @nrwl/cli",
       "cli": "nx",
-      "implementation": "./src/migrations/update-13-9-0/update-decorate-cli",
+      "implementation": "./src/migrations/update-13-10-0/update-decorate-cli",
       "package": "@nrwl/workspace",
-      "name": "13-9-0-update-decorate-cli"
+      "name": "13-10-0-update-decorate-cli"
     },
     {
-      "version": "13.9.0-beta.0",
-      "description": "Replace @nrwl/tao with nx",
+      "version": "13.10.0-beta.0",
+      "description": "Update the tasks runner property to import it from the nx package instead of @nrwl/worksapce",
       "cli": "nx",
-      "implementation": "./src/migrations/update-13-9-0/replace-tao-with-nx",
+      "implementation": "./src/migrations/update-13-10-0/update-tasks-runner",
       "package": "@nrwl/workspace",
-      "name": "13-9-0-replace-tao-with-nx"
+      "name": "13-10-0-update-tasks-runner"
     },
     {
       "cli": "nx",
-      "version": "13.8.5-beta.1",
-      "description": "Renames @nrwl/js:node to @nrwl/node:node",
-      "factory": "./src/migrations/update-13-8-5/update-node-executor",
+      "version": "13.10.1-beta.1",
+      "description": "Update .lib.swcrc to exclude missing test files",
+      "factory": "./src/migrations/update-13-10-1/update-lib-swcrc-exclude",
       "package": "@nrwl/js",
-      "name": "update-node-executor"
+      "name": "update-swcrc-exclude"
     },
     {
       "cli": "nx",
-      "version": "13.8.5-beta.1",
-      "description": "Adjust .swcrc to .lib.swcrc",
-      "factory": "./src/migrations/update-13-8-5/update-swcrc",
-      "package": "@nrwl/js",
-      "name": "update-swcrc"
-    },
-    {
-      "version": "13.8.2-beta.0",
-      "cli": "nx",
-      "description": "remove deprecated @types/detox from package.json",
-      "factory": "./src/migrations/update-13-8-2/remove-types-detox-13-8-2",
-      "package": "@nrwl/detox",
-      "name": "remove-types-detox-13-8-2"
+      "version": "13.10.0-beta.0",
+      "description": "Update to React 18",
+      "factory": "./src/migrations/update-13-10-0/update-13-10-0",
+      "package": "@nrwl/react",
+      "name": "update-react-18-13.10.0"
     }
   ]
 }

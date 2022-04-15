@@ -2,11 +2,10 @@ import * as metroResolver from 'metro-resolver';
 import type { MatchPath } from 'tsconfig-paths';
 import { createMatchPath, loadConfig } from 'tsconfig-paths';
 import * as chalk from 'chalk';
-import { detectPackageManager } from '@nrwl/devkit';
 import { CachedInputFileSystem, ResolverFactory } from 'enhanced-resolve';
 import { dirname, join } from 'path';
 import * as fs from 'fs';
-import { appRootPath } from '@nrwl/tao/src/utils/app-root';
+import { workspaceRoot } from '@nrwl/devkit';
 
 /*
  * Use tsconfig to resolve additional workspace libs.
@@ -27,30 +26,21 @@ export function getResolveRequest(extensions: string[]) {
 
     const { resolveRequest, ...context } = _context;
 
-    let resolvedPath = defaultMetroResolver(context, moduleName, platform);
+    const resolvedPath =
+      defaultMetroResolver(context, moduleName, platform) ||
+      tsconfigPathsResolver(
+        context,
+        extensions,
+        realModuleName,
+        moduleName,
+        platform
+      ) ||
+      pnpmResolver(extensions, context, realModuleName, moduleName);
     if (resolvedPath) {
       return resolvedPath;
     }
 
-    if (detectPackageManager(appRootPath) === 'pnpm') {
-      resolvedPath = pnpmResolver(
-        extensions,
-        context,
-        realModuleName,
-        moduleName
-      );
-      if (resolvedPath) {
-        return resolvedPath;
-      }
-    }
-
-    return tsconfigPathsResolver(
-      context,
-      extensions,
-      realModuleName,
-      moduleName,
-      platform
-    );
+    throw new Error(`Cannot resolve ${chalk.bold(moduleName)}`);
   };
 }
 
@@ -84,7 +74,7 @@ function defaultMetroResolver(
 function pnpmResolver(extensions, context, realModuleName, moduleName) {
   const DEBUG = process.env.NX_REACT_NATIVE_DEBUG === 'true';
   try {
-    const pnpmResolver = getPnpmResolver(appRootPath, extensions);
+    const pnpmResolver = getPnpmResolver(workspaceRoot, extensions);
     const lookupStartPath = dirname(context.originModulePath);
     const filePath = pnpmResolver.resolveSync(
       {},
@@ -146,7 +136,6 @@ function tsconfigPathsResolver(
         )
       );
     }
-    throw new Error(`Cannot resolve ${chalk.bold(moduleName)}`);
   }
 }
 
@@ -188,14 +177,14 @@ function getMatcher() {
  * It is inspired form https://github.com/vjpr/pnpm-expo-example/blob/main/packages/pnpm-expo-helper/util/make-resolver.js.
  */
 let resolver;
-function getPnpmResolver(appRootPath: string, extensions: string[]) {
+function getPnpmResolver(workspaceRoot: string, extensions: string[]) {
   if (!resolver) {
     const fileSystem = new CachedInputFileSystem(fs, 4000);
     resolver = ResolverFactory.createResolver({
       fileSystem,
       extensions: extensions.map((extension) => '.' + extension),
       useSyncFileSystemCalls: true,
-      modules: [join(appRootPath, 'node_modules'), 'node_modules'],
+      modules: [join(workspaceRoot, 'node_modules'), 'node_modules'],
     });
   }
   return resolver;
