@@ -3,6 +3,8 @@ import {
   addDependenciesToPackageJson,
   convertNxGenerator,
   formatFiles,
+  logger,
+  readJson,
   removeDependenciesFromPackageJson,
   Tree,
 } from '@nrwl/devkit';
@@ -32,15 +34,12 @@ import {
   expoCliVersion,
   tsConfigPathsWebpackPluginVersion,
   svgrWebpackVersion,
+  reactVersion,
 } from '../../utils/versions';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 
 import { jestInitGenerator } from '@nrwl/jest';
 import { detoxInitGenerator } from '@nrwl/detox';
-import {
-  reactVersion,
-  typesReactVersion,
-} from '@nrwl/react/src/utils/versions';
 
 import { addGitIgnoreEntry } from './lib/add-git-ignore-entry';
 import { initRootBabelConfig } from './lib/init-root-babel-config';
@@ -70,6 +69,13 @@ export async function expoInitGenerator(host: Tree, schema: Schema) {
 }
 
 export function updateDependencies(host: Tree) {
+  const { dependencies = {} } = readJson(host, 'package.json');
+  // TODO(Emily): Remove this once Expo supports React Native 0.68.0.
+  if (dependencies['react']?.match(/[\^~]?18/)) {
+    logger.warn(
+      `React version ${dependencies['react']} is incompatible with Expo version ${expoVersion}. Nx will downgrade the version to ${reactVersion}.`
+    );
+  }
   return addDependenciesToPackageJson(
     host,
     {
@@ -93,7 +99,7 @@ export function updateDependencies(host: Tree) {
     },
     {
       '@nrwl/expo': nxVersion,
-      '@types/react': typesReactVersion,
+      '@types/react': reactVersion,
       '@types/react-native': typesReactNativeVersion,
       'metro-resolver': metroVersion,
       '@testing-library/react-native': testingLibraryReactNativeVersion,
