@@ -1,5 +1,12 @@
 {
-  "schematics": {},
+  "schematics": {
+    "add-project-root-metro-config-14-0-0": {
+      "version": "14.0.0-beta.0",
+      "cli": "nx",
+      "description": "Add projectRoot option in metro.config.js",
+      "factory": "./src/migrations/update-14-0-0/add-project-root-metro-config-14-0-0"
+    }
+  },
   "packageJsonUpdates": {
     "13.8.6": {
       "version": "13.8.6-beta.0",
