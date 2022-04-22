@@ -1,7 +1,6 @@
 import { join } from 'path';
 import { platform } from 'os';
 import * as fs from 'fs';
-import chalk = require('chalk');
 
 /**
  * This function symlink workspace node_modules folder with app project's node_mdules folder.

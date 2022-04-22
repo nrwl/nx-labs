@@ -20,7 +20,6 @@ export function createApplicationFiles(host: Tree, options: NormalizedSchema) {
   generateFiles(host, join(__dirname, '../files'), options.appProjectRoot, {
     ...options,
     offsetFromRoot: offsetFromRoot(options.appProjectRoot),
-    easBuildPath: '/Users/expo/workingdir/build',
     packageManager,
     packageLockFile,
   });
