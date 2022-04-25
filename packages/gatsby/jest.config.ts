@@ -1,5 +1,4 @@
 module.exports = {
-  preset: '../../jest.preset.js',
   transform: {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
@@ -7,4 +6,5 @@ module.exports = {
   globals: { 'ts-jest': { tsconfig: '<rootDir>/tsconfig.spec.json' } },
   displayName: 'gatsby',
   testEnvironment: 'node',
+  preset: '../../jest.preset.ts',
 };

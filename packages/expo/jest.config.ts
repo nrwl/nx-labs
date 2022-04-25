@@ -1,5 +1,4 @@
 module.exports = {
-  preset: '../../jest.preset.js',
   transform: {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
@@ -9,4 +8,5 @@ module.exports = {
   },
   displayName: 'expo',
   testEnvironment: 'node',
+  preset: '../../jest.preset.ts',
 };
