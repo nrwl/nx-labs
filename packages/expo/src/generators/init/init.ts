@@ -35,6 +35,7 @@ import {
   tsConfigPathsWebpackPluginVersion,
   svgrWebpackVersion,
   reactVersion,
+  babelPresetExpoVersion,
 } from '../../utils/versions';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 
@@ -108,6 +109,7 @@ export function updateDependencies(host: Tree) {
       'expo-cli': expoCliVersion,
       'tsconfig-paths-webpack-plugin': tsConfigPathsWebpackPluginVersion,
       '@svgr/webpack': svgrWebpackVersion,
+      'babel-preset-expo': babelPresetExpoVersion,
     }
   );
 }
