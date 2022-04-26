@@ -9,6 +9,20 @@
           "alwaysAddToPackageJson": false
         }
       }
+    },
+    "14.0.0": {
+      "version": "14.0.0-beta.0",
+      "packages": {
+        "expo-cli": {
+          "version": "5.4.0",
+          "alwaysAddToPackageJson": false
+        },
+        "babel-preset-expo": {
+          "version": "~9.0.2",
+          "alwaysAddToPackageJson": false,
+          "addToPackageJson": "devDependencies"
+        }
+      }
     }
   }
 }

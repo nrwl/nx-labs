@@ -6,9 +6,10 @@ export const expoStatusBarVersion = '1.2.0';
 export const expoMetroConfigVersion = '0.3.10';
 export const expoStructuredHeadersVersion = '2.1.1';
 export const expoSplashScreenVersion = '0.14.2';
-export const expoUpdatesVersion = '0.11.6';
+export const expoUpdatesVersion = '~0.11.6';
 export const jestExpoVersion = '44.0.1';
-export const expoCliVersion = '5.3.0';
+export const expoCliVersion = '5.4.0';
+export const babelPresetExpoVersion = '~9.0.2';
 
 // TODO(Emily): Remove this once expo supports react-native 0.68.0.
 // v18 is only supported on the New Architecture
