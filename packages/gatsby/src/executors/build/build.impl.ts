@@ -1,7 +1,7 @@
 import { fork } from 'child_process';
 import { join } from 'path';
 import { GatsbyPluginBuilderSchema } from './schema';
-import { ExecutorContext } from '@nrwl/tao/src/shared/workspace';
+import type { ExecutorContext } from '@nrwl/devkit';
 
 export default async function buildExecutor(
   options: GatsbyPluginBuilderSchema,
