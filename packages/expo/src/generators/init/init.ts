@@ -32,7 +32,6 @@ import {
   reactNativeSvgVersion,
   expoDevClientVersion,
   expoCliVersion,
-  tsConfigPathsWebpackPluginVersion,
   svgrWebpackVersion,
   reactVersion,
   babelPresetExpoVersion,
@@ -107,7 +106,6 @@ export function updateDependencies(host: Tree) {
       '@testing-library/jest-native': testingLibraryJestNativeVersion,
       'jest-expo': jestExpoVersion,
       'expo-cli': expoCliVersion,
-      'tsconfig-paths-webpack-plugin': tsConfigPathsWebpackPluginVersion,
       '@svgr/webpack': svgrWebpackVersion,
       'babel-preset-expo': babelPresetExpoVersion,
     }

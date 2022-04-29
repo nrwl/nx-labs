@@ -32,5 +32,3 @@ export const metroVersion = '0.66.2';
 
 export const testingLibraryReactNativeVersion = '9.0.0';
 export const testingLibraryJestNativeVersion = '4.0.4';
-
-export const tsConfigPathsWebpackPluginVersion = '3.5.2';

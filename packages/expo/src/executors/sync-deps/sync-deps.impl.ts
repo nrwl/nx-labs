@@ -5,8 +5,8 @@ import {
   logger,
   readJsonFile,
   writeJsonFile,
+  createProjectGraphAsync
 } from '@nrwl/devkit';
-import { createProjectGraphAsync } from '@nrwl/workspace/src/core/project-graph';
 
 import { findAllNpmDependencies } from '../../utils/find-all-npm-dependencies';
 
