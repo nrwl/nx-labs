@@ -1,12 +1,12 @@
 export const nxVersion = '*';
 
 export const expoVersion = '44.0.6';
-export const expoDevClientVersion = '0.8.4';
+export const expoDevClientVersion = '0.8.5';
 export const expoStatusBarVersion = '1.2.0';
-export const expoMetroConfigVersion = '0.3.10';
+export const expoMetroConfigVersion = '0.3.16';
 export const expoStructuredHeadersVersion = '2.1.1';
 export const expoSplashScreenVersion = '0.14.2';
-export const expoUpdatesVersion = '~0.11.6';
+export const expoUpdatesVersion = '~0.11.7';
 export const jestExpoVersion = '44.0.1';
 export const expoCliVersion = '5.4.3';
 export const babelPresetExpoVersion = '~9.0.2';
@@ -28,7 +28,7 @@ export const reactNativeSvgTransformerVersion = '1.0.0';
 export const reactNativeSvgVersion = '12.1.1';
 export const svgrWebpackVersion = '^5.5.0';
 
-export const metroVersion = '0.66.2';
+export const metroVersion = '0.70.2';
 
 export const testingLibraryReactNativeVersion = '9.0.0';
 export const testingLibraryJestNativeVersion = '4.0.4';

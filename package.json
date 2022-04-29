@@ -38,7 +38,7 @@
     "eslint": "8.12.0",
     "eslint-config-prettier": "8.1.0",
     "jest": "27.5.1",
-    "metro-resolver": "0.66.2",
+    "metro-resolver": "0.70.2",
     "nx": "14.0.2",
     "prettier": "2.5.1",
     "react-test-renderer": "18.0.0",
