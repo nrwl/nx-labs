@@ -23,6 +23,15 @@
           "addToPackageJson": "devDependencies"
         }
       }
+    },
+    "14.0.1": {
+      "version": "14.0.1-beta.0",
+      "packages": {
+        "expo-cli": {
+          "version": "5.4.3",
+          "alwaysAddToPackageJson": false
+        }
+      }
     }
   }
 }
