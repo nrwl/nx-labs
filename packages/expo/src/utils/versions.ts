@@ -8,7 +8,7 @@ export const expoStructuredHeadersVersion = '2.1.1';
 export const expoSplashScreenVersion = '0.14.2';
 export const expoUpdatesVersion = '~0.11.6';
 export const jestExpoVersion = '44.0.1';
-export const expoCliVersion = '5.4.0';
+export const expoCliVersion = '5.4.3';
 export const babelPresetExpoVersion = '~9.0.2';
 
 // TODO(Emily): Remove this once expo supports react-native 0.68.0.
