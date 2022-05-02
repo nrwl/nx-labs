@@ -87,6 +87,16 @@
         ]
       },
       "outputs": ["{options.outputFile}"]
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "nx build gatsby",
+          "node tools/scripts/publish.mjs gatsby {args.ver} {args.tag}"
+        ]
+      }
     }
   },
   "tags": []
