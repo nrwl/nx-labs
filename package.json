@@ -6,6 +6,7 @@
   "scripts": {
     "build": "nx build",
     "nx-release": "./scripts/nx-release.js",
+    "check-versions": "ts-node -P ./tools/tsconfig.tools.json ./tools/scripts/check-versions.ts",
     "start": "nx serve",
     "test": "nx test"
   },
