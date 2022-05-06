@@ -1,5 +1,4 @@
 {
-  "root": "packages/remix",
   "sourceRoot": "packages/remix/src",
   "projectType": "library",
   "targets": {

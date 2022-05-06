@@ -1,5 +1,4 @@
 {
-  "root": "packages/expo",
   "sourceRoot": "packages/expo/src",
   "projectType": "library",
   "targets": {
