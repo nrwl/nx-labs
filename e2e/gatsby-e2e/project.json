@@ -1,5 +1,4 @@
 {
-  "root": "e2e/gatsby-e2e",
   "sourceRoot": "e2e/gatsby-e2e",
   "projectType": "application",
   "targets": {

@@ -1,5 +1,4 @@
 {
-  "root": "packages/gatsby",
   "sourceRoot": "packages/gatsby",
   "projectType": "library",
   "targets": {

@@ -1,5 +1,4 @@
 {
-  "root": "e2e/expo-e2e",
   "projectType": "application",
   "sourceRoot": "e2e/expo-e2e/src",
   "targets": {
