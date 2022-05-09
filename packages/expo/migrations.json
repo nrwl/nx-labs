@@ -39,6 +39,27 @@
           "alwaysAddToPackageJson": false
         }
       }
+    },
+    "14.0.2": {
+      "version": "14.0.2-beta.0",
+      "packages": {
+        "metro-resolver": {
+          "version": "0.70.2",
+          "alwaysAddToPackageJson": false
+        },
+        "expo-dev-client": {
+          "version": "0.8.5",
+          "alwaysAddToPackageJson": false
+        },
+        "@expo/metro-config": {
+          "version": "0.3.16",
+          "alwaysAddToPackageJson": false
+        },
+        "expo-updates": {
+          "version": "~0.11.7",
+          "alwaysAddToPackageJson": false
+        }
+      }
     }
   }
 }
