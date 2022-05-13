@@ -62,4 +62,6 @@ describe('app', () => {
     const content = tree.read('apps/demo/app/routes/example.tsx').toString();
     expect(content).toMatch('function Example(');
   });
+
+  it('should support --loader', () => {});
 });

@@ -1,26 +1,48 @@
-import {Tree, formatFiles} from '@nrwl/devkit';
-import {LoaderSchema} from './schema';
-import {insertImport} from '@nrwl/workspace/src/generators/utils/insert-import';
-import {insertStatement} from '@nrwl/workspace/src/generators/utils/insert-statement';
+import { formatFiles, Tree } from '@nrwl/devkit';
+import { LoaderSchema } from './schema';
+import { insertImport } from '../../utils/insert-import';
+import { insertStatementAfterImports } from '../../utils/insert-statement-after-imports';
+import {
+  getDefaultExportName,
+  insertStatementInDefaultFunction,
+} from '../../utils/get-default-export';
 
 export default async function (tree: Tree, schema: LoaderSchema) {
-    const file = tree.read(schema.file);
+  const file = tree.read(schema.file);
 
-    if (!file) {
-        throw Error(`File ${schema.file} could not be found.`);
-    }
+  if (!file) {
+    throw Error(`File ${schema.file} could not be found.`);
+  }
 
-    insertImport(tree, schema.file, 'LoaderFunction', 'remix');
-    insertImport(tree, schema.file, 'useLoaderData', 'remix');
+  insertImport(tree, schema.file, 'LoaderFunction', '@remix-run/node', {
+    typeOnly: true,
+  });
+  insertImport(tree, schema.file, 'useLoaderData', '@remix-run/react');
+  insertImport(tree, schema.file, 'json', '@remix-run/node');
 
-    insertStatement(tree, schema.file, `
-    
-    // Use this function to provide data for the route.
-    // - https://remix.run/api/conventions#loader
+  const defaultExportName = getDefaultExportName(tree, schema.file);
+  const loaderTypeName = `${defaultExportName}LoaderData`;
+
+  insertStatementAfterImports(
+    tree,
+    schema.file,
+    `
+    type ${loaderTypeName} = {
+        message: string;
+    };
+
     export const loader: LoaderFunction = async () => {
-      return {
+      return json({
         message: 'Hello, world!',
-      }
-    }`);
-    await formatFiles(tree);
+      })
+    };
+    
+    `
+  );
+
+  const statement = `\nconst data = useLoaderData<${loaderTypeName}>();`;
+
+  insertStatementInDefaultFunction(tree, schema.file, statement);
+
+  await formatFiles(tree);
 }
