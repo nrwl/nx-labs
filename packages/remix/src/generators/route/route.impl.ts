@@ -11,7 +11,8 @@ import LoaderGenerator from '../loader/loader.impl';
 import MetaGenerator from '../meta/meta.impl';
 import ActionGenerator from '../action/action.impl';
 
-import { insertImport } from '@nrwl/workspace/src/generators/utils/insert-import';
+import { insertImport } from '../../utils/insert-import';
+
 export default async function (tree: Tree, options: RemixRouteSchema) {
   const { fileName: routePath, className: componentName } = names(
     options.path.replace(/^\//, '').replace(/\/$/, '')
@@ -21,7 +22,6 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
   if (!project) throw new Error(`Project does not exist: ${options.project}`);
 
   const normalizedRoutePath = normalizeRoutePath(routePath, project.root);
-
 
   const componentPath = joinPathFragments(
     project.root,
@@ -39,8 +39,6 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
       options.style === 'css'
         ? `import stylesUrl from '~/styles/${normalizedRoutePath}.css';
             
-            // Provide stylesheet for this page.
-          // - https://remix.run/api/conventions#links
           export const links: LinksFunction = () => {
             return [{ rel: 'stylesheet', href: stylesUrl }];
           };`
@@ -51,7 +49,6 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
     ${
       options.loader
         ? `
-      const data = useLoaderData();
       return (
         <p>
           Message: {data.message}
@@ -77,13 +74,16 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
   }
 
   if (options.style === 'css') {
-    insertImport(tree, componentPath, 'LinksFunction', 'remix');
+    insertImport(tree, componentPath, 'LinksFunction', '@remix-run/node', {
+      typeOnly: true,
+    });
 
     const stylesheetPath = joinPathFragments(
       project.root,
       'app/styles',
       `${normalizedRoutePath}.css`
     );
+
     tree.write(
       stylesheetPath,
       stripIndents`
