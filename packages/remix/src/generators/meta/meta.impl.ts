@@ -3,21 +3,29 @@ import { LoaderSchema } from './schema';
 import { insertImport } from '../../utils/insert-import';
 import { insertStatementAfterImports } from '../../utils/insert-statement-after-imports';
 import { getDefaultExportName } from '../../utils/get-default-export-name';
+import { resolveRemixRouteFile } from '../../utils/remix-route-utils';
 
 export default async function (tree: Tree, schema: LoaderSchema) {
-  const file = tree.read(schema.file);
-  const defaultExportName = getDefaultExportName(tree, schema.file);
-  if (!file) {
-    throw Error(`File ${schema.file} could not be found.`);
+  const routeFilePath = resolveRemixRouteFile(
+    tree,
+    schema.path,
+    schema.project
+  );
+
+  if (!tree.exists(routeFilePath)) {
+    throw new Error(
+      `Route path does not exist: ${routeFilePath}. Please generate a Remix route first.`
+    );
   }
 
-  insertImport(tree, schema.file, 'MetaFunction', '@remix-run/node', {
+  insertImport(tree, routeFilePath, 'MetaFunction', '@remix-run/node', {
     typeOnly: true,
   });
 
+  const defaultExportName = getDefaultExportName(tree, routeFilePath);
   insertStatementAfterImports(
     tree,
-    schema.file,
+    routeFilePath,
     `   
     export const meta: MetaFunction = () =>{
       return { title: '${defaultExportName} Route' };

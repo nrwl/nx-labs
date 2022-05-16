@@ -20,20 +20,36 @@ describe('action', () => {
       action: false,
       meta: false,
     });
-    await actionGenerator(tree, {
-      file: 'apps/demo/app/routes/example.tsx',
-    });
   });
 
-  it('should add imports', async () => {
-    const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
-    expect(content).toMatch(
-      `import type { ActionFunction } from '@remix-run/node';`
-    );
-  });
+  [
+    {
+      path: 'apps/demo/app/routes/example.tsx',
+    },
+    {
+      path: 'example',
+    },
+    {
+      path: 'example.tsx',
+    },
+  ].forEach((config) => {
+    describe(`Generating action using path ${config.path}`, () => {
+      beforeEach(async () => {
+        await actionGenerator(tree, {
+          path: config.path,
+          // path: 'apps/demo/app/routes/example.tsx',
+          project: 'demo',
+        });
+      });
+      it('should add imports', async () => {
+        const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+        expect(content).toMatch(
+          `import type { ActionFunction } from '@remix-run/node';`
+        );
+      });
 
-  it('should add action function', () => {
-    const actionFunction = `
+      it('should add action function', () => {
+        const actionFunction = `
     type ExampleActionData = {
         message: string;
     };
@@ -44,17 +60,19 @@ describe('action', () => {
       return json({message: formData.toString()}, { status: 200 });
     };
     `;
-    const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
-    expect(content).toMatch(actionFunction);
-  });
+        const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+        expect(content).toMatch(actionFunction);
+      });
 
-  it('should add useActionData to component', () => {
-    const useActionData = `export default function Example() {
+      it('should add useActionData to component', () => {
+        const useActionData = `export default function Example() {
 const actionMessage = useActionData<ExampleActionData>();
 return (<p>Example works!</p>)
 }`;
 
-    const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
-    expect(content).toMatch(useActionData);
+        const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+        expect(content).toMatch(useActionData);
+      });
+    });
   });
 });

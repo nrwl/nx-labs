@@ -4,7 +4,7 @@ import loaderGenerator from './loader.impl';
 import applicationGenerator from '../application/application.impl';
 import routeGenerator from '../route/route.impl';
 
-describe('action', () => {
+describe('loader', () => {
   let tree: Tree;
 
   beforeEach(async () => {
@@ -20,30 +20,48 @@ describe('action', () => {
       action: false,
       meta: false,
     });
-    await loaderGenerator(tree, {
-      file: 'apps/demo/app/routes/example.tsx',
+  });
+
+  [
+    {
+      path: 'apps/demo/app/routes/example.tsx',
+    },
+    {
+      path: 'example',
+    },
+    {
+      path: 'example.tsx',
+    },
+  ].forEach((config) => {
+    describe(`add loader using route path "${config.path}"`, () => {
+      beforeEach(async () => {
+        await loaderGenerator(tree, {
+          path: config.path,
+          project: 'demo',
+        });
+      });
+
+      it('should add imports', async () => {
+        const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+        expect(content).toMatch(
+          `import type { LoaderFunction } from '@remix-run/node';`
+        );
+      });
+
+      it('should add loader function', () => {
+        const loaderFunctionType = `type ExampleLoaderData`;
+        const loaderFunction = ` export const loader: LoaderFunction = async`;
+        const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+        expect(content).toMatch(loaderFunctionType);
+        expect(content).toMatch(loaderFunction);
+      });
+
+      it('should add useLoaderData to component', () => {
+        const useLoaderData = `const data = useLoaderData<ExampleLoaderData>();`;
+
+        const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+        expect(content).toMatch(useLoaderData);
+      });
     });
-  });
-
-  it('should add imports', async () => {
-    const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
-    expect(content).toMatch(
-      `import type { LoaderFunction } from '@remix-run/node';`
-    );
-  });
-
-  it('should add loader function', () => {
-    const actionFunctionType = `type ExampleLoaderData`;
-    const actionFunction = ` export const loader: LoaderFunction = async`;
-    const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
-    expect(content).toMatch(actionFunctionType);
-    expect(content).toMatch(actionFunction);
-  });
-
-  it('should add useActionData to component', () => {
-    const useActionData = `const data = useLoaderData<ExampleLoaderData>();`;
-
-    const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
-    expect(content).toMatch(useActionData);
   });
 });
