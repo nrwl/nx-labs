@@ -40,7 +40,11 @@ export default async function (tree: Tree, schema: LoaderSchema) {
 
   const statement = `\nconst actionMessage = useActionData<${actionTypeName}>();`;
 
-  insertStatementInDefaultFunction(tree, schema.file, statement);
-
-  await formatFiles(tree);
+  try {
+    insertStatementInDefaultFunction(tree, schema.file, statement);
+  } catch (err) {
+    // eslint-disable-next-line no-empty
+  } finally {
+    await formatFiles(tree);
+  }
 }

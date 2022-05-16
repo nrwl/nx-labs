@@ -35,6 +35,11 @@
       "schema": "./src/generators/route/schema.json",
       "description": "Generate a new route"
     },
+    "resource-route": {
+      "implementation": "./src/generators/resource-route/resource-route.impl",
+      "schema": "./src/generators/resource-route/schema.json",
+      "description": "Generate a new resource route"
+    },
     "action": {
       "implementation": "./src/generators/action/action.impl",
       "schema": "./src/generators/route/schema.json",
