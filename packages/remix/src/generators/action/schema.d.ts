@@ -1,3 +1,4 @@
 export interface LoaderSchema {
-  file: string;
+  path: string;
+  project: string;
 }

@@ -11,30 +11,35 @@ import LoaderGenerator from '../loader/loader.impl';
 import MetaGenerator from '../meta/meta.impl';
 import ActionGenerator from '../action/action.impl';
 import StyleGenerator from '../style/style.impl';
-
-import { insertImport } from '../../utils/insert-import';
+import { resolveRemixRouteFile } from '../../utils/remix-route-utils';
 
 export default async function (tree: Tree, options: RemixRouteSchema) {
-  const { fileName: routePath, className: componentName } = names(
+  const routeFilePath = resolveRemixRouteFile(
+    tree,
+    options.path,
+    options.project
+  );
+
+  const { className: componentName } = names(
     options.path.replace(/^\//, '').replace(/\/$/, '')
   );
 
-  const project = readProjectConfiguration(tree, options.project);
-  if (!project) throw new Error(`Project does not exist: ${options.project}`);
+  // const project = readProjectConfiguration(tree, options.project);
+  // if (!project) throw new Error(`Project does not exist: ${options.project}`);
 
-  const normalizedRoutePath = normalizeRoutePath(routePath, project.root);
+  // const normalizedRoutePath = normalizeRoutePath(routePath, project.root);
 
-  const componentPath = joinPathFragments(
-    project.root,
-    'app/routes',
-    `${normalizedRoutePath}.tsx`
-  );
+  // const componentPath = joinPathFragments(
+  //   project.root,
+  //   'app/routes',
+  //   `${normalizedRoutePath}.tsx`
+  // );
 
-  if (tree.exists(componentPath))
-    throw new Error(`Path already exists: ${options.path}`);
+  if (tree.exists(routeFilePath))
+    throw new Error(`Path already exists: ${routeFilePath}`);
 
   tree.write(
-    componentPath,
+    routeFilePath,
     stripIndents`
 
 
@@ -55,15 +60,24 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
   );
 
   if (options.loader) {
-    await LoaderGenerator(tree, { file: componentPath });
+    await LoaderGenerator(tree, {
+      project: options.project,
+      path: routeFilePath,
+    });
   }
 
   if (options.meta) {
-    await MetaGenerator(tree, { file: componentPath });
+    await MetaGenerator(tree, {
+      path: routeFilePath,
+      project: options.project,
+    });
   }
 
   if (options.action) {
-    await ActionGenerator(tree, { file: componentPath });
+    await ActionGenerator(tree, {
+      path: routeFilePath,
+      project: options.project,
+    });
   }
 
   if (options.style === 'css') {
@@ -74,11 +88,4 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
   }
 
   await formatFiles(tree);
-}
-
-function normalizeRoutePath(path: string, projectRoot: string) {
-  if (path.indexOf(projectRoot) === -1) return path;
-  if (path.indexOf('/routes/') > -1)
-    return path.substring(path.indexOf('/routes/') + 8);
-  return path.substring(projectRoot.length + 1);
 }

@@ -4,26 +4,33 @@ import { insertImport } from '../../utils/insert-import';
 import { insertStatementAfterImports } from '../../utils/insert-statement-after-imports';
 import { getDefaultExportName } from '../../utils/get-default-export-name';
 import { insertStatementInDefaultFunction } from '../../utils/insert-statement-in-default-function';
+import { resolveRemixRouteFile } from '../../utils/remix-route-utils';
 
 export default async function (tree: Tree, schema: LoaderSchema) {
-  const file = tree.read(schema.file);
+  const routeFilePath = resolveRemixRouteFile(
+    tree,
+    schema.path,
+    schema.project
+  );
 
-  if (!file) {
-    throw Error(`File ${schema.file} could not be found.`);
+  if (!tree.exists(routeFilePath)) {
+    throw new Error(
+      `Route path does not exist: ${routeFilePath}. Please generate a Remix route first.`
+    );
   }
 
-  insertImport(tree, schema.file, 'LoaderFunction', '@remix-run/node', {
+  insertImport(tree, routeFilePath, 'LoaderFunction', '@remix-run/node', {
     typeOnly: true,
   });
-  insertImport(tree, schema.file, 'useLoaderData', '@remix-run/react');
-  insertImport(tree, schema.file, 'json', '@remix-run/node');
+  insertImport(tree, routeFilePath, 'useLoaderData', '@remix-run/react');
+  insertImport(tree, routeFilePath, 'json', '@remix-run/node');
 
-  const defaultExportName = getDefaultExportName(tree, schema.file);
+  const defaultExportName = getDefaultExportName(tree, routeFilePath);
   const loaderTypeName = `${defaultExportName}LoaderData`;
 
   insertStatementAfterImports(
     tree,
-    schema.file,
+    routeFilePath,
     `
     type ${loaderTypeName} = {
         message: string;
@@ -41,7 +48,7 @@ export default async function (tree: Tree, schema: LoaderSchema) {
   const statement = `\nconst data = useLoaderData<${loaderTypeName}>();`;
 
   try {
-    insertStatementInDefaultFunction(tree, schema.file, statement);
+    insertStatementInDefaultFunction(tree, routeFilePath, statement);
     // eslint-disable-next-line no-empty
   } catch (err) {
   } finally {

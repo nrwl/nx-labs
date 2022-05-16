@@ -20,21 +20,39 @@ describe('meta', () => {
       action: false,
       meta: false,
     });
-    await metaGenerator(tree, {
-      file: 'apps/demo/app/routes/example.tsx',
+  });
+
+  [
+    {
+      path: 'apps/demo/app/routes/example.tsx',
+    },
+    {
+      path: 'example',
+    },
+    {
+      path: 'example.tsx',
+    },
+  ].forEach((config) => {
+    describe(`add loader using route path "${config.path}"`, () => {
+      beforeEach(async () => {
+        await metaGenerator(tree, {
+          path: config.path,
+          project: 'demo',
+        });
+      });
+
+      it('should add imports', async () => {
+        const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+        expect(content).toMatch(
+          `import type { MetaFunction } from '@remix-run/node';`
+        );
+      });
+
+      it('should add meta function', () => {
+        const metaFunction = `export const meta: MetaFunction`;
+        const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+        expect(content).toMatch(metaFunction);
+      });
     });
-  });
-
-  it('should add imports', async () => {
-    const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
-    expect(content).toMatch(
-      `import type { MetaFunction } from '@remix-run/node';`
-    );
-  });
-
-  it('should add meta function', () => {
-    const metaFunction = `export const meta: MetaFunction`;
-    const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
-    expect(content).toMatch(metaFunction);
   });
 });
