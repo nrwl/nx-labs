@@ -10,6 +10,7 @@ import { RemixRouteSchema } from './schema';
 import LoaderGenerator from '../loader/loader.impl';
 import MetaGenerator from '../meta/meta.impl';
 import ActionGenerator from '../action/action.impl';
+import StyleGenerator from '../style/style.impl';
 
 import { insertImport } from '../../utils/insert-import';
 
@@ -35,15 +36,7 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
   tree.write(
     componentPath,
     stripIndents`
-    ${
-      options.style === 'css'
-        ? `import stylesUrl from '~/styles/${normalizedRoutePath}.css';
-            
-          export const links: LinksFunction = () => {
-            return [{ rel: 'stylesheet', href: stylesUrl }];
-          };`
-        : ''
-    }
+
 
     export default function ${componentName}() {
     ${
@@ -74,29 +67,10 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
   }
 
   if (options.style === 'css') {
-    insertImport(tree, componentPath, 'LinksFunction', '@remix-run/node', {
-      typeOnly: true,
+    await StyleGenerator(tree, {
+      project: options.project,
+      path: options.path,
     });
-
-    const stylesheetPath = joinPathFragments(
-      project.root,
-      'app/styles',
-      `${normalizedRoutePath}.css`
-    );
-
-    tree.write(
-      stylesheetPath,
-      stripIndents`
-      :root {
-        --color-foreground: #fff;
-        --color-background: #143157;
-        --color-links: hsl(214, 73%, 69%);
-        --color-border: #275da8;
-        --font-body: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-          Liberation Mono, Courier New, monospace;
-      }
-    `
-    );
   }
 
   await formatFiles(tree);

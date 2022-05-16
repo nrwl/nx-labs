@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "NxRemixRouteStyle",
+  "cli": "nx",
+  "title": "Add style import to a route",
+  "type": "object",
+  "examples": [
+    {
+      "command": "g style --project=webapp --path='path/to/page'",
+      "description": "Generate route at /path/to/page"
+    }
+  ],
+  "properties": {
+    "path": {
+      "type": "string",
+      "description": "Route path",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What is the path of the route? (e.g. 'foo/bar')"
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      },
+      "x-prompt": "What project is this route in?",
+      "pattern": "^[a-zA-Z].*$"
+    }
+  },
+  "required": ["project", "path"]
+}
