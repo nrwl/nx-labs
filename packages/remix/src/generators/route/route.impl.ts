@@ -14,26 +14,19 @@ import StyleGenerator from '../style/style.impl';
 import { resolveRemixRouteFile } from '../../utils/remix-route-utils';
 
 export default async function (tree: Tree, options: RemixRouteSchema) {
+  const project = readProjectConfiguration(tree, options.project);
+  if (!project) throw new Error(`Project does not exist: ${options.project}`);
+
   const routeFilePath = resolveRemixRouteFile(
     tree,
     options.path,
-    options.project
+    options.project,
+    '.tsx'
   );
 
   const { className: componentName } = names(
-    options.path.replace(/^\//, '').replace(/\/$/, '')
+    options.path.replace(/^\//, '').replace(/\/$/, '').replace('.tsx', '')
   );
-
-  // const project = readProjectConfiguration(tree, options.project);
-  // if (!project) throw new Error(`Project does not exist: ${options.project}`);
-
-  // const normalizedRoutePath = normalizeRoutePath(routePath, project.root);
-
-  // const componentPath = joinPathFragments(
-  //   project.root,
-  //   'app/routes',
-  //   `${normalizedRoutePath}.tsx`
-  // );
 
   if (tree.exists(routeFilePath))
     throw new Error(`Path already exists: ${routeFilePath}`);

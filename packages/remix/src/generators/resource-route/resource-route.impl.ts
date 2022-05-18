@@ -8,11 +8,17 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
   const routeFilePath = resolveRemixRouteFile(
     tree,
     options.path,
-    options.project
+    options.project,
+    '.ts'
   );
 
   if (tree.exists(routeFilePath))
     throw new Error(`Path already exists: ${options.path}`);
+
+  if (!options.loader && !options.action)
+    throw new Error(
+      'The resource route generator requires either `loader` or `action` to be true'
+    );
 
   tree.write(routeFilePath, '');
 

@@ -16,6 +16,11 @@ export function insertImport(
   modulePath: string,
   options: { typeOnly: boolean } = { typeOnly: false }
 ) {
+  if (!tree.exists(path))
+    throw Error(
+      `Could not insert import ${name} from ${modulePath} in ${path}: path not found`
+    );
+
   const contents = tree.read(path, 'utf-8');
 
   const sourceFile = createSourceFile(path, contents, ScriptTarget.ESNext);

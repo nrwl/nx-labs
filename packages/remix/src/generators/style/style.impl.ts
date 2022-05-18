@@ -10,10 +10,14 @@ import { RemixStyleSchema } from './schema';
 
 import { insertImport } from '../../utils/insert-import';
 import { insertStatementAfterImports } from '../../utils/insert-statement-after-imports';
+import {
+  normalizeRoutePath,
+  resolveRemixRouteFile,
+} from '../../utils/remix-route-utils';
 
 export default async function (tree: Tree, options: RemixStyleSchema) {
   const { fileName: routePath, className: componentName } = names(
-    options.path.replace(/^\//, '').replace(/\/$/, '')
+    options.path.replace(/^\//, '').replace(/\/$/, '').replace('.tsx', '')
   );
 
   const project = readProjectConfiguration(tree, options.project);
@@ -41,19 +45,20 @@ export default async function (tree: Tree, options: RemixStyleSchema) {
     `
   );
 
-  const componentPath = joinPathFragments(
-    project.root,
-    'app/routes',
-    `${normalizedRoutePath}.tsx`
+  const routeFilePath = resolveRemixRouteFile(
+    tree,
+    options.path,
+    options.project,
+    '.tsx'
   );
 
-  insertImport(tree, componentPath, 'LinksFunction', '@remix-run/node', {
+  insertImport(tree, routeFilePath, 'LinksFunction', '@remix-run/node', {
     typeOnly: true,
   });
 
   insertStatementAfterImports(
     tree,
-    componentPath,
+    routeFilePath,
     `
     import stylesUrl from '~/styles/${normalizedRoutePath}.css'
     
@@ -64,11 +69,4 @@ export default async function (tree: Tree, options: RemixStyleSchema) {
   );
 
   await formatFiles(tree);
-}
-
-function normalizeRoutePath(path: string, projectRoot: string) {
-  if (path.indexOf(projectRoot) === -1) return path;
-  if (path.indexOf('/routes/') > -1)
-    return path.substring(path.indexOf('/routes/') + 8);
-  return path.substring(projectRoot.length + 1);
 }
