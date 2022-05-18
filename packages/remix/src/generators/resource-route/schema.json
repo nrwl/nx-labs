@@ -37,7 +37,7 @@
     "loader": {
       "type": "boolean",
       "description": "Generate a loader function",
-      "default": false
+      "default": true
     }
   },
   "required": ["project", "path"]

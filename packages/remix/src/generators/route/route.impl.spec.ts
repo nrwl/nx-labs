@@ -3,7 +3,7 @@ import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 import routeGenerator from './route.impl';
 import applicationGenerator from '../application/application.impl';
 
-describe('app', () => {
+describe('route', () => {
   let tree: Tree;
 
   beforeEach(() => {
@@ -63,5 +63,20 @@ describe('app', () => {
     expect(content).toMatch('function Example(');
   });
 
-  it('should support --loader', () => {});
+  it('should handle routes that end in a file', async () => {
+    await applicationGenerator(tree, { name: 'demo' });
+    await routeGenerator(tree, {
+      project: 'demo',
+      path: '/example/index.tsx',
+      style: 'css',
+      loader: true,
+      action: true,
+      meta: true,
+    });
+
+    const content = tree
+      .read('apps/demo/app/routes/example/index.tsx')
+      .toString();
+    expect(content).toMatch('function ExampleIndex(');
+  });
 });
