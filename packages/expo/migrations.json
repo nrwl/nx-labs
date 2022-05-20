@@ -60,6 +60,91 @@
           "alwaysAddToPackageJson": false
         }
       }
+    },
+    "14.1.1": {
+      "version": "14.1.1-beta.0",
+      "packages": {
+        "expo": {
+          "version": "45.0.4",
+          "alwaysAddToPackageJson": false
+        },
+        "expo-dev-client": {
+          "version": "~0.9.6",
+          "alwaysAddToPackageJson": false
+        },
+        "expo-status-bar": {
+          "version": "~1.3.0",
+          "alwaysAddToPackageJson": false
+        },
+        "@expo/metro-config": {
+          "version": "0.3.17",
+          "alwaysAddToPackageJson": false
+        },
+        "expo-splash-screen": {
+          "version": "0.15.1",
+          "alwaysAddToPackageJson": false
+        },
+        "expo-updates": {
+          "version": "~0.13.1",
+          "alwaysAddToPackageJson": false
+        },
+        "jest-expo": {
+          "version": "45.0.1",
+          "alwaysAddToPackageJson": false
+        },
+        "expo-cli": {
+          "version": "5.4.6",
+          "alwaysAddToPackageJson": false
+        },
+        "babel-preset-expo": {
+          "version": "~9.1.0",
+          "alwaysAddToPackageJson": false
+        },
+        "react-native": {
+          "version": "0.68.2",
+          "alwaysAddToPackageJson": false
+        },
+        "@types/react-native": {
+          "version": "0.67.7",
+          "alwaysAddToPackageJson": false
+        },
+        "react-native-web": {
+          "version": "0.17.7",
+          "alwaysAddToPackageJson": false
+        },
+        "react-native-gesture-handler": {
+          "version": "~2.2.1",
+          "alwaysAddToPackageJson": false
+        },
+        "react-native-reanimated": {
+          "version": "~2.8.0",
+          "alwaysAddToPackageJson": false
+        },
+        "react-native-safe-area-context": {
+          "version": "4.2.4",
+          "alwaysAddToPackageJson": false
+        },
+        "react-native-screens": {
+          "version": "~3.11.1",
+          "alwaysAddToPackageJson": false
+        },
+        "react-native-svg": {
+          "version": "12.3.0",
+          "alwaysAddToPackageJson": false
+        },
+        "metro-resolver": {
+          "version": "0.70.3",
+          "alwaysAddToPackageJson": false
+        },
+        "@testing-library/react-native": {
+          "version": "9.1.0",
+          "alwaysAddToPackageJson": false
+        },
+        "@testing-library/jest-native": {
+          "version": "4.0.5",
+          "alwaysAddToPackageJson": false
+        }
+      }
     }
   }
 }
