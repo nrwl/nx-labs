@@ -50,6 +50,11 @@
       "schema": "./src/generators/loader/schema.json",
       "description": "Add a loader function to an existing route"
     },
+    "style": {
+      "implementation": "./src/generators/style/style.impl",
+      "schema": "./src/generators/style/schema.json",
+      "description": "Generates a new stylesheet and adds it to an existing route"
+    },
     "meta": {
       "implementation": "./src/generators/meta/meta.impl",
       "schema": "./src/generators/meta/schema.json",
