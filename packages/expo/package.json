@@ -33,13 +33,13 @@
     "@nrwl/workspace": "*",
     "chalk": "4.1.0",
     "enhanced-resolve": "^5.8.3",
-    "expo-cli": "^5.4.3",
-    "metro-resolver": "^0.70.2",
+    "expo-cli": "^5.4.6",
+    "metro-resolver": "^0.70.3",
     "tsconfig-paths": "^3.9.0",
     "tsconfig-paths-webpack-plugin": "^3.5.2"
   },
   "peerDependencies": {
-    "expo": "^44.0.5"
+    "expo": "^45.0.4"
   },
   "builders": "./executors.json",
   "ng-update": {
