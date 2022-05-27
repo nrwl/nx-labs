@@ -114,5 +114,10 @@ function getTargets(options: NormalizedSchema) {
     options: {},
   };
 
+  architect['eject'] = {
+    executor: '@nrwl/expo:eject',
+    options: {},
+  };
+
   return architect;
 }

@@ -52,8 +52,13 @@
     },
     "ensure-symlink": {
       "implementation": "./src/executors/ensure-symlink/ensure-symlink.impl",
-      "schema": "./src/executors/ensure-symlink//schema.json",
+      "schema": "./src/executors/ensure-symlink/schema.json",
       "description": "Ensure workspace node_modules is symlink under app's node_modules folder."
+    },
+    "eject": {
+      "implementation": "./src/executors/eject/eject.impl",
+      "schema": "./src/executors/eject/schema.json",
+      "description": "Create native iOS and Android project files."
     }
   },
   "builders": {
@@ -109,8 +114,13 @@
     },
     "ensure-symlink": {
       "implementation": "./src/executors/ensure-symlink/compat",
-      "schema": "./src/executors/ensure-symlink//schema.json",
+      "schema": "./src/executors/ensure-symlink/schema.json",
       "description": "Ensure workspace node_modules is symlink under app's node_modules folder."
+    },
+    "eject": {
+      "implementation": "./src/executors/eject/compat",
+      "schema": "./src/executors/eject/schema.json",
+      "description": "Create native iOS and Android project files."
     }
   }
 }

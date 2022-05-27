@@ -5,6 +5,12 @@
       "cli": "nx",
       "description": "Add projectRoot option in metro.config.js",
       "factory": "./src/migrations/update-14-0-0/add-project-root-metro-config-14-0-0"
+    },
+    "add-eject-target-14-1-2": {
+      "version": "14.1.2-beta.0",
+      "cli": "nx",
+      "description": "Add target eject for expo projects in project.json",
+      "factory": "./src/migrations/updae-14-1-2/add-eject-target-14-1-2.ts"
     }
   },
   "packageJsonUpdates": {
