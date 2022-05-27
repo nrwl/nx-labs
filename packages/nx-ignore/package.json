@@ -1,0 +1,12 @@
+{
+  "name": "nx-ignore",
+  "version": "1.0.0-beta.2",
+  "type": "commonjs",
+  "bin": {
+    "nx-ignore": "./src/index.js"
+  },
+  "dependencies": {
+    "nx": "^14.1.9",
+    "typescript": "^4.6.2"
+  }
+}

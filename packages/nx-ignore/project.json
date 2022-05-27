@@ -1,0 +1,32 @@
+{
+  "sourceRoot": "packages/nx-ignore/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/nx-ignore",
+        "main": "packages/nx-ignore/src/index.ts",
+        "tsConfig": "packages/nx-ignore/tsconfig.lib.json",
+        "assets": ["packages/nx-ignore/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/nx-ignore/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/nx-ignore"],
+      "options": {
+        "jestConfig": "packages/nx-ignore/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
