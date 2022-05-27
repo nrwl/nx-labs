@@ -1,6 +1,6 @@
 {
   "name": "nx-ignore",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "type": "commonjs",
   "bin": {
     "nx-ignore": "./src/index.js"
