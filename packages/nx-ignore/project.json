@@ -18,14 +18,6 @@
       "options": {
         "lintFilePatterns": ["packages/nx-ignore/**/*.ts"]
       }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/nx-ignore"],
-      "options": {
-        "jestConfig": "packages/nx-ignore/jest.config.ts",
-        "passWithNoTests": true
-      }
     }
   },
   "tags": []
