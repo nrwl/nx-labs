@@ -11,3 +11,7 @@ npx nx-ignore <project-name>
 ```
 
 <p style="text-align: center;"><img src="https://github.com/nrwl/nx-labs/raw/main/packages/nx-ignore/vercel.png" width="600" alt="Nx - Smart, Fast and Extensible Build System"></p>
+
+## How it works
+
+The `nx-ignore` command uses Nx to determine whether the current commit affects the specified app. It exits with an error code (1) when the app is affected, which tells Vercel to continue the build, otherwise it exits successfully, which tells Vercel to cancel the build.

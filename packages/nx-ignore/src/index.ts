@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import * as cp from 'child_process';
 import { findWorkspaceRoot } from 'nx/src/utils/find-workspace-root';
 
 const project = process.argv[2];
