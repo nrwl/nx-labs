@@ -151,6 +151,41 @@
           "alwaysAddToPackageJson": false
         }
       }
+    },
+    "14.1.2": {
+      "version": "14.1.2-beta.0",
+      "packages": {
+        "expo": {
+          "version": "45.0.5",
+          "alwaysAddToPackageJson": false
+        },
+        "expo-cli": {
+          "version": "5.4.9",
+          "alwaysAddToPackageJson": false
+        },
+        "metro-resolver": {
+          "version": "0.71.0",
+          "alwaysAddToPackageJson": false
+        },
+        "metro-babel-register": {
+          "version": "0.71.0",
+          "alwaysAddToPackageJson": false,
+          "addToPackageJson": "devDependencies"
+        },
+        "react-test-renderer": {
+          "version": "18.1.0",
+          "alwaysAddToPackageJson": false,
+          "addToPackageJson": "devDependencies"
+        },
+        "expo-updates": {
+          "version": "~0.13.2",
+          "alwaysAddToPackageJson": false
+        },
+        "@types/react-native": {
+          "version": "0.67.8",
+          "alwaysAddToPackageJson": false
+        }
+      }
     }
   }
 }

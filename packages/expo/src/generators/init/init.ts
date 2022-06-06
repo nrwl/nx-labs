@@ -34,14 +34,17 @@ import {
   babelPresetExpoVersion,
 } from '../../utils/versions';
 
-import { reactDomVersion, reactVersion } from '@nrwl/react';
+import {
+  reactDomVersion,
+  reactVersion,
+  reactTestRendererVersion,
+} from '@nrwl/react/src/utils/versions';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 import { jestInitGenerator } from '@nrwl/jest';
 import { detoxInitGenerator } from '@nrwl/detox';
 
 import { addGitIgnoreEntry } from './lib/add-git-ignore-entry';
 import { initRootBabelConfig } from './lib/init-root-babel-config';
-
 
 export async function expoInitGenerator(host: Tree, schema: Schema) {
   setDefaultCollection(host, '@nrwl/expo');
@@ -94,6 +97,8 @@ export function updateDependencies(host: Tree) {
       '@types/react': reactVersion,
       '@types/react-native': typesReactNativeVersion,
       'metro-resolver': metroVersion,
+      'metro-babel-register': metroVersion,
+      'react-test-renderer': reactTestRendererVersion,
       '@testing-library/react-native': testingLibraryReactNativeVersion,
       '@testing-library/jest-native': testingLibraryJestNativeVersion,
       'jest-expo': jestExpoVersion,
