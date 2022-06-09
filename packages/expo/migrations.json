@@ -10,7 +10,7 @@
       "version": "14.1.2-beta.0",
       "cli": "nx",
       "description": "Add target eject for expo projects in project.json",
-      "factory": "./src/migrations/updae-14-1-2/add-eject-target-14-1-2.ts"
+      "factory": "./src/migrations/update-14-1-2/add-eject-target-14-1-2"
     }
   },
   "packageJsonUpdates": {
@@ -183,6 +183,19 @@
         },
         "@types/react-native": {
           "version": "0.67.8",
+          "alwaysAddToPackageJson": false
+        }
+      }
+    },
+    "14.2.3": {
+      "version": "14.2.3-beta.0",
+      "packages": {
+        "expo-dev-client": {
+          "version": "~0.10.0",
+          "alwaysAddToPackageJson": false
+        },
+        "expo-structured-headers": {
+          "version": "~2.2.1",
           "alwaysAddToPackageJson": false
         }
       }

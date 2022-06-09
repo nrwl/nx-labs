@@ -1,10 +1,10 @@
 export const nxVersion = '*';
 
 export const expoVersion = '45.0.5';
-export const expoDevClientVersion = '~0.9.6';
+export const expoDevClientVersion = '~0.10.0';
 export const expoStatusBarVersion = '~1.3.0';
 export const expoMetroConfigVersion = '0.3.17';
-export const expoStructuredHeadersVersion = '2.1.1';
+export const expoStructuredHeadersVersion = '~2.2.1';
 export const expoSplashScreenVersion = '0.15.1';
 export const expoUpdatesVersion = '~0.13.2';
 export const jestExpoVersion = '45.0.1';
