@@ -3,9 +3,6 @@
   "affected": {
     "defaultBase": "main"
   },
-  "cli": {
-    "defaultCollection": "@nrwl/workspace"
-  },
   "implicitDependencies": {
     "package.json": {
       "dependencies": "*",
@@ -33,5 +30,6 @@
   "workspaceLayout": {
     "appsDir": "e2e",
     "libsDir": "packages"
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/nx-schema.json"
 }
