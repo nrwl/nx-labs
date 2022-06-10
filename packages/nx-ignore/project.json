@@ -18,6 +18,16 @@
       "options": {
         "lintFilePatterns": ["packages/nx-ignore/**/*.ts"]
       }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "nx build nx-ignore",
+          "node tools/scripts/publish.mjs nx-ignore {args.ver} {args.tag}"
+        ]
+      }
     }
   },
   "tags": []
