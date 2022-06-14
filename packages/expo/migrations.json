@@ -199,6 +199,15 @@
           "alwaysAddToPackageJson": false
         }
       }
+    },
+    "14.2.4": {
+      "version": "14.2.4-beta.0",
+      "packages": {
+        "expo-dev-client": {
+          "version": "~1.0.0",
+          "alwaysAddToPackageJson": false
+        }
+      }
     }
   }
 }
