@@ -1,4 +1,3 @@
-import { setDefaultCollection } from '@nrwl/workspace/src/utilities/set-default-collection';
 import {
   addDependenciesToPackageJson,
   convertNxGenerator,
@@ -38,6 +37,7 @@ import {
   reactDomVersion,
   reactVersion,
   reactTestRendererVersion,
+  typesReactVersion,
 } from '@nrwl/react/src/utils/versions';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 import { jestInitGenerator } from '@nrwl/jest';
@@ -47,7 +47,6 @@ import { addGitIgnoreEntry } from './lib/add-git-ignore-entry';
 import { initRootBabelConfig } from './lib/init-root-babel-config';
 
 export async function expoInitGenerator(host: Tree, schema: Schema) {
-  setDefaultCollection(host, '@nrwl/expo');
   addGitIgnoreEntry(host);
   initRootBabelConfig(host);
 
@@ -94,7 +93,7 @@ export function updateDependencies(host: Tree) {
     },
     {
       '@nrwl/expo': nxVersion,
-      '@types/react': reactVersion,
+      '@types/react': typesReactVersion,
       '@types/react-native': typesReactNativeVersion,
       'metro-resolver': metroVersion,
       'metro-babel-register': metroVersion,
