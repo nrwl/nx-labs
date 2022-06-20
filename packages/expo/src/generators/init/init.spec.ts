@@ -33,27 +33,4 @@ describe('init', () => {
 
     expect(content).toMatch(/# Expo/);
   });
-
-  describe('defaultCollection', () => {
-    it('should be set if none was set before', async () => {
-      await expoInitGenerator(tree, { e2eTestRunner: 'none' });
-      const { cli } = readJson(tree, 'nx.json');
-      expect(cli.defaultCollection).toEqual('@nrwl/expo');
-    });
-
-    it('should not be set if something else was set before', async () => {
-      updateJson(tree, 'nx.json', (json) => {
-        json.cli = {
-          defaultCollection: '@nrwl/react',
-        };
-
-        json.targets = {};
-
-        return json;
-      });
-      await expoInitGenerator(tree, { e2eTestRunner: 'none' });
-      const { cli } = readJson(tree, 'nx.json');
-      expect(cli.defaultCollection).toEqual('@nrwl/react');
-    });
-  });
 });
