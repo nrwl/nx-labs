@@ -208,6 +208,23 @@
           "alwaysAddToPackageJson": false
         }
       }
+    },
+    "14.3.2": {
+      "version": "14.3.2-beta.0",
+      "packages": {
+        "expo": {
+          "version": "45.0.6",
+          "alwaysAddToPackageJson": false
+        },
+        "expo-cli": {
+          "version": "5.4.11",
+          "alwaysAddToPackageJson": false
+        },
+        "@types/react-native": {
+          "version": "0.68.0",
+          "alwaysAddToPackageJson": false
+        }
+      }
     }
   }
 }

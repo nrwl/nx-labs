@@ -1,6 +1,6 @@
 export const nxVersion = '*';
 
-export const expoVersion = '45.0.5';
+export const expoVersion = '45.0.6';
 export const expoDevClientVersion = '~1.0.0';
 export const expoStatusBarVersion = '~1.3.0';
 export const expoMetroConfigVersion = '0.3.17';
@@ -8,11 +8,11 @@ export const expoStructuredHeadersVersion = '~2.2.1';
 export const expoSplashScreenVersion = '0.15.1';
 export const expoUpdatesVersion = '~0.13.2';
 export const jestExpoVersion = '45.0.1';
-export const expoCliVersion = '5.4.9';
+export const expoCliVersion = '5.4.11';
 export const babelPresetExpoVersion = '~9.1.0';
 
 export const reactNativeVersion = '0.68.2';
-export const typesReactNativeVersion = '0.67.8';
+export const typesReactNativeVersion = '0.68.0';
 export const reactNativeWebVersion = '0.17.7';
 export const reactNativeGestureHandlerVersion = '~2.2.1';
 export const reactNativeReanimatedVersion = '~2.8.0';
