@@ -20,8 +20,8 @@ export async function addJest(
     babelJest: true,
   });
 
-  // overwrite the jest.config.js file because react native needs to have special transform property
-  const configPath = `${appProjectRoot}/jest.config.js`;
+  // overwrite the jest.config.ts file because react native needs to have special transform property
+  const configPath = `${appProjectRoot}/jest.config.${js ? 'js' : 'ts'}`;
   const content = `module.exports = {
   displayName: '${projectName}',
   resolver: '@nrwl/jest/plugins/resolver',
