@@ -8,7 +8,8 @@ export const expoStructuredHeadersVersion = '~2.2.1';
 export const expoSplashScreenVersion = '0.15.1';
 export const expoUpdatesVersion = '~0.13.2';
 export const jestExpoVersion = '45.0.1';
-export const expoCliVersion = '5.4.11';
+export const expoCliVersion = '5.5.1';
+export const easCliVersion = '0.55.1';
 export const babelPresetExpoVersion = '~9.1.0';
 
 export const reactNativeVersion = '0.68.2';

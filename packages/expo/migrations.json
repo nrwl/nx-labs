@@ -11,6 +11,12 @@
       "cli": "nx",
       "description": "Add target eject for expo projects in project.json",
       "factory": "./src/migrations/update-14-1-2/add-eject-target-14-1-2"
+    },
+    "add-build-target-14-4-3": {
+      "version": "14.4.3-beta.0",
+      "cli": "nx",
+      "description": "Add target build and build-list for expo projects in project.json",
+      "factory": "./src/migrations/update-14-4-3/add-eas-build-target"
     }
   },
   "packageJsonUpdates": {
@@ -222,6 +228,20 @@
         },
         "@types/react-native": {
           "version": "0.68.0",
+          "alwaysAddToPackageJson": false
+        }
+      }
+    },
+    "14.4.3": {
+      "version": "14.4.3-beta.0",
+      "packages": {
+        "eas-cli": {
+          "version": "0.55.1",
+          "alwaysAddToPackageJson": false,
+          "addToPackageJson": "devDependencies"
+        },
+        "expo-cli": {
+          "version": "5.5.1",
           "alwaysAddToPackageJson": false
         }
       }
