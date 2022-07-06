@@ -18,4 +18,4 @@ const json = JSON.parse(readFileSync(`package.json`).toString());
 json.version = version;
 writeFileSync(`package.json`, JSON.stringify(json, null, 2));
 
-execSync(`npm publish --access public`);
+execSync(`npm publish --access public --tag ${tag}`);
