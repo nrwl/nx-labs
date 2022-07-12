@@ -69,6 +69,23 @@ function getTargets(options: NormalizedSchema) {
     },
   };
 
+  architect['build'] = {
+    executor: '@nrwl/expo:build',
+    options: {},
+  };
+
+  architect['build-list'] = {
+    executor: '@nrwl/expo:build-list',
+    options: {},
+  };
+
+  architect['download'] = {
+    executor: '@nrwl/expo:download',
+    options: {
+      output: `${options.appProjectRoot}/dist`,
+    },
+  };
+
   architect['build-ios'] = {
     executor: '@nrwl/expo:build-ios',
     options: {},

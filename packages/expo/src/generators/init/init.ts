@@ -31,6 +31,7 @@ import {
   expoCliVersion,
   svgrWebpackVersion,
   babelPresetExpoVersion,
+  easCliVersion,
 } from '../../utils/versions';
 
 import {
@@ -102,6 +103,7 @@ export function updateDependencies(host: Tree) {
       '@testing-library/jest-native': testingLibraryJestNativeVersion,
       'jest-expo': jestExpoVersion,
       'expo-cli': expoCliVersion,
+      'eas-cli': easCliVersion,
       '@svgr/webpack': svgrWebpackVersion,
       'babel-preset-expo': babelPresetExpoVersion,
     }
