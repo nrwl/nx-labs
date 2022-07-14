@@ -6,12 +6,11 @@
       }
     },
     "development": {
-      "android": {
-        "developmentClient": true,
-        "distribution": "internal"
-      }
+      "developmentClient": true,
+      "distribution": "internal"
     },
     "preview": {
+      "distribution": "internal",
       "ios": {
         "simulator": true
       },
@@ -20,7 +19,10 @@
       }
     }
   },
+  "submit": {
+    "production": {}
+  },
   "cli": {
-    "version": ">= 0.38.1"
+    "version": ">= 0.55.1"
   }
 }
