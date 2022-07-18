@@ -107,7 +107,7 @@ export function getAppExtension(
     return '.app';
   }
   if (downloadFileName.includes('.')) {
-    return downloadFileName.split('.').pop();
+    return `.${downloadFileName.split('.').pop()}`;
   }
   throw new Error(`Invalid build name found: ${downloadFileName}`);
 }

@@ -1,10 +1,4 @@
-import {
-  detectPackageManager,
-  ExecutorContext,
-  getPackageManagerCommand,
-  logger,
-  names,
-} from '@nrwl/devkit';
+import { ExecutorContext, logger, names } from '@nrwl/devkit';
 import { join } from 'path';
 import { execSync } from 'child_process';
 
@@ -32,10 +26,8 @@ export function runCliBuildList(
   projectRoot: string,
   options: ExpoEasBuildListOptions
 ): string {
-  const packageManager = detectPackageManager(workspaceRoot);
-  const packageManagerCommand = getPackageManagerCommand(packageManager);
   return execSync(
-    `${packageManagerCommand.exec} eas-cli build:list ${createBuildListOptions(
+    `./node_modules/eas-cli/bin/run build:list ${createBuildListOptions(
       options
     ).join(' ')}`,
     { cwd: join(workspaceRoot, projectRoot) }
