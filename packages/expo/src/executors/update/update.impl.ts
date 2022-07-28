@@ -6,7 +6,7 @@ import { ensureNodeModulesSymlink } from '../../utils/ensure-node-modules-symlin
 
 import { ExpoEasUpdateOptions } from './schema';
 
-export interface ReactNativeBuildOutput {
+export interface ReactNativeUpdateOutput {
   success: boolean;
 }
 
@@ -15,12 +15,12 @@ let childProcess: ChildProcess;
 export default async function* buildExecutor(
   options: ExpoEasUpdateOptions,
   context: ExecutorContext
-): AsyncGenerator<ReactNativeBuildOutput> {
+): AsyncGenerator<ReactNativeUpdateOutput> {
   const projectRoot = context.workspace.projects[context.projectName].root;
   ensureNodeModulesSymlink(context.root, projectRoot);
 
   try {
-    await runCliBuild(context.root, projectRoot, options);
+    await runCliUpdate(context.root, projectRoot, options);
     yield { success: true };
   } finally {
     if (childProcess) {
@@ -29,7 +29,7 @@ export default async function* buildExecutor(
   }
 }
 
-function runCliBuild(
+function runCliUpdate(
   workspaceRoot: string,
   projectRoot: string,
   options: ExpoEasUpdateOptions
@@ -37,7 +37,7 @@ function runCliBuild(
   return new Promise((resolve, reject) => {
     childProcess = fork(
       join(workspaceRoot, './node_modules/eas-cli/bin/run'),
-      ['update', ...createBuildOptions(options)],
+      ['update', ...createUpdateOptions(options)],
       { cwd: join(workspaceRoot, projectRoot) }
     );
 
@@ -58,7 +58,7 @@ function runCliBuild(
   });
 }
 
-function createBuildOptions(options: ExpoEasUpdateOptions) {
+function createUpdateOptions(options: ExpoEasUpdateOptions) {
   return Object.keys(options).reduce((acc, k) => {
     const v = options[k];
     if (typeof v === 'boolean') {
