@@ -1,5 +1,10 @@
 {
   "executors": {
+    "update": {
+      "implementation": "./src/executors/update/update.impl",
+      "schema": "./src/executors/update/schema.json",
+      "description": "Start an EAS update for your expo project"
+    },
     "build": {
       "implementation": "./src/executors/build/build.impl",
       "schema": "./src/executors/build/schema.json",
