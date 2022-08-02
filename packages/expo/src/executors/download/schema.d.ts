@@ -12,5 +12,4 @@ export interface ExpoEasDownloadOptions {
   buildProject?: string;
   gitCommitHash?: string;
   output: string;
-  appName?: string;
 }
