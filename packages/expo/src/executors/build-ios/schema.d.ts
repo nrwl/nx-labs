@@ -17,7 +17,7 @@ export interface ExpoBuildIOSOptions {
   pushP8Path?: string;
   provisioningProfile?: string;
   publicUrl?: string;
-  skipCredentialsCheck?: booolean;
+  skipCredentialsCheck?: boolean;
   skipWorkflowCheck?: boolean;
   sync: boolean; // default is true
 }
