@@ -82,6 +82,11 @@
     }
   },
   "builders": {
+    "update": {
+      "implementation": "./src/executors/update/compat",
+      "schema": "./src/executors/update/schema.json",
+      "description": "Start an EAS update for your expo project"
+    },
     "build": {
       "implementation": "./src/executors/build/compat",
       "schema": "./src/executors/build/schema.json",
