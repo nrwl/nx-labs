@@ -18,11 +18,11 @@
       "description": "Add target build and build-list for expo projects in project.json",
       "factory": "./src/migrations/update-14-4-3/add-eas-build-target"
     },
-    "add-update-target-14-4-4": {
-      "version": "14.4.4-beta.0",
+    "add-update-target-14-5-1": {
+      "version": "14.5.1-beta.0",
       "cli": "nx",
       "description": "Add target update for expo projects in project.json",
-      "factory": "./src/migrations/update-14-4-4/add-eas-update-target"
+      "factory": "./src/migrations/update-14-5-1/add-eas-update-target"
     }
   },
   "packageJsonUpdates": {
