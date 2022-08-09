@@ -39,4 +39,4 @@ testem.log
 Thumbs.db
 
 # migration file
-migrations.json
+./migrations.json

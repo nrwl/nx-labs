@@ -60,9 +60,9 @@
             "output": "/"
           },
           {
-            "input": "./packages/expo",
+            "input": "packages/expo",
             "glob": "**/*.json",
-            "ignore": ["**/tsconfig*.json"],
+            "ignore": ["**/tsconfig*.json", "**/project.json"],
             "output": "/"
           },
           "LICENSE"
