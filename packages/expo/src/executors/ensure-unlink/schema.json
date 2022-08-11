@@ -1,0 +1,9 @@
+{
+  "cli": "nx",
+  "$id": "NxExpoEnsureUnlink",
+  "$schema": "http://json-schema.org/schema",
+  "title": "Ensure Unlink for Expo",
+  "description": "Ensure workspace node_modules is unlinked under app's node_modules folder.",
+  "type": "object",
+  "properties": {}
+}

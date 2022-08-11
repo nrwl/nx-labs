@@ -116,6 +116,11 @@ function getTargets(options: NormalizedSchema) {
     options: {},
   };
 
+  architect['ensure-unlink'] = {
+    executor: '@nrwl/expo:ensure-unlink',
+    options: {},
+  };
+
   architect['publish'] = {
     executor: '@nrwl/expo:publish',
     options: {},

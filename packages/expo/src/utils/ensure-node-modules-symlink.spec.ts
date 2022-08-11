@@ -52,7 +52,7 @@ describe('ensureNodeModulesSymlink', () => {
     createNpmDirectory('jsc-android', '888888.0.0');
     createNpmDirectory('@babel/runtime', '5555.0.0');
 
-    ensureNodeModulesSymlink(workspaceDir, appDir);
+    ensureNodeModulesSymlink(workspaceDir, appDir, false);
 
     expectSymlinkToExist('@nrwl/react-native');
     expectSymlinkToExist('react-native');
@@ -85,7 +85,7 @@ describe('ensureNodeModulesSymlink', () => {
     createNpmDirectory('@babel/runtime', '5555.0.0');
     createNpmDirectory('random', '9999.9.9');
 
-    ensureNodeModulesSymlink(workspaceDir, appDir);
+    ensureNodeModulesSymlink(workspaceDir, appDir, false);
 
     expectSymlinkToExist('random');
   });

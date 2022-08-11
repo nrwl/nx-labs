@@ -9,10 +9,12 @@ import * as fs from 'fs';
  * For pnpm, it will go through the package.json' dependencies and devDependencies, and also the required packages listed above.
  * @param workspaceRoot path of the workspace root
  * @param projectRoot path of app project root
+ * @param unlink should unlink instead
  */
 export function ensureNodeModulesSymlink(
   workspaceRoot: string,
-  projectRoot: string
+  projectRoot: string,
+  unlink: boolean
 ): void {
   const worksapceNodeModulesPath = join(workspaceRoot, 'node_modules');
   if (!fs.existsSync(worksapceNodeModulesPath)) {
@@ -25,6 +27,12 @@ export function ensureNodeModulesSymlink(
 
   if (fs.existsSync(appNodeModulesPath)) {
     fs.rmdirSync(appNodeModulesPath, { recursive: true });
+
+    if (unlink) {
+      fs.unlinkSync(appNodeModulesPath);
+      return;
+    }
   }
+
   fs.symlinkSync(worksapceNodeModulesPath, appNodeModulesPath, symlinkType);
 }

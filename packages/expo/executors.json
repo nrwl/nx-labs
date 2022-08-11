@@ -75,6 +75,11 @@
       "schema": "./src/executors/ensure-symlink/schema.json",
       "description": "Ensure workspace node_modules is symlink under app's node_modules folder."
     },
+    "ensure-unlink": {
+      "implementation": "./src/executors/ensure-unlink/ensure-unlink.impl",
+      "schema": "./src/executors/ensure-unlink/schema.json",
+      "description": "Ensure workspace node_modules is unlinked under app's node_modules folder."
+    },
     "eject": {
       "implementation": "./src/executors/eject/eject.impl",
       "schema": "./src/executors/eject/schema.json",
@@ -156,6 +161,11 @@
       "implementation": "./src/executors/ensure-symlink/compat",
       "schema": "./src/executors/ensure-symlink/schema.json",
       "description": "Ensure workspace node_modules is symlink under app's node_modules folder."
+    },
+    "ensure-unlink": {
+      "implementation": "./src/executors/ensure-unlink/compat",
+      "schema": "./src/executors/ensure-unlink/schema.json",
+      "description": "Ensure workspace node_modules is unlinked under app's node_modules folder."
     },
     "eject": {
       "implementation": "./src/executors/eject/compat",

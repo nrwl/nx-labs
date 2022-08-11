@@ -6,13 +6,13 @@ export interface ExpoEnsureSymlinkOutput {
   success: boolean;
 }
 
-export default async function* ensureSymlinkExecutor(
+export default async function* ensureUnlinkExecutor(
   _,
   context: ExecutorContext
 ): AsyncGenerator<ExpoEnsureSymlinkOutput> {
   const projectRoot = context.workspace.projects[context.projectName].root;
 
-  ensureNodeModulesSymlink(context.root, projectRoot, false);
+  ensureNodeModulesSymlink(context.root, projectRoot, true);
 
   yield { success: true };
 }

@@ -27,6 +27,7 @@ If it's your first Nx project, the command will recommend you to install the `nx
 - Run `nx test-ios myapp-e2e` to run e2e tests for it on iOS.
 - Run `nx test-android myapp-e2e` to run e2e tests for it on Android.
 - Run `nx ensure-symlink myapp` to ensure workspace node_modules is symlink under app's node_modules folder.
+- Run `nx ensure-unlink myapp` to ensure workspace node_modules is unlinked under app's node_modules folder.
 - Run `nx sync-deps myapp` to update package.json with project dependencies. For example: `nx sync-deps myapp --include=react-native-gesture-handler,react-native-safe-area-context`
 - Run `nx build-ios myapp` to build and sign a standalone IPA for the Apple App Store.
 - Run `nx build-android myapp` to build and sign a standalone APK or App Bundle for the Google Play Store.
