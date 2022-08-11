@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ##################################################
-# This shell script is executed by nx-release.js #
+# This shell script is executed by nx-release.mjs #
 ##################################################
 
 VERSION=$1

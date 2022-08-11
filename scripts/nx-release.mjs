@@ -1,9 +1,14 @@
 #!/usr/bin/env node
-const yargsParser = require('yargs-parser');
-const releaseIt = require('release-it');
-const childProcess = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import yargsParser from 'yargs-parser';
+import releaseIt from 'release-it';
+import childProcess from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
 
 const parsedArgs = yargsParser(process.argv, {
   boolean: ['dry-run', 'local'],
@@ -108,7 +113,7 @@ if (!parsedVersion.isValid) {
   console.error(
     `Please run "yarn nx-release --help" for details on the acceptable version format.\n`
   );
-  return process.exit(1);
+  process.exit(1);
 } else {
   console.log('parsed version: ', JSON.stringify(parsedVersion));
 }

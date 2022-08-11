@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nx build",
-    "nx-release": "./scripts/nx-release.js",
+    "nx-release": "./scripts/nx-release.mjs",
     "check-versions": "ts-node -P ./tools/tsconfig.tools.json ./tools/scripts/check-versions.ts",
     "start": "nx serve",
     "test": "nx test"
@@ -18,7 +18,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-is": "18.2.0",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "yargs-parser": "^21.1.1"
   },
   "devDependencies": {
     "@nrwl/cli": "14.4.2",
