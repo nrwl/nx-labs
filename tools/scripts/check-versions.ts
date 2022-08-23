@@ -19,7 +19,7 @@ import * as chalk from 'chalk';
 import * as glob from 'glob';
 import { execSync } from 'child_process';
 import { readFileSync, writeFileSync } from 'fs';
-import {names} from "@nrwl/devkit";
+import { names } from '@nrwl/devkit';
 
 const root = join(__dirname, '..');
 const excluded = ['nxVersion'];
@@ -118,8 +118,8 @@ function getVersions(path: string) {
       : path;
   try {
     return require(versionsPath);
-  } catch (e){
-    console.log(e)
+  } catch (e) {
+    console.log(e);
     throw new Error(`Could not load ${path}. Please make sure it is valid.`);
   }
 }

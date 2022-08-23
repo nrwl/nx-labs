@@ -1,9 +1,14 @@
-import { runNxCommandAsync, uniq, updateFile } from '@nrwl/nx-plugin/testing';
+import {
+  expectTestsPass,
+  runNxCommandAsync,
+  uniq,
+  updateFile,
+} from '@nrwl/nx-plugin/testing';
 
 describe('Expo', () => {
   let proj: string;
 
-  it('should create files and run lint command', async () => {
+  it('should create files and run test, lint and build-web command', async () => {
     const appName = uniq('my-app');
     const libName = uniq('lib');
     const componentName = uniq('component');
@@ -19,14 +24,15 @@ describe('Expo', () => {
       return updated;
     });
 
-    // testing does not work due to issue https://github.com/callstack/react-native-testing-library/issues/743
-    // react-native 0.64.3 is using @jest/create-cache-key-function 26.5.0 that is incompatible with jest 27.
-    // expectTestsPass(await runCLIAsync(`test ${appName}`));
-    // expectTestsPass(await runCLIAsync(`test ${libName}`));
+    expectTestsPass(await runNxCommandAsync(`test ${appName}`));
+    expectTestsPass(await runNxCommandAsync(`test ${libName}`));
 
     const appLintResults = await runNxCommandAsync(`lint ${appName}`);
     expect(appLintResults.stdout).toContain('All files pass linting.');
     const libLintResults = await runNxCommandAsync(`lint ${libName}`);
     expect(libLintResults.stdout).toContain('All files pass linting.');
+
+    const buildWebResults = await runNxCommandAsync(`build-web  ${appName}`);
+    expect(buildWebResults.stdout).toContain('Web Bundling complete');
   });
 });
