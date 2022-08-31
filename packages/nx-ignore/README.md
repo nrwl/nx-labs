@@ -14,6 +14,7 @@ npx nx-ignore <project-name>
 
 ### Options
 
+- `--base` - Set a custom base SHA to compare changes (defaults to [`VERCEL_GIT_PREVIOUS_SHA`](https://vercel.com/docs/concepts/projects/environment-variables#system-environment-variables)).
 - `--verbose` - Log more details information for debugging purposes
 
 ## How it works
