@@ -54,44 +54,4 @@ describe('Gatsby Applications', () => {
 
     expectTestsPass(await runNxCommandAsync(`test ${appName}`));
   }, 600000);
-
-  it('should support styled-jsx', async () => {
-    const appName = uniq('app');
-
-    runNxCommand(
-      `generate @nrwl/gatsby:app ${appName} --style styled-jsx --no-interactive`
-    );
-
-    runNxCommand(`build ${appName}`);
-    checkFilesExist(
-      `apps/${appName}/public/index.html`,
-      `apps/${appName}/public/404.html`,
-      `apps/${appName}/public/manifest.webmanifest`
-    );
-
-    const result = runNxCommand(`lint ${appName}`);
-    expect(result).toContain('All files pass linting.');
-
-    expectTestsPass(await runNxCommandAsync(`test ${appName}`));
-  }, 300000);
-
-  it('should support scss', async () => {
-    const appName = uniq('app');
-
-    runNxCommand(
-      `generate @nrwl/gatsby:app ${appName} --style scss --no-interactive`
-    );
-
-    runNxCommand(`build ${appName}`);
-    checkFilesExist(
-      `apps/${appName}/public/index.html`,
-      `apps/${appName}/public/404.html`,
-      `apps/${appName}/public/manifest.webmanifest`
-    );
-
-    const result = runNxCommand(`lint ${appName}`);
-    expect(result).toContain('All files pass linting.');
-
-    expectTestsPass(await runNxCommandAsync(`test ${appName}`));
-  }, 300000);
 });
