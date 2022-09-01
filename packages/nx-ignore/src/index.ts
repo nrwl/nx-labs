@@ -6,7 +6,7 @@ const project = args.find((s) => !s.startsWith('-')) as string;
 const customBase = args.find((s) => s.startsWith('--base=')) as string;
 const vercelBase = process.env['VERCEL_GIT_PREVIOUS_SHA'];
 const isVerbose = args.some((s) => s === '--verbose');
-const baseSha = customBase ? customBase.slice(7) : vercelBase ?? 'HEAD^';
+const baseSha = customBase ? customBase.slice(7) : vercelBase || 'HEAD^';
 const headSha = 'HEAD';
 
 if (!project) {
