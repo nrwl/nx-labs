@@ -27,11 +27,20 @@ describe('Gatsby Applications', () => {
       `apps/${appName}/src/pages/index.spec.tsx`
     );
 
-    updateFile(`apps/${appName}/src/pages/index.tsx`, (content) => {
-      let updated = `import Header from '../components/header';\n${content}`;
-      updated = updated.replace('<main>', '<Header /><main>');
-      return updated;
-    });
+    updateFile(
+      `apps/${appName}/src/pages/index.tsx`,
+      `
+        import Header from '../components/header';
+        export default function Index() {
+          return (
+            <>
+              <Header/>
+              <p>Welcome ${appName}</p>
+            </>
+          );
+        }
+      `
+    );
 
     runNxCommand(`build ${appName}`);
     checkFilesExist(
