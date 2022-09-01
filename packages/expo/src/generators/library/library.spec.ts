@@ -1,4 +1,10 @@
-import { getProjects, readJson, Tree, updateJson } from '@nrwl/devkit';
+import {
+  readProjectConfiguration,
+  getProjects,
+  readJson,
+  Tree,
+  updateJson,
+} from '@nrwl/devkit';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 import { Linter } from '@nrwl/linter';
 
@@ -29,17 +35,17 @@ describe('lib', () => {
         ...defaultSchema,
         tags: 'one,two',
       });
-      const workspaceJson = readJson(appTree, '/workspace.json');
-      expect(workspaceJson.projects['my-lib'].root).toEqual('libs/my-lib');
-      expect(workspaceJson.projects['my-lib'].architect.build).toBeUndefined();
-      expect(workspaceJson.projects['my-lib'].architect.lint).toEqual({
-        builder: '@nrwl/linter:eslint',
+      const project = readProjectConfiguration(appTree, 'my-lib');
+      expect(project.root).toEqual('libs/my-lib');
+      expect(project.targets.build).toBeUndefined();
+      expect(project.targets.lint).toEqual({
+        executor: '@nrwl/linter:eslint',
         outputs: ['{options.outputFile}'],
         options: {
           lintFilePatterns: ['libs/my-lib/**/*.{ts,tsx,js,jsx}'],
         },
       });
-      expect(workspaceJson.projects['my-lib'].tags).toEqual(['one', 'two']);
+      expect(project.tags).toEqual(['one', 'two']);
     });
 
     it('should update tsconfig.base.json', async () => {
@@ -104,11 +110,9 @@ describe('lib', () => {
         directory: 'myDir',
         tags: 'one',
       });
-      const workspaceJson = readJson(appTree, '/workspace.json');
-      expect(workspaceJson.projects).toMatchObject({
-        'my-dir-my-lib': {
-          tags: ['one'],
-        },
+      const project = readProjectConfiguration(appTree, 'my-dir-my-lib');
+      expect(project).toMatchObject({
+        tags: ['one'],
       });
 
       await expoLibraryGenerator(appTree, {
@@ -118,14 +122,9 @@ describe('lib', () => {
         tags: 'one,two',
       });
 
-      const workspaceJson2 = readJson(appTree, '/workspace.json');
-      expect(workspaceJson2.projects).toMatchObject({
-        'my-dir-my-lib': {
-          tags: ['one'],
-        },
-        'my-dir-my-lib2': {
-          tags: ['one', 'two'],
-        },
+      const project2 = readProjectConfiguration(appTree, 'my-dir-my-lib2');
+      expect(project2).toMatchObject({
+        tags: ['one', 'two'],
       });
     });
 
@@ -134,13 +133,11 @@ describe('lib', () => {
         ...defaultSchema,
         directory: 'myDir',
       });
-      const workspaceJson = readJson(appTree, '/workspace.json');
+      const project = readProjectConfiguration(appTree, 'my-dir-my-lib');
 
-      expect(workspaceJson.projects['my-dir-my-lib'].root).toEqual(
-        'libs/my-dir/my-lib'
-      );
-      expect(workspaceJson.projects['my-dir-my-lib'].architect.lint).toEqual({
-        builder: '@nrwl/linter:eslint',
+      expect(project.root).toEqual('libs/my-dir/my-lib');
+      expect(project.targets.lint).toEqual({
+        executor: '@nrwl/linter:eslint',
         outputs: ['{options.outputFile}'],
         options: {
           lintFilePatterns: ['libs/my-dir/my-lib/**/*.{ts,tsx,js,jsx}'],
@@ -192,12 +189,11 @@ describe('lib', () => {
 
       expect(appTree.exists('libs/my-lib/tsconfig.spec.json')).toBeFalsy();
       expect(appTree.exists('libs/my-lib/jest.config.ts')).toBeFalsy();
-      const workspaceJson = readJson(appTree, 'workspace.json');
-      expect(workspaceJson.projects['my-lib'].architect.test).toBeUndefined();
-      expect(workspaceJson.projects['my-lib'].architect.lint)
-        .toMatchInlineSnapshot(`
+      const project = readProjectConfiguration(appTree, 'my-lib');
+      expect(project.targets.test).toBeUndefined();
+      expect(project.targets.lint).toMatchInlineSnapshot(`
         Object {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": Object {
             "lintFilePatterns": Array [
               "libs/my-lib/**/*.{ts,tsx,js,jsx}",
