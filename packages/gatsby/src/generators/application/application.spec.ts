@@ -1,7 +1,7 @@
 import {
   NxJsonConfiguration,
-  readProjectConfiguration,
   readJson,
+  readProjectConfiguration,
   Tree,
 } from '@nrwl/devkit';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
@@ -260,9 +260,9 @@ describe('app', () => {
       standaloneConfig: false,
     });
     const workspaceJson = readJson(tree, 'workspace.json');
-    const architectConfig = workspaceJson.projects['my-app'].architect;
-    expect(architectConfig.build.builder).toEqual('@nrwl/gatsby:build');
-    expect(architectConfig.build.options).toMatchObject({
+    const targets = workspaceJson.projects['my-app'].targets;
+    expect(targets.build.executor).toEqual('@nrwl/gatsby:build');
+    expect(targets.build.options).toMatchObject({
       outputPath: 'apps/my-app/public',
     });
   });
@@ -274,12 +274,12 @@ describe('app', () => {
       standaloneConfig: false,
     });
     const workspaceJson = readJson(tree, 'workspace.json');
-    const architectConfig = workspaceJson.projects['my-app'].architect;
-    expect(architectConfig.serve.builder).toEqual('@nrwl/gatsby:server');
-    expect(architectConfig.serve.options).toMatchObject({
+    const targets = workspaceJson.projects['my-app'].targets;
+    expect(targets.serve.executor).toEqual('@nrwl/gatsby:server');
+    expect(targets.serve.options).toMatchObject({
       buildTarget: 'my-app:build',
     });
-    expect(architectConfig.serve.configurations).toEqual({
+    expect(targets.serve.configurations).toEqual({
       production: { buildTarget: 'my-app:build:production' },
     });
   });

@@ -1,6 +1,7 @@
 import {
   Tree,
   readWorkspaceConfiguration,
+  readProjectConfiguration,
   getProjects,
   readJson,
 } from '@nrwl/devkit';
@@ -27,9 +28,9 @@ describe('app', () => {
       unitTestRunner: 'none',
     });
     const workspaceJson = readWorkspaceConfiguration(appTree);
-    const projects = getProjects(appTree);
+    const project = readProjectConfiguration(appTree, 'my-app');
 
-    expect(projects.get('my-app').root).toEqual('apps/my-app');
+    expect(project.root).toEqual('apps/my-app');
     expect(workspaceJson.defaultProject).toEqual('my-app');
   });
 
@@ -45,11 +46,9 @@ describe('app', () => {
       unitTestRunner: 'none',
     });
 
-    const { projects } = readJson(appTree, '/workspace.json');
-    expect(projects).toMatchObject({
-      'my-app': {
-        tags: ['one', 'two'],
-      },
+    const project = readProjectConfiguration(appTree, 'my-app');
+    expect(project).toMatchObject({
+      tags: ['one', 'two'],
     });
   });
 
