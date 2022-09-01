@@ -27,11 +27,20 @@ describe('Gatsby Applications', () => {
       `apps/${appName}/src/pages/index.spec.tsx`
     );
 
-    updateFile(`apps/${appName}/src/pages/index.tsx`, (content) => {
-      let updated = `import Header from '../components/header';\n${content}`;
-      updated = updated.replace('<main>', '<Header /><main>');
-      return updated;
-    });
+    updateFile(
+      `apps/${appName}/src/pages/index.tsx`,
+      `
+        import Header from '../components/header';
+        export default function Index() {
+          return (
+            <>
+              <Header/>
+              <p>Welcome ${appName}</p>
+            </>
+          );
+        }
+      `
+    );
 
     runNxCommand(`build ${appName}`);
     checkFilesExist(
@@ -45,44 +54,4 @@ describe('Gatsby Applications', () => {
 
     expectTestsPass(await runNxCommandAsync(`test ${appName}`));
   }, 600000);
-
-  it('should support styled-jsx', async () => {
-    const appName = uniq('app');
-
-    runNxCommand(
-      `generate @nrwl/gatsby:app ${appName} --style styled-jsx --no-interactive`
-    );
-
-    runNxCommand(`build ${appName}`);
-    checkFilesExist(
-      `apps/${appName}/public/index.html`,
-      `apps/${appName}/public/404.html`,
-      `apps/${appName}/public/manifest.webmanifest`
-    );
-
-    const result = runNxCommand(`lint ${appName}`);
-    expect(result).toContain('All files pass linting.');
-
-    expectTestsPass(await runNxCommandAsync(`test ${appName}`));
-  }, 300000);
-
-  it('should support scss', async () => {
-    const appName = uniq('app');
-
-    runNxCommand(
-      `generate @nrwl/gatsby:app ${appName} --style scss --no-interactive`
-    );
-
-    runNxCommand(`build ${appName}`);
-    checkFilesExist(
-      `apps/${appName}/public/index.html`,
-      `apps/${appName}/public/404.html`,
-      `apps/${appName}/public/manifest.webmanifest`
-    );
-
-    const result = runNxCommand(`lint ${appName}`);
-    expect(result).toContain('All files pass linting.');
-
-    expectTestsPass(await runNxCommandAsync(`test ${appName}`));
-  }, 300000);
 });
