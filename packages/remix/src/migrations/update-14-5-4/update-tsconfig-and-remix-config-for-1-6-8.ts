@@ -23,15 +23,6 @@ export default async function update(tree: Tree) {
     return tree.exists(remixConfigPath);
   });
 
-  const remixProjectsWithDefaultPaths = remixProjects.filter((project) => {
-    const tsConfigPath = joinPathFragments(project.root, 'tsconfig.json');
-    const tsConfigContent = readJson(tree, tsConfigPath);
-
-    return !!tsConfigContent.compilerOptions.paths['~/*'];
-  });
-
-  const updateTsConfigPaths = remixProjectsWithDefaultPaths.length === 1;
-
   if (remixProjects.length === 0) return;
 
   remixProjects.forEach((project) => {
@@ -58,7 +49,6 @@ export default async function update(tree: Tree) {
       const tsConfigPath = joinPathFragments(project.root, 'tsconfig.json');
       const tsConfigContent = readJson(tree, tsConfigPath);
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const newTsConfigContent = {
         ...tsConfigContent,
         extends: `${projectOffsetFromRoot}tsconfig.base.json`,
@@ -66,29 +56,9 @@ export default async function update(tree: Tree) {
 
       delete newTsConfigContent.compilerOptions.baseUrl;
 
-      if (updateTsConfigPaths) {
-        delete newTsConfigContent.compilerOptions.paths;
-
-        const tsconfigBaseJsonPath = 'tsconfig.base.json';
-        const tsConfigBaseJsonContent = readJson(tree, tsconfigBaseJsonPath);
-
-        const newTsConfigBaseJsonContent = {
-          ...tsConfigBaseJsonContent,
-          compilerOptions: {
-            ...tsConfigBaseJsonContent.compilerOptions,
-            paths: {
-              ...tsConfigBaseJsonContent.compilerOptions.paths,
-              '~/*': [joinPathFragments(project.root, 'app', '*')],
-            },
-          },
-        };
-
-        writeJson(tree, tsconfigBaseJsonPath, newTsConfigBaseJsonContent);
-      } else {
-        logger.info(
-          "You have more than one Remix app with the default path '~' configured, so it cannot be automatically migrated.\n\nManually assign new paths for these imports in `tsconfig.base.json` and then delete the `paths` property from the `tsconfig.app.json` in each app."
-        );
-      }
+      logger.info(
+        `Remix apps now support importing from non-buildable libs. However, you must remove the \`paths\` configuration from the project's \`tsconfig.json\`.\n\nMigrate any import paths using \`~\` to relative path imports and then delete the \`paths\` property from \`${tsConfigPath}\``
+      );
 
       writeJson(tree, tsConfigPath, newTsConfigContent);
     } catch (err) {

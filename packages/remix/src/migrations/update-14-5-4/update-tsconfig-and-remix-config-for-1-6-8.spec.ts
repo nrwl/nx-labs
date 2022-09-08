@@ -116,32 +116,6 @@ describe('Update app tsconfig.json', () => {
     ).toContain(`"extends": "../../../../../tsconfig.base.json"`);
   });
 
-  it('should remove `paths` for a single app workspace', async () => {
-    const tree = createTreeWithEmptyWorkspace();
-    createLegacyRemixApp(tree, 'remix', 'apps/remix');
-
-    await update(tree);
-
-    expect(tree.read('apps/remix/tsconfig.json', 'utf-8')).not.toContain(
-      `"paths": `
-    );
-  });
-
-  it('should not remove `paths` for a multiple app workspace', async () => {
-    const tree = createTreeWithEmptyWorkspace();
-    createLegacyRemixApp(tree, 'remix', 'apps/remix');
-    createLegacyRemixApp(tree, 'another-remix', 'apps/another-remix');
-
-    await update(tree);
-
-    expect(tree.read('apps/remix/tsconfig.json', 'utf-8')).toContain(
-      `"paths": `
-    );
-    expect(tree.read('apps/another-remix/tsconfig.json', 'utf-8')).toContain(
-      `"paths": `
-    );
-  });
-
   it('should not touch non-Remix apps', async () => {
     const tree = createTreeWithEmptyWorkspace();
     createLegacyRemixApp(tree, 'remix', 'apps/remix');
@@ -184,57 +158,6 @@ describe('Update app tsconfig.json', () => {
     expect(tree.read('apps/not-remix/tsconfig.json', 'utf-8')).toEqual(
       notRemixTsConfigJson
     );
-  });
-});
-
-describe('Update tsconfig.base.json', () => {
-  it('should update paths for single app workspace', async () => {
-    const tree = createTreeWithEmptyWorkspace();
-    createLegacyRemixApp(tree, 'remix', 'apps/remix');
-
-    await update(tree);
-
-    expect(readJson(tree, 'tsconfig.base.json')).toMatchObject(
-      expect.objectContaining({
-        compilerOptions: {
-          paths: {
-            '~/*': ['apps/remix/app/*'],
-          },
-        },
-      })
-    );
-  });
-
-  it('should not update paths for multiple app workspace', async () => {
-    const tree = createTreeWithEmptyWorkspace();
-    createLegacyRemixApp(tree, 'remix', 'apps/remix');
-    createLegacyRemixApp(tree, 'another-remix', 'apps/another-remix');
-
-    await update(tree);
-
-    expect(readJson(tree, 'tsconfig.base.json')).not.toMatchObject(
-      expect.objectContaining({
-        compilerOptions: {
-          paths: {
-            '~/*': ['apps/remix/app/*'],
-          },
-        },
-      })
-    );
-  });
-
-  it('should not update if workspace does not contain a remix app', async () => {
-    const tree = createTreeWithEmptyWorkspace();
-    addProjectConfiguration(tree, 'not-remix', {
-      root: 'apps/not-remix',
-      sourceRoot: 'apps/not-remix/src',
-    });
-
-    const currentTsConfigBaseJson = tree.read('tsconfig.base.json');
-
-    await update(tree);
-
-    expect(tree.read('tsconfig.base.json')).toEqual(currentTsConfigBaseJson);
   });
 });
 
