@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 import { findWorkspaceRoot } from 'nx/src/utils/find-workspace-root';
 
+const { execSync } = require('child_process');
 const args = process.argv.slice(2);
 const project = args.find((s) => !s.startsWith('-')) as string;
 const customBase = args.find((s) => s.startsWith('--base=')) as string;
 const vercelBase = process.env['VERCEL_GIT_PREVIOUS_SHA'];
 const isVerbose = args.some((s) => s === '--verbose');
-const baseSha = customBase ? customBase.slice(7) : vercelBase || 'HEAD^';
 const headSha = 'HEAD';
+let baseSha = customBase ? customBase.slice(7) : vercelBase || 'HEAD^';
 
 if (!project) {
   console.log('≫ No project passed to nx-ignore script');
@@ -31,6 +32,16 @@ async function main() {
   // Since Nx currently looks for "nx" package under workspace root, the CLI doesn't work on Vercel.
   const { affected } = await import('nx/src/command-line/affected');
   let result = { projects: [] as string[] };
+
+  if (baseSha !== 'HEAD^') {
+    logDebug(`\n≫ Validating base ref: ${baseSha}\n`);
+    try {
+      execSync(`git show ${baseSha}`);
+    } catch {
+      logDebug(`\n≫ Invalid base ref passed: ${baseSha}. Defaulting to HEAD^.\n`);
+      baseSha = 'HEAD^';
+    }
+  }
 
   logDebug(`\n≫ Comparing ${baseSha}...${headSha}\n`);
 
