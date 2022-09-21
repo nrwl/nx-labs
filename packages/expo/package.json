@@ -34,7 +34,6 @@
     "chalk": "4.1.0",
     "enhanced-resolve": "^5.8.3",
     "eas-cli": "^0.57.0",
-    "expo-cli": "^6.0.1",
     "metro-resolver": "^0.72.0",
     "tar-fs": "^2.1.1",
     "tsconfig-paths": "^3.9.0",
