@@ -26,6 +26,9 @@ if (!root) {
   process.exit(1);
 }
 
+// Disable daemon so we always generate new graph.
+process.env['NX_DAEMON'] = 'false';
+
 main();
 
 async function main() {
@@ -38,7 +41,9 @@ async function main() {
     try {
       execSync(`git show ${baseSha}`);
     } catch {
-      logDebug(`\n≫ Invalid base ref passed: ${baseSha}. Defaulting to HEAD^.\n`);
+      logDebug(
+        `\n≫ Invalid base ref passed: ${baseSha}. Defaulting to HEAD^.\n`
+      );
       baseSha = 'HEAD^';
     }
   }
