@@ -1,7 +1,8 @@
 #!/usr/bin/env node
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { findWorkspaceRoot } from 'nx/src/utils/find-workspace-root';
+import { execSync } from 'child_process';
 
-const { execSync } = require('child_process');
 const args = process.argv.slice(2);
 const project = args.find((s) => !s.startsWith('-')) as string;
 const customBase = args.find((s) => s.startsWith('--base=')) as string;
@@ -27,13 +28,11 @@ if (!root) {
 }
 
 // Disable daemon so we always generate new graph.
-process.env['NX_DAEMON'] = 'false';
+process.env.NX_DAEMON = 'false';
 
 main();
 
 async function main() {
-  // Since Nx currently looks for "nx" package under workspace root, the CLI doesn't work on Vercel.
-  const { affected } = await import('nx/src/command-line/affected');
   let result = { projects: [] as string[] };
 
   if (baseSha !== 'HEAD^') {
@@ -59,11 +58,17 @@ async function main() {
       output = x;
     };
 
-    await affected('print-affected', {
+    // Ensure graph is created
+    await require('nx/src/project-graph/project-graph').createProjectGraphAsync();
+
+    // Since Nx currently looks for "nx" package under workspace root, the CLI doesn't work on Vercel.
+    // Call the file directly instead of going through Nx CLI.
+    await require('nx/src/command-line/affected').affected('print-affected', {
+      type: 'app',
+      base: 'HEAD^',
+      head: 'HEAD',
       _: '',
-      base: baseSha,
-      head: headSha,
-    } as any);
+    });
 
     result = JSON.parse(output);
   } catch (e) {
