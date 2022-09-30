@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { findWorkspaceRoot } from 'nx/src/utils/find-workspace-root';
 import { execSync } from 'child_process';
+import { existsSync } from 'fs';
+import { join } from 'path';
 
 const args = process.argv.slice(2);
 const project = args.find((s) => !s.startsWith('-')) as string;
@@ -20,19 +21,54 @@ console.log(
   `≫ Using Nx to determine if this project (${project}) is affected by the commit...`
 );
 
-const root = findWorkspaceRoot(process.cwd());
-
-if (!root) {
-  console.log('≫ Could not find Nx root');
-  process.exit(1);
-}
-
-// Disable daemon so we always generate new graph.
-process.env.NX_DAEMON = 'false';
-
 main();
 
 async function main() {
+  logDebug(`nx-ignore version "${require('../package.json').version}"`);
+  logDebug(`cwd is "${process.cwd()}"`);
+  const packageJsonPath = join(process.cwd(), 'package.json');
+  const packageJson = require(packageJsonPath);
+  let nxVersion: string;
+  let isDevDep = true;
+
+  if (packageJson.dependencies['nx']) {
+    nxVersion = packageJson.dependencies['nx'];
+    isDevDep = false;
+  } else if (packageJson.devDependencies['nx']) {
+    nxVersion = packageJson.devDependencies['nx'];
+  } else {
+    console.log(
+      '≫ Could not find Nx in the workspace, continuing the build just in case.'
+    );
+    process.exit(1);
+  }
+
+  let installCmd: string;
+  if (existsSync(join(process.cwd(), 'yarn.lock'))) {
+    installCmd = 'yarn add';
+  } else if (existsSync(join(process.cwd(), 'pnpm-lock.yaml'))) {
+    installCmd = 'pnpm install';
+  } else {
+    installCmd = 'npm install';
+  }
+  installCmd = `${installCmd} ${isDevDep ? '-D' : ''} nx@${nxVersion}`;
+  logDebug(`Installing Nx: ${installCmd}`);
+  execSync(installCmd);
+
+  const { findWorkspaceRoot } = require(join(
+    process.cwd(),
+    'node_modules/nx/src/utils/find-workspace-root'
+  ));
+  const root = findWorkspaceRoot(process.cwd());
+
+  if (!root) {
+    console.log('≫ Could not find Nx root');
+    process.exit(1);
+  }
+
+  // Disable daemon so we always generate new graph.
+  process.env.NX_DAEMON = 'false';
+
   let result = { projects: [] as string[] };
 
   if (baseSha !== 'HEAD^') {
@@ -59,11 +95,17 @@ async function main() {
     };
 
     // Ensure graph is created
-    await require('nx/src/project-graph/project-graph').createProjectGraphAsync();
+    await require(join(
+      process.cwd(),
+      'node_modules/nx/src/project-graph/project-graph'
+    )).createProjectGraphAsync();
 
     // Since Nx currently looks for "nx" package under workspace root, the CLI doesn't work on Vercel.
     // Call the file directly instead of going through Nx CLI.
-    await require('nx/src/command-line/affected').affected('print-affected', {
+    await require(join(
+      process.cwd(),
+      'node_modules/nx/src/command-line/affected'
+    )).affected('print-affected', {
       type: 'app',
       base: 'HEAD^',
       head: 'HEAD',

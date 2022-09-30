@@ -19,8 +19,10 @@
     "nx-ignore": "./src/index.js"
   },
   "dependencies": {
-    "nx": "^14.8.2",
-    "typescript": "^4.6.2",
     "@swc/helpers": "^0.4.11"
+  },
+  "peerDependencies": {
+    "nx": ">=14.0.0",
+    "typescript": "^4.6.2"
   }
 }
