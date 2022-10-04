@@ -61,7 +61,7 @@
           "projects": "self"
         }
       ],
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "outputs": ["build/packages/gatsby"],
       "options": {
         "commands": [
@@ -88,7 +88,7 @@
       "outputs": ["{options.outputFile}"]
     },
     "publish": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "parallel": false,
         "commands": [

@@ -77,14 +77,14 @@
           "projects": "self"
         }
       ],
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "outputs": ["dist/packages/expo"],
       "options": {
         "command": "node ./tools/scripts/copy-readme.js expo"
       }
     },
     "publish": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "nx:run-commands",
       "options": {
         "parallel": false,
         "commands": [
