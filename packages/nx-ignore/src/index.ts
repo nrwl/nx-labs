@@ -1,12 +1,17 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { execSync } from 'child_process';
-import { existsSync } from 'fs';
-import { join } from 'path';
+const { execSync } = require('child_process');
+const { findWorkspaceRoot } = require('nx/src/utils/find-workspace-root');
+const {
+  createProjectGraphAsync,
+} = require('nx/src/project-graph/project-graph');
+const { affected } = require('nx/src/command-line/affected');
 
 const args = process.argv.slice(2);
 const project = args.find((s) => !s.startsWith('-')) as string;
-const customBase = args.find((s) => s.startsWith('--base=')) as string;
+const customBase = args.find(
+  (s) => s.startsWith('--base=') || s.startsWith('--base ')
+) as string;
 const vercelBase = process.env['VERCEL_GIT_PREVIOUS_SHA'];
 const isVerbose = args.some((s) => s === '--verbose');
 const headSha = 'HEAD';
@@ -24,41 +29,6 @@ console.log(
 main();
 
 async function main() {
-  logDebug(`nx-ignore version "${require('../package.json').version}"`);
-  logDebug(`cwd is "${process.cwd()}"`);
-  const packageJsonPath = join(process.cwd(), 'package.json');
-  const packageJson = require(packageJsonPath);
-  let nxVersion: string;
-  let isDevDep = true;
-
-  if (packageJson.dependencies['nx']) {
-    nxVersion = packageJson.dependencies['nx'];
-    isDevDep = false;
-  } else if (packageJson.devDependencies['nx']) {
-    nxVersion = packageJson.devDependencies['nx'];
-  } else {
-    console.log(
-      '≫ Could not find Nx in the workspace, continuing the build just in case.'
-    );
-    process.exit(1);
-  }
-
-  let installCmd: string;
-  if (existsSync(join(process.cwd(), 'yarn.lock'))) {
-    installCmd = 'yarn add';
-  } else if (existsSync(join(process.cwd(), 'pnpm-lock.yaml'))) {
-    installCmd = 'pnpm install';
-  } else {
-    installCmd = 'npm install';
-  }
-  installCmd = `${installCmd} ${isDevDep ? '-D' : ''} nx@${nxVersion}`;
-  logDebug(`Installing Nx: ${installCmd}`);
-  execSync(installCmd);
-
-  const { findWorkspaceRoot } = require(join(
-    process.cwd(),
-    'node_modules/nx/src/utils/find-workspace-root'
-  ));
   const root = findWorkspaceRoot(process.cwd());
 
   if (!root) {
@@ -71,6 +41,9 @@ async function main() {
 
   let result = { projects: [] as string[] };
 
+  logDebug(`≫ Running from ${__dirname}`);
+
+  // Branch may not contain last deployed SHA
   if (baseSha !== 'HEAD^') {
     logDebug(`\n≫ Validating base ref: ${baseSha}\n`);
     try {
@@ -95,17 +68,11 @@ async function main() {
     };
 
     // Ensure graph is created
-    await require(join(
-      process.cwd(),
-      'node_modules/nx/src/project-graph/project-graph'
-    )).createProjectGraphAsync();
+    await createProjectGraphAsync();
 
     // Since Nx currently looks for "nx" package under workspace root, the CLI doesn't work on Vercel.
     // Call the file directly instead of going through Nx CLI.
-    await require(join(
-      process.cwd(),
-      'node_modules/nx/src/command-line/affected'
-    )).affected('print-affected', {
+    await affected('print-affected', {
       type: 'app',
       base: 'HEAD^',
       head: 'HEAD',
