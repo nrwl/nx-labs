@@ -3,7 +3,7 @@ import { pageGenerator } from './page';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 import { Tree } from '@nrwl/devkit';
 
-describe('component', () => {
+xdescribe('component', () => {
   let tree: Tree;
   let projectName: string;
 

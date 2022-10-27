@@ -3,7 +3,7 @@ import { NxJsonConfiguration, readJson, Tree } from '@nrwl/devkit';
 
 import { gatsbyInitGenerator } from './init';
 
-describe('init', () => {
+xdescribe('init', () => {
   let tree: Tree;
 
   beforeEach(() => {

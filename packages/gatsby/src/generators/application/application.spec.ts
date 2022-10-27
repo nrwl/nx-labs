@@ -7,7 +7,7 @@ import {
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 import { applicationGenerator } from './application';
 
-describe('app', () => {
+xdescribe('app', () => {
   let tree: Tree;
 
   beforeEach(() => {
