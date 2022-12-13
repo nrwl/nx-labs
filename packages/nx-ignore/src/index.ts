@@ -74,8 +74,8 @@ async function main() {
     // Call the file directly instead of going through Nx CLI.
     await affected('print-affected', {
       type: 'app',
-      base: 'HEAD^',
-      head: 'HEAD',
+      base: baseSha,
+      head: headSha,
       _: '',
     });
 
