@@ -77,6 +77,7 @@ async function main() {
       base: baseSha,
       head: headSha,
       _: '',
+      __overrides_unparsed__: '',
     });
 
     result = JSON.parse(output);
