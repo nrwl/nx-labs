@@ -22,8 +22,8 @@ const type = customType || 'app'
 const allowedTypes = ['app', 'lib']
 let baseSha = customBase ? customBase.slice(7) : vercelBase || 'HEAD^';
 
-if(!allowedTypes.includes(type)) {
-  console.log(`≫ Invalid type "${type}" passed to nx-ignore script. Allowed types: ${allowedTypes.join(', ')}`);
+if(customType && !allowedTypes.includes(customType)) {
+  console.log(`≫ Invalid type "${customType}" passed to nx-ignore script. Allowed types: ${allowedTypes.join(', ')}`);
   process.exit(1);
 }
 
