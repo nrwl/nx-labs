@@ -19,7 +19,7 @@ const vercelBase = process.env['VERCEL_GIT_PREVIOUS_SHA'];
 const isVerbose = args.some((s) => s === '--verbose');
 const headSha = 'HEAD';
 const type = customType || 'app'
-const allowedTypes = ['apps', 'libs']
+const allowedTypes = ['app', 'lib']
 let baseSha = customBase ? customBase.slice(7) : vercelBase || 'HEAD^';
 
 if(!allowedTypes.includes(type)) {
