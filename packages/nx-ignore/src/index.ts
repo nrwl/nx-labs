@@ -18,12 +18,16 @@ const customBase = args.find(
 const vercelBase = process.env['VERCEL_GIT_PREVIOUS_SHA'];
 const isVerbose = args.some((s) => s === '--verbose');
 const headSha = 'HEAD';
-const type = customType || 'app'
-const allowedTypes = ['app', 'lib']
+const type = customType || 'app';
+const allowedTypes = ['app', 'lib'];
 let baseSha = customBase ? customBase.slice(7) : vercelBase || 'HEAD^';
 
-if(customType && !allowedTypes.includes(customType)) {
-  console.log(`≫ Invalid type "${customType}" passed to nx-ignore script. Allowed types: ${allowedTypes.join(', ')}`);
+if (customType && !allowedTypes.includes(customType)) {
+  console.log(
+    `≫ Invalid type "${customType}" passed to nx-ignore script. Allowed types: ${allowedTypes.join(
+      ', '
+    )}`
+  );
   process.exit(1);
 }
 
