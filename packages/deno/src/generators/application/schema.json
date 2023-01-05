@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "$id": "Application",
+  "title": "",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use?"
+    },
+    "unitTestRunner": {
+      "type": "string",
+      "description": "Add a testing target for this application.",
+      "enum": ["deno", "none"],
+      "default": "deno"
+    },
+    "linter": {
+      "type": "string",
+      "description": "Add a linting target for this application.",
+      "enum": ["deno", "none"],
+      "default": "deno"
+    },
+    "tags": {
+      "type": "string",
+      "description": "Add tags to the project (used for linting)",
+      "alias": "t"
+    },
+    "directory": {
+      "type": "string",
+      "description": "A directory where the project is placed",
+      "alias": "d"
+    }
+  },
+  "required": ["name"]
+}

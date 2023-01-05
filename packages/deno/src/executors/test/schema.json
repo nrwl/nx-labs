@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "version": 2,
+  "cli": "nx",
+  "title": "Test executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "denoConfig": {
+      "type": "string",
+      "description": "Path to the Deno configuration file."
+    },
+    "watch": {
+      "type": "boolean",
+      "description": "Rerun tests when files change",
+      "default": false
+    },
+    "check": {
+      "anyOf": [{ "type": "boolean" }, { "type": "string" }],
+      "description": "Run type checking for the project",
+      "enum": ["none", "local", "all"],
+      "default": "local"
+    },
+    "coverageDirectory": {
+      "aliases": ["coverage"],
+      "type": "string",
+      "description": "Directory where coverage reports are output"
+    },
+    "cert": {
+      "type": "string",
+      "description": "Load certificate authority from PEM encoded file"
+    },
+    "doc": {
+      "type": "boolean",
+      "description": "Type check docuentation examples",
+      "default": false
+    },
+    "failFast": {
+      "aliases": ["bail"],
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        { "type": "boolean" }
+      ],
+      "description": "Stop after N failures. Defaults to stopping after the first failure if no number is provided"
+    },
+    "filter": {
+      "aliases": ["f"],
+      "type": "string",
+      "description": "Run tests with this string or pattern in the test name"
+    },
+    "ignore": {
+      "type": "string",
+      "description": "Comma seperated list of files paths"
+    },
+    "inspect": {
+      "description": "Activate inspector on host:port, wait for debugger to connect before running user code. Defaults to 127.0.0.1:9229 if no host:port is provided",
+      "anyOf": [{ "type": "boolean" }, { "type": "string" }]
+    },
+    "location": {
+      "type": "string",
+      "description": "value of 'globalThis.location', use by web APIs"
+    },
+    "parallel": {
+      "aliases": ["p"],
+      "anyOf": [{ "type": "boolean" }, { "type": "number" }],
+      "description": "Run tests in parallel. Parallelism defaults to the number of avalible CPUs. If a number is provided then that value will be set the DENO_JOBS environment variable."
+    },
+    "quiet": {
+      "aliases": ["q"],
+      "type": "boolean",
+      "description": "Suppress diagnostic output"
+    },
+    "reload": {
+      "description": "Reload source code cache (recompile TypeScript)",
+      "aliases": ["r"],
+      "nyOf": [{ "type": "boolean" }, { "type": "string" }]
+    },
+    "seed": {
+      "type": "number",
+      "description": "set the random number generator seed"
+    },
+    "suffle": {
+      "type": "number",
+      "description": "Shuffle the order in which the tests are run"
+    },
+    "unstable": {
+      "type": "boolean",
+      "description": "Enable unstable APIs and features"
+    }
+  },
+  "required": ["denoConfig"]
+}
