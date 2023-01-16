@@ -19,6 +19,7 @@
     "nx-ignore": "./src/index.js"
   },
   "dependencies": {
+    "fs-extra": "^10.1.0",
     "@swc/helpers": "^0.4.14"
   }
 }

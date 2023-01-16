@@ -1,7 +1,14 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { execSync } = require('child_process');
-const { existsSync, readFileSync, renameSync, writeFileSync } = require('fs');
+const { tmpdir } = require('os');
+const {
+  rmSync,
+  readFileSync,
+  writeFileSync,
+  mkdirSync,
+  moveSync,
+} = require('fs-extra');
 const { join } = require('path');
 
 const args = process.argv.slice(2);
@@ -35,7 +42,7 @@ async function main() {
   logDebug(`≫ Running from ${__dirname}`);
   logDebug(`≫ Workspace root is ${root}`);
 
-  const nxVersion = ensureNxInstalled(root);
+  const nxVersion = installTempNx(root);
 
   if (!nxVersion) {
     console.log('≫ Cannot find installed Nx');
@@ -74,9 +81,12 @@ async function main() {
 
   logDebug(`≫ Affected projects:\n  - ${result.projects.join('\n  - ')}\n`);
 
+  // Clean up temporary node_modules that we installed Nx to.
+  rmSync(join(root, 'node_modules'), { recursive: true, force: true });
+
   if (result.projects.includes(project)) {
     console.log(`✅ - Build can proceed since ${project} is affected`);
-    process.exit(1); // this tells vercel to not ignore
+    process.exit(1); // this tells Vercel to not ignore build.
   } else {
     console.log(`🛑 - Build cancelled since ${project} is not affected`);
   }
@@ -88,69 +98,32 @@ function logDebug(s: string) {
   if (isVerbose) console.log(s);
 }
 
-export function detectPackageManager(root: string): 'npm' | 'yarn' | 'pnpm' {
-  return existsSync(join(root, 'yarn.lock'))
-    ? 'yarn'
-    : existsSync(join(root, 'pnpm-lock.yaml'))
-    ? 'pnpm'
-    : 'npm';
-}
-
 // This function ensures that Nx is installed in the workspace.
 // Returns the version of Nx if found, null otherwise.
-function ensureNxInstalled(root: string): string | null {
+function installTempNx(root: string): string | null {
   try {
     const packageJson = require(join(root, 'package.json'));
     const deps = {
       ...packageJson.dependencies,
       ...packageJson.devDependencies,
     };
-    const pm = detectPackageManager(root);
+    const tmpPath = join(tmpdir(), '.nx-ignore');
+    rmSync(join(root, 'node_modules'), { force: true, recursive: true });
+    rmSync(tmpPath, { force: true, recursive: true });
+    mkdirSync(tmpPath, { recursive: true });
 
     // create temp package.json to avoid install other packages
     const json = JSON.parse(readFileSync(join(root, 'package.json')));
-    renameSync(join(root, 'package.json'), join(root, 'package.original.json'));
     delete json['scripts'];
-    delete json.dependencies;
-    json.devDependencies = {
+    delete json.devDependencies;
+    json.dependencies = {
       nx: deps['nx'],
-      next: deps['next'],
       typescript: deps['typescript'],
     };
-    writeFileSync(join(root, 'package.json'), JSON.stringify(json));
+    writeFileSync(join(tmpPath, 'package.json'), JSON.stringify(json));
 
-    if (pm === 'npm') {
-      renameSync(
-        join(root, 'package-lock.json'),
-        join(root, 'package-lock.original.json')
-      );
-      execSync(`npm install`);
-    } else if (pm === 'yarn') {
-      renameSync(join(root, 'yarn.lock'), join(root, 'yarn.original.lock'));
-      execSync(`yarn install`);
-    } else {
-      renameSync(
-        join(root, 'pnpm-lock.yaml'),
-        join(root, 'pnpm-lock.original.yaml')
-      );
-      execSync(`pnpm install`);
-    }
-
-    // Rename package.json back so build can continue as normal
-    renameSync(join(root, 'package.original.json'), join(root, 'package.json'));
-    if (pm === 'npm') {
-      renameSync(
-        join(root, 'package-lock.original.json'),
-        join(root, 'package-lock.json')
-      );
-    } else if (pm === 'yarn') {
-      renameSync(join(root, 'yarn.original.lock'), join(root, 'yarn.lock'));
-    } else {
-      renameSync(
-        join(root, 'pnpm-lock.original.yaml'),
-        join(root, 'pnpm-lock.yaml')
-      );
-    }
+    execSync(`npm install`, { cwd: tmpPath });
+    moveSync(join(tmpPath, 'node_modules'), join(root, 'node_modules'));
 
     return deps['nx'];
   } catch {
