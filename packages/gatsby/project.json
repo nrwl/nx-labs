@@ -98,5 +98,6 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "name": "gatsby"
 }
