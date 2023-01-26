@@ -20,6 +20,12 @@ const customRoot = args.find(
   (s) => s.startsWith('--root=') || s.startsWith('--root ')
 ) as string;
 const vercelBase = process.env['VERCEL_GIT_PREVIOUS_SHA'];
+const userDefinedPluginsArg = args.find(
+  (s) => s.startsWith('--plugins=') || s.startsWith('--plugins ')
+) as string;
+const userDefinedPlugins = userDefinedPluginsArg
+  ? userDefinedPluginsArg.slice(10).split(',')
+  : null;
 const isVerbose = args.some((s) => s === '--verbose');
 const headSha = 'HEAD';
 const userDefinedRoot = customRoot ? customRoot.slice(7) : null;
@@ -42,7 +48,8 @@ async function main() {
   logDebug(`≫ Running from ${__dirname}`);
   logDebug(`≫ Workspace root is ${root}`);
 
-  const nxVersion = installTempNx(root);
+  const plugins = userDefinedPlugins ?? findThirdPartyPlugins(root);
+  const nxVersion = installTempNx(root, plugins);
 
   if (!nxVersion) {
     console.log('≫ Cannot find installed Nx');
@@ -98,9 +105,14 @@ function logDebug(s: string) {
   if (isVerbose) console.log(s);
 }
 
+function findThirdPartyPlugins(root: string) {
+  const nxJson = require(join(root, 'nx.json'));
+  return nxJson.plugins?.filter((plugin: string) => !plugin.startsWith('.'));
+}
+
 // This function ensures that Nx is installed in the workspace.
 // Returns the version of Nx if found, null otherwise.
-function installTempNx(root: string): string | null {
+function installTempNx(root: string, plugins: string[]): string | null {
   try {
     const packageJson = require(join(root, 'package.json'));
     const deps = {
@@ -111,6 +123,7 @@ function installTempNx(root: string): string | null {
     rmSync(join(root, 'node_modules'), { force: true, recursive: true });
     rmSync(tmpPath, { force: true, recursive: true });
     mkdirSync(tmpPath, { recursive: true });
+    logDebug(`≫ Creating temp folder to install Nx: ${tmpPath}`);
 
     // create temp package.json to avoid install other packages
     const json = JSON.parse(readFileSync(join(root, 'package.json')));
@@ -120,9 +133,24 @@ function installTempNx(root: string): string | null {
       nx: deps['nx'],
       typescript: deps['typescript'],
     };
+    let devkitNeeded = false;
+    plugins.forEach((plugin) => {
+      if (deps[plugin]) {
+        devkitNeeded = true;
+        json.dependencies[plugin] = deps[plugin];
+        logDebug(`≫ Adding plugin ${plugin}@${deps[plugin]}`);
+      } else {
+        logDebug(
+          `≫ Ignore plugin ${plugin} (workspace plugins do no need to be installed)`
+        );
+      }
+    });
+    if (devkitNeeded) {
+      json.dependencies['@nrwl/devkit'] = deps['nx'];
+    }
     writeFileSync(join(tmpPath, 'package.json'), JSON.stringify(json));
 
-    execSync(`npm install`, { cwd: tmpPath });
+    execSync(`npm install --force`, { cwd: tmpPath });
     moveSync(join(tmpPath, 'node_modules'), join(root, 'node_modules'));
 
     return deps['nx'];

@@ -15,7 +15,8 @@ npx nx-ignore <project-name>
 ### Options
 
 - `--base` - Set a custom base SHA to compare changes (defaults to [`VERCEL_GIT_PREVIOUS_SHA`](https://vercel.com/docs/concepts/projects/environment-variables#system-environment-variables)).
-- ``--root` - Set a custom workspace root (defaults to current working directory).
+- `--plugins` - List of Nx plugins required (i.e. plugins that extend the Nx graph). Default plugins are read from nx.json.
+- `--root` - Set a custom workspace root (defaults to current working directory).
 - `--verbose` - Log more details information for debugging purposes.
 
 ## How it works
