@@ -36,14 +36,21 @@ if (!project) {
   process.exit(1);
 }
 
-console.log(
-  `≫ Using Nx to determine if this project (${project}) is affected by the commit...`
-);
-
 main();
 
 async function main() {
+  const commitMessage = execSync(`git log -1 --pretty='%B'`).toString();
+
+  if (commitHasSkipMessage(commitMessage)) {
+    exitWithoutBuild(`🛑 - Skip build due to commit message: ${commitMessage}`);
+  } else if (commitHasForceDeployMessage(commitMessage)) {
+    exitWithBuild(`✅ - Forced build due to commit message: ${commitMessage}`);
+  }
+
   const root = userDefinedRoot || process.cwd();
+  console.log(
+    `≫ Using Nx to determine if this project (${project}) is affected by the commit...`
+  );
 
   logDebug(`≫ Running from ${__dirname}`);
   logDebug(`≫ Workspace root is ${root}`);
@@ -92,13 +99,10 @@ async function main() {
   rmSync(join(root, 'node_modules'), { recursive: true, force: true });
 
   if (result.projects.includes(project)) {
-    console.log(`✅ - Build can proceed since ${project} is affected`);
-    process.exit(1); // this tells Vercel to not ignore build.
+    exitWithBuild(`✅ - Build can proceed since ${project} is affected`);
   } else {
-    console.log(`🛑 - Build cancelled since ${project} is not affected`);
+    exitWithoutBuild(`🛑 - Build cancelled since ${project} is not affected`);
   }
-
-  process.exit(0);
 }
 
 function logDebug(s: string) {
@@ -107,7 +111,9 @@ function logDebug(s: string) {
 
 function findThirdPartyPlugins(root: string) {
   const nxJson = require(join(root, 'nx.json'));
-  return nxJson.plugins?.filter((plugin: string) => !plugin.startsWith('.'));
+  return (
+    nxJson.plugins?.filter((plugin: string) => !plugin.startsWith('.')) ?? []
+  );
 }
 
 // This function ensures that Nx is installed in the workspace.
@@ -159,4 +165,30 @@ function installTempNx(root: string, plugins: string[]): string | null {
   }
 
   return null;
+}
+
+function commitHasSkipMessage(message: string): boolean {
+  return [
+    '[skip ci]',
+    '[ci skip]',
+    '[no ci]',
+    '[nx skip]',
+    `[nx skip ${project}]`,
+  ].some((s) => message.includes(s));
+}
+
+function commitHasForceDeployMessage(message: string): boolean {
+  return ['[nx deploy]', `[nx deploy ${project}`].some((s) =>
+    message.includes(s)
+  );
+}
+
+function exitWithoutBuild(message: string) {
+  console.log(message);
+  process.exit(0); // this tells Vercel to skip build
+}
+
+function exitWithBuild(message: string) {
+  console.log(message);
+  process.exit(1); // this tells Vercel to not ignore build.
 }

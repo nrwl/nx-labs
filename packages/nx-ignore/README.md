@@ -19,6 +19,20 @@ npx nx-ignore <project-name>
 - `--root` - Set a custom workspace root (defaults to current working directory).
 - `--verbose` - Log more details information for debugging purposes.
 
+### Skipping and forcing deployment
+
+Skip nx-ignore check and ignore deployment:
+
+- [skip ci]
+- [ci skip]
+- [no ci]
+- [nx skip <app>]
+
+Skip nx-ignore check and force deployment:
+
+- [nx deploy]
+- [nx deploy <app>]
+
 ## How it works
 
 The `nx-ignore` command uses Nx to determine whether the current commit affects the specified app. It exits with an error code (1) when the app is affected, which tells Vercel to continue the build, otherwise it exits successfully, which tells Vercel to cancel the build.
