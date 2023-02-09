@@ -57,6 +57,7 @@ export default async function* serverExecutor(
     }
 
     // This Promise intentionally never resolves, leaving the process running
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     await new Promise<{ success: boolean }>(() => {});
   } finally {
     if (childProcess) {

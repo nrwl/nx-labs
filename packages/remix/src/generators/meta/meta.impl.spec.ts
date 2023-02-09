@@ -1,14 +1,14 @@
 import { Tree } from '@nrwl/devkit';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
-import metaGenerator from './meta.impl';
 import applicationGenerator from '../application/application.impl';
 import routeGenerator from '../route/route.impl';
+import metaGenerator from './meta.impl';
 
 describe('meta', () => {
   let tree: Tree;
 
   beforeEach(async () => {
-    tree = createTreeWithEmptyWorkspace();
+    tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     tree.write('.gitignore', `/node_modules/dist`);
 
     await applicationGenerator(tree, { name: 'demo' });

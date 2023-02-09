@@ -1,13 +1,13 @@
-import resourceRouteGenerator from './resource-route.impl';
 import { Tree } from '@nrwl/devkit';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 import applicationGenerator from '../application/application.impl';
+import resourceRouteGenerator from './resource-route.impl';
 
 describe('resource route', () => {
   let tree: Tree;
 
   beforeEach(async () => {
-    tree = createTreeWithEmptyWorkspace();
+    tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     tree.write('.gitignore', `/node_modules/dist`);
 
     await applicationGenerator(tree, { name: 'demo' });

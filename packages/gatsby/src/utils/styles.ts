@@ -1,4 +1,6 @@
+import { addDependenciesToPackageJson, GeneratorCallback } from '@nrwl/devkit';
 import { CSS_IN_JS_DEPENDENCIES } from '@nrwl/react';
+import { Tree } from '@nrwl/tao/src/shared/tree';
 import {
   gatsbyPluginEmotionVersion,
   gatsbyPluginLessVersion,
@@ -8,8 +10,6 @@ import {
   gatsbyPluginStylusVersion,
   sassVersion,
 } from './versions';
-import { Tree } from '@nrwl/tao/src/shared/tree';
-import { addDependenciesToPackageJson, GeneratorCallback } from '@nrwl/devkit';
 
 export const GATSBY_SPECIFIC_STYLE_DEPENDENCIES = {
   'styled-components': {
@@ -57,13 +57,11 @@ export function addStyleDependencies(host: Tree, style: string) {
 
   const extraDependencies = GATSBY_SPECIFIC_STYLE_DEPENDENCIES[style];
 
-  if (!extraDependencies) return () => {};
+  if (!extraDependencies) return () => void 0;
 
-  installTask = addDependenciesToPackageJson(
+  return addDependenciesToPackageJson(
     host,
     extraDependencies.dependencies,
     extraDependencies.devDependencies
   );
-
-  return installTask;
 }

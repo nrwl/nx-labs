@@ -1,11 +1,11 @@
 import { cypressProjectGenerator } from '@nrwl/cypress';
 import { Tree } from '@nrwl/devkit';
-import { NormalizedSchema } from './normalize-options';
 import { Linter } from '@nrwl/linter';
+import { NormalizedSchema } from './normalize-options';
 
 export async function addCypress(host: Tree, options: NormalizedSchema) {
   if (options?.e2eTestRunner !== 'cypress') {
-    return () => {};
+    return () => void 0;
   }
 
   return cypressProjectGenerator(host, {
