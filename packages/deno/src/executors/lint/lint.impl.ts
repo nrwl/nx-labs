@@ -1,4 +1,5 @@
 import { ExecutorContext, ProjectConfiguration } from '@nrwl/devkit';
+import { processCommonArgs } from '../../utils/arg-utils';
 import { runDeno } from '../../utils/run-deno';
 import { LintExecutorSchema } from './schema';
 
@@ -41,7 +42,10 @@ function normalizeOpitons(
 }
 
 function createArgs(options: LintExecutorNormalizedSchema) {
-  const args: Array<string | boolean> = ['lint'];
+  const args: string[] = ['lint'];
+
+  args.push(`--config=${options.denoConfig}`);
+  args.push(...processCommonArgs(options));
 
   if (options.compact) {
     args.push('--compact');
@@ -53,10 +57,6 @@ function createArgs(options: LintExecutorNormalizedSchema) {
 
   if (options.json) {
     args.push('--json');
-  }
-
-  if (options.quiet) {
-    args.push('--quiet');
   }
 
   if (options.rulesExclude) {
@@ -71,15 +71,6 @@ function createArgs(options: LintExecutorNormalizedSchema) {
     args.push(`--rules-tags=${options.rulesTags}`);
   }
 
-  if (options.unstable) {
-    args.push('--unstable');
-  }
-
-  if (options.watch) {
-    args.push('--watch');
-  }
-
-  args.push(`--config=${options.denoConfig}`);
   args.push(options.lintDir);
 
   return args;

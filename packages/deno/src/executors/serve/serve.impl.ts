@@ -3,7 +3,7 @@ import {
   parseTargetString,
   readTargetOptions,
 } from '@nrwl/devkit';
-import { processTypeCheckOption } from '../../utils/arg-utils';
+import { processCommonArgs } from '../../utils/arg-utils';
 import { runDeno } from '../../utils/run-deno';
 import { BuildExecutorSchema } from '../build/schema';
 import { ServeExecutorSchema } from './schema';
@@ -60,12 +60,7 @@ function createArgs(options: ServeExecutorSchema) {
   const args = ['run', '--allow-all'];
 
   args.push(`--config=${options.denoConfig}`);
-  if (options.cert) {
-    args.push(`--cert=${options.cert}`);
-  }
-  if (options.check !== undefined) {
-    args.push(processTypeCheckOption(options.check));
-  }
+  args.push(...processCommonArgs(options));
 
   if (options.inspect) {
     args.push(
@@ -76,43 +71,13 @@ function createArgs(options: ServeExecutorSchema) {
       }`
     );
   }
+
   if (options.location) {
     args.push(`--location=${options.location}`);
   }
-  if (options.lockWrite) {
-    args.push(`--lock-write`);
-  }
-  if (options.noLock) {
-    args.push(`--no-lock`);
-  }
-  if (options.noNpm) {
-    args.push(`--no-npm`);
-  }
-  if (options.noRemote) {
-    args.push(`--no-remote`);
-  }
-  if (options.nodeModulesDir) {
-    args.push(`--node-modules-dir=${options.nodeModulesDir}`);
-  }
-  if (options.quiet) {
-    args.push(`--quiet`);
-  }
-  if (options.reload) {
-    args.push(
-      `--reload${
-        typeof options.reload === 'string' ? `=${options.reload}` : ''
-      }`
-    );
-  }
+
   if (options.seed) {
     args.push(`--seed=${options.seed}`);
-  }
-  if (options.unstable) {
-    args.push('--unstable');
-  }
-
-  if (options.watch) {
-    args.push('--watch');
   }
 
   args.push(options.main);

@@ -1,7 +1,7 @@
 import { ExecutorContext, logger } from '@nrwl/devkit';
 import { emptyDirSync } from 'fs-extra';
 import { join, posix, resolve, sep } from 'path';
-import { processTypeCheckOption } from '../../utils/arg-utils';
+import { processCommonArgs } from '../../utils/arg-utils';
 import { runDeno } from '../../utils/run-deno';
 import { DenoTestExecutorSchema } from './schema';
 
@@ -91,9 +91,7 @@ function createArgs(options: DenoTestExecutorNormalizedSchema) {
   const args: Array<string | boolean | number> = ['test', '-A'];
 
   args.push(`--config=${options.denoConfig}`);
-  if (options.watch) {
-    args.push('--watch');
-  }
+  args.push(...processCommonArgs(options));
 
   if (options.coverageDirectory) {
     if (options.inspect) {
@@ -101,14 +99,6 @@ function createArgs(options: DenoTestExecutorNormalizedSchema) {
     } else {
       args.push(`--coverage=${options.coverageDirectory}`);
     }
-  }
-
-  if (options.check !== undefined) {
-    args.push(processTypeCheckOption(options.check));
-  }
-
-  if (options.cert) {
-    args.push('--cert', options.cert);
   }
 
   if (options.failFast) {
@@ -127,14 +117,6 @@ function createArgs(options: DenoTestExecutorNormalizedSchema) {
     args.push(`--ignore=${options.ignore.join(',')}`);
   }
 
-  if (options.inspect) {
-    args.push(
-      `--inspect-brk=${
-        typeof options.inspect === 'string' ? options.inspect : '127.0.0.1:9229'
-      }`
-    );
-  }
-
   if (options.location) {
     args.push(`--location=${options.location}`);
   }
@@ -146,28 +128,12 @@ function createArgs(options: DenoTestExecutorNormalizedSchema) {
     }
   }
 
-  if (options.quiet) {
-    args.push('--quiet');
-  }
-
-  if (options.reload) {
-    args.push(
-      `--reload${
-        typeof options.reload === 'string' ? `=${options.reload}` : ''
-      }`
-    );
-  }
-
   if (options.seed) {
     args.push(`--seed=${options.seed}`);
   }
 
   if (options.shuffle) {
     args.push(`--shuffle=${options.shuffle}`);
-  }
-
-  if (options.unstable) {
-    args.push('--unstable');
   }
 
   args.push(options.testDir);
