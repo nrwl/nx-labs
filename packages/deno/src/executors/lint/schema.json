@@ -2,8 +2,8 @@
   "$schema": "http://json-schema.org/schema",
   "version": 2,
   "cli": "nx",
-  "title": "Lint executor",
-  "description": "",
+  "title": "Deno Lint executor",
+  "description": "Lint JavaScript/TypeScript source code with Deno",
   "type": "object",
   "properties": {
     "denoConfig": {

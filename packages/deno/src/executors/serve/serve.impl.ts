@@ -3,11 +3,12 @@ import {
   parseTargetString,
   readTargetOptions,
 } from '@nrwl/devkit';
+import { processTypeCheckOption } from '../../utils/arg-utils';
 import { runDeno } from '../../utils/run-deno';
 import { BuildExecutorSchema } from '../build/schema';
 import { ServeExecutorSchema } from './schema';
 
-export default async function* runExecutor(
+export async function* denoServeExecutor(
   options: ServeExecutorSchema,
   context: ExecutorContext
 ) {
@@ -15,6 +16,7 @@ export default async function* runExecutor(
   const args = createArgs(opts);
 
   const runningDenoProcess = runDeno(args);
+  // TODO(chau): does process need to be handled differently like @nrwl/js?
 
   yield { success: true };
 
@@ -26,22 +28,29 @@ function normalizeOptions(
   options: ServeExecutorSchema,
   context: ExecutorContext
 ) {
-  const target = parseTargetString(options.buildTarget);
-  const buildTargetOptions = readTargetOptions<BuildExecutorSchema>(
-    target,
-    context
-  );
-  const mergedOptions = {
-    ...buildTargetOptions,
-    ...options,
-  };
+  let mergedOptions: ServeExecutorSchema;
+  if (options.buildTarget) {
+    const target = parseTargetString(options.buildTarget, context.projectGraph);
+    const buildTargetOptions = readTargetOptions<BuildExecutorSchema>(
+      target,
+      context
+    );
+    mergedOptions = {
+      ...buildTargetOptions,
+      ...options,
+    };
+  }
 
   if (!mergedOptions.main) {
-    throw new Error('main is required');
+    throw new Error(
+      'Missing "main" property  in the executor options.  Please specify the "main" property in the executor options or specify a "buildTarget" that has a valid "main" property defined.'
+    );
   }
 
   if (!mergedOptions.denoConfig) {
-    throw new Error('denoConfig is required');
+    throw new Error(
+      'Missing "denoConfig" property in the executor options.  Please specify the "denoConfig" property in the executor options or specify a "buildTarget" that has a valid "denoConfig" property defined.'
+    );
   }
 
   return mergedOptions;
@@ -55,23 +64,9 @@ function createArgs(options: ServeExecutorSchema) {
     args.push(`--cert=${options.cert}`);
   }
   if (options.check !== undefined) {
-    // TODO(caleb): why are boolean args being parsed as strings?
-    if (
-      options.check === 'none' ||
-      options.check === false ||
-      options.check === 'false'
-    ) {
-      args.push('--no-check');
-    } else if (
-      options.check === 'local' ||
-      options.check === true ||
-      options.check === 'true'
-    ) {
-      args.push('--check');
-    } else if (options.check === 'all') {
-      args.push('--check=all');
-    }
+    args.push(processTypeCheckOption(options.check));
   }
+
   if (options.inspect) {
     args.push(
       `--inspect-brk=${
@@ -124,3 +119,5 @@ function createArgs(options: ServeExecutorSchema) {
 
   return args;
 }
+
+export default denoServeExecutor;

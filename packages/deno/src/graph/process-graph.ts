@@ -5,11 +5,11 @@ import {
   ProjectGraphProcessorContext,
   workspaceRoot,
 } from '@nrwl/devkit';
-import { extname, join, relative } from 'node:path';
 import {
   createProjectRootMappings,
   findProjectForPath,
 } from 'nx/src/project-graph/utils/find-project-for-path';
+import { extname, join, relative } from 'path';
 import { runDeno } from '../utils/run-deno';
 
 // TODO: can this be configurable via plugin settings?

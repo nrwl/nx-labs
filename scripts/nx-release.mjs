@@ -1,16 +1,14 @@
 #!/usr/bin/env node
-import yargsParser from 'yargs-parser';
-import releaseIt from 'release-it';
 import childProcess from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import releaseIt from 'release-it';
+import yargsParser from 'yargs-parser';
 
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
-
-console.log(process.argv);
 
 const parsedArgs = yargsParser(process.argv, {
   boolean: ['dry-run', 'local'],

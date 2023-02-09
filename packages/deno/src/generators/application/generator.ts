@@ -8,7 +8,7 @@ import {
   offsetFromRoot,
   Tree,
 } from '@nrwl/devkit';
-import * as path from 'path';
+import { join } from 'path';
 import { initDeno } from '../init/generator';
 import { addPathToDenoSettings } from '../utils/add-path';
 import { ApplicationGeneratorSchema } from './schema';
@@ -55,7 +55,7 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
   };
   generateFiles(
     tree,
-    path.join(__dirname, 'files'),
+    join(__dirname, 'files'),
     options.projectRoot,
     templateOptions
   );
@@ -94,7 +94,6 @@ export default async function (
         options: {
           coverageDirectory: `coverage/${normalizedOptions.projectRoot}`,
           denoConfig: `${normalizedOptions.projectRoot}/deno.json`,
-          check: 'local',
         },
       },
       lint: {

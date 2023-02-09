@@ -2,8 +2,8 @@
   "$schema": "http://json-schema.org/schema",
   "version": 2,
   "cli": "nx",
-  "title": "Build executor",
-  "description": "",
+  "title": "Deno Build Executor",
+  "description": "Output a single JavaScript file with all dependencies",
   "type": "object",
   "properties": {
     "denoConfig": {
@@ -23,13 +23,11 @@
       "description": "Load certificate authority from PEM encoded file."
     },
     "check": {
-      "anyOf": [{ "type": "boolean" }, { "type": "string" }]
-    },
-    "check": {
-      "anyOf": [{ "type": "boolean" }, { "type": "string" }],
       "description": "Type-check modules. Deno does not type-check modules automatically from v1.23 onwards. Set this option to enable type-checking or use the 'deno check' subcommand. If the value of '--check=all' is supplied, diagonstic errors from remote modules will be included.",
+      "oneOf": [{ "type": "boolean" }, { "type": "string" }],
       "enum": ["none", "local", "all"],
-      "default": "local"
+      "default": "local",
+      "x-priority": "important"
     },
     "lockWrite": {
       "type": "boolean",
@@ -58,13 +56,12 @@
     },
     "reload": {
       "description": "Reload source code cache (recompile TypeScript)",
-      "anyOf": [{ "type": "boolean" }, { "type": "string" }]
+      "oneOf": [{ "type": "boolean" }, { "type": "string" }]
     },
     "unstable": {
       "type": "boolean",
       "description": "Enable unstable features and APIs."
     },
-
     "watch": {
       "type": "boolean",
       "description": "Watch for file changes and restart process automatically. Only local files form entry point module graph are watched."

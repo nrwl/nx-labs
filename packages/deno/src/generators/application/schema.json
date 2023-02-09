@@ -2,17 +2,18 @@
   "$schema": "http://json-schema.org/schema",
   "cli": "nx",
   "$id": "Application",
-  "title": "",
+  "title": "Generate an Deno application.",
   "type": "object",
   "properties": {
     "name": {
       "type": "string",
-      "description": "",
+      "description": "Name of the application.",
       "$default": {
         "$source": "argv",
         "index": 0
       },
-      "x-prompt": "What name would you like to use?"
+      "x-prompt": "What name would you like to use?",
+      "pattern": "^[a-zA-Z].*$"
     },
     "unitTestRunner": {
       "type": "string",
@@ -34,7 +35,8 @@
     "directory": {
       "type": "string",
       "description": "A directory where the project is placed",
-      "alias": "d"
+      "alias": "d",
+      "x-priority": "important"
     }
   },
   "required": ["name"]

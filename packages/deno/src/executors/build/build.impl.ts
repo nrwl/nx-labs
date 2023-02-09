@@ -1,14 +1,12 @@
-import { ExecutorContext, workspaceRoot } from '@nrwl/devkit';
+import { workspaceRoot } from '@nrwl/devkit';
 import { dirname, join, resolve } from 'path';
 import { BuildExecutorSchema } from './schema';
 
 import { ensureDirSync } from 'fs-extra';
+import { processTypeCheckOption } from '../../utils/arg-utils';
 import { runDeno } from '../../utils/run-deno';
 
-export default async function runExecutor(
-  options: BuildExecutorSchema,
-  context: ExecutorContext
-) {
+export async function denoBuildExecutor(options: BuildExecutorSchema) {
   const opts = normalizeOptions(options);
   const args = createArgs(opts);
 
@@ -49,22 +47,7 @@ function createArgs(options: BuildExecutorSchema) {
     args.push(`--cert=${options.cert}`);
   }
   if (options.check !== undefined) {
-    // TODO(caleb): why are boolean args being parsed as strings?
-    if (
-      options.check === 'none' ||
-      options.check === false ||
-      options.check === 'false'
-    ) {
-      args.push('--no-check');
-    } else if (
-      options.check === 'local' ||
-      options.check === true ||
-      options.check === 'true'
-    ) {
-      args.push('--check');
-    } else if (options.check === 'all') {
-      args.push('--check=all');
-    }
+    args.push(processTypeCheckOption(options.check));
   }
 
   if (options.lockWrite) {
@@ -113,3 +96,4 @@ function createArgs(options: BuildExecutorSchema) {
 
   return args;
 }
+export default denoBuildExecutor;

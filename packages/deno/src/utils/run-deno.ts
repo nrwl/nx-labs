@@ -17,6 +17,9 @@ export function runDeno(args: any[], options: DenoExecOptions = {}) {
   return spawn('deno', args, {
     stdio: options.stdio || 'inherit',
     cwd: options.cwd || workspaceRoot,
-    env: options.env || process.env,
+    env: {
+      ...process.env,
+      ...(options.env || {}),
+    },
   });
 }

@@ -1,13 +1,40 @@
 import { ExecutorContext, logger } from '@nrwl/devkit';
 import { emptyDirSync } from 'fs-extra';
 import { join, posix, resolve, sep } from 'path';
+import { processTypeCheckOption } from '../../utils/arg-utils';
 import { runDeno } from '../../utils/run-deno';
 import { DenoTestExecutorSchema } from './schema';
 
-export default async function runExecutor(
+interface DenoTestExecutorNormalizedSchema extends DenoTestExecutorSchema {
+  enableCoverage: boolean;
+  testDir: string;
+  /*
+   * Full path to the coverage directory in the OS styled path
+   **/
+  coverageDirectoryFullPath?: string;
+}
+
+export async function denoTestExecutor(
   options: DenoTestExecutorSchema,
   context: ExecutorContext
 ) {
+  const opts = normalizeOptions(options, context);
+
+  const args = createArgs(opts);
+
+  const runningDenoProcess = runDeno(args);
+
+  return await new Promise<{ success: boolean }>((res) => {
+    runningDenoProcess.on('close', (code) => {
+      res({ success: code === 0 });
+    });
+  }).then((testStatus) => collectTestCoverate(opts, testStatus));
+}
+
+function normalizeOptions(
+  options: DenoTestExecutorSchema,
+  context: ExecutorContext
+): DenoTestExecutorNormalizedSchema {
   const projectConfig =
     context.projectGraph?.nodes?.[context.projectName]?.data;
 
@@ -16,45 +43,50 @@ export default async function runExecutor(
       `Could not find project configuration for ${context.projectName} in executor context.`
     );
   }
+  const normalized: DenoTestExecutorNormalizedSchema = {} as any;
 
-  const args = normalizeOptions(options);
-  args.push(projectConfig.sourceRoot || projectConfig.root);
   if (options.coverageDirectory) {
-    const fullPathToCoverageDir = resolve(
+    normalized.coverageDirectoryFullPath = resolve(
+      // coverageDirectory will always be unix style path. make sure its normalized to the OS style paths
       join(context.root, options.coverageDirectory).split(posix.sep).join(sep)
     );
+    normalized.enableCoverage = !options.watch && !options.inspect;
+
     try {
-      emptyDirSync(fullPathToCoverageDir);
+      emptyDirSync(normalized.coverageDirectoryFullPath);
     } catch (e) {
-      logger.error(
-        `NX Unable to clear the coverage directory, ${fullPathToCoverageDir}`
+      logger.warn(
+        `NX Unable to clear the coverage directory, ${normalized.coverageDirectoryFullPath}`
       );
       logger.error(e);
     }
   }
 
-  const runningDenoProcess = runDeno(args);
+  normalized.testDir = projectConfig.sourceRoot || projectConfig.root;
 
-  const testProcess = await new Promise<{ success: boolean }>((res) => {
-    runningDenoProcess.on('close', (code) => {
-      res({ success: code === 0 });
-    });
-  });
+  return {
+    ...options,
+    ...normalized,
+  };
+}
 
-  return new Promise((res) => {
-    if (options.coverageDirectory && !options.watch && !options.inspect) {
+async function collectTestCoverate(
+  options: DenoTestExecutorNormalizedSchema,
+  testStatus: { success: boolean }
+) {
+  return new Promise<{ success: boolean }>((res) => {
+    if (options.enableCoverage && options.coverageDirectory) {
       const coverageProcess = runDeno(['coverage', options.coverageDirectory]);
       coverageProcess.on('close', (code) => {
-        res({ success: code === 0 && testProcess.success });
+        res({ success: code === 0 && testStatus.success });
       });
+    } else {
+      res(testStatus);
     }
-
-    res(testProcess);
   });
 }
 
-function normalizeOptions(options: DenoTestExecutorSchema) {
-  console.log(options);
+function createArgs(options: DenoTestExecutorNormalizedSchema) {
   // NOTE: deno requires = for assigning values for args
   const args: Array<string | boolean | number> = ['test', '-A'];
 
@@ -72,22 +104,7 @@ function normalizeOptions(options: DenoTestExecutorSchema) {
   }
 
   if (options.check !== undefined) {
-    // TODO(caleb): why are boolean args being parsed as strings?
-    if (
-      options.check === 'none' ||
-      options.check === false ||
-      options.check === 'false'
-    ) {
-      args.push('--no-check');
-    } else if (
-      options.check === 'local' ||
-      options.check === true ||
-      options.check === 'true'
-    ) {
-      args.push('--check');
-    } else if (options.check === 'all') {
-      args.push('--check=all');
-    }
+    args.push(processTypeCheckOption(options.check));
   }
 
   if (options.cert) {
@@ -153,6 +170,7 @@ function normalizeOptions(options: DenoTestExecutorSchema) {
     args.push('--unstable');
   }
 
-  console.log(args);
+  args.push(options.testDir);
   return args;
 }
+export default denoTestExecutor;

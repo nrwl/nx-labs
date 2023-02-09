@@ -1,4 +1,4 @@
-import { DenoTypeCheck } from '../../utils/schema-types';
+import { DenoTypeCheck } from '../../utils/arg-utils';
 
 export interface DenoTestExecutorSchema {
   denoConfig: string;

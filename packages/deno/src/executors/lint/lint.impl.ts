@@ -1,12 +1,14 @@
-import { ExecutorContext } from '@nrwl/devkit';
+import { ExecutorContext, ProjectConfiguration } from '@nrwl/devkit';
 import { runDeno } from '../../utils/run-deno';
 import { LintExecutorSchema } from './schema';
 
+interface LintExecutorNormalizedSchema extends LintExecutorSchema {
+  lintDir: string;
+}
 export async function denoLintExecutor(
   options: LintExecutorSchema,
   context: ExecutorContext
 ) {
-  const args = normalizeOptions(options);
   const projectConfig =
     context.projectGraph?.nodes?.[context.projectName]?.data;
 
@@ -15,9 +17,9 @@ export async function denoLintExecutor(
       `Could not find project configuration for ${context.projectName} in executor context.`
     );
   }
+  const opts = normalizeOpitons(options, projectConfig);
 
-  args.push(`--config=${options.denoConfig}`);
-  args.push(projectConfig.sourceRoot || projectConfig.root);
+  const args = createArgs(opts);
 
   const runningDenoProcess = runDeno(args);
 
@@ -28,7 +30,17 @@ export async function denoLintExecutor(
   });
 }
 
-function normalizeOptions(options: LintExecutorSchema) {
+function normalizeOpitons(
+  options: LintExecutorSchema,
+  projectConfig: ProjectConfiguration
+): LintExecutorNormalizedSchema {
+  return {
+    ...options,
+    lintDir: projectConfig.sourceRoot || projectConfig.root,
+  };
+}
+
+function createArgs(options: LintExecutorNormalizedSchema) {
   const args: Array<string | boolean> = ['lint'];
 
   if (options.compact) {
@@ -66,6 +78,9 @@ function normalizeOptions(options: LintExecutorSchema) {
   if (options.watch) {
     args.push('--watch');
   }
+
+  args.push(`--config=${options.denoConfig}`);
+  args.push(options.lintDir);
 
   return args;
 }

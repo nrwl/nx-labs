@@ -2,24 +2,24 @@
   "$schema": "http://json-schema.org/schema",
   "executors": {
     "build": {
-      "implementation": "./src/executors/build/executor",
+      "implementation": "./src/executors/build/build.impl",
       "schema": "./src/executors/build/schema.json",
-      "description": "build executor"
+      "description": "Output a single JavaScript file with all dependencies."
     },
     "serve": {
-      "implementation": "./src/executors/serve/executor",
+      "implementation": "./src/executors/serve/serve.impl",
       "schema": "./src/executors/serve/schema.json",
-      "description": "serve executor"
+      "description": "Run a JavaScript or TypeScript program in watch mode"
     },
     "lint": {
-      "implementation": "./src/executors/lint/executor",
+      "implementation": "./src/executors/lint/lint.impl",
       "schema": "./src/executors/lint/schema.json",
-      "description": "lint executor"
+      "description": "Lint JavaScript/TypeScript source code"
     },
     "test": {
-      "implementation": "./src/executors/test/executor",
+      "implementation": "./src/executors/test/test.impl",
       "schema": "./src/executors/test/schema.json",
-      "description": "test executor"
+      "description": "Test JavaScript/TypeScript source code"
     }
   }
 }
