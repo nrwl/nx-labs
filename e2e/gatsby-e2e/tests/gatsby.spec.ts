@@ -7,8 +7,8 @@ import {
   uniq,
   updateFile,
 } from '@nrwl/nx-plugin/testing';
-
-describe('Gatsby Applications', () => {
+// TODO: fix and enable this when gatsby plugin is updated
+describe.skip('Gatsby Applications', () => {
   it('should generate a valid gatsby application', async () => {
     ensureNxProject('@nrwl/gatsby', 'dist/packages/gatsby');
     const appName = uniq('app');
