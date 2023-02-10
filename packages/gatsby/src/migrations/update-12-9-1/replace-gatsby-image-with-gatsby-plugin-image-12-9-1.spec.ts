@@ -1,4 +1,4 @@
-import { readJson, Tree } from '@nrwl/devkit';
+import { addProjectConfiguration, readJson, Tree } from '@nrwl/devkit';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 import { jestConfigObject } from '@nrwl/jest/src/utils/config/functions';
 
@@ -10,7 +10,7 @@ describe('Replace gatsby-image with gatsby-plugin-image to dependencies 12.9.1',
   let tree: Tree;
 
   beforeEach(async () => {
-    tree = createTreeWithEmptyWorkspace();
+    tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
   });
 
   it(`should replace with gatsby-plugin-image if gatsby-image is in dependencies`, async () => {
@@ -54,22 +54,15 @@ describe('Replace gatsby-image with gatsby-plugin-image to dependencies 12.9.1',
         devDependencies: {},
       })
     );
-    tree.write(
-      'workspace.json',
-      JSON.stringify({
-        projects: {
-          app1: {
-            root: 'apps/app1',
-            projectType: 'application',
-            targets: {
-              build: {
-                executor: '@nrwl/gatsby:build',
-              },
-            },
-          },
+    addProjectConfiguration(tree, 'app1', {
+      root: 'apps/app1',
+      name: 'app1',
+      targets: {
+        build: {
+          executor: '@nrwl/gatsby:build',
         },
-      })
-    );
+      },
+    });
 
     tree.write('apps/app1/package.json', '{"dependencies":{}}');
     tree.write(

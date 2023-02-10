@@ -11,5 +11,6 @@
     }
   },
   "tags": [],
-  "implicitDependencies": ["gatsby"]
+  "implicitDependencies": ["gatsby"],
+  "name": "gatsby-e2e"
 }

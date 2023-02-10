@@ -1,10 +1,10 @@
 import {
   addDependenciesToPackageJson,
-  Tree,
   formatFiles,
-  removeDependenciesFromPackageJson,
-  readJson,
   getProjects,
+  readJson,
+  removeDependenciesFromPackageJson,
+  Tree,
   visitNotIgnoredFiles,
 } from '@nrwl/devkit';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';

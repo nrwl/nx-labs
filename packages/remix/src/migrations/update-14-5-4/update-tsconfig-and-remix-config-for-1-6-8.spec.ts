@@ -1,7 +1,6 @@
 import {
   addProjectConfiguration,
   joinPathFragments,
-  readJson,
   readWorkspaceConfiguration,
   Tree,
   updateWorkspaceConfiguration,
@@ -12,7 +11,7 @@ import update from './update-tsconfig-and-remix-config-for-1-6-8';
 
 describe('Update remix.config', () => {
   it('should add watchPaths', async () => {
-    const tree = createTreeWithEmptyWorkspace();
+    const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     createLegacyRemixApp(tree, 'remix', 'apps/remix');
 
     await update(tree);
@@ -23,7 +22,7 @@ describe('Update remix.config', () => {
   });
 
   it('should account for workspaceLayout', async () => {
-    const tree = createTreeWithEmptyWorkspace();
+    const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     createLegacyRemixApp(tree, 'remix', 'apps/remix');
 
     const workspaceConfig = readWorkspaceConfiguration(tree);
@@ -40,7 +39,7 @@ describe('Update remix.config', () => {
   });
 
   it('should account for nested apps', async () => {
-    const tree = createTreeWithEmptyWorkspace();
+    const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     createLegacyRemixApp(tree, 'nested-remix', 'apps/very/very/nested/remix');
 
     await update(tree);
@@ -51,7 +50,7 @@ describe('Update remix.config', () => {
   });
 
   it('should update multiple apps', async () => {
-    const tree = createTreeWithEmptyWorkspace();
+    const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     createLegacyRemixApp(tree, 'remix', 'apps/remix');
     createLegacyRemixApp(tree, 'another-remix', 'apps/another-remix');
 
@@ -66,7 +65,7 @@ describe('Update remix.config', () => {
   });
 
   it('should not touch non-Remix apps', async () => {
-    const tree = createTreeWithEmptyWorkspace();
+    const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     createLegacyRemixApp(tree, 'remix', 'apps/remix');
     addProjectConfiguration(tree, 'not-remix', {
       root: 'apps/not-remix',
@@ -84,7 +83,7 @@ describe('Update remix.config', () => {
 
 describe('Update app tsconfig.json', () => {
   it('should remove `basePath`', async () => {
-    const tree = createTreeWithEmptyWorkspace();
+    const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     createLegacyRemixApp(tree, 'remix', 'apps/remix');
 
     await update(tree);
@@ -95,7 +94,7 @@ describe('Update app tsconfig.json', () => {
   });
 
   it('should add `extends`', async () => {
-    const tree = createTreeWithEmptyWorkspace();
+    const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     createLegacyRemixApp(tree, 'remix', 'apps/remix');
 
     await update(tree);
@@ -106,7 +105,7 @@ describe('Update app tsconfig.json', () => {
   });
 
   it('should account for nested apps', async () => {
-    const tree = createTreeWithEmptyWorkspace();
+    const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     createLegacyRemixApp(tree, 'nested-remix', 'apps/very/very/nested/remix');
 
     await update(tree);
@@ -117,7 +116,7 @@ describe('Update app tsconfig.json', () => {
   });
 
   it('should not touch non-Remix apps', async () => {
-    const tree = createTreeWithEmptyWorkspace();
+    const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     createLegacyRemixApp(tree, 'remix', 'apps/remix');
     addProjectConfiguration(tree, 'not-remix', {
       root: 'apps/not-remix',

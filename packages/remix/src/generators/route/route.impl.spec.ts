@@ -1,13 +1,13 @@
 import { Tree } from '@nrwl/devkit';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
-import routeGenerator from './route.impl';
 import applicationGenerator from '../application/application.impl';
+import routeGenerator from './route.impl';
 
 describe('route', () => {
   let tree: Tree;
 
   beforeEach(() => {
-    tree = createTreeWithEmptyWorkspace();
+    tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     tree.write('.gitignore', `/node_modules/dist`);
   });
 

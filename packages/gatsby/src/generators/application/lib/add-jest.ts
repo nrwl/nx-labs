@@ -1,10 +1,10 @@
+import { Tree, updateJson } from '@nrwl/devkit';
 import { jestProjectGenerator } from '@nrwl/jest';
 import { NormalizedSchema } from './normalize-options';
-import { Tree, updateJson } from '@nrwl/devkit';
 
 export async function addJest(host: Tree, options: NormalizedSchema) {
   if (options?.unitTestRunner !== 'jest') {
-    return () => {};
+    return () => void 0;
   }
 
   const installTask = await jestProjectGenerator(host, {

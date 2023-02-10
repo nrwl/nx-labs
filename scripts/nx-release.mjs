@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import yargsParser from 'yargs-parser';
-import releaseIt from 'release-it';
 import childProcess from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import releaseIt from 'release-it';
+import yargsParser from 'yargs-parser';
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -57,8 +57,8 @@ if (!parsedArgs.local) {
 function updatePackageJsonFiles(parsedVersion, isLocal) {
   let pkgFiles = [
     'package.json',
-    'dist/npm/expo/package.json',
     'dist/npm/remix/package.json',
+    'dist/npm/deno/package.json',
   ];
   if (isLocal) {
     pkgFiles = pkgFiles.filter((f) => f !== 'package.json');

@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "name": "deno",
+  "version": "0.0.1",
+  "generators": {
+    "application": {
+      "factory": "./src/generators/application/generator",
+      "schema": "./src/generators/application/schema.json",
+      "description": "Create a new Deno application",
+      "aliases": ["app"]
+    },
+    "library": {
+      "factory": "./src/generators/library/library",
+      "schema": "./src/generators/library/schema.json",
+      "description": "Create a new Deno library",
+      "aliases": ["lib"]
+    },
+    "init": {
+      "factory": "./src/generators/init/generator",
+      "schema": "./src/generators/init/schema.json",
+      "description": "Intialize configurations for Deno"
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "version": 2,
+  "cli": "nx",
+  "title": "Deno Lint executor",
+  "description": "Lint JavaScript/TypeScript source code with Deno",
+  "type": "object",
+  "properties": {
+    "denoConfig": {
+      "type": "string",
+      "description": "Path to the Deno configuration file."
+    },
+    "compact": {
+      "type": "boolean",
+      "description": "Output lint results in compact format",
+      "default": false
+    },
+    "ignore": {
+      "type": "string",
+      "description": "Ignore litning particular files"
+    },
+    "json": {
+      "type": "boolean",
+      "description": "Output lint results in JSON format",
+      "default": false
+    },
+    "quiet": {
+      "aliases": ["q"],
+      "type": "boolean",
+      "description": "Suppress diagnostic output",
+      "default": false
+    },
+    "rulesExclude": {
+      "type": "string",
+      "description": "Comma seperated list of linting rules to exclude"
+    },
+    "rulesInclude": {
+      "type": "string",
+      "description": "Comma seperated list of linting rules to include"
+    },
+    "rulesTags": {
+      "type": "string",
+      "description": "Comma seperated list of linting rules with a tag"
+    },
+    "unstable": {
+      "type": "boolean",
+      "description": "Enable unstable rules",
+      "default": false
+    },
+    "watch": {
+      "type": "boolean",
+      "description": "Watch files for changes and re-run. Only local files from entry point module graph are watched",
+      "default": false
+    }
+  },
+  "required": ["denoConfig"]
+}

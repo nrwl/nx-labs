@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "$id": "NxDenoLibrary",
+  "title": "Deno Library Generator",
+  "description": "Generate a new Deno library",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the library",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use?",
+      "pattern": "^[a-zA-Z].*$"
+    },
+    "tags": {
+      "type": "string",
+      "description": "Add tags to the project",
+      "alias": "t"
+    },
+    "directory": {
+      "type": "string",
+      "description": "A directory where the project is placed",
+      "alias": "d",
+      "x-priority": "important"
+    },
+    "unitTestRunner": {
+      "type": "string",
+      "description": "Add a test target for this application.",
+      "enum": ["deno", "none"],
+      "default": "deno"
+    },
+    "linter": {
+      "type": "string",
+      "description": "Add a linting target for this application.",
+      "enum": ["deno", "none"],
+      "default": "deno"
+    }
+  },
+  "required": ["name"]
+}
