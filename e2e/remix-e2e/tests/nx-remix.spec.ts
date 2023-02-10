@@ -1,18 +1,17 @@
 import {
-  checkFilesExist,
   ensureNxProject,
   readJson,
   runNxCommandAsync,
   uniq,
 } from '@nrwl/nx-plugin/testing';
 describe('remix e2e', () => {
-  it('should create remix', async () => {
+  it('should create app', async () => {
     const plugin = uniq('remix');
     ensureNxProject('@remix/remix', 'dist/packages/remix');
-    await runNxCommandAsync(`generate @remix/remix:remix ${plugin}`);
+    await runNxCommandAsync(`generate @remix/remix:app ${plugin}`);
 
     const result = await runNxCommandAsync(`build ${plugin}`);
-    expect(result.stdout).toContain('Executor ran');
+    expect(result.stdout).toContain('Successfully ran target build');
   }, 120000);
 
   describe('--directory', () => {
@@ -20,11 +19,10 @@ describe('remix e2e', () => {
       const plugin = uniq('remix');
       ensureNxProject('@remix/remix', 'dist/packages/remix');
       await runNxCommandAsync(
-        `generate @remix/remix:remix ${plugin} --directory subdir`
+        `generate @remix/remix:app ${plugin} --directory subdir`
       );
-      expect(() =>
-        checkFilesExist(`libs/subdir/${plugin}/src/index.ts`)
-      ).not.toThrow();
+      const result = await runNxCommandAsync(`build ${plugin}`);
+      expect(result.stdout).toContain('Successfully ran target build');
     }, 120000);
   });
 
@@ -33,9 +31,9 @@ describe('remix e2e', () => {
       const plugin = uniq('remix');
       ensureNxProject('@remix/remix', 'dist/packages/remix');
       await runNxCommandAsync(
-        `generate @remix/remix:remix ${plugin} --tags e2etag,e2ePackage`
+        `generate @remix/remix:app ${plugin} --tags e2etag,e2ePackage`
       );
-      const project = readJson(`libs/${plugin}/project.json`);
+      const project = readJson(`apps/${plugin}/project.json`);
       expect(project.tags).toEqual(['e2etag', 'e2ePackage']);
     }, 120000);
   });

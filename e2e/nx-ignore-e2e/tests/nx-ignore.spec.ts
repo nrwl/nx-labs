@@ -1,5 +1,5 @@
-import { join } from 'path';
 import { mkdirSync, writeFileSync } from 'fs-extra';
+import { join } from 'path';
 
 import {
   ensureNxProject,
@@ -69,7 +69,7 @@ describe('nx-ignore e2e', () => {
       runCommand(`git commit -m "${msg}" --allow-empty`);
 
       const result = runCommand(`npx nx-ignore ${proj}`);
-      expect(result).toMatch(/Force build/);
+      expect(result).toMatch(/Forced build/);
     });
   }, 120_000);
 });
