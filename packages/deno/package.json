@@ -6,6 +6,6 @@
   "executors": "./executors.json",
   "dependencies": {
     "fs-extra": "^11.0.0",
-    "@nrwl/devkit": "^15.6.3"
+    "@nrwl/devkit": "^15.7.0-beta.5"
   }
 }
