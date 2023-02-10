@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/schema",
   "version": 2,
   "cli": "nx",
-  "title": "Deno Build Executor",
+  "title": "Deno Bundle Executor",
   "description": "Output a single JavaScript file with all dependencies",
   "type": "object",
   "properties": {

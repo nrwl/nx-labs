@@ -1,14 +1,14 @@
 {
   "$schema": "http://json-schema.org/schema",
   "executors": {
-    "build": {
-      "implementation": "./src/executors/build/build.impl",
-      "schema": "./src/executors/build/schema.json",
+    "bundle": {
+      "implementation": "./src/executors/bundle/bundle.impl",
+      "schema": "./src/executors/bundle/schema.json",
       "description": "Output a single JavaScript file with all dependencies."
     },
-    "serve": {
-      "implementation": "./src/executors/serve/serve.impl",
-      "schema": "./src/executors/serve/schema.json",
+    "run": {
+      "implementation": "./src/executors/run/run.impl",
+      "schema": "./src/executors/run/schema.json",
       "description": "Run a JavaScript or TypeScript program in watch mode"
     },
     "lint": {

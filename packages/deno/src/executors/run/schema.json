@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/schema",
   "version": 2,
   "cli": "nx",
-  "title": "Deno Serve Executor",
+  "title": "Deno Run Executor",
   "description": "Run a JavaScript or TypeScript program in watch mode",
   "type": "object",
   "properties": {

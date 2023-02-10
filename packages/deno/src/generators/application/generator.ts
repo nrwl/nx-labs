@@ -74,7 +74,7 @@ export default async function (
     sourceRoot: `${normalizedOptions.projectRoot}/src`,
     targets: {
       build: {
-        executor: '@nrwl/deno:build',
+        executor: '@nrwl/deno:bundle',
         outputs: [`dist/${normalizedOptions.projectRoot}`],
         options: {
           main: `${normalizedOptions.projectRoot}/src/main.ts`,
@@ -83,7 +83,7 @@ export default async function (
         },
       },
       serve: {
-        executor: '@nrwl/deno:serve',
+        executor: '@nrwl/deno:run',
         options: {
           buildTarget: `${normalizedOptions.projectName}:build`,
         },
