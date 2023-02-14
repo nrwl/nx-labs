@@ -14,7 +14,6 @@ import {
 import { extname, join, relative } from 'path';
 import { runDeno } from '../utils/run-deno';
 
-// TODO: can this be configurable via plugin settings?
 const ALLOWED_FILE_EXT = [
   '.ts',
   '.tsx',
@@ -24,7 +23,7 @@ const ALLOWED_FILE_EXT = [
   '.mjs',
   '.json',
 ];
-const BATCH_SIZE = 5;
+const BATCH_SIZE = 10;
 
 export async function processProjectGraph(
   graph: ProjectGraph,
@@ -32,7 +31,7 @@ export async function processProjectGraph(
 ): Promise<ProjectGraph> {
   const builder = new ProjectGraphBuilder(graph);
   const projectRootMap = createProjectRootMappings(graph.nodes);
-  const processes: Array<Promise<void>> = [];
+  const processes: Array<() => Promise<void>> = [];
 
   const addDepToGraph =
     (_sourceProject: string, _fileToProcess: FileData) =>
@@ -54,34 +53,29 @@ export async function processProjectGraph(
   for (const [name, project] of Object.entries(
     context.projectsConfigurations.projects
   )) {
-    // TODO: we might need to use the files in the graph as adding adding to
-    // existing workspace might already have files processed by the graph
-    // const filesInProject = context.fileMap[name].filter((f) =>
-    //   ALLOWED_FILE_EXT.includes(extname(f.file))
-    // );
-    const filesInProject = context.filesToProcess[name].filter((f) =>
+    // NOTE (chau, caleb) we're using the fileMap instead of fileToProcess
+    // because the DAEMON already processed ts files that we need to process even in brand new workspace.
+    const filesInProject = context.fileMap[name].filter((f) =>
       ALLOWED_FILE_EXT.includes(extname(f.file))
     );
     if (!isDenoProject(project) || filesInProject.length === 0) {
       continue;
     }
+
     for (const file of filesInProject) {
-      // TODO: should process in queue of X (CPU - 1?) workers.
-      processes.push(processFileInfo(file, addDepToGraph(name, file)));
+      processes.push(() => processFileInfo(file, addDepToGraph(name, file)));
     }
   }
 
-  // for (const project in context.filesToProcess) {
-  //   for (const file of context.filesToProcess[project]) {
-  //     if (ALLOWED_FILE_EXT.includes(extname(file.file))) {
-  //       // TODO: should we check of a deno.json is in the project root
-  //       // and exit so we don't spin up extra processes if not needed?
-  //       processes.push(processFileWithContext(file, addDepsCb(project, file)));
-  //     }
-  //   }
-  // }
+  const batchedProcesses: Array<typeof processes> = [];
 
-  await Promise.all(processes);
+  while (processes.length > 0) {
+    batchedProcesses.push(processes.splice(0, BATCH_SIZE));
+  }
+
+  for (const batch of batchedProcesses) {
+    await Promise.all(batch.map((fn) => fn()));
+  }
 
   return builder.getUpdatedProjectGraph();
 }
