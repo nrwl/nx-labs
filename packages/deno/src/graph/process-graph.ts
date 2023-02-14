@@ -1,10 +1,12 @@
 import {
   FileData,
+  ProjectConfiguration,
   ProjectGraph,
   ProjectGraphBuilder,
   ProjectGraphProcessorContext,
   workspaceRoot,
 } from '@nrwl/devkit';
+import { existsSync } from 'fs';
 import {
   createProjectRootMappings,
   findProjectForPath,
@@ -22,6 +24,7 @@ const ALLOWED_FILE_EXT = [
   '.mjs',
   '.json',
 ];
+const BATCH_SIZE = 5;
 
 export async function processProjectGraph(
   graph: ProjectGraph,
@@ -31,11 +34,11 @@ export async function processProjectGraph(
   const projectRootMap = createProjectRootMappings(graph.nodes);
   const processes: Array<Promise<void>> = [];
 
-  const addDepsCb =
+  const addDepToGraph =
     (_sourceProject: string, _fileToProcess: FileData) =>
-    (_resolvedFilePath: string) => {
+    (_resolvedTargetFilePath: string) => {
       const targetProject = findProjectForPath(
-        _resolvedFilePath,
+        _resolvedTargetFilePath,
         projectRootMap
       );
       if (targetProject) {
@@ -48,25 +51,60 @@ export async function processProjectGraph(
       // TODO: handle external deps?
     };
 
-  // TODO: maybe we should batch the files to prevent spawning too many processes at once?
-  for (const project in context.filesToProcess) {
-    for (const file of context.filesToProcess[project]) {
-      if (ALLOWED_FILE_EXT.includes(extname(file.file))) {
-        // TODO: should we check of a deno.json is in the project root
-        // and exit so we don't spin up extra processes if not needed?
-        processes.push(processFileWithContext(file, addDepsCb(project, file)));
-      }
+  for (const [name, project] of Object.entries(
+    context.projectsConfigurations.projects
+  )) {
+    // TODO: we might need to use the files in the graph as adding adding to
+    // existing workspace might already have files processed by the graph
+    // const filesInProject = context.fileMap[name].filter((f) =>
+    //   ALLOWED_FILE_EXT.includes(extname(f.file))
+    // );
+    const filesInProject = context.filesToProcess[name].filter((f) =>
+      ALLOWED_FILE_EXT.includes(extname(f.file))
+    );
+    if (!isDenoProject(project) || filesInProject.length === 0) {
+      continue;
+    }
+    for (const file of filesInProject) {
+      // TODO: should process in queue of X (CPU - 1?) workers.
+      processes.push(processFileInfo(file, addDepToGraph(name, file)));
     }
   }
+
+  // for (const project in context.filesToProcess) {
+  //   for (const file of context.filesToProcess[project]) {
+  //     if (ALLOWED_FILE_EXT.includes(extname(file.file))) {
+  //       // TODO: should we check of a deno.json is in the project root
+  //       // and exit so we don't spin up extra processes if not needed?
+  //       processes.push(processFileWithContext(file, addDepsCb(project, file)));
+  //     }
+  //   }
+  // }
 
   await Promise.all(processes);
 
   return builder.getUpdatedProjectGraph();
 }
 
-async function processFileWithContext(
+function isDenoProject(project: ProjectConfiguration) {
+  if (existsSync(join(workspaceRoot, project.root, 'deno.json'))) {
+    return true;
+  }
+
+  if (
+    Object.values(project.targets).some((target) =>
+      target.executor.startsWith('@nrwl/deno')
+    )
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+async function processFileInfo(
   fileToProcess: FileData,
-  contextProcessor: (filePathFromRoot: string) => void
+  handleTargetFile: (targetFilePath: string) => void
 ) {
   const fileInfo: Partial<DenoInfoOutput> = await getDenoFileInfo(
     fileToProcess
@@ -83,11 +121,11 @@ async function processFileWithContext(
   if (!depInfo) return;
 
   for (const dep of depInfo) {
-    const fileFromWorkspaceRoot = relative(
+    const targetFileFromWorkspaceRoot = relative(
       workspaceRoot,
       dep.code.specifier.replace('file://', '')
     );
-    contextProcessor(fileFromWorkspaceRoot);
+    handleTargetFile(targetFileFromWorkspaceRoot);
   }
 }
 

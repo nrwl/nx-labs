@@ -14,6 +14,7 @@ export interface DenoExecOptions {
 }
 
 export function runDeno(args: any[], options: DenoExecOptions = {}) {
+  // TODO: make sure this doesn't popup cmd on windows?
   return spawn('deno', args, {
     stdio: options.stdio || 'inherit',
     cwd: options.cwd || workspaceRoot,
@@ -21,5 +22,7 @@ export function runDeno(args: any[], options: DenoExecOptions = {}) {
       ...process.env,
       ...(options.env || {}),
     },
+    shell: false,
+    windowsHide: true,
   });
 }
