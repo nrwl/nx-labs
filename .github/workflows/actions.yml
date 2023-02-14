@@ -21,11 +21,12 @@ jobs:
         uses: nrwl/nx-set-shas@v2
       - uses: denoland/setup-deno@v1
         with:
-          deno-version: "^1.3"
+          deno-version: '^1.3'
       - uses: actions/setup-node@v1
         with:
           node-version: '16'
       - run: yarn
+      - run: deno info && deno --version
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - run: npx nx affected --target=test --parallel --max-parallel=2
       - run: npx nx affected --target=e2e --parallel --max-parallel=2
@@ -42,11 +43,12 @@ jobs:
         uses: nrwl/nx-set-shas@v2
       - uses: denoland/setup-deno@v1
         with:
-          deno-version: "^1.3"
+          deno-version: '^1.3'
       - uses: actions/setup-node@v1
         with:
           node-version: '16'
       - run: yarn
+      - run: deno info && deno --version
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - run: npx nx affected --target=test --parallel --max-parallel=2
       - run: npx nx affected --target=e2e --parallel --max-parallel=2
@@ -57,7 +59,7 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
-        agent: [ 1, 2, 3 ]
+        agent: [1, 2, 3]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
