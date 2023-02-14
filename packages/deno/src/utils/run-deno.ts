@@ -14,22 +14,14 @@ export interface DenoExecOptions {
 }
 
 export function runDeno(args: any[], options: DenoExecOptions = {}) {
-  // TODO: make sure this doesn't popup cmd on windows?
-  const spawnProcess = spawn('deno', args, {
+  return spawn('deno', args, {
     stdio: options.stdio || 'inherit',
     cwd: options.cwd || workspaceRoot,
     env: {
       ...process.env,
       ...(options.env || {}),
     },
-    shell: false,
+    // TODO: make sure this doesn't popup cmd on windows?
     windowsHide: true,
   });
-
-  spawnProcess.on('error', (err) => {
-    console.log(`error -->`, err);
-    throw err;
-  });
-
-  return spawnProcess;
 }
