@@ -22,7 +22,5 @@ export function runDeno(args: any[], options: DenoExecOptions = {}) {
       ...process.env,
       ...(options.env || {}),
     },
-    shell: false,
-    windowsHide: true,
   });
 }
