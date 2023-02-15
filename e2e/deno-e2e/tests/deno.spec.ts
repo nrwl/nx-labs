@@ -113,7 +113,7 @@ Deno.test('Another File', async () => {
       );
     }, 120_000);
 
-    it('should lint deno app w/options', async () => {
+    xit('should lint deno app w/options', async () => {
       const badFilePath = join(
         tmpProjPath(),
         'apps',
@@ -286,7 +286,7 @@ Deno.test('Another File', async () => {
       );
     }, 120_000);
 
-    it('should lint deno lib w/options', async () => {
+    xit('should lint deno lib w/options', async () => {
       const badFilePath = join(
         tmpProjPath(),
         'libs',

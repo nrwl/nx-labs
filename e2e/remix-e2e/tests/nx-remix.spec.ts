@@ -5,9 +5,18 @@ import {
   uniq,
 } from '@nrwl/nx-plugin/testing';
 describe('remix e2e', () => {
+  beforeAll(() => {
+    ensureNxProject('@remix/remix', 'dist/packages/remix');
+  });
+
+  afterAll(() => {
+    // `nx reset` kills the daemon, and performs
+    // some work which can help clean up e2e leftovers
+    runNxCommandAsync('reset');
+  });
+
   it('should create app', async () => {
     const plugin = uniq('remix');
-    ensureNxProject('@remix/remix', 'dist/packages/remix');
     await runNxCommandAsync(`generate @remix/remix:app ${plugin}`);
 
     const result = await runNxCommandAsync(`build ${plugin}`);
@@ -17,7 +26,6 @@ describe('remix e2e', () => {
   describe('--directory', () => {
     it('should create src in the specified directory', async () => {
       const plugin = uniq('remix');
-      ensureNxProject('@remix/remix', 'dist/packages/remix');
       await runNxCommandAsync(
         `generate @remix/remix:app ${plugin} --directory subdir`
       );
@@ -29,7 +37,6 @@ describe('remix e2e', () => {
   describe('--tags', () => {
     it('should add tags to the project', async () => {
       const plugin = uniq('remix');
-      ensureNxProject('@remix/remix', 'dist/packages/remix');
       await runNxCommandAsync(
         `generate @remix/remix:app ${plugin} --tags e2etag,e2ePackage`
       );
