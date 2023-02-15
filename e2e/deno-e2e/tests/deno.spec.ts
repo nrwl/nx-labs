@@ -130,7 +130,7 @@ console.log('123');
       );
 
       await expect(async () => {
-        await runNxCommandAsync(`lint ${appName}`);
+        await runNxCommandAsync(`lint ${appName} --skip-nx-cache`);
       }).rejects.toThrow();
 
       const result = await runNxCommandAsync(
@@ -304,7 +304,7 @@ console.log('123');
       );
 
       await expect(async () => {
-        await runNxCommandAsync(`lint ${libName}`);
+        await runNxCommandAsync(`lint ${libName} --skip-nx-cache`);
       }).rejects.toThrow();
 
       const result = await runNxCommandAsync(
