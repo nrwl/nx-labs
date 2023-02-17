@@ -115,7 +115,7 @@ async function processFileInfo(
   if (!depInfo) return;
 
   for (const dep of depInfo) {
-    if (dep.code.specifier.startsWith('files://')) {
+    if (dep.code?.specifier?.startsWith('files://')) {
       const targetFileFromWorkspaceRoot = relative(
         workspaceRoot,
         dep.code.specifier.replace('file://', '')
