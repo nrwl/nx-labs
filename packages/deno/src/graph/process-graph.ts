@@ -40,14 +40,14 @@ export async function processProjectGraph(
         _resolvedTargetFilePath,
         projectRootMap
       );
-      if (targetProject) {
-        builder.addExplicitDependency(
-          _sourceProject,
-          _fileToProcess.file,
-          targetProject
-        );
+      if (!targetProject) {
+        return;
       }
-      // TODO: handle external deps?
+      builder.addExplicitDependency(
+        _sourceProject,
+        _fileToProcess.file,
+        targetProject
+      );
     };
 
   for (const [name, project] of Object.entries(
@@ -115,11 +115,15 @@ async function processFileInfo(
   if (!depInfo) return;
 
   for (const dep of depInfo) {
-    const targetFileFromWorkspaceRoot = relative(
-      workspaceRoot,
-      dep.code.specifier.replace('file://', '')
-    );
-    handleTargetFile(targetFileFromWorkspaceRoot);
+    if (dep.code.specifier.startsWith('files://')) {
+      const targetFileFromWorkspaceRoot = relative(
+        workspaceRoot,
+        dep.code.specifier.replace('file://', '')
+      );
+      handleTargetFile(targetFileFromWorkspaceRoot);
+    } else {
+      // TODO(Caleb & Chau) handle external nodes
+    }
   }
 }
 
