@@ -7,13 +7,18 @@ export function addPathToDenoSettings(tree: Tree, path: string) {
     tree.write(vscodeSettingsPath, JSON.stringify({ enablePaths: [] }));
   }
 
-  updateJson(tree, vscodeSettingsPath, (json) => {
-    const paths = new Set(json['deno.enablePaths'] || []);
+  updateJson(
+    tree,
+    vscodeSettingsPath,
+    (json) => {
+      const paths = new Set(json['deno.enablePaths'] || []);
 
-    paths.add(path);
+      paths.add(path);
 
-    json['deno.enablePaths'] = Array.from(paths);
+      json['deno.enablePaths'] = Array.from(paths);
 
-    return json;
-  });
+      return json;
+    },
+    { expectComments: true, allowTrailingComma: true }
+  );
 }

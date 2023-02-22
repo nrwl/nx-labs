@@ -30,7 +30,12 @@ function normalizeOptions(
     ? `${names(options.directory).fileName}/${name}`
     : name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
-  const projectRoot = `${getWorkspaceLayout(tree).appsDir}/${projectDirectory}`;
+  const appDir = getWorkspaceLayout(tree).appsDir;
+  // prevent paths from being dist/./app-name
+  const projectRoot = joinPathFragments(
+    appDir === '.' ? '' : appDir,
+    projectDirectory
+  );
   const parsedTags = options.tags
     ? options.tags.split(',').map((s) => s.trim())
     : [];

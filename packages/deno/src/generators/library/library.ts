@@ -32,7 +32,12 @@ function normalizeOptions(
     ? `${names(options.directory).fileName}/${name}`
     : name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
-  const projectRoot = `${getWorkspaceLayout(tree).libsDir}/${projectDirectory}`;
+  const libDir = getWorkspaceLayout(tree).libsDir;
+  // prevent paths from being dist/./lib-name
+  const projectRoot = joinPathFragments(
+    libDir === '.' ? '' : libDir,
+    projectDirectory
+  );
   const parsedTags = options.tags
     ? options.tags.split(',').map((s) => s.trim())
     : [];
