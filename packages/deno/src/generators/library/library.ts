@@ -7,6 +7,7 @@ import {
   joinPathFragments,
   names,
   offsetFromRoot,
+  ProjectConfiguration,
   Tree,
   updateJson,
 } from '@nrwl/devkit';
@@ -63,48 +64,73 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
   );
 }
 
-export async function denoLibraryGenerator(
-  tree: Tree,
-  options: LibraryGeneratorSchema
-) {
-  const normalizedOptions = normalizeOptions(tree, options);
-  initDeno(tree);
-  const targets = {
+function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
+  const targets: ProjectConfiguration['targets'] = {
     test: {
       executor: '@nrwl/deno:test',
-      outputs: [`coverage/${normalizedOptions.projectRoot}`],
+      outputs: [`coverage/${opts.projectRoot}`],
       options: {
-        coverageDirectory: `coverage/${normalizedOptions.projectRoot}`,
-        denoConfig: `${normalizedOptions.projectRoot}/deno.json`,
+        coverageDirectory: `coverage/${opts.projectRoot}`,
+        denoConfig: `${opts.projectRoot}/deno.json`,
         check: 'local',
       },
     },
     lint: {
       executor: '@nrwl/deno:lint',
       options: {
-        denoConfig: `${normalizedOptions.projectRoot}/deno.json`,
+        denoConfig: `${opts.projectRoot}/deno.json`,
       },
     },
   };
 
-  if (normalizedOptions.unitTestRunner === 'none') {
+  if (opts.unitTestRunner === 'none') {
     delete targets.test;
   }
 
-  if (normalizedOptions.linter === 'none') {
+  if (opts.linter === 'none') {
     delete targets.lint;
   }
 
-  addProjectConfiguration(tree, normalizedOptions.projectName, {
-    root: normalizedOptions.projectRoot,
+  if (opts.runnable) {
+    targets.serve = {
+      executor: '@nrwl/deno:run',
+      options: {
+        denoConfig: `${opts.projectRoot}/deno.json`,
+        main: `${opts.projectRoot}/src/index.ts`,
+      },
+      configurations: {
+        // TODO(caleb): what should this be called?
+        // the idea is to have a configuration that allows you to run a 'single shot' of maybe an internal CLI tool or something?
+        once: {
+          watch: false,
+        },
+      },
+      defaultConfiguration: 'once',
+    };
+  }
+
+  addProjectConfiguration(tree, opts.projectName, {
+    name: opts.projectName,
+    root: opts.projectRoot,
+    sourceRoot: `${opts.projectRoot}/src`,
     projectType: 'library',
-    sourceRoot: `${normalizedOptions.projectRoot}/src`,
     targets,
-    tags: normalizedOptions.parsedTags,
+    tags: opts.parsedTags,
   });
+}
+
+export async function denoLibraryGenerator(
+  tree: Tree,
+  options: LibraryGeneratorSchema
+) {
+  const normalizedOptions = normalizeOptions(tree, options);
+
+  initDeno(tree);
+  addProjectConfig(tree, normalizedOptions);
   addFiles(tree, normalizedOptions);
   updateImportMap(tree, normalizedOptions);
   addPathToDenoSettings(tree, normalizedOptions.projectRoot);
+
   await formatFiles(tree);
 }
 
@@ -115,7 +141,7 @@ function updateImportMap(tree: Tree, options: NormalizedSchema) {
     json.imports = json.imports || {};
     if (json.imports[importPath]) {
       throw new Error(
-        'Import path already exists in import_map.json for ${importPath}'
+        `Import path already exists in import_map.json for ${importPath}`
       );
     }
     // NOTE relative paths need to be prefixed with './' for deno to treat as a local file import

@@ -4,4 +4,5 @@ export interface LibraryGeneratorSchema {
   directory?: string;
   unitTestRunner?: 'deno' | 'none';
   linter?: 'deno' | 'none';
+  runnable?: boolean;
 }

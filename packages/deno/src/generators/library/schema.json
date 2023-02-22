@@ -38,6 +38,11 @@
       "description": "Add a linting target for this application.",
       "enum": ["deno", "none"],
       "default": "deno"
+    },
+    "runnable": {
+      "type": "boolean",
+      "description": "Default the project to not watch for file changes for the 'serve' target. This is helpful when you want to run the project once such as an internal tooling cli. You can always pass --watch=false to prevent the file watcher from starting.",
+      "default": false
     }
   },
   "required": ["name"]
