@@ -94,7 +94,7 @@
     "watch": {
       "type": "boolean",
       "description": "Watch for file changes and restart process automatically. Only local files form entry point module graph are watched.",
-      "default": true
+      "default": false
     }
   },
   "required": []

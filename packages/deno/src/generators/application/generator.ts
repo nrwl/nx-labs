@@ -6,6 +6,7 @@ import {
   joinPathFragments,
   names,
   offsetFromRoot,
+  ProjectConfiguration,
   Tree,
 } from '@nrwl/devkit';
 import { join } from 'path';
@@ -61,51 +62,71 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
   );
 }
 
+function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
+  const targets: ProjectConfiguration['targets'] = {
+    build: {
+      executor: '@nrwl/deno:bundle',
+      outputs: [`dist/${opts.projectRoot}`],
+      options: {
+        main: `${opts.projectRoot}/src/main.ts`,
+        outputFile: `dist/${opts.projectRoot}/main.js`,
+        denoConfig: `${opts.projectRoot}/deno.json`,
+      },
+    },
+    serve: {
+      executor: '@nrwl/deno:run',
+      options: {
+        buildTarget: `${opts.projectName}:build`,
+      },
+    },
+    test: {
+      executor: '@nrwl/deno:test',
+      outputs: [`coverage/${opts.projectRoot}`],
+      options: {
+        coverageDirectory: `coverage/${opts.projectRoot}`,
+        denoConfig: `${opts.projectRoot}/deno.json`,
+      },
+    },
+    lint: {
+      executor: '@nrwl/deno:lint',
+      options: {
+        denoConfig: `${opts.projectRoot}/deno.json`,
+      },
+    },
+  };
+
+  if (opts.withWatch === true) {
+    targets.serve.options.watch = true;
+  }
+
+  if (opts.linter === 'none') {
+    delete targets.lint;
+  }
+
+  if (opts.unitTestRunner === 'none') {
+    delete targets.test;
+  }
+
+  addProjectConfiguration(tree, opts.projectName, {
+    root: opts.projectRoot,
+    projectType: 'application',
+    name: opts.projectName,
+    sourceRoot: `${opts.projectRoot}/src`,
+    targets,
+    tags: opts.parsedTags,
+  });
+}
+
 export default async function (
   tree: Tree,
   options: ApplicationGeneratorSchema
 ) {
   const normalizedOptions = normalizeOptions(tree, options);
+
   initDeno(tree);
-  addProjectConfiguration(tree, normalizedOptions.projectName, {
-    root: normalizedOptions.projectRoot,
-    projectType: 'application',
-    name: normalizedOptions.projectName,
-    sourceRoot: `${normalizedOptions.projectRoot}/src`,
-    targets: {
-      build: {
-        executor: '@nrwl/deno:bundle',
-        outputs: [`dist/${normalizedOptions.projectRoot}`],
-        options: {
-          main: `${normalizedOptions.projectRoot}/src/main.ts`,
-          outputFile: `dist/${normalizedOptions.projectRoot}/main.js`,
-          denoConfig: `${normalizedOptions.projectRoot}/deno.json`,
-        },
-      },
-      serve: {
-        executor: '@nrwl/deno:run',
-        options: {
-          buildTarget: `${normalizedOptions.projectName}:build`,
-        },
-      },
-      test: {
-        executor: '@nrwl/deno:test',
-        outputs: [`coverage/${normalizedOptions.projectRoot}`],
-        options: {
-          coverageDirectory: `coverage/${normalizedOptions.projectRoot}`,
-          denoConfig: `${normalizedOptions.projectRoot}/deno.json`,
-        },
-      },
-      lint: {
-        executor: '@nrwl/deno:lint',
-        options: {
-          denoConfig: `${normalizedOptions.projectRoot}/deno.json`,
-        },
-      },
-    },
-    tags: normalizedOptions.parsedTags,
-  });
+  addProjectConfig(tree, normalizedOptions);
   addFiles(tree, normalizedOptions);
   addPathToDenoSettings(tree, normalizedOptions.projectRoot);
+
   await formatFiles(tree);
 }

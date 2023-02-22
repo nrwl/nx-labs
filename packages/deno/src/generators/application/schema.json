@@ -37,6 +37,11 @@
       "description": "A directory where the project is placed",
       "alias": "d",
       "x-priority": "important"
+    },
+    "withWatch": {
+      "type": "boolean",
+      "description": "Default the project to watch for file changes for the 'serve' target. For projects that do not need watch capability (eg: CLI projects), use --with-watch=false",
+      "default": true
     }
   },
   "required": ["name"]
