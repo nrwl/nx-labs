@@ -4,5 +4,5 @@ export interface ApplicationGeneratorSchema {
   directory?: string;
   unitTestRunner?: 'deno' | 'none';
   linter?: 'deno' | 'none';
-  runnable?: boolean;
+  withWatch?: boolean;
 }

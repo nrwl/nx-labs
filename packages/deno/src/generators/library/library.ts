@@ -91,24 +91,6 @@ function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
     delete targets.lint;
   }
 
-  if (opts.runnable) {
-    targets.serve = {
-      executor: '@nrwl/deno:run',
-      options: {
-        denoConfig: `${opts.projectRoot}/deno.json`,
-        main: `${opts.projectRoot}/src/index.ts`,
-      },
-      configurations: {
-        // TODO(caleb): what should this be called?
-        // the idea is to have a configuration that allows you to run a 'single shot' of maybe an internal CLI tool or something?
-        once: {
-          watch: false,
-        },
-      },
-      defaultConfiguration: 'once',
-    };
-  }
-
   addProjectConfiguration(tree, opts.projectName, {
     name: opts.projectName,
     root: opts.projectRoot,

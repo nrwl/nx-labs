@@ -78,14 +78,6 @@ function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
       options: {
         buildTarget: `${opts.projectName}:build`,
       },
-      configurations: {
-        // TODO(caleb): what should this be called?
-        // the idea is to have a configuration that allows you to run a 'single shot' of maybe an internal CLI tool or something?
-        once: {
-          watch: false,
-        },
-      },
-      ...(opts.runnable ? { defaultConfiguration: 'once' } : {}),
     },
     test: {
       executor: '@nrwl/deno:test',
@@ -103,9 +95,14 @@ function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
     },
   };
 
+  if (opts.withWatch === true) {
+    targets.serve.options.watch = true;
+  }
+
   if (opts.linter === 'none') {
     delete targets.lint;
   }
+
   if (opts.unitTestRunner === 'none') {
     delete targets.test;
   }

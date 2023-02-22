@@ -3,10 +3,13 @@ import {
   parseTargetString,
   readTargetOptions,
 } from '@nrwl/devkit';
+import { ChildProcess } from 'child_process';
 import { processCommonArgs } from '../../utils/arg-utils';
 import { runDeno } from '../../utils/run-deno';
 import { BuildExecutorSchema } from '../bundle/schema';
 import { ServeExecutorSchema } from './schema';
+
+import { createAsyncIterable } from '@nrwl/devkit/src/utils/async-iterable';
 
 export async function* denoServeExecutor(
   options: ServeExecutorSchema,
@@ -15,13 +18,31 @@ export async function* denoServeExecutor(
   const opts = normalizeOptions(options, context);
   const args = createArgs(opts);
 
-  const runningDenoProcess = runDeno(args);
-  // TODO(chau): does process need to be handled differently like @nrwl/js?
+  yield* createAsyncIterable(({ next, done }) => {
+    const runningDenoProcess = runDeno(args);
 
-  yield { success: true };
+    process.on('SIGTERM', async () => {
+      await killCurrentProcess(runningDenoProcess, 'SIGTERM');
+      process.exit(128 + 15);
+    });
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  await new Promise(() => {});
+    process.on('SIGINT', async () => {
+      await killCurrentProcess(runningDenoProcess, 'SIGINT');
+      process.exit(128 + 2);
+    });
+
+    process.on('SIGHUP', async () => {
+      await killCurrentProcess(runningDenoProcess, 'SIGHUP');
+      process.exit(128 + 1);
+    });
+
+    runningDenoProcess.on('exit', (code) => {
+      next({ success: code === 0 });
+      if (!opts.watch) {
+        done();
+      }
+    });
+  });
 }
 
 function normalizeOptions(
@@ -65,9 +86,7 @@ function createArgs(options: ServeExecutorSchema) {
   if (options.inspect) {
     args.push(
       `--inspect-brk=${
-        typeof options.inspect === 'string'
-          ? `${options.inspect}`
-          : '127.0.0.1:9229'
+        typeof options.inspect === 'string' ? options.inspect : '127.0.0.1:9229'
       }`
     );
   }
@@ -83,6 +102,17 @@ function createArgs(options: ServeExecutorSchema) {
   args.push(options.main);
 
   return args;
+}
+
+async function killCurrentProcess(
+  currentProcess: ChildProcess,
+  signal: string
+) {
+  // if the currentProcess.killed is false, invoke kill()
+  // to properly send the signal to the process
+  if (!currentProcess.killed) {
+    currentProcess.kill(signal as NodeJS.Signals);
+  }
 }
 
 export default denoServeExecutor;
