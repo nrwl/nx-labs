@@ -49,7 +49,7 @@ function normalizeOptions(
   options: ServeExecutorSchema,
   context: ExecutorContext
 ) {
-  let mergedOptions: ServeExecutorSchema;
+  let mergedOptions: ServeExecutorSchema = options;
   if (options.buildTarget) {
     const target = parseTargetString(options.buildTarget, context.projectGraph);
     const buildTargetOptions = readTargetOptions<BuildExecutorSchema>(
