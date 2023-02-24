@@ -1,3 +1,7 @@
+/**
+ * JSDoc for this function
+ * @return {string}
+ */
 export function <%= propertyName %>() {
   return "<%= projectName %>";
 }

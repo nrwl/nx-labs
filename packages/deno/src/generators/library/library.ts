@@ -60,6 +60,8 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
       'import_map.json'
     ),
     template: '',
+    hasUnitTestRunner: options.unitTestRunner !== 'none',
+    cliCommand: 'nx',
   };
   generateFiles(
     tree,
@@ -99,7 +101,7 @@ function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
   addProjectConfiguration(tree, opts.projectName, {
     name: opts.projectName,
     root: opts.projectRoot,
-    sourceRoot: `${opts.projectRoot}/src`,
+    sourceRoot: opts.projectRoot,
     projectType: 'library',
     targets,
     tags: opts.parsedTags,
@@ -134,8 +136,7 @@ function updateImportMap(tree: Tree, options: NormalizedSchema) {
     // NOTE relative paths need to be prefixed with './' for deno to treat as a local file import
     json.imports[importPath] = `./${joinPathFragments(
       options.projectRoot,
-      'src',
-      'index.ts'
+      'mod.ts'
     )}`;
     return json;
   });

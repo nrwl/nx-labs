@@ -2,35 +2,11 @@
   "migrations": [
     {
       "cli": "nx",
-      "version": "15.0.12-beta.1",
-      "description": "Set project names in project.json files",
-      "implementation": "./src/migrations/update-15-1-0/set-project-names",
-      "package": "nx",
-      "name": "15.1.0-set-project-names"
-    },
-    {
-      "cli": "nx",
-      "version": "15.3.0-beta.0",
-      "description": "Update projects using @nrwl/web:rollup to @nrwl/rollup:rollup for build.",
-      "factory": "./src/migrations/update-15-3-0/update-rollup-executor",
-      "package": "@nrwl/react",
-      "name": "update-rollup-executor"
-    },
-    {
-      "cli": "nx",
-      "version": "15.3.0-beta.0",
-      "description": "Install new dependencies for React projects using Webpack or Rollup.",
-      "factory": "./src/migrations/update-15-3-0/install-webpack-rollup-dependencies",
-      "package": "@nrwl/react",
-      "name": "install-webpack-rollup-dependencies"
-    },
-    {
-      "version": "15.7.0-beta.0",
-      "description": "Spilt global configuration files (e.g., workspace.json) into individual project.json files.",
-      "cli": "nx",
-      "implementation": "./src/migrations/update-15-7-0/split-configuration-into-project-json-files",
-      "package": "@nrwl/workspace",
-      "name": "15-7-0-split-configuration-into-project-json-files"
+      "version": "15.7.1-beta.0",
+      "description": "Add node_modules to root eslint ignore",
+      "factory": "./src/migrations/update-15-7-1/add-eslint-ignore",
+      "package": "@nrwl/linter",
+      "name": "add-eslint-ignore"
     }
   ]
 }
