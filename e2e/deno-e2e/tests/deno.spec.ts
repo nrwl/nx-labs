@@ -224,18 +224,18 @@ console.log('123');
       await runNxCommandAsync(`generate @nrwl/deno:lib ${libName}`);
       expect(readJson(`import_map.json`)).toEqual({
         imports: {
-          [`@proj/${libName}`]: `./libs/${libName}/src/index.ts`,
+          [`@proj/${libName}`]: `./libs/${libName}/mod.ts`,
         },
       });
       expect(readJson(`libs/${libName}/deno.json`)).toEqual({
         importMap: '../../import_map.json',
       });
-      expect(workspaceFileExists(`libs/${libName}/src/index.ts`)).toBeTruthy();
+      expect(workspaceFileExists(`libs/${libName}/mod.ts`)).toBeTruthy();
       expect(
-        workspaceFileExists(`libs/${libName}/src/lib/${libName}.test.ts`)
+        workspaceFileExists(`libs/${libName}/src/${libName}.test.ts`)
       ).toBeTruthy();
       expect(
-        workspaceFileExists(`libs/${libName}/src/lib/${libName}.ts`)
+        workspaceFileExists(`libs/${libName}/src/${libName}.ts`)
       ).toBeTruthy();
     }, 120_000);
 
@@ -253,7 +253,6 @@ console.log('123');
         'libs',
         libName,
         'src',
-        'lib',
         'file.test.ts'
       );
       writeFileSync(
@@ -292,7 +291,6 @@ Deno.test('Another File', async () => {
         'libs',
         libName,
         'src',
-        'lib',
         'lint.ts'
       );
       writeFileSync(
@@ -343,21 +341,21 @@ console.log('123');
         );
         expect(readJson(`import_map.json`)).toEqual({
           imports: {
-            [`@proj/${libName}`]: `./libs/${libName}/src/index.ts`,
-            [`@proj/nested-${nestedLibName}`]: `./libs/nested/${nestedLibName}/src/index.ts`,
+            [`@proj/${libName}`]: `./libs/${libName}/mod.ts`,
+            [`@proj/nested-${nestedLibName}`]: `./libs/nested/${nestedLibName}/mod.ts`,
           },
         });
         expect(
-          workspaceFileExists(`libs/nested/${nestedLibName}/src/index.ts`)
+          workspaceFileExists(`libs/nested/${nestedLibName}/mod.ts`)
         ).toBeTruthy();
         expect(
           workspaceFileExists(
-            `libs/nested/${nestedLibName}/src/lib/${nestedLibName}.test.ts`
+            `libs/nested/${nestedLibName}/src/${nestedLibName}.test.ts`
           )
         ).toBeTruthy();
         expect(
           workspaceFileExists(
-            `libs/nested/${nestedLibName}/src/lib/${nestedLibName}.ts`
+            `libs/nested/${nestedLibName}/src/${nestedLibName}.ts`
           )
         ).toBeTruthy();
       }, 120_000);
