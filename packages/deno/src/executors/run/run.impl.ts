@@ -36,6 +36,13 @@ export async function* denoServeExecutor(
       process.exit(128 + 1);
     });
 
+    // need to emit a success for other executors that
+    // might be waiting on this dev server in watch mode
+    // i.e. @nrwl/cypress
+    if (opts.watch) {
+      next({ success: true });
+    }
+
     runningDenoProcess.on('exit', (code) => {
       next({ success: code === 0 });
       if (!opts.watch) {
