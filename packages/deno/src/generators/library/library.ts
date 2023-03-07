@@ -8,6 +8,7 @@ import {
   names,
   offsetFromRoot,
   ProjectConfiguration,
+  stripIndents,
   Tree,
   updateJson,
 } from '@nrwl/devkit';
@@ -32,10 +33,10 @@ function normalizeOptions(
     ? `${names(options.directory).fileName}/${name}`
     : name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
-  const libDir = getWorkspaceLayout(tree).libsDir;
+  const layout = getWorkspaceLayout(tree);
   // prevent paths from being dist/./lib-name
   const projectRoot = joinPathFragments(
-    libDir === '.' ? '' : libDir,
+    layout.libsDir === '.' ? '' : layout.libsDir,
     projectDirectory
   );
   const parsedTags = options.tags
@@ -48,6 +49,9 @@ function normalizeOptions(
     projectRoot,
     projectDirectory,
     parsedTags,
+    addNodeEntrypoint: options.addNodeEntrypoint ?? false,
+    importPath:
+      options.importPath || getImportPath(layout.npmScope, projectName),
   };
 }
 
@@ -69,6 +73,10 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
     options.projectRoot,
     templateOptions
   );
+
+  if (!options.addNodeEntrypoint) {
+    tree.delete(`${options.projectRoot}/node.ts`);
+  }
 }
 
 function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
@@ -117,29 +125,55 @@ export async function denoLibraryGenerator(
   initDeno(tree);
   addProjectConfig(tree, normalizedOptions);
   addFiles(tree, normalizedOptions);
-  updateImportMap(tree, normalizedOptions);
+  addImports(tree, normalizedOptions);
   addPathToDenoSettings(tree, normalizedOptions.projectRoot);
 
   await formatFiles(tree);
 }
 
-function updateImportMap(tree: Tree, options: NormalizedSchema) {
-  const { npmScope } = getWorkspaceLayout(tree);
+function addImports(tree: Tree, options: NormalizedSchema) {
   updateJson(tree, 'import_map.json', (json) => {
-    const importPath = getImportPath(npmScope, options.projectName);
     json.imports = json.imports || {};
-    if (json.imports[importPath]) {
+    if (json.imports[options.importPath]) {
       throw new Error(
-        `Import path already exists in import_map.json for ${importPath}`
+        `Import path already exists in import_map.json for ${options.importPath}.
+You can specify a different import path using the --import-path option.
+The value needs to be unique and not already used in the import_map.json file.`
       );
     }
     // NOTE relative paths need to be prefixed with './' for deno to treat as a local file import
-    json.imports[importPath] = `./${joinPathFragments(
+    json.imports[options.importPath] = `./${joinPathFragments(
       options.projectRoot,
       'mod.ts'
     )}`;
     return json;
   });
+
+  if (options.addNodeEntrypoint) {
+    const rootTsConfig = getRootTsConfigPathInTree(tree);
+    if (!tree.exists(rootTsConfig)) {
+      throw new Error(stripIndents`Could not find root tsconfig to add the import path to.
+        This means a root level tsconfig.json or tsconfig.base.json file is not preset but is expected when using the --add-node-entrypoint flag`);
+    }
+    updateJson(tree, rootTsConfig, (json) => {
+      if (json.imports[options.importPath]) {
+        throw new Error(stripIndents`Import path already exists in ${rootTsConfig} for ${options.importPath}.
+You can specify a different import path using the --import-path option.
+The value needs to be unique and not already used in the ${rootTsConfig} file.`);
+      }
+      return json;
+    });
+  }
 }
 
+// TODO(caleb): switch to @nrwl/js version once we update and make it a dep
+function getRootTsConfigPathInTree(tree: Tree): string | null {
+  for (const path of ['tsconfig.base.json', 'tsconfig.json']) {
+    if (tree.exists(path)) {
+      return path;
+    }
+  }
+
+  return 'tsconfig.base.json';
+}
 export default denoLibraryGenerator;
