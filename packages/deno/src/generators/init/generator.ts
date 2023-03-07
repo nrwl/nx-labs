@@ -2,13 +2,12 @@ import {
   generateFiles,
   joinPathFragments,
   readNxJson,
-  stripIndents,
   Tree,
   updateJson,
   updateNxJson,
 } from '@nrwl/devkit';
-import { execSync } from 'child_process';
 import * as path from 'path';
+import { assertDenoInstalled } from '../../utils/run-deno';
 
 function addFiles(tree: Tree) {
   if (!tree.exists('import_map.json')) {
@@ -54,25 +53,9 @@ function addDenoPluginToNxJson(tree: Tree) {
 }
 
 export async function initDeno(tree: Tree) {
-  if (!isDenoInstalled()) {
-    console.warn(stripIndents`Unable to find Deno on your system. 
-Deno will need to be installed in order to run targets from @nrwl/deno in this workspace.
-You can learn how to install deno at https://deno.land/manual/getting_started/installation`);
-  }
+  assertDenoInstalled();
   addFiles(tree);
   addDenoPluginToNxJson(tree);
-}
-
-function isDenoInstalled() {
-  try {
-    execSync('deno --version', {
-      encoding: 'utf-8',
-      env: process.env,
-    });
-    return true;
-  } catch {
-    return false;
-  }
 }
 
 export default initDeno;

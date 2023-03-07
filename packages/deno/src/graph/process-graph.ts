@@ -12,7 +12,7 @@ import {
   findProjectForPath,
 } from 'nx/src/project-graph/utils/find-project-for-path';
 import { extname, join, relative } from 'path';
-import { runDeno } from '../utils/run-deno';
+import { assertDenoInstalled, runDeno } from '../utils/run-deno';
 
 const ALLOWED_FILE_EXT = [
   '.ts',
@@ -29,6 +29,8 @@ export async function processProjectGraph(
   graph: ProjectGraph,
   context: ProjectGraphProcessorContext
 ): Promise<ProjectGraph> {
+  assertDenoInstalled();
+
   const builder = new ProjectGraphBuilder(graph);
   const projectRootMap = createProjectRootMappings(graph.nodes);
   const processes: Array<() => Promise<void>> = [];
