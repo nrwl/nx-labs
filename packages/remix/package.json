@@ -7,6 +7,7 @@
     "@nrwl/devkit": "^14.5.0",
     "@nrwl/js": "^14.5.0",
     "@nrwl/react": "^14.5.0",
+    "nx": "^14.5.0",
     "tslib": "^2.3.1"
   },
   "ng-update": {
