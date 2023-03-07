@@ -76,11 +76,11 @@ export async function gatsbyInitGenerator(host: Tree, schema: InitSchema) {
   setDefaultCollection(host, '@nrwl/gatsby');
 
   if (!schema.unitTestRunner || schema.unitTestRunner === 'jest') {
-    const jestTask = jestInitGenerator(host, {});
+    const jestTask = await jestInitGenerator(host, {});
     tasks.push(jestTask);
   }
   if (!schema.e2eTestRunner || schema.e2eTestRunner === 'cypress') {
-    const cypressTask = cypressInitGenerator(host, {});
+    const cypressTask = await cypressInitGenerator(host, {});
     tasks.push(cypressTask);
   }
 
