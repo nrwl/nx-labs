@@ -28,6 +28,11 @@
       "factory": "./src/generators/preset/generator",
       "schema": "./src/generators/preset/schema.json",
       "description": "preset generator"
+    },
+    "add-import": {
+      "factory": "./src/generators/add-import/generator",
+      "schema": "./src/generators/add-import/schema.json",
+      "description": "add-import generator"
     }
   }
 }

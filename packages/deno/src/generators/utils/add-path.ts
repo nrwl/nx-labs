@@ -11,8 +11,10 @@ export function addPathToDenoSettings(tree: Tree, path: string) {
     tree,
     vscodeSettingsPath,
     (json) => {
-      // TODO: when using a standalone deno, we don't need to specify the paths
-      // just enable it for the whole repo.
+      // deno is already enabled for the whole worksapce, don't need to add paths
+      if (json['deno.enable']) {
+        return json;
+      }
       const paths = new Set(json['deno.enablePaths'] || []);
 
       paths.add(path);

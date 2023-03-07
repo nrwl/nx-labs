@@ -8,13 +8,11 @@ import {
   names,
   offsetFromRoot,
   ProjectConfiguration,
-  stripIndents,
   Tree,
-  updateJson,
 } from '@nrwl/devkit';
 import { join } from 'path';
 import { initDeno } from '../init/generator';
-import { addPathToDenoSettings } from '../utils/add-path';
+import { addImports, addPathToDenoSettings } from '../utils/add-path';
 import { LibraryGeneratorSchema } from './schema';
 
 interface NormalizedSchema extends LibraryGeneratorSchema {
@@ -125,55 +123,18 @@ export async function denoLibraryGenerator(
   initDeno(tree);
   addProjectConfig(tree, normalizedOptions);
   addFiles(tree, normalizedOptions);
-  addImports(tree, normalizedOptions);
+  addImports(tree, {
+    importPath: normalizedOptions.importPath,
+    entryPoints: {
+      deno: `./${joinPathFragments(normalizedOptions.projectRoot, 'mod.ts')}`,
+      node: normalizedOptions.addNodeEntrypoint
+        ? `${joinPathFragments(normalizedOptions.projectRoot, 'node.ts')}`
+        : undefined,
+    },
+  });
   addPathToDenoSettings(tree, normalizedOptions.projectRoot);
 
   await formatFiles(tree);
 }
 
-function addImports(tree: Tree, options: NormalizedSchema) {
-  updateJson(tree, 'import_map.json', (json) => {
-    json.imports = json.imports || {};
-    if (json.imports[options.importPath]) {
-      throw new Error(
-        `Import path already exists in import_map.json for ${options.importPath}.
-You can specify a different import path using the --import-path option.
-The value needs to be unique and not already used in the import_map.json file.`
-      );
-    }
-    // NOTE relative paths need to be prefixed with './' for deno to treat as a local file import
-    json.imports[options.importPath] = `./${joinPathFragments(
-      options.projectRoot,
-      'mod.ts'
-    )}`;
-    return json;
-  });
-
-  if (options.addNodeEntrypoint) {
-    const rootTsConfig = getRootTsConfigPathInTree(tree);
-    if (!tree.exists(rootTsConfig)) {
-      throw new Error(stripIndents`Could not find root tsconfig to add the import path to.
-        This means a root level tsconfig.json or tsconfig.base.json file is not preset but is expected when using the --add-node-entrypoint flag`);
-    }
-    updateJson(tree, rootTsConfig, (json) => {
-      if (json.imports[options.importPath]) {
-        throw new Error(stripIndents`Import path already exists in ${rootTsConfig} for ${options.importPath}.
-You can specify a different import path using the --import-path option.
-The value needs to be unique and not already used in the ${rootTsConfig} file.`);
-      }
-      return json;
-    });
-  }
-}
-
-// TODO(caleb): switch to @nrwl/js version once we update and make it a dep
-function getRootTsConfigPathInTree(tree: Tree): string | null {
-  for (const path of ['tsconfig.base.json', 'tsconfig.json']) {
-    if (tree.exists(path)) {
-      return path;
-    }
-  }
-
-  return 'tsconfig.base.json';
-}
 export default denoLibraryGenerator;
