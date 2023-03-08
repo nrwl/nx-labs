@@ -8,7 +8,9 @@
       "executor": "@nrwl/nx-plugin:e2e",
       "options": {
         "target": "deno:build",
-        "jestConfig": "e2e/deno-e2e/jest.config.ts"
+        "jestConfig": "e2e/deno-e2e/jest.config.ts",
+        "bail": true,
+        "maxWorkers": 1
       }
     }
   },

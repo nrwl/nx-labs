@@ -17,7 +17,7 @@ import {
   workspaceFileExists,
 } from './utils';
 
-describe('Deno', () => {
+describe('Deno integrated monorepo', () => {
   const appName = uniq('deno-app');
   const libName = uniq('deno-lib');
   // Setting up individual workspaces per
