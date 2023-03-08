@@ -5,4 +5,6 @@ export interface ApplicationGeneratorSchema {
   unitTestRunner?: 'deno' | 'none';
   linter?: 'deno' | 'none';
   withWatch?: boolean;
+  monorepo?: boolean;
+  rootProject?: boolean;
 }

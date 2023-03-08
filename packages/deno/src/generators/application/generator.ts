@@ -25,6 +25,10 @@ function normalizeOptions(
   tree: Tree,
   options: ApplicationGeneratorSchema
 ): NormalizedSchema {
+  // --monorepo takes precedence over --rootProject
+  // This is for running `create-nx-workspace --preset=@nrwl/deno --monorepo`
+  const rootProject = !options.monorepo && options.rootProject;
+
   const name = names(options.name).fileName;
   const projectDirectory = options.directory
     ? `${names(options.directory).fileName}/${name}`
@@ -32,16 +36,16 @@ function normalizeOptions(
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
   const appDir = getWorkspaceLayout(tree).appsDir;
   // prevent paths from being dist/./app-name
-  const projectRoot = joinPathFragments(
-    appDir === '.' ? '' : appDir,
-    projectDirectory
-  );
+  const projectRoot = rootProject
+    ? '.'
+    : joinPathFragments(appDir === '.' ? '' : appDir, projectDirectory);
   const parsedTags = options.tags
     ? options.tags.split(',').map((s) => s.trim())
     : [];
 
   return {
     ...options,
+    rootProject,
     projectName,
     projectRoot,
     projectDirectory,
@@ -68,14 +72,27 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
 }
 
 function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
+  const coverageDirectory = joinPathFragments(
+    'coverage',
+    opts.rootProject ? opts.name : opts.projectRoot
+  );
   const targets: ProjectConfiguration['targets'] = {
     build: {
       executor: '@nrwl/deno:bundle',
-      outputs: [`dist/${opts.projectRoot}`],
+      outputs: [
+        joinPathFragments(
+          'dist',
+          opts.rootProject ? opts.name : opts.projectRoot
+        ),
+      ],
       options: {
-        main: `${opts.projectRoot}/src/main.ts`,
-        outputFile: `dist/${opts.projectRoot}/main.js`,
-        denoConfig: `${opts.projectRoot}/deno.json`,
+        main: joinPathFragments(opts.projectRoot, 'src/main.ts'),
+        outputFile: joinPathFragments(
+          'dist',
+          opts.rootProject ? opts.name : opts.projectRoot,
+          'main.js'
+        ),
+        denoConfig: joinPathFragments(opts.projectRoot, 'deno.json'),
       },
     },
     serve: {
@@ -86,16 +103,16 @@ function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
     },
     test: {
       executor: '@nrwl/deno:test',
-      outputs: [`coverage/${opts.projectRoot}`],
+      outputs: [coverageDirectory],
       options: {
-        coverageDirectory: `coverage/${opts.projectRoot}`,
-        denoConfig: `${opts.projectRoot}/deno.json`,
+        coverageDirectory,
+        denoConfig: joinPathFragments(opts.projectRoot, 'deno.json'),
       },
     },
     lint: {
       executor: '@nrwl/deno:lint',
       options: {
-        denoConfig: `${opts.projectRoot}/deno.json`,
+        denoConfig: joinPathFragments(opts.projectRoot, 'deno.json'),
       },
     },
   };
@@ -116,7 +133,7 @@ function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
     root: opts.projectRoot,
     projectType: 'application',
     name: opts.projectName,
-    sourceRoot: `${opts.projectRoot}/src`,
+    sourceRoot: joinPathFragments(opts.projectRoot, 'src'),
     targets,
     tags: opts.parsedTags,
   });
@@ -128,7 +145,7 @@ export default async function (
 ) {
   const normalizedOptions = normalizeOptions(tree, options);
 
-  initDeno(tree);
+  await initDeno(tree);
   addProjectConfig(tree, normalizedOptions);
   addFiles(tree, normalizedOptions);
   addPathToDenoSettings(tree, normalizedOptions.projectRoot);

@@ -5,18 +5,39 @@
 Create a new Nx worksapce if you don't already have one.
 
 ```shell
-npx create-nx-workspace@latest --preset=apps
+npx create-nx-workspace@latest deno-demo --preset=@nrwl/deno:preset
 ```
 
-`cd` into the new workspace you created.
-
-Install the Deno plugin
+Now, you can go into the `deno-demo` folder and start development.
 
 ```shell
-npm i -DE @nrwl/deno@latest
+cd deno-demo
+deno task start
+```
+
+You can also run lint, test, and build scripts for the project.
+
+```shell
+deno task lint
+deno task test
+deno task build
+```
+
+**Note:** Change `deno-demo` to any project name you want.
+
+## Existing workspaces
+
+You can add Deno to any existing Nx workspace.
+
+First, install the plugin:
+
+```bash
+npm install -DE @nrwl/deno@latest
 ```
 
 ## Create a new Deno App
+
+You can create additional Deno apps
 
 ```shell
 npx nx g @nrwl/deno:app
@@ -37,7 +58,7 @@ Building/Bundling is an optional step in Deno so you don't have to build when us
 ## Create a new Deno Library
 
 ```shell
-npx nx g @nrwl/deno:app
+npx nx g @nrwl/deno:lib
 ```
 
 Deno libraies only come with lint/test targets to run.
