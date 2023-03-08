@@ -4,9 +4,9 @@
   "main": "src/index.js",
   "generators": "./generators.json",
   "dependencies": {
-    "@nrwl/devkit": "^14.5.0",
-    "@nrwl/js": "^14.5.0",
-    "@nrwl/react": "^14.5.0",
+    "@nrwl/devkit": "^15.8.6",
+    "@nrwl/js": "^15.8.6",
+    "@nrwl/react": "^15.8.6",
     "tslib": "^2.3.1"
   },
   "ng-update": {

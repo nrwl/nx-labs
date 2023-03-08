@@ -5,8 +5,13 @@
       "cli": "nx",
       "description": "Update tsconfig.json and tsconfig.json to enable import of workspace libs",
       "factory": "./src/migrations/update-14-5-4/update-tsconfig-and-remix-config-for-1-6-8"
+    },
+    "update-remix-env-config": {
+      "version": "15.8.6",
+      "cli": "nx",
+      "description": "Update remix.env.d.ts for node types import",
+      "factory": "./src/migrations/update-15-8-6/update-remix-env-d"
     }
-
   },
   "packageJsonUpdates": {
     "14.5.4": {
@@ -46,6 +51,43 @@
         },
         "@types/react": {
           "version": "^18.0.15",
+          "alwaysAddToPackageJson": true
+        }
+      }
+    },
+    "15.8.6": {
+      "version": "15.8.6",
+      "packages": {
+        "@remix-run/node": {
+          "version": "^1.14.0",
+          "alwaysAddToPackageJson": true
+        },
+        "@remix-run/react": {
+          "version": "^1.14.0",
+          "alwaysAddToPackageJson": true
+        },
+        "@remix-run/serve": {
+          "version": "^1.14.0",
+          "alwaysAddToPackageJson": true
+        },
+        "@remix-run/dev": {
+          "version": "^1.14.0",
+          "alwaysAddToPackageJson": true
+        },
+        "@remix-run/eslint-config": {
+          "version": "^1.14.0",
+          "alwaysAddToPackageJson": true
+        },
+        "@types/react-dom": {
+          "version": "^18.0.8",
+          "alwaysAddToPackageJson": true
+        },
+        "@types/react": {
+          "version": "^18.0.25",
+          "alwaysAddToPackageJson": true
+        },
+        "isbot": {
+          "version": "^3.6.5",
           "alwaysAddToPackageJson": true
         }
       }
