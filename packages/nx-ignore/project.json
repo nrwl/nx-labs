@@ -1,4 +1,6 @@
 {
+  "name": "nx-ignore",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/nx-ignore/src",
   "projectType": "library",
   "targets": {
@@ -30,6 +32,5 @@
       }
     }
   },
-  "tags": [],
-  "name": "nx-ignore"
+  "tags": []
 }

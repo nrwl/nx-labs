@@ -1,6 +1,6 @@
-import { insertStatementInDefaultFunction } from './insert-statement-in-default-function';
 import { Tree } from '@nrwl/devkit';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+import { insertStatementInDefaultFunction } from './insert-statement-in-default-function';
 
 describe('insertStatementInDefaultFunction', () => {
   let tree: Tree;
@@ -23,7 +23,7 @@ describe('insertStatementInDefaultFunction', () => {
     );
 
     expect(tree.read('component.tsx', 'utf-8')).toMatchInlineSnapshot(
-      `"export default function Component() {const someVar = \\"whatever\\"; return (<p>Hello world!</p>); };"`
+      `"export default function Component() {const someVar = "whatever"; return (<p>Hello world!</p>); };"`
     );
   });
 
