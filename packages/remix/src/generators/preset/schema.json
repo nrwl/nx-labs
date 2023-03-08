@@ -5,18 +5,18 @@
   "title": "",
   "type": "object",
   "properties": {
-    "project": {
+    "remixAppName": {
       "type": "string",
       "description": "",
       "$default": {
         "$source": "argv",
         "index": 0
       },
-      "x-prompt": "What is the name of the project?"
+      "x-prompt": "What is the name of the app?"
     },
     "tags": {
       "type": "string",
-      "description": "Add tags to the project (used for linting)",
+      "description": "Add tags to the app (used for linting)",
       "alias": "t"
     }
   }
