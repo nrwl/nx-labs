@@ -1,7 +1,9 @@
 import { names } from '@nrwl/devkit';
 import {
+  checkFilesExist,
   ensureNxProject,
   readJson,
+  runNxCommand,
   runNxCommandAsync,
   tmpProjPath,
   uniq,
@@ -113,6 +115,7 @@ Deno.test('Another File', async () => {
       );
     }, 120_000);
 
+    // TODO(caleb): why is this failing only in CI?
     xit('should lint deno app w/options', async () => {
       const badFilePath = join(
         tmpProjPath(),
@@ -239,6 +242,36 @@ console.log('123');
       ).toBeTruthy();
     }, 120_000);
 
+    it('should create deno lib with node entrypoint', async () => {
+      const withNode = `${libName}-with-node`;
+      expect(() => {
+        runNxCommand(`generate @nrwl/deno:lib ${withNode} --node`);
+      }).toThrow();
+      // make js lib to run js init since tsconfg is needed;
+      await runNxCommandAsync(
+        `generate @nrwl/js:lib ${uniq('js-lib')} --no-interactive`
+      );
+      checkFilesExist('tsconfig.base.json');
+
+      await runNxCommandAsync(`generate @nrwl/deno:lib ${withNode} --node`);
+      expect(readJson(`import_map.json`)).toEqual({
+        imports: {
+          [`@proj/${withNode}`]: `./libs/${withNode}/mod.ts`,
+        },
+      });
+      expect(readJson(`libs/${withNode}/deno.json`)).toEqual({
+        importMap: '../../import_map.json',
+      });
+      expect(workspaceFileExists(`libs/${withNode}/mod.ts`)).toBeTruthy();
+      expect(
+        workspaceFileExists(`libs/${withNode}/src/${withNode}.test.ts`)
+      ).toBeTruthy();
+      expect(
+        workspaceFileExists(`libs/${withNode}/src/${withNode}.ts`)
+      ).toBeTruthy();
+      expect(workspaceFileExists(`libs/${withNode}/node.ts`)).toBeTruthy();
+    }, 120_000);
+
     it('should test deno lib', async () => {
       const result = await runNxCommandAsync(`test ${libName}`);
       expect(result.stdout).toContain(
@@ -285,6 +318,7 @@ Deno.test('Another File', async () => {
       );
     }, 120_000);
 
+    // TODO(caleb): why does this only fail in CI?
     xit('should lint deno lib w/options', async () => {
       const badFilePath = join(
         tmpProjPath(),

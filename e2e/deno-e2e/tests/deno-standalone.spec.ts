@@ -2,6 +2,7 @@ import { names } from '@nrwl/devkit';
 import {
   ensureNxProject,
   readJson,
+  runNxCommand,
   runNxCommandAsync,
   tmpProjPath,
   uniq,
@@ -177,6 +178,41 @@ Deno.test('Another File', async () => {
         workspaceFileExists(`${libName}/src/${libName}.test.ts`)
       ).toBeTruthy();
       expect(workspaceFileExists(`${libName}/src/${libName}.ts`)).toBeTruthy();
+    }, 120_000);
+
+    it('should create deno lib with node entrypoint', async () => {
+      const withNodeLibName = uniq('deno-lib-w-node');
+      expect(() => {
+        runNxCommand(`generate @nrwl/deno:lib ${withNodeLibName} --node`);
+      }).toThrow();
+
+      await runNxCommandAsync(
+        `generate @nrwl/js:lib ${uniq('js-lib')} --no-interactive`
+      );
+      await runNxCommandAsync(
+        `generate @nrwl/deno:lib ${withNodeLibName} --node`
+      );
+
+      expect(readJson(`import_map.json`)).toEqual({
+        imports: {
+          [`@proj/${withNodeLibName}`]: `./${withNodeLibName}/mod.ts`,
+        },
+      });
+      expect(readJson(`${withNodeLibName}/deno.json`)).toEqual({
+        importMap: '../import_map.json',
+      });
+      expect(workspaceFileExists(`${withNodeLibName}/mod.ts`)).toBeTruthy();
+      expect(
+        workspaceFileExists(`${withNodeLibName}/src/${withNodeLibName}.test.ts`)
+      ).toBeTruthy();
+      expect(
+        workspaceFileExists(`${withNodeLibName}/src/${withNodeLibName}.ts`)
+      ).toBeTruthy();
+
+      expect(
+        workspaceFileExists(`${withNodeLibName}/src/${withNodeLibName}.ts`)
+      ).toBeTruthy();
+      expect(workspaceFileExists(`${withNodeLibName}/node.ts`)).toBeTruthy();
     }, 120_000);
 
     it('should test deno lib', async () => {
