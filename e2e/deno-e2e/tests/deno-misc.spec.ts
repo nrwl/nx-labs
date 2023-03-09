@@ -16,10 +16,10 @@ describe('Deno Misc Tests', () => {
     ensureNxProject('@nrwl/deno', 'dist/packages/deno');
   });
 
-  afterAll(() => {
+  afterAll(async () => {
     // `nx reset` kills the daemon, and performs
     // some work which can help clean up e2e leftovers
-    runNxCommandAsync('reset');
+    await runNxCommandAsync('reset');
   });
 
   it('should add existing project to deno imports', async () => {
