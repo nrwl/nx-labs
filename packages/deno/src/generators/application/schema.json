@@ -3,6 +3,7 @@
   "cli": "nx",
   "$id": "Application",
   "title": "Generate an Deno application.",
+  "description": "Setup a new Deno application in the workspace.",
   "type": "object",
   "properties": {
     "name": {
