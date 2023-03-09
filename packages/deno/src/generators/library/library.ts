@@ -12,7 +12,8 @@ import {
 } from '@nrwl/devkit';
 import { join } from 'path';
 import { initDeno } from '../init/generator';
-import { addImports, addPathToDenoSettings } from '../utils/add-path';
+import { addPathToDenoSettings } from '../utils/add-path';
+import { addImports } from '../utils/imports';
 import { LibraryGeneratorSchema } from './schema';
 
 interface NormalizedSchema extends LibraryGeneratorSchema {
