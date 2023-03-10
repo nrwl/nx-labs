@@ -4,4 +4,6 @@ export interface LibraryGeneratorSchema {
   directory?: string;
   unitTestRunner?: 'deno' | 'none';
   linter?: 'deno' | 'none';
+  addNodeEntrypoint?: boolean;
+  importPath?: string;
 }

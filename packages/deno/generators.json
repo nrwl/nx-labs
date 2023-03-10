@@ -7,17 +7,13 @@
       "factory": "./src/generators/application/generator",
       "schema": "./src/generators/application/schema.json",
       "description": "Create a new Deno application",
-      "aliases": [
-        "app"
-      ]
+      "aliases": ["app"]
     },
     "library": {
       "factory": "./src/generators/library/library",
       "schema": "./src/generators/library/schema.json",
       "description": "Create a new Deno library",
-      "aliases": [
-        "lib"
-      ]
+      "aliases": ["lib"]
     },
     "init": {
       "factory": "./src/generators/init/generator",
@@ -27,7 +23,13 @@
     "preset": {
       "factory": "./src/generators/preset/generator",
       "schema": "./src/generators/preset/schema.json",
-      "description": "preset generator"
+      "description": "Create a new standalone Deno workspace with create-nx-workspace"
+    },
+    "add-import": {
+      "aliases": ["import", "add"],
+      "factory": "./src/generators/add-import/generator",
+      "schema": "./src/generators/add-import/schema.json",
+      "description": "Add an existing library to Deno imports"
     }
   }
 }

@@ -38,6 +38,16 @@
       "description": "Add a linting target for this application.",
       "enum": ["deno", "none"],
       "default": "deno"
+    },
+    "addNodeEntrypoint": {
+      "alias": "node",
+      "type": "boolean",
+      "description": "Add a node entrypoint for this library and add the entrypoint to the root tsconfig paths.",
+      "default": false
+    },
+    "importPath": {
+      "type": "string",
+      "description": "The path to use when importing this library into another library or application"
     }
   },
   "required": ["name"]

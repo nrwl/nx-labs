@@ -2,7 +2,7 @@ import { ExecutorContext, logger } from '@nrwl/devkit';
 import { emptyDirSync } from 'fs-extra';
 import { join, posix, resolve, sep } from 'path';
 import { processCommonArgs } from '../../utils/arg-utils';
-import { runDeno } from '../../utils/run-deno';
+import { assertDenoInstalled, runDeno } from '../../utils/run-deno';
 import { DenoTestExecutorSchema } from './schema';
 
 interface DenoTestExecutorNormalizedSchema extends DenoTestExecutorSchema {
@@ -18,6 +18,7 @@ export async function denoTestExecutor(
   options: DenoTestExecutorSchema,
   context: ExecutorContext
 ) {
+  assertDenoInstalled();
   const opts = normalizeOptions(options, context);
 
   const args = createArgs(opts);

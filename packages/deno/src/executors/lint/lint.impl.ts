@@ -1,6 +1,6 @@
 import { ExecutorContext, ProjectConfiguration } from '@nrwl/devkit';
 import { processCommonArgs } from '../../utils/arg-utils';
-import { runDeno } from '../../utils/run-deno';
+import { assertDenoInstalled, runDeno } from '../../utils/run-deno';
 import { LintExecutorSchema } from './schema';
 
 interface LintExecutorNormalizedSchema extends LintExecutorSchema {
@@ -10,6 +10,7 @@ export async function denoLintExecutor(
   options: LintExecutorSchema,
   context: ExecutorContext
 ) {
+  assertDenoInstalled();
   const projectConfig =
     context.projectGraph?.nodes?.[context.projectName]?.data;
 

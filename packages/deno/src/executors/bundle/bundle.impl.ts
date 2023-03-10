@@ -4,9 +4,10 @@ import { BuildExecutorSchema } from './schema';
 
 import { ensureDirSync } from 'fs-extra';
 import { processCommonArgs } from '../../utils/arg-utils';
-import { runDeno } from '../../utils/run-deno';
+import { assertDenoInstalled, runDeno } from '../../utils/run-deno';
 
 export async function denoBuildExecutor(options: BuildExecutorSchema) {
+  assertDenoInstalled();
   const opts = normalizeOptions(options);
   const args = createArgs(opts);
 

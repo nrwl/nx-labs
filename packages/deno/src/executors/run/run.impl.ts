@@ -5,7 +5,7 @@ import {
 } from '@nrwl/devkit';
 import { ChildProcess } from 'child_process';
 import { processCommonArgs } from '../../utils/arg-utils';
-import { runDeno } from '../../utils/run-deno';
+import { assertDenoInstalled, runDeno } from '../../utils/run-deno';
 import { BuildExecutorSchema } from '../bundle/schema';
 import { ServeExecutorSchema } from './schema';
 
@@ -15,6 +15,7 @@ export async function* denoServeExecutor(
   options: ServeExecutorSchema,
   context: ExecutorContext
 ) {
+  assertDenoInstalled();
   const opts = normalizeOptions(options, context);
   const args = createArgs(opts);
 

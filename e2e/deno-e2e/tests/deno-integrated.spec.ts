@@ -1,7 +1,9 @@
 import { names } from '@nrwl/devkit';
 import {
+  checkFilesExist,
   ensureNxProject,
   readJson,
+  runCommand,
   runNxCommandAsync,
   tmpProjPath,
   uniq,
@@ -28,12 +30,14 @@ describe('Deno integrated monorepo', () => {
   // are not dependant on one another.
   beforeAll(() => {
     ensureNxProject('@nrwl/deno', 'dist/packages/deno');
+    const nxVersion = readJson('package.json').devDependencies['nx'];
+    runCommand(`yarn add -D @nrwl/js@${nxVersion}`);
   });
 
-  afterAll(() => {
+  afterAll(async () => {
     // `nx reset` kills the daemon, and performs
     // some work which can help clean up e2e leftovers
-    runNxCommandAsync('reset');
+    await runNxCommandAsync('reset');
   });
 
   describe('application', () => {
@@ -113,6 +117,7 @@ Deno.test('Another File', async () => {
       );
     }, 120_000);
 
+    // TODO(caleb): why is this failing only in CI?
     xit('should lint deno app w/options', async () => {
       const badFilePath = join(
         tmpProjPath(),
@@ -239,6 +244,38 @@ console.log('123');
       ).toBeTruthy();
     }, 120_000);
 
+    it('should create deno lib with node entrypoint', async () => {
+      const withNode = `${libName}-with-node`;
+      // create js lib to ensure tsconfig is setup
+      await runNxCommandAsync(
+        `generate @nrwl/js:lib ${uniq('js-lib')} --no-interactive`
+      );
+      checkFilesExist('tsconfig.base.json');
+
+      await runNxCommandAsync(`generate @nrwl/deno:lib ${withNode} --node`);
+      expect(readJson(`import_map.json`).imports).toEqual(
+        expect.objectContaining({
+          [`@proj/${withNode}`]: `./libs/${withNode}/mod.ts`,
+        })
+      );
+      expect(readJson(`libs/${withNode}/deno.json`)).toEqual({
+        importMap: '../../import_map.json',
+      });
+      expect(workspaceFileExists(`libs/${withNode}/mod.ts`)).toBeTruthy();
+      expect(
+        workspaceFileExists(`libs/${withNode}/src/${withNode}.test.ts`)
+      ).toBeTruthy();
+      expect(
+        workspaceFileExists(`libs/${withNode}/src/${withNode}.ts`)
+      ).toBeTruthy();
+      expect(workspaceFileExists(`libs/${withNode}/node.ts`)).toBeTruthy();
+      expect(readJson('tsconfig.base.json').compilerOptions.paths).toEqual(
+        expect.objectContaining({
+          [`@proj/${withNode}`]: [`libs/${withNode}/node.ts`],
+        })
+      );
+    }, 120_000);
+
     it('should test deno lib', async () => {
       const result = await runNxCommandAsync(`test ${libName}`);
       expect(result.stdout).toContain(
@@ -285,6 +322,7 @@ Deno.test('Another File', async () => {
       );
     }, 120_000);
 
+    // TODO(caleb): why does this only fail in CI?
     xit('should lint deno lib w/options', async () => {
       const badFilePath = join(
         tmpProjPath(),
@@ -339,12 +377,12 @@ console.log('123');
         await runNxCommandAsync(
           `generate @nrwl/deno:lib ${nestedLibName} --directory nested`
         );
-        expect(readJson(`import_map.json`)).toEqual({
-          imports: {
+        expect(readJson(`import_map.json`).imports).toEqual(
+          expect.objectContaining({
             [`@proj/${libName}`]: `./libs/${libName}/mod.ts`,
             [`@proj/nested-${nestedLibName}`]: `./libs/nested/${nestedLibName}/mod.ts`,
-          },
-        });
+          })
+        );
         expect(
           workspaceFileExists(`libs/nested/${nestedLibName}/mod.ts`)
         ).toBeTruthy();

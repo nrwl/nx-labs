@@ -9,11 +9,11 @@ import {
   offsetFromRoot,
   ProjectConfiguration,
   Tree,
-  updateJson,
 } from '@nrwl/devkit';
 import { join } from 'path';
 import { initDeno } from '../init/generator';
 import { addPathToDenoSettings } from '../utils/add-path';
+import { addImports } from '../utils/imports';
 import { LibraryGeneratorSchema } from './schema';
 
 interface NormalizedSchema extends LibraryGeneratorSchema {
@@ -32,10 +32,10 @@ function normalizeOptions(
     ? `${names(options.directory).fileName}/${name}`
     : name;
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
-  const libDir = getWorkspaceLayout(tree).libsDir;
+  const layout = getWorkspaceLayout(tree);
   // prevent paths from being dist/./lib-name
   const projectRoot = joinPathFragments(
-    libDir === '.' ? '' : libDir,
+    layout.libsDir === '.' ? '' : layout.libsDir,
     projectDirectory
   );
   const parsedTags = options.tags
@@ -48,6 +48,9 @@ function normalizeOptions(
     projectRoot,
     projectDirectory,
     parsedTags,
+    addNodeEntrypoint: options.addNodeEntrypoint ?? false,
+    importPath:
+      options.importPath || getImportPath(layout.npmScope, projectName),
   };
 }
 
@@ -69,6 +72,10 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
     options.projectRoot,
     templateOptions
   );
+
+  if (!options.addNodeEntrypoint) {
+    tree.delete(`${options.projectRoot}/node.ts`);
+  }
 }
 
 function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
@@ -117,29 +124,18 @@ export async function denoLibraryGenerator(
   initDeno(tree);
   addProjectConfig(tree, normalizedOptions);
   addFiles(tree, normalizedOptions);
-  updateImportMap(tree, normalizedOptions);
+  addImports(tree, {
+    importPath: normalizedOptions.importPath,
+    entryPoints: {
+      deno: `./${joinPathFragments(normalizedOptions.projectRoot, 'mod.ts')}`,
+      node: normalizedOptions.addNodeEntrypoint
+        ? `${joinPathFragments(normalizedOptions.projectRoot, 'node.ts')}`
+        : undefined,
+    },
+  });
   addPathToDenoSettings(tree, normalizedOptions.projectRoot);
 
   await formatFiles(tree);
-}
-
-function updateImportMap(tree: Tree, options: NormalizedSchema) {
-  const { npmScope } = getWorkspaceLayout(tree);
-  updateJson(tree, 'import_map.json', (json) => {
-    const importPath = getImportPath(npmScope, options.projectName);
-    json.imports = json.imports || {};
-    if (json.imports[importPath]) {
-      throw new Error(
-        `Import path already exists in import_map.json for ${importPath}`
-      );
-    }
-    // NOTE relative paths need to be prefixed with './' for deno to treat as a local file import
-    json.imports[importPath] = `./${joinPathFragments(
-      options.projectRoot,
-      'mod.ts'
-    )}`;
-    return json;
-  });
 }
 
 export default denoLibraryGenerator;

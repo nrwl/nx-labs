@@ -1,5 +1,5 @@
-import { workspaceRoot } from '@nrwl/devkit';
-import { spawn } from 'child_process';
+import { stripIndents, workspaceRoot } from '@nrwl/devkit';
+import { execSync, spawn } from 'child_process';
 
 export interface DenoExecOptions {
   /**
@@ -24,4 +24,19 @@ export function runDeno(args: any[], options: DenoExecOptions = {}) {
     // TODO: make sure this doesn't popup cmd on windows?
     windowsHide: true,
   });
+}
+
+export function assertDenoInstalled() {
+  try {
+    execSync('deno --version', {
+      encoding: 'utf-8',
+      env: process.env,
+    });
+  } catch (err) {
+    throw new Error(stripIndents`Unable to find Deno on your system. 
+Deno will need to be installed in order to run targets from @nrwl/deno in this workspace.
+You can learn how to install deno at https://deno.land/manual/getting_started/installation
+If you've already installed Deno, then make sure it's avaiable in your PATH.
+You might need to quit and restart your terminal.`);
+  }
 }
