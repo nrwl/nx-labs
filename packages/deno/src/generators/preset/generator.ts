@@ -1,5 +1,5 @@
 import { Tree, updateJson } from '@nrwl/devkit';
-import applicationGenerator from '../application/generator';
+import applicationGenerator from '../application/application';
 import { PresetGeneratorSchema } from './schema';
 
 export default async function (tree: Tree, options: PresetGeneratorSchema) {

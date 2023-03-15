@@ -1,4 +1,4 @@
-export interface ApplicationGeneratorSchema {
+export interface DenoAppGeneratorSchema {
   name: string;
   tags?: string;
   directory?: string;
@@ -7,4 +7,12 @@ export interface ApplicationGeneratorSchema {
   withWatch?: boolean;
   monorepo?: boolean;
   rootProject?: boolean;
+  platform?: 'deno-deploy' | 'netlify' | 'none';
+}
+
+export interface DenoAppNormalizedSchema extends DenoAppGeneratorSchema {
+  projectName: string;
+  projectRoot: string;
+  projectDirectory: string;
+  parsedTags: string[];
 }

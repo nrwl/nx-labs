@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "generators": {
     "application": {
-      "factory": "./src/generators/application/generator",
+      "factory": "./src/generators/application/application",
       "schema": "./src/generators/application/schema.json",
       "description": "Create a new Deno application",
       "aliases": ["app"]
@@ -30,6 +30,12 @@
       "factory": "./src/generators/add-import/generator",
       "schema": "./src/generators/add-import/schema.json",
       "description": "Add an existing library to Deno imports"
+    },
+    "setup-serverless": {
+      "aliases": ["serverless", "edge"],
+      "factory": "./src/generators/setup-serverless/setup-serverless",
+      "schema": "./src/generators/setup-serverless/schema.json",
+      "description": "Add a serverless setup to an exsiting Deno project"
     }
   }
 }
