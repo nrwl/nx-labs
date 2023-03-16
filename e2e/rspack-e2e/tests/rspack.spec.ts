@@ -32,17 +32,25 @@ describe('rspack e2e', () => {
     let result = await runNxCommandAsync(`build ${project}`, {
       env: { NODE_ENV: 'production' },
     });
+    console.log('Katerina Hello I am result: ', result);
+    console.log('Katerina Hello I am result stdout: ', result.stdout);
     expect(result.stdout).toContain('Successfully ran target build');
     // Make sure expected files are present.
     expect(listFiles(`dist/${project}`)).toHaveLength(5);
 
     result = await runNxCommandAsync(`lint ${project}`);
+    console.log('Katerina 2 Hello I am result: ', result);
+    console.log('Katerina 2 Hello I am result stdout: ', result.stdout);
     expect(result.stdout).toContain('Successfully ran target lint');
 
     result = await runNxCommandAsync(`test ${project}`);
+    console.log('Katerina 3 Hello I am result: ', result);
+    console.log('Katerina 3 Hello I am result stdout: ', result.stdout);
     expect(result.stdout).toContain('Successfully ran target test');
 
     result = await runNxCommandAsync(`e2e e2e`);
+    console.log('Katerina 4 Hello I am result: ', result);
+    console.log('Katerina 4 Hello I am result stdout: ', result.stdout);
     expect(result.stdout).toContain('Successfully ran target e2e');
 
     // Update app and make sure previous dist files are not present.
@@ -53,6 +61,8 @@ describe('rspack e2e', () => {
     result = await runNxCommandAsync(`build ${project}`, {
       env: { NODE_ENV: 'production' },
     });
+    console.log('Katerina 5 Hello I am result: ', result);
+    console.log('Katerina 5 Hello I am result stdout: ', result.stdout);
     expect(result.stdout).toContain('Successfully ran target build');
     expect(listFiles(`dist/${project}`)).toHaveLength(5); // same length as before
 
@@ -65,17 +75,25 @@ describe('rspack e2e', () => {
     result = await runNxCommandAsync(`build ${app2}`, {
       env: { NODE_ENV: 'production' },
     });
+    console.log('Katerina 6 Hello I am result: ', result);
+    console.log('Katerina 6 Hello I am result stdout: ', result.stdout);
     expect(result.stdout).toContain('Successfully ran target build');
     // Make sure expected files are present.
     expect(listFiles(`dist/${app2}`)).toHaveLength(5);
 
     result = await runNxCommandAsync(`lint ${app2}`);
+    console.log('Katerina 7 Hello I am result: ', result);
+    console.log('Katerina 7 Hello I am result stdout: ', result.stdout);
     expect(result.stdout).toContain('Successfully ran target lint');
 
     result = await runNxCommandAsync(`test ${app2}`);
+    console.log('Katerina 8 Hello I am result: ', result);
+    console.log('Katerina 8 Hello I am result stdout: ', result.stdout);
     expect(result.stdout).toContain('Successfully ran target test');
 
     result = await runNxCommandAsync(`e2e ${app2}-e2e`);
+    console.log('Katerina 9 Hello I am result: ', result);
+    console.log('Katerina 9 Hello I am result stdout: ', result.stdout);
     expect(result.stdout).toContain('Successfully ran target e2e');
   }, 120_000);
 });
