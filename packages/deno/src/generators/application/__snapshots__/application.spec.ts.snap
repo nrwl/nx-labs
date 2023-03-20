@@ -1,0 +1,253 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Deno App Generator integrated should create --platform=netlify integrated app 1`] = `
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "my-app-netlify",
+  "projectType": "application",
+  "root": "apps/my-app-netlify",
+  "sourceRoot": "apps/my-app-netlify/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/deno:bundle",
+      "options": {
+        "denoConfig": "apps/my-app-netlify/deno.json",
+        "main": "apps/my-app-netlify/src/main.ts",
+        "outputFile": "dist/apps/my-app-netlify/main.js",
+      },
+      "outputs": [
+        "dist/apps/my-app-netlify",
+      ],
+    },
+    "deploy": {
+      "configurations": {
+        "production": {
+          "command": "yarn netlify deploy --prod",
+        },
+      },
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn netlify deploy",
+      },
+    },
+    "lint": {
+      "executor": "@nrwl/deno:lint",
+      "options": {
+        "denoConfig": "apps/my-app-netlify/deno.json",
+      },
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn netlify dev",
+      },
+    },
+    "test": {
+      "executor": "@nrwl/deno:test",
+      "options": {
+        "coverageDirectory": "coverage/apps/my-app-netlify",
+        "denoConfig": "apps/my-app-netlify/deno.json",
+      },
+      "outputs": [
+        "coverage/apps/my-app-netlify",
+      ],
+    },
+  },
+}
+`;
+
+exports[`Deno App Generator integrated should create --platform=netlify integrated app 2`] = `
+"# Netlify Configuration File: https://docs.netlify.com/configure-builds/file-based-configuration
+[build]
+  # custom directory where edge functions are located.
+  # each file in this directory will be considered a separate edge function.
+  edge_functions = "apps/my-app-netlify/src"
+  publish = "apps/my-app-netlify/src"
+
+[functions]
+  # provide all import aliases to netlify
+  # https://docs.netlify.com/edge-functions/api/#import-maps
+  deno_import_map = "import_map.json"
+
+# Read more about declaring edge functions: 
+# https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml
+[[edge_functions]]
+  # this is the name of the file in the edge_functions dir.
+  function = "app"
+  # this is the route that the edge function applies to.
+  path = "/"
+"
+`;
+
+exports[`Deno App Generator integrated should make an integrated deno app 1`] = `
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "my-app",
+  "projectType": "application",
+  "root": "apps/my-app",
+  "sourceRoot": "apps/my-app/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/deno:bundle",
+      "options": {
+        "denoConfig": "apps/my-app/deno.json",
+        "main": "apps/my-app/src/main.ts",
+        "outputFile": "dist/apps/my-app/main.js",
+      },
+      "outputs": [
+        "dist/apps/my-app",
+      ],
+    },
+    "lint": {
+      "executor": "@nrwl/deno:lint",
+      "options": {
+        "denoConfig": "apps/my-app/deno.json",
+      },
+    },
+    "serve": {
+      "executor": "@nrwl/deno:run",
+      "options": {
+        "buildTarget": "my-app:build",
+      },
+    },
+    "test": {
+      "executor": "@nrwl/deno:test",
+      "options": {
+        "coverageDirectory": "coverage/apps/my-app",
+        "denoConfig": "apps/my-app/deno.json",
+      },
+      "outputs": [
+        "coverage/apps/my-app",
+      ],
+    },
+  },
+}
+`;
+
+exports[`Deno App Generator standalone should create --platform=netlify app 1`] = `
+{
+  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "name": "my-app-netlify",
+  "projectType": "application",
+  "root": ".",
+  "sourceRoot": "src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/deno:bundle",
+      "options": {
+        "denoConfig": "deno.json",
+        "main": "src/main.ts",
+        "outputFile": "dist/my-app-netlify/main.js",
+      },
+      "outputs": [
+        "dist/my-app-netlify",
+      ],
+    },
+    "deploy": {
+      "configurations": {
+        "production": {
+          "command": "yarn netlify deploy --prod",
+        },
+      },
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn netlify deploy",
+      },
+    },
+    "lint": {
+      "executor": "@nrwl/deno:lint",
+      "options": {
+        "denoConfig": "deno.json",
+      },
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn netlify dev",
+      },
+    },
+    "test": {
+      "executor": "@nrwl/deno:test",
+      "options": {
+        "coverageDirectory": "coverage/my-app-netlify",
+        "denoConfig": "deno.json",
+      },
+      "outputs": [
+        "coverage/my-app-netlify",
+      ],
+    },
+  },
+}
+`;
+
+exports[`Deno App Generator standalone should create --platform=netlify app 2`] = `
+"# Netlify Configuration File: https://docs.netlify.com/configure-builds/file-based-configuration
+[build]
+  # custom directory where edge functions are located.
+  # each file in this directory will be considered a separate edge function.
+  edge_functions = "src"
+  publish = "src"
+
+[functions]
+  # provide all import aliases to netlify
+  # https://docs.netlify.com/edge-functions/api/#import-maps
+  deno_import_map = "import_map.json"
+
+# Read more about declaring edge functions: 
+# https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml
+[[edge_functions]]
+  # this is the name of the file in the edge_functions dir.
+  function = "app"
+  # this is the route that the edge function applies to.
+  path = "/"
+"
+`;
+
+exports[`Deno App Generator standalone should make a deno app 1`] = `
+{
+  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "name": "my-app",
+  "projectType": "application",
+  "root": ".",
+  "sourceRoot": "src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/deno:bundle",
+      "options": {
+        "denoConfig": "deno.json",
+        "main": "src/main.ts",
+        "outputFile": "dist/my-app/main.js",
+      },
+      "outputs": [
+        "dist/my-app",
+      ],
+    },
+    "lint": {
+      "executor": "@nrwl/deno:lint",
+      "options": {
+        "denoConfig": "deno.json",
+      },
+    },
+    "serve": {
+      "executor": "@nrwl/deno:run",
+      "options": {
+        "buildTarget": "my-app:build",
+      },
+    },
+    "test": {
+      "executor": "@nrwl/deno:test",
+      "options": {
+        "coverageDirectory": "coverage/my-app",
+        "denoConfig": "deno.json",
+      },
+      "outputs": [
+        "coverage/my-app",
+      ],
+    },
+  },
+}
+`;

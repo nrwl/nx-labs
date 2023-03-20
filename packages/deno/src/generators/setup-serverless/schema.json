@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "$id": "DenoSetupServerless",
+  "title": "Setup Serverless Configuration",
+  "description": "Generates a serverless configuration for a project.",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "The project to add a serverless setup to.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-dropdown": "projects",
+      "x-prompt": "What project would you like to use?"
+    },
+    "platform": {
+      "type": "string",
+      "description": "Setup serverless support for a specific platform.",
+      "enum": ["netlify", "deno-deploy", "none"],
+      "x-prompt": "Which platform would you like to use?",
+      "default": "netlify"
+    }
+  },
+  "required": ["project", "platform"]
+}

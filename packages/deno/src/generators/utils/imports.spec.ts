@@ -6,8 +6,8 @@ import {
   updateJson,
 } from '@nrwl/devkit';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
-import denoAppGenerator from '../application/generator';
 import denoInit from '../init/generator';
+import { createDenoAppForTesting } from '../utils/testing/deno-app';
 import { addImports, getImportPathForProjectName } from './imports';
 
 describe('import utils', () => {
@@ -150,7 +150,13 @@ describe('import utils', () => {
 });
 
 async function addNodeAndDenoProjects(tree: Tree, name: string) {
-  await denoAppGenerator(tree, { name: `${name}-deno` });
+  createDenoAppForTesting(tree, {
+    name: `${name}-deno`,
+    projectRoot: `libs/${name}-deno`,
+    parsedTags: [],
+    projectDirectory: `libs/${name}-deno/src`,
+    projectName: `${name}-deno`,
+  });
   const pc: ProjectConfiguration = {
     name: `${name}-node`,
     root: `libs/${name}-node`,
