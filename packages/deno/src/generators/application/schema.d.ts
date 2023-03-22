@@ -8,6 +8,7 @@ export interface DenoAppGeneratorSchema {
   monorepo?: boolean;
   rootProject?: boolean;
   platform?: 'deno-deploy' | 'netlify' | 'none';
+  framework?: 'oak' | 'none';
 }
 
 export interface DenoAppNormalizedSchema extends DenoAppGeneratorSchema {

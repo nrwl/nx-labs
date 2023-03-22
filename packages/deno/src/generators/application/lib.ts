@@ -37,6 +37,7 @@ export function normalizeOptions(
     : [];
 
   options.platform ??= 'none';
+  options.framework ??= 'none';
 
   return {
     ...options,
@@ -60,8 +61,15 @@ export function addFiles(tree: Tree, options: DenoAppNormalizedSchema) {
   };
   generateFiles(
     tree,
-    join(__dirname, 'files'),
+    join(__dirname, 'files', 'root-files'),
     options.projectRoot,
+    templateOptions
+  );
+
+  generateFiles(
+    tree,
+    join(__dirname, 'files', `framework-${options.framework}`),
+    join(options.projectRoot, 'src'),
     templateOptions
   );
 }
