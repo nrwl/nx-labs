@@ -126,6 +126,87 @@ exports[`Deno App Generator integrated should make an integrated deno app 1`] = 
 }
 `;
 
+exports[`Deno App Generator integrated should make an oak api with --framework=oak 1`] = `
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "my-oak-api",
+  "projectType": "application",
+  "root": "apps/my-oak-api",
+  "sourceRoot": "apps/my-oak-api/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/deno:bundle",
+      "options": {
+        "denoConfig": "apps/my-oak-api/deno.json",
+        "main": "apps/my-oak-api/src/main.ts",
+        "outputFile": "dist/apps/my-oak-api/main.js",
+      },
+      "outputs": [
+        "dist/apps/my-oak-api",
+      ],
+    },
+    "lint": {
+      "executor": "@nrwl/deno:lint",
+      "options": {
+        "denoConfig": "apps/my-oak-api/deno.json",
+      },
+    },
+    "serve": {
+      "executor": "@nrwl/deno:run",
+      "options": {
+        "buildTarget": "my-oak-api:build",
+      },
+    },
+    "test": {
+      "executor": "@nrwl/deno:test",
+      "options": {
+        "coverageDirectory": "coverage/apps/my-oak-api",
+        "denoConfig": "apps/my-oak-api/deno.json",
+      },
+      "outputs": [
+        "coverage/apps/my-oak-api",
+      ],
+    },
+  },
+}
+`;
+
+exports[`Deno App Generator integrated should make an oak api with --framework=oak 2`] = `
+"import { Application, Router  } from 'https://deno.land/x/oak@v11.1.0/mod.ts';
+
+const router = new Router();
+
+router.get('/', (ctx) => {
+    ctx.response.redirect('/api');
+})
+
+router.get('/api', (ctx) => {
+  ctx.response.body = {"message": "Hello my-oak-api"};
+  ctx.response.type = 'text/json';
+});
+
+const app = new Application();
+
+app.addEventListener('listen', ({ hostname, port, secure }) => {
+  console.log(
+    \`Listening on: \${secure ? 'https://' : 'http://'}\${
+      hostname ?? 'localhost'
+    }:\${port}\`
+  );
+});
+
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+await app
+  .listen({ port: Number(Deno.env.get('PORT') || 4200) })
+  .catch((err) => {
+    console.error('Error serving app. Original Error:', err);
+  });
+"
+`;
+
 exports[`Deno App Generator standalone should create --platform=netlify app 1`] = `
 {
   "$schema": "node_modules/nx/schemas/project-schema.json",
@@ -250,4 +331,85 @@ exports[`Deno App Generator standalone should make a deno app 1`] = `
     },
   },
 }
+`;
+
+exports[`Deno App Generator standalone should make an oak api with --framework=oak 1`] = `
+{
+  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "name": "my-oak-api",
+  "projectType": "application",
+  "root": ".",
+  "sourceRoot": "src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/deno:bundle",
+      "options": {
+        "denoConfig": "deno.json",
+        "main": "src/main.ts",
+        "outputFile": "dist/my-oak-api/main.js",
+      },
+      "outputs": [
+        "dist/my-oak-api",
+      ],
+    },
+    "lint": {
+      "executor": "@nrwl/deno:lint",
+      "options": {
+        "denoConfig": "deno.json",
+      },
+    },
+    "serve": {
+      "executor": "@nrwl/deno:run",
+      "options": {
+        "buildTarget": "my-oak-api:build",
+      },
+    },
+    "test": {
+      "executor": "@nrwl/deno:test",
+      "options": {
+        "coverageDirectory": "coverage/my-oak-api",
+        "denoConfig": "deno.json",
+      },
+      "outputs": [
+        "coverage/my-oak-api",
+      ],
+    },
+  },
+}
+`;
+
+exports[`Deno App Generator standalone should make an oak api with --framework=oak 2`] = `
+"import { Application, Router  } from 'https://deno.land/x/oak@v11.1.0/mod.ts';
+
+const router = new Router();
+
+router.get('/', (ctx) => {
+    ctx.response.redirect('/api');
+})
+
+router.get('/api', (ctx) => {
+  ctx.response.body = {"message": "Hello my-oak-api"};
+  ctx.response.type = 'text/json';
+});
+
+const app = new Application();
+
+app.addEventListener('listen', ({ hostname, port, secure }) => {
+  console.log(
+    \`Listening on: \${secure ? 'https://' : 'http://'}\${
+      hostname ?? 'localhost'
+    }:\${port}\`
+  );
+});
+
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+await app
+  .listen({ port: Number(Deno.env.get('PORT') || 4200) })
+  .catch((err) => {
+    console.error('Error serving app. Original Error:', err);
+  });
+"
 `;

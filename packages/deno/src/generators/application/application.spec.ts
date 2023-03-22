@@ -36,6 +36,20 @@ describe('Deno App Generator', () => {
       expect(tree.read('netlify.toml', 'utf-8')).toMatchSnapshot();
       expect(tree.exists('src/app.ts')).toBeTruthy();
     });
+
+    it('should make an oak api with --framework=oak', async () => {
+      await denoApplicationGenerator(tree, {
+        name: 'my-oak-api',
+        rootProject: true,
+        framework: 'oak',
+      });
+
+      expect(readJson(tree, 'deno.json')).toEqual({
+        importMap: 'import_map.json',
+      });
+      expect(readProjectConfiguration(tree, 'my-oak-api')).toMatchSnapshot();
+      expect(tree.read('src/main.ts', 'utf-8')).toMatchSnapshot();
+    });
   });
 
   describe('integrated', () => {
@@ -68,6 +82,20 @@ describe('Deno App Generator', () => {
       ).toMatchSnapshot();
       expect(tree.read('netlify.toml', 'utf-8')).toMatchSnapshot();
       expect(tree.exists('apps/my-app-netlify/src/app.ts')).toBeTruthy();
+    });
+
+    it('should make an oak api with --framework=oak', async () => {
+      await denoApplicationGenerator(tree, {
+        name: 'my-oak-api',
+        framework: 'oak',
+      });
+      expect(readJson(tree, 'apps/my-oak-api/deno.json')).toEqual({
+        importMap: '../../import_map.json',
+      });
+      expect(readProjectConfiguration(tree, 'my-oak-api')).toMatchSnapshot();
+      expect(
+        tree.read('apps/my-oak-api/src/main.ts', 'utf-8')
+      ).toMatchSnapshot();
     });
   });
 });
