@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "version": 2,
+  "cli": "nx",
+  "title": "Deno Emit Executor",
+  "description": "Output a single JavaScript file with all dependencies",
+  "type": "object",
+  "properties": {
+    "denoConfig": {
+      "type": "string",
+      "description": "Path to the Deno configuration file."
+    },
+    "main": {
+      "type": "string",
+      "description": "The entry point for your Deno application."
+    },
+    "outputFile": {
+      "type": "string",
+      "description": "The destination of the emitted JavaScript file."
+    },
+    "bundle": {
+      "type": "boolean",
+      "description": "Bundle all imports into a single JavaScript file.",
+      "default": true
+    }
+  },
+  "required": ["main", "outputFile", "denoConfig"]
+}

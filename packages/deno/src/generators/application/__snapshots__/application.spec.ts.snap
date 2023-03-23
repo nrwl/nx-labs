@@ -10,7 +10,7 @@ exports[`Deno App Generator integrated should create --platform=netlify integrat
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nrwl/deno:bundle",
+      "executor": "@nrwl/deno:emit",
       "options": {
         "denoConfig": "apps/my-app-netlify/deno.json",
         "main": "apps/my-app-netlify/src/main.ts",
@@ -90,7 +90,7 @@ exports[`Deno App Generator integrated should make an integrated deno app 1`] = 
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nrwl/deno:bundle",
+      "executor": "@nrwl/deno:emit",
       "options": {
         "denoConfig": "apps/my-app/deno.json",
         "main": "apps/my-app/src/main.ts",
@@ -136,7 +136,7 @@ exports[`Deno App Generator integrated should make an oak api with --framework=o
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nrwl/deno:bundle",
+      "executor": "@nrwl/deno:emit",
       "options": {
         "denoConfig": "apps/my-oak-api/deno.json",
         "main": "apps/my-oak-api/src/main.ts",
@@ -217,7 +217,7 @@ exports[`Deno App Generator standalone should create --platform=netlify app 1`] 
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nrwl/deno:bundle",
+      "executor": "@nrwl/deno:emit",
       "options": {
         "denoConfig": "deno.json",
         "main": "src/main.ts",
@@ -297,7 +297,7 @@ exports[`Deno App Generator standalone should make a deno app 1`] = `
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nrwl/deno:bundle",
+      "executor": "@nrwl/deno:emit",
       "options": {
         "denoConfig": "deno.json",
         "main": "src/main.ts",
@@ -343,7 +343,7 @@ exports[`Deno App Generator standalone should make an oak api with --framework=o
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nrwl/deno:bundle",
+      "executor": "@nrwl/deno:emit",
       "options": {
         "denoConfig": "deno.json",
         "main": "src/main.ts",
