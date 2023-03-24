@@ -10,7 +10,7 @@ export function createDenoAppForTesting(
     root: opts.projectRoot,
     targets: {
       build: {
-        executor: '@nrwl/deno:bundle',
+        executor: '@nrwl/deno:emit',
         options: {
           main: joinPathFragments(opts.projectRoot, 'src/main.ts'),
           outputFile: joinPathFragments(

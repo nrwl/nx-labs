@@ -81,7 +81,7 @@ export function addProjectConfig(tree: Tree, opts: DenoAppNormalizedSchema) {
   );
   const targets: ProjectConfiguration['targets'] = {
     build: {
-      executor: '@nrwl/deno:bundle',
+      executor: '@nrwl/deno:emit',
       outputs: [
         joinPathFragments(
           'dist',
@@ -226,7 +226,7 @@ export function applyNetlifyAppConfig(
   # https://docs.netlify.com/edge-functions/api/#import-maps
   deno_import_map = "import_map.json"
 
-# Read more about declaring edge functions: 
+# Read more about declaring edge functions:
 # https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml
 [[edge_functions]]
   # this is the name of the file in the ${srcDir}.
@@ -240,7 +240,7 @@ export function applyNetlifyAppConfig(
   tree.write(
     `${srcDir}/app.ts`,
     `/**
-* Netlify Edge Function overview: 
+* Netlify Edge Function overview:
 * https://docs.netlify.com/edge-functions/overview/
 **/
 

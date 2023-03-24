@@ -18,7 +18,6 @@ export function addDenoDeployConfig(
 
 function addDeployTarget(tree: Tree, projectConfig: ProjectConfiguration) {
   const main =
-    // TODO(caleb): when @nrwl/deno:bundle is removed this value will always be undefined unless replaced
     projectConfig.targets?.build?.options?.main ||
     joinPathFragments(projectConfig.sourceRoot, 'main.ts');
 

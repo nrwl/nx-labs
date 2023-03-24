@@ -4,7 +4,13 @@
     "bundle": {
       "implementation": "./src/executors/bundle/bundle.impl",
       "schema": "./src/executors/bundle/schema.json",
-      "description": "Output a single JavaScript file with all dependencies."
+      "description": "Output a single JavaScript file with all dependencies.",
+      "x-deprecated": "Use @nrwl/deno:emit instead. This will be removed in when `deno bundle` is removed."
+    },
+    "emit": {
+      "implementation": "./src/executors/emit/emit.impl",
+      "schema": "./src/executors/emit/schema.json",
+      "description": "Bundle or transpile to a JavaScript file."
     },
     "run": {
       "implementation": "./src/executors/run/run.impl",
