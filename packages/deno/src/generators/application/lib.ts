@@ -5,11 +5,8 @@ import {
   joinPathFragments,
   names,
   offsetFromRoot,
-  output,
   ProjectConfiguration,
-  readProjectConfiguration,
   Tree,
-  updateProjectConfiguration,
 } from '@nrwl/devkit';
 import { join } from 'path';
 import { DenoAppGeneratorSchema, DenoAppNormalizedSchema } from './schema';
@@ -36,7 +33,6 @@ export function normalizeOptions(
     ? options.tags.split(',').map((s) => s.trim())
     : [];
 
-  options.platform ??= 'none';
   options.framework ??= 'none';
 
   return {
@@ -140,124 +136,4 @@ export function addProjectConfig(tree: Tree, opts: DenoAppNormalizedSchema) {
     targets,
     tags: opts.parsedTags,
   });
-}
-
-export function applyNetlifyAppConfig(
-  tree: Tree,
-  opts: DenoAppNormalizedSchema
-) {
-  // since the entire app is a netlify edge_function
-  // we just need to run netlify dev instead of @nrwl/deno:run
-  const projectConfig = readProjectConfiguration(tree, opts.projectName);
-
-  projectConfig.targets.serve = projectConfig.targets['serve-functions'];
-  // serve-functions comes from the @nrwl/deno:setup-serverless
-  // which should be already called by this point
-  delete projectConfig.targets['serve-functions'];
-  updateProjectConfiguration(tree, opts.projectName, projectConfig);
-
-  const srcDir = joinPathFragments(opts.projectRoot, 'src');
-  tree.delete(srcDir);
-
-  // delete the default hello-geo function from @nrwl/deno:setup-serverless
-  const defaultGeoFn = joinPathFragments(
-    opts.projectRoot,
-    'functions',
-    'hello-geo.ts'
-  );
-  if (tree.exists(defaultGeoFn)) {
-    tree.delete(defaultGeoFn);
-  }
-
-  if (tree.exists('netlify.toml')) {
-    const netlifyToml = tree.read('netlify.toml', 'utf-8');
-    let updatedConfig = netlifyToml;
-    if (updatedConfig.includes('edge_functions')) {
-      updatedConfig = updatedConfig.replace(
-        /edge_functions = "(.*)"/,
-        `edge_functions = "${srcDir}"`
-      );
-      updatedConfig = updatedConfig.replace(
-        /publish = "(.*)"/,
-        `publish = "${srcDir}"`
-      );
-    } else {
-      output.note({
-        title: 'Next Steps: edge_functions',
-        bodyLines: [
-          `Unable to find and update the 'edge_functions' property in your netlify.toml file.`,
-          `Please add the following to your netlify.toml file:`,
-          `\t[build]`,
-          `\t\tedge_functions = "${srcDir}"`,
-        ],
-      });
-    }
-
-    // remove auto generated hello-geo fn since we delete it
-    if (updatedConfig.includes('hello-geo')) {
-      updatedConfig = updatedConfig
-        .replace('hello-geo', `app`)
-        .replace('/api/geo', '/');
-    }
-
-    if (!updatedConfig.includes('function = "app"')) {
-      updatedConfig = `${updatedConfig}
-[[edge_functions]]
-  # this is the name of the file in the ${srcDir}.
-  function = "app"
-  # this is the route that the edge function applies to.
-  path = "/"
-`;
-    }
-
-    tree.write('netlify.toml', updatedConfig);
-  } else {
-    tree.write(
-      'netlify.toml',
-      `# Netlify Configuration File: https://docs.netlify.com/configure-builds/file-based-configuration
-[build]
-  # custom directory where edge functions are located.
-  # each file in this directory will be considered a separate edge function.
-  edge_functions = "${srcDir}"
-  publish = "${srcDir}"
-
-[functions]
-  # provide all import aliases to netlify
-  # https://docs.netlify.com/edge-functions/api/#import-maps
-  deno_import_map = "import_map.json"
-
-# Read more about declaring edge functions:
-# https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml
-[[edge_functions]]
-  # this is the name of the file in the ${srcDir}.
-  function = "app"
-  # this is the route that the edge function applies to.
-  path = "/"
-`
-    );
-  }
-
-  tree.write(
-    `${srcDir}/app.ts`,
-    `/**
-* Netlify Edge Function overview:
-* https://docs.netlify.com/edge-functions/overview/
-**/
-
-import type { Config, Context } from 'https://edge.netlify.com/'
-
-export default async function handler(req: Request, context: Context) {
-const content = \`<html>
-  <body>
-    <h1>Hello ${opts.projectName} 👋</h1>
-  </body>
-</html>\`;
-
- return new Response(content, {
-    status: 200,
-    headers: { 'Content-Type': 'text/html;charset=utf-8' },
-  });
-};
-`
-  );
 }

@@ -22,6 +22,11 @@
       "enum": ["netlify", "deno-deploy", "none"],
       "x-prompt": "Which platform would you like to use?",
       "default": "netlify"
+    },
+    "site": {
+      "description": "The site name to deploy to",
+      "type": "string",
+      "x-priority": "important"
     }
   },
   "required": ["project", "platform"]

@@ -21,7 +21,6 @@ export function runDeno(args: any[], options: DenoExecOptions = {}) {
       ...process.env,
       ...(options.env || {}),
     },
-    // TODO: make sure this doesn't popup cmd on windows?
     windowsHide: true,
   });
 }

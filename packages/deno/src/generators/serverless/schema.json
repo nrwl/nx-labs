@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "$id": "DenoServerlessGenerator",
+  "title": "Create a Deno Serverless Application",
+  "description": "Create an app that is setup to run in a serverless environment.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the application.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use?",
+      "pattern": "^[a-zA-Z].*$"
+    },
+    "unitTestRunner": {
+      "type": "string",
+      "description": "Add a testing target for this application.",
+      "enum": ["deno", "none"],
+      "default": "deno"
+    },
+    "linter": {
+      "type": "string",
+      "description": "Add a linting target for this application.",
+      "enum": ["deno", "none"],
+      "default": "deno"
+    },
+    "tags": {
+      "type": "string",
+      "description": "Add tags to the project (used for linting)",
+      "alias": "t"
+    },
+    "directory": {
+      "type": "string",
+      "description": "A directory where the project is placed",
+      "alias": "d",
+      "x-priority": "important"
+    },
+    "platform": {
+      "type": "string",
+      "description": "Setup serverless support for a specific platform.",
+      "enum": ["netlify", "deno-deploy", "none"],
+      "x-prompt": "Which platform would you like to use?",
+      "default": "netlify"
+    },
+    "site": {
+      "description": "The site/project name to deploy to",
+      "type": "string",
+      "x-priority": "important"
+    }
+  },
+  "required": ["name"]
+}
