@@ -26,6 +26,7 @@ export default async function* runExecutor(
   const devServerConfig = {
     port: options.port ?? 4200,
     hot: true,
+    ...options.devServer
   };
   const buildOptions = readTargetOptions<any>(buildTarget, context);
   const compiler = await createCompiler(
