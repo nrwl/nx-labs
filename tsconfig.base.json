@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@nrwl/deno": ["packages/deno/src/index.ts"],
+      "@nrwl/netlify": ["packages/netlify/index.ts"],
       "@nrwl/rspack": ["packages/rspack/src/index.ts"],
       "nx-remix/nx-remix": ["packages/nx-remix/src/index.ts"]
     }
