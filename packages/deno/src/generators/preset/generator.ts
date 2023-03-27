@@ -3,31 +3,28 @@ import applicationGenerator from '../application/application';
 import { PresetGeneratorSchema } from './schema';
 
 export default async function (tree: Tree, options: PresetGeneratorSchema) {
-  const appName = (options.monorepo && options.project) || options.name;
   const appTask = await applicationGenerator(tree, {
-    name: appName,
+    name: options.name,
     linter: 'deno',
     unitTestRunner: 'deno',
     withWatch: true,
-    rootProject: options.rootProject,
+    rootProject: true,
   });
 
-  if (options.rootProject) {
-    updateJson(tree, 'deno.json', (json) => {
-      json['tasks'] = {
-        start: 'npx nx serve',
-        lint: 'npx nx lint',
-        test: 'npx nx test',
-        build: 'npx nx build',
-      };
+  updateJson(tree, 'deno.json', (json) => {
+    json['tasks'] = {
+      start: 'npx nx serve',
+      lint: 'npx nx lint',
+      test: 'npx nx test',
+      build: 'npx nx build',
+    };
 
-      return json;
-    });
+    return json;
+  });
 
-    // Remove these folders so projects will be generated at the root.
-    tree.delete('apps');
-    tree.delete('libs');
-  }
+  // Remove these folders so projects will be generated at the root.
+  tree.delete('apps');
+  tree.delete('libs');
 
   return appTask;
 }
