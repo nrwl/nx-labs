@@ -14,21 +14,6 @@
         "index": 0
       },
       "x-priority": "important"
-    },
-    "project": {
-      "type": "string",
-      "description": "Name of the app when using --monorepo."
-    },
-    "monorepo": {
-      "type": "boolean",
-      "description": "Creates an integrated monorepo.",
-      "default": false,
-      "aliases": ["integrated"]
-    },
-    "rootProject": {
-      "type": "boolean",
-      "x-priority": "internal",
-      "default": true
     }
   },
   "required": ["name"]
