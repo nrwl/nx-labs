@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "name": "netlify",
+  "version": "0.0.1",
+  "generators": {
+    "serverless": {
+      "factory": "./src/generators/serverless/serverless",
+      "schema": "./src/generators/serverless/schema.json",
+      "description": "Serverless project generator"
+    },
+    "setup-serverless": {
+      "factory": "./src/generators/setup-serverless/setup-serverless",
+      "schema": "./src/generators/setup-serverless/schema.json",
+      "description": "Setup serverless generator"
+    },
+    "preset": {
+      "factory": "./src/generators/preset/preset",
+      "schema": "./src/generators/preset/schema.json",
+      "description": "Nx Netlify Serverless preset generator",
+      "hidden": true
+    }
+  }
+}
