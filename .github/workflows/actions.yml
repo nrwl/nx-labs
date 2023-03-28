@@ -4,6 +4,8 @@ on:
     branches:
       - main
   pull_request:
+  schedule:
+    - cron: '0 0 * * *'
 
 env:
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
@@ -11,7 +13,7 @@ env:
 jobs:
   main:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'pull_request' }}
+    if: ${{ github.event_name != 'pull_request'  && github.event_name != 'schedule' }}
     steps:
       - uses: actions/checkout@v3
         name: Checkout [main]
@@ -29,9 +31,33 @@ jobs:
           node-version: '16'
       - run: yarn
       - run: deno info && deno --version
+      - run: npx nx affected --target=lint --parallel --max-parallel=3
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - run: npx nx affected --target=test --parallel --max-parallel=2
       - run: npx nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e,gatsby-e2e
+      - run: npx nx-cloud stop-all-agents
+  nightly:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'schedule' }}
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout [main]
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: '^1.3'
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+      - run: yarn
+      - run: deno info && deno --version
+      - run: npx nx run-many -t=build,test,lint --parallel --max-parallel=3
+      - run: npx nx affected -t=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e,gatsby-e2e
       - run: npx nx-cloud stop-all-agents
   pr:
     runs-on: ubuntu-latest
@@ -52,6 +78,7 @@ jobs:
           node-version: '16'
       - run: yarn
       - run: deno info && deno --version
+      - run: npx nx affected --target=lint --parallel --max-parallel=3
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - run: npx nx affected --target=test --parallel --max-parallel=2
       - run: npx nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e,gatsby-e2e
