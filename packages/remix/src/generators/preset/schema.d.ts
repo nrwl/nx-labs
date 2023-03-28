@@ -1,4 +1,4 @@
 export interface RemixGeneratorSchema {
-  remixAppName: string;
+  name: string;
   tags?: string;
 }

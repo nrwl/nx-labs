@@ -1,10 +1,10 @@
-import { NxRemixGeneratorSchema } from '../schema';
 import {
-  names,
   getWorkspaceLayout,
-  Tree,
   joinPathFragments,
+  names,
+  Tree,
 } from '@nrwl/devkit';
+import { NxRemixGeneratorSchema } from '../schema';
 
 export interface NormalizedSchema extends NxRemixGeneratorSchema {
   projectName: string;
@@ -19,7 +19,9 @@ export function normalizeOptions(
   const { appsDir } = getWorkspaceLayout(tree);
   const name = names(options.name).fileName;
   const projectName = name;
-  const projectRoot = joinPathFragments(appsDir, name);
+  const projectRoot = options.rootProject
+    ? '.'
+    : joinPathFragments(appsDir, name);
   const parsedTags = options.tags
     ? options.tags.split(',').map((s) => s.trim())
     : [];
