@@ -254,9 +254,9 @@ function createConfig(
     `;
   } else if (options.framework === 'nest') {
     return `
-    const { composePlugins, withNx } = require('@nrwl/rspack');
+    const { composePlugins, withNx, withNest } = require('@nrwl/rspack');
 
-    module.exports = composePlugins(withNx(), (config) => {
+    module.exports = composePlugins(withNx(), withNest(), (config) => {
       ${
         options.main
           ? `config.entry = {
@@ -264,6 +264,7 @@ function createConfig(
           };`
           : ``
       }
+      config.externalsType = 'commonjs';
       return config;
     });
     `;

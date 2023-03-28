@@ -1,5 +1,6 @@
 export interface ApplicationGeneratorSchema {
   name: string;
+  uiFramework?: 'none' | 'react' | 'web'| 'nest';
   style: 'css' | 'scss' | 'less' | 'styl';
   unitTestRunner?: 'none' | 'jest';
   e2eTestRunner?: 'none' | 'cypress';

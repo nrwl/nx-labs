@@ -22,6 +22,12 @@
       "pattern": "^[a-zA-Z].*$",
       "x-priority": "important"
     },
+    "uiFramework": {
+      "type": "string",
+      "default": "react",
+      "description": "The UI framework used by the project.",
+      "enum": ["none", "react", "web", "nest"]
+    },
     "style": {
       "description": "The file extension to be used for style files.",
       "type": "string",
