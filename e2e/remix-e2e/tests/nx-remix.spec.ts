@@ -3,10 +3,12 @@ import {
   readJson,
   runNxCommandAsync,
   uniq,
+  updateFile,
 } from '@nrwl/nx-plugin/testing';
+
 describe('remix e2e', () => {
   beforeAll(() => {
-    ensureNxProject('@remix/remix', 'dist/packages/remix');
+    ensureNxProject('@nrwl/remix', 'dist/packages/remix');
   });
 
   afterAll(() => {
@@ -15,9 +17,33 @@ describe('remix e2e', () => {
     runNxCommandAsync('reset');
   });
 
+  it('should create a standalone remix app', async () => {
+    const appName = uniq('remix');
+    await runNxCommandAsync(
+      `generate @nrwl/remix:preset --name ${appName} --verbose`
+    );
+
+    // Can import using ~ alias like a normal Remix setup.
+    updateFile(`app/foo.ts`, `export const foo = 'foo';`);
+    updateFile(
+      `app/routes/index.tsx`,
+      `
+      import { foo } from '~/foo';
+      export default function Index() {
+        return (
+          <h1>{foo}</h1>
+        );
+      }
+    `
+    );
+
+    const result = await runNxCommandAsync(`build ${appName}`);
+    expect(result.stdout).toContain('Successfully ran target build');
+  }, 120_000);
+
   it('should create app', async () => {
     const plugin = uniq('remix');
-    await runNxCommandAsync(`generate @remix/remix:app ${plugin}`);
+    await runNxCommandAsync(`generate @nrwl/remix:app ${plugin}`);
 
     const result = await runNxCommandAsync(`build ${plugin}`);
     expect(result.stdout).toContain('Successfully ran target build');
@@ -27,7 +53,7 @@ describe('remix e2e', () => {
     it('should create src in the specified directory', async () => {
       const plugin = uniq('remix');
       await runNxCommandAsync(
-        `generate @remix/remix:app ${plugin} --directory subdir`
+        `generate @nrwl/remix:app ${plugin} --directory subdir`
       );
       const result = await runNxCommandAsync(`build ${plugin}`);
       expect(result.stdout).toContain('Successfully ran target build');
@@ -38,9 +64,9 @@ describe('remix e2e', () => {
     it('should add tags to the project', async () => {
       const plugin = uniq('remix');
       await runNxCommandAsync(
-        `generate @remix/remix:app ${plugin} --tags e2etag,e2ePackage`
+        `generate @nrwl/remix:app ${plugin} --tags e2etag,e2ePackage`
       );
-      const project = readJson(`apps/${plugin}/project.json`);
+      const project = readJson(`${plugin}/project.json`);
       expect(project.tags).toEqual(['e2etag', 'e2ePackage']);
     }, 120000);
   });

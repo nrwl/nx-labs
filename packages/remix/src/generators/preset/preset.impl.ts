@@ -17,8 +17,12 @@ export default async function (tree: Tree, _options: RemixGeneratorSchema) {
     name: options.appName,
     tags: options.tags,
     skipFormat: true,
+    rootProject: true,
   });
   tasks.push(appGenTask);
+
+  tree.delete('apps');
+  tree.delete('libs');
 
   await formatFiles(tree);
 

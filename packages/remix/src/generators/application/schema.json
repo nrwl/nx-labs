@@ -23,6 +23,11 @@
       "type": "boolean",
       "description": "Skip formatting files",
       "default": false
+    },
+    "rootProject": {
+      "type": "boolean",
+      "x-priority": "internal",
+      "default": false
     }
   }
 }
