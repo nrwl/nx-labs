@@ -1,0 +1,11 @@
+{
+  "name": "@nrwl/aws-lambda",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "generators": "./generators.json",
+  "dependencies": {
+    "@nrwl/devkit": "*",
+    "@nrwl/node": "*",
+    "@nrwl/linter": "*"
+  }
+}
