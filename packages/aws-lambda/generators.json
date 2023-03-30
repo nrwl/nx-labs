@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "name": "aws-lamda",
+  "version": "0.0.1",
+  "generators": {
+    "serverless": {
+      "factory": "./src/generators/serverless/serverless",
+      "schema": "./src/generators/serverless/schema.json",
+      "description": "Adds AWS Lamda Serverless configuration to an existing project"
+    },
+    "setup-serverless": {
+      "factory": "./src/generators/setup-serverless/setup-serverless",
+      "schema": "./src/generators/setup-serverless/schema.json",
+      "description": "Setup AWS Lambda serverless generator"
+    },
+    "preset": {
+      "factory": "./src/generators/preset/preset",
+      "schema": "./src/generators/preset/schema.json",
+      "description": "Nx AWS Lambda Serverless preset generator",
+      "hidden": true
+    }
+  }
+}
