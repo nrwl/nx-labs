@@ -30,17 +30,17 @@ describe('setup-serverless --platform=deno-deploy', () => {
 
     expect(readProjectConfiguration(tree, 'my-app').targets.deploy)
       .toMatchInlineSnapshot(`
-      {
-        "configurations": {
-          "preview": {
+      Object {
+        "configurations": Object {
+          "preview": Object {
             "command": "deployctl deploy --project=<Your-Deno-Deploy-Project-Name> --import-map=import_map.json --exclude=node_modules src/main.ts",
           },
-          "production": {
+          "production": Object {
             "command": "deployctl deploy --project=<Your-Deno-Deploy-Project-Name> --import-map=import_map.json --exclude=node_modules --prod src/main.ts",
           },
         },
         "executor": "nx:run-commands",
-        "options": {
+        "options": Object {
           "command": "deployctl deploy --project=<Your-Deno-Deploy-Project-Name> --import-map=import_map.json --exclude=node_modules  src/main.ts --dry-run",
         },
       }
@@ -62,17 +62,17 @@ describe('setup-serverless --platform=deno-deploy', () => {
     });
     expect(readProjectConfiguration(tree, 'my-app').targets.deploy)
       .toMatchInlineSnapshot(`
-      {
-        "configurations": {
-          "preview": {
+      Object {
+        "configurations": Object {
+          "preview": Object {
             "command": "deployctl deploy --project=<Your-Deno-Deploy-Project-Name> --import-map=import_map.json --exclude=node_modules <Your-Entrypoint-file>",
           },
-          "production": {
+          "production": Object {
             "command": "deployctl deploy --project=<Your-Deno-Deploy-Project-Name> --import-map=import_map.json --exclude=node_modules --prod <Your-Entrypoint-file>",
           },
         },
         "executor": "nx:run-commands",
-        "options": {
+        "options": Object {
           "command": "deployctl deploy --project=<Your-Deno-Deploy-Project-Name> --import-map=import_map.json --exclude=node_modules  <Your-Entrypoint-file> --dry-run",
         },
       }

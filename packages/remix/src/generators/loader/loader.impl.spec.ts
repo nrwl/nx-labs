@@ -50,7 +50,7 @@ describe('loader', () => {
 
       it('should add loader function', () => {
         const loaderFunctionType = `type ExampleLoaderData`;
-        const loaderFunction = ` export const loader: LoaderFunction = async`;
+        const loaderFunction = `export const loader: LoaderFunction = async`;
         const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
         expect(content).toMatch(loaderFunctionType);
         expect(content).toMatch(loaderFunction);
