@@ -1,4 +1,9 @@
-import { Tree, updateJson } from '@nrwl/devkit';
+import {
+  generateFiles,
+  joinPathFragments,
+  Tree,
+  updateJson,
+} from '@nrwl/devkit';
 import { serverlessGenerator } from '../serverless/serverless';
 import { PresetGeneratorSchema } from './schema';
 
@@ -15,8 +20,13 @@ export default async function (tree: Tree, options: PresetGeneratorSchema) {
     return json;
   });
 
-    tree.delete('apps');
-    tree.delete('libs');
+  generateFiles(tree, joinPathFragments(__dirname, 'files'), '', {
+    ...options,
+    tmpl: '',
+  });
+
+  tree.delete('apps');
+  tree.delete('libs');
 
   return appTask;
 }
