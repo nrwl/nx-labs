@@ -26,14 +26,14 @@ describe('setup-serverless --platform=netlify', () => {
     await denoSetupServerless(tree, { project: 'my-app', platform: 'netlify' });
     expect(readProjectConfiguration(tree, 'my-app').targets.deploy)
       .toMatchInlineSnapshot(`
-      {
-        "configurations": {
-          "production": {
+      Object {
+        "configurations": Object {
+          "production": Object {
             "command": "yarn netlify deploy --prod",
           },
         },
         "executor": "nx:run-commands",
-        "options": {
+        "options": Object {
           "command": "yarn netlify deploy",
         },
       }
@@ -43,21 +43,21 @@ describe('setup-serverless --platform=netlify', () => {
       [build]
         # custom directory where edge functions are located.
         # each file in this directory will be considered a separate edge function.
-        edge_functions = "functions"
-        publish = "functions"
+        edge_functions = \\"functions\\"
+        publish = \\"functions\\"
 
       [functions]
         # provide all import aliases to netlify
         # https://docs.netlify.com/edge-functions/api/#import-maps
-        deno_import_map = "import_map.json"
+        deno_import_map = \\"import_map.json\\"
 
       # Read more about declaring edge functions: 
       # https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml
       [[edge_functions]]
         # this is the name of the file in the edge_functions dir.
-        function = "hello-geo"
+        function = \\"hello-geo\\"
         # this is the route that the edge function applies to.
-        path = "/api/geo"
+        path = \\"/api/geo\\"
       "
     `);
     expect(tree.exists('functions/hello-geo.ts')).toBeTruthy();
@@ -78,14 +78,14 @@ describe('setup-serverless --platform=netlify', () => {
     await denoSetupServerless(tree, { project: 'my-app', platform: 'netlify' });
     expect(readProjectConfiguration(tree, 'my-app').targets.deploy)
       .toMatchInlineSnapshot(`
-      {
-        "configurations": {
-          "production": {
+      Object {
+        "configurations": Object {
+          "production": Object {
             "command": "yarn netlify deploy --prod",
           },
         },
         "executor": "nx:run-commands",
-        "options": {
+        "options": Object {
           "command": "yarn netlify deploy",
         },
       }
@@ -95,21 +95,21 @@ describe('setup-serverless --platform=netlify', () => {
       [build]
         # custom directory where edge functions are located.
         # each file in this directory will be considered a separate edge function.
-        edge_functions = "apps/my-app/functions"
-        publish = "apps/my-app/functions"
+        edge_functions = \\"apps/my-app/functions\\"
+        publish = \\"apps/my-app/functions\\"
 
       [functions]
         # provide all import aliases to netlify
         # https://docs.netlify.com/edge-functions/api/#import-maps
-        deno_import_map = "import_map.json"
+        deno_import_map = \\"import_map.json\\"
 
       # Read more about declaring edge functions: 
       # https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml
       [[edge_functions]]
         # this is the name of the file in the edge_functions dir.
-        function = "hello-geo"
+        function = \\"hello-geo\\"
         # this is the route that the edge function applies to.
-        path = "/api/geo"
+        path = \\"/api/geo\\"
       "
     `);
     expect(tree.exists('apps/my-app/functions/hello-geo.ts')).toBeTruthy();

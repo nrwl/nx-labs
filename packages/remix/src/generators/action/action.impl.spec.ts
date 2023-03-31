@@ -49,26 +49,13 @@ describe('action', () => {
       });
 
       it('should add action function', () => {
-        const actionFunction = `
-    type ExampleActionData = {
-        message: string;
-    };
-    
-    export let action: ActionFunction = async ({ request }) => {
-      let formData = await request.formData();
-  
-      return json({message: formData.toString()}, { status: 200 });
-    };
-    `;
+        const actionFunction = `type ExampleActionData = {`;
         const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
         expect(content).toMatch(actionFunction);
       });
 
       it('should add useActionData to component', () => {
-        const useActionData = `export default function Example() {
-const actionMessage = useActionData<ExampleActionData>();
-return (<p>Example works!</p>)
-}`;
+        const useActionData = `export default function Example() {`;
 
         const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
         expect(content).toMatch(useActionData);

@@ -1,55 +1,55 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Deno App Generator integrated should create --platform=netlify integrated app 1`] = `
-{
+Object {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "my-app-netlify",
   "projectType": "application",
   "root": "apps/my-app-netlify",
   "sourceRoot": "apps/my-app-netlify/src",
-  "tags": [],
-  "targets": {
-    "build": {
+  "tags": Array [],
+  "targets": Object {
+    "build": Object {
       "executor": "@nrwl/deno:emit",
-      "options": {
+      "options": Object {
         "denoConfig": "apps/my-app-netlify/deno.json",
         "main": "apps/my-app-netlify/src/main.ts",
         "outputFile": "dist/apps/my-app-netlify/main.js",
       },
-      "outputs": [
+      "outputs": Array [
         "dist/apps/my-app-netlify",
       ],
     },
-    "deploy": {
-      "configurations": {
-        "production": {
+    "deploy": Object {
+      "configurations": Object {
+        "production": Object {
           "command": "yarn netlify deploy --prod",
         },
       },
       "executor": "nx:run-commands",
-      "options": {
+      "options": Object {
         "command": "yarn netlify deploy",
       },
     },
-    "lint": {
+    "lint": Object {
       "executor": "@nrwl/deno:lint",
-      "options": {
+      "options": Object {
         "denoConfig": "apps/my-app-netlify/deno.json",
       },
     },
-    "serve": {
+    "serve": Object {
       "executor": "nx:run-commands",
-      "options": {
+      "options": Object {
         "command": "yarn netlify dev",
       },
     },
-    "test": {
+    "test": Object {
       "executor": "@nrwl/deno:test",
-      "options": {
+      "options": Object {
         "coverageDirectory": "coverage/apps/my-app-netlify",
         "denoConfig": "apps/my-app-netlify/deno.json",
       },
-      "outputs": [
+      "outputs": Array [
         "coverage/apps/my-app-netlify",
       ],
     },
@@ -62,63 +62,63 @@ exports[`Deno App Generator integrated should create --platform=netlify integrat
 [build]
   # custom directory where edge functions are located.
   # each file in this directory will be considered a separate edge function.
-  edge_functions = "apps/my-app-netlify/src"
-  publish = "apps/my-app-netlify/src"
+  edge_functions = \\"apps/my-app-netlify/src\\"
+  publish = \\"apps/my-app-netlify/src\\"
 
 [functions]
   # provide all import aliases to netlify
   # https://docs.netlify.com/edge-functions/api/#import-maps
-  deno_import_map = "import_map.json"
+  deno_import_map = \\"import_map.json\\"
 
 # Read more about declaring edge functions: 
 # https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml
 [[edge_functions]]
   # this is the name of the file in the edge_functions dir.
-  function = "app"
+  function = \\"app\\"
   # this is the route that the edge function applies to.
-  path = "/"
+  path = \\"/\\"
 "
 `;
 
 exports[`Deno App Generator integrated should make an integrated deno app 1`] = `
-{
+Object {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "my-app",
   "projectType": "application",
   "root": "apps/my-app",
   "sourceRoot": "apps/my-app/src",
-  "tags": [],
-  "targets": {
-    "build": {
+  "tags": Array [],
+  "targets": Object {
+    "build": Object {
       "executor": "@nrwl/deno:emit",
-      "options": {
+      "options": Object {
         "denoConfig": "apps/my-app/deno.json",
         "main": "apps/my-app/src/main.ts",
         "outputFile": "dist/apps/my-app/main.js",
       },
-      "outputs": [
+      "outputs": Array [
         "dist/apps/my-app",
       ],
     },
-    "lint": {
+    "lint": Object {
       "executor": "@nrwl/deno:lint",
-      "options": {
+      "options": Object {
         "denoConfig": "apps/my-app/deno.json",
       },
     },
-    "serve": {
+    "serve": Object {
       "executor": "@nrwl/deno:run",
-      "options": {
+      "options": Object {
         "buildTarget": "my-app:build",
       },
     },
-    "test": {
+    "test": Object {
       "executor": "@nrwl/deno:test",
-      "options": {
+      "options": Object {
         "coverageDirectory": "coverage/apps/my-app",
         "denoConfig": "apps/my-app/deno.json",
       },
-      "outputs": [
+      "outputs": Array [
         "coverage/apps/my-app",
       ],
     },
@@ -127,44 +127,44 @@ exports[`Deno App Generator integrated should make an integrated deno app 1`] = 
 `;
 
 exports[`Deno App Generator integrated should make an oak api with --framework=oak 1`] = `
-{
+Object {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "my-oak-api",
   "projectType": "application",
   "root": "apps/my-oak-api",
   "sourceRoot": "apps/my-oak-api/src",
-  "tags": [],
-  "targets": {
-    "build": {
+  "tags": Array [],
+  "targets": Object {
+    "build": Object {
       "executor": "@nrwl/deno:emit",
-      "options": {
+      "options": Object {
         "denoConfig": "apps/my-oak-api/deno.json",
         "main": "apps/my-oak-api/src/main.ts",
         "outputFile": "dist/apps/my-oak-api/main.js",
       },
-      "outputs": [
+      "outputs": Array [
         "dist/apps/my-oak-api",
       ],
     },
-    "lint": {
+    "lint": Object {
       "executor": "@nrwl/deno:lint",
-      "options": {
+      "options": Object {
         "denoConfig": "apps/my-oak-api/deno.json",
       },
     },
-    "serve": {
+    "serve": Object {
       "executor": "@nrwl/deno:run",
-      "options": {
+      "options": Object {
         "buildTarget": "my-oak-api:build",
       },
     },
-    "test": {
+    "test": Object {
       "executor": "@nrwl/deno:test",
-      "options": {
+      "options": Object {
         "coverageDirectory": "coverage/apps/my-oak-api",
         "denoConfig": "apps/my-oak-api/deno.json",
       },
-      "outputs": [
+      "outputs": Array [
         "coverage/apps/my-oak-api",
       ],
     },
@@ -173,16 +173,16 @@ exports[`Deno App Generator integrated should make an oak api with --framework=o
 `;
 
 exports[`Deno App Generator integrated should make an oak api with --framework=oak 2`] = `
-"import { Application, Router  } from 'https://deno.land/x/oak@v11.1.0/mod.ts';
+"import { Application, Router } from 'https://deno.land/x/oak@v11.1.0/mod.ts';
 
 const router = new Router();
 
 router.get('/', (ctx) => {
-    ctx.response.redirect('/api');
-})
+  ctx.response.redirect('/api');
+});
 
 router.get('/api', (ctx) => {
-  ctx.response.body = {"message": "Hello my-oak-api"};
+  ctx.response.body = { message: 'Hello my-oak-api' };
   ctx.response.type = 'text/json';
 });
 
@@ -208,55 +208,55 @@ await app
 `;
 
 exports[`Deno App Generator standalone should create --platform=netlify app 1`] = `
-{
+Object {
   "$schema": "node_modules/nx/schemas/project-schema.json",
   "name": "my-app-netlify",
   "projectType": "application",
   "root": ".",
   "sourceRoot": "src",
-  "tags": [],
-  "targets": {
-    "build": {
+  "tags": Array [],
+  "targets": Object {
+    "build": Object {
       "executor": "@nrwl/deno:emit",
-      "options": {
+      "options": Object {
         "denoConfig": "deno.json",
         "main": "src/main.ts",
         "outputFile": "dist/my-app-netlify/main.js",
       },
-      "outputs": [
+      "outputs": Array [
         "dist/my-app-netlify",
       ],
     },
-    "deploy": {
-      "configurations": {
-        "production": {
+    "deploy": Object {
+      "configurations": Object {
+        "production": Object {
           "command": "yarn netlify deploy --prod",
         },
       },
       "executor": "nx:run-commands",
-      "options": {
+      "options": Object {
         "command": "yarn netlify deploy",
       },
     },
-    "lint": {
+    "lint": Object {
       "executor": "@nrwl/deno:lint",
-      "options": {
+      "options": Object {
         "denoConfig": "deno.json",
       },
     },
-    "serve": {
+    "serve": Object {
       "executor": "nx:run-commands",
-      "options": {
+      "options": Object {
         "command": "yarn netlify dev",
       },
     },
-    "test": {
+    "test": Object {
       "executor": "@nrwl/deno:test",
-      "options": {
+      "options": Object {
         "coverageDirectory": "coverage/my-app-netlify",
         "denoConfig": "deno.json",
       },
-      "outputs": [
+      "outputs": Array [
         "coverage/my-app-netlify",
       ],
     },
@@ -269,63 +269,63 @@ exports[`Deno App Generator standalone should create --platform=netlify app 2`] 
 [build]
   # custom directory where edge functions are located.
   # each file in this directory will be considered a separate edge function.
-  edge_functions = "src"
-  publish = "src"
+  edge_functions = \\"src\\"
+  publish = \\"src\\"
 
 [functions]
   # provide all import aliases to netlify
   # https://docs.netlify.com/edge-functions/api/#import-maps
-  deno_import_map = "import_map.json"
+  deno_import_map = \\"import_map.json\\"
 
 # Read more about declaring edge functions: 
 # https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml
 [[edge_functions]]
   # this is the name of the file in the edge_functions dir.
-  function = "app"
+  function = \\"app\\"
   # this is the route that the edge function applies to.
-  path = "/"
+  path = \\"/\\"
 "
 `;
 
 exports[`Deno App Generator standalone should make a deno app 1`] = `
-{
+Object {
   "$schema": "node_modules/nx/schemas/project-schema.json",
   "name": "my-app",
   "projectType": "application",
   "root": ".",
   "sourceRoot": "src",
-  "tags": [],
-  "targets": {
-    "build": {
+  "tags": Array [],
+  "targets": Object {
+    "build": Object {
       "executor": "@nrwl/deno:emit",
-      "options": {
+      "options": Object {
         "denoConfig": "deno.json",
         "main": "src/main.ts",
         "outputFile": "dist/my-app/main.js",
       },
-      "outputs": [
+      "outputs": Array [
         "dist/my-app",
       ],
     },
-    "lint": {
+    "lint": Object {
       "executor": "@nrwl/deno:lint",
-      "options": {
+      "options": Object {
         "denoConfig": "deno.json",
       },
     },
-    "serve": {
+    "serve": Object {
       "executor": "@nrwl/deno:run",
-      "options": {
+      "options": Object {
         "buildTarget": "my-app:build",
       },
     },
-    "test": {
+    "test": Object {
       "executor": "@nrwl/deno:test",
-      "options": {
+      "options": Object {
         "coverageDirectory": "coverage/my-app",
         "denoConfig": "deno.json",
       },
-      "outputs": [
+      "outputs": Array [
         "coverage/my-app",
       ],
     },
@@ -334,44 +334,44 @@ exports[`Deno App Generator standalone should make a deno app 1`] = `
 `;
 
 exports[`Deno App Generator standalone should make an oak api with --framework=oak 1`] = `
-{
+Object {
   "$schema": "node_modules/nx/schemas/project-schema.json",
   "name": "my-oak-api",
   "projectType": "application",
   "root": ".",
   "sourceRoot": "src",
-  "tags": [],
-  "targets": {
-    "build": {
+  "tags": Array [],
+  "targets": Object {
+    "build": Object {
       "executor": "@nrwl/deno:emit",
-      "options": {
+      "options": Object {
         "denoConfig": "deno.json",
         "main": "src/main.ts",
         "outputFile": "dist/my-oak-api/main.js",
       },
-      "outputs": [
+      "outputs": Array [
         "dist/my-oak-api",
       ],
     },
-    "lint": {
+    "lint": Object {
       "executor": "@nrwl/deno:lint",
-      "options": {
+      "options": Object {
         "denoConfig": "deno.json",
       },
     },
-    "serve": {
+    "serve": Object {
       "executor": "@nrwl/deno:run",
-      "options": {
+      "options": Object {
         "buildTarget": "my-oak-api:build",
       },
     },
-    "test": {
+    "test": Object {
       "executor": "@nrwl/deno:test",
-      "options": {
+      "options": Object {
         "coverageDirectory": "coverage/my-oak-api",
         "denoConfig": "deno.json",
       },
-      "outputs": [
+      "outputs": Array [
         "coverage/my-oak-api",
       ],
     },
@@ -380,16 +380,16 @@ exports[`Deno App Generator standalone should make an oak api with --framework=o
 `;
 
 exports[`Deno App Generator standalone should make an oak api with --framework=oak 2`] = `
-"import { Application, Router  } from 'https://deno.land/x/oak@v11.1.0/mod.ts';
+"import { Application, Router } from 'https://deno.land/x/oak@v11.1.0/mod.ts';
 
 const router = new Router();
 
 router.get('/', (ctx) => {
-    ctx.response.redirect('/api');
-})
+  ctx.response.redirect('/api');
+});
 
 router.get('/api', (ctx) => {
-  ctx.response.body = {"message": "Hello my-oak-api"};
+  ctx.response.body = { message: 'Hello my-oak-api' };
   ctx.response.type = 'text/json';
 });
 

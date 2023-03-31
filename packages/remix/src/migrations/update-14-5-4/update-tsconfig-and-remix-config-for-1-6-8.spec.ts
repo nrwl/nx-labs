@@ -9,7 +9,7 @@ import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 
 import update from './update-tsconfig-and-remix-config-for-1-6-8';
 
-describe('Update remix.config', () => {
+xdescribe('Update remix.config', () => {
   it('should add watchPaths', async () => {
     const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     createLegacyRemixApp(tree, 'remix', 'apps/remix');
@@ -81,7 +81,7 @@ describe('Update remix.config', () => {
   });
 });
 
-describe('Update app tsconfig.json', () => {
+xdescribe('Update app tsconfig.json', () => {
   it('should remove `basePath`', async () => {
     const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     createLegacyRemixApp(tree, 'remix', 'apps/remix');

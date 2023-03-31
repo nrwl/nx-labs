@@ -12,8 +12,8 @@ if [[ $NX_VERSION == "--local" ]]; then
     NX_VERSION="*"
 fi
 
-rm -rf build
-npx nx run-many --target=build --all --parallel || { echo 'Build failed' ; exit 1; }
+rm -rf dist
+npx nx run-many -t=build --exclude=gatsby --parallel || { echo 'Build failed' ; exit 1; }
 
 cd dist/packages
 

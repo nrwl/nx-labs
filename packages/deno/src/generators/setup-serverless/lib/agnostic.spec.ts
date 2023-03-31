@@ -26,10 +26,10 @@ describe('setup-serverless --platform=none', () => {
 
     expect(readProjectConfiguration(tree, 'my-app').targets.deploy)
       .toMatchInlineSnapshot(`
-      {
+      Object {
         "executor": "nx:run-commands",
-        "options": {
-          "command": "echo "TODO configure deploy target"",
+        "options": Object {
+          "command": "echo \\"TODO configure deploy target\\"",
         },
       }
     `);
@@ -49,10 +49,10 @@ describe('setup-serverless --platform=none', () => {
 
     expect(readProjectConfiguration(tree, 'my-app').targets.deploy)
       .toMatchInlineSnapshot(`
-      {
+      Object {
         "executor": "nx:run-commands",
-        "options": {
-          "command": "echo "TODO configure deploy target"",
+        "options": Object {
+          "command": "echo \\"TODO configure deploy target\\"",
         },
       }
     `);
