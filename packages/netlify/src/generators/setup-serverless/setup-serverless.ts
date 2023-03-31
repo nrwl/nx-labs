@@ -19,7 +19,6 @@ import {
 } from '../../../utils/versions';
 import { SetupServerlessFunctionOptions } from './schema';
 
-
 function normalizeOptions(
   tree: Tree,
   setupOptions: SetupServerlessFunctionOptions
@@ -50,15 +49,15 @@ function addServerlessFiles(
     logger.info(
       `Skipping setup since a netlify.toml already exists inside ${project.root}`
     );
+  } else {
+    const outputPath =
+      project.targets[`${options.buildTarget}`]?.options.outputPath;
+    generateFiles(tree, joinPathFragments(__dirname, `./files`), project.root, {
+      tmpl: '',
+      app: project.sourceRoot,
+      outputPath,
+    });
   }
-
-  const outputPath =
-    project.targets[`${options.buildTarget}`]?.options.outputPath;
-  generateFiles(tree, joinPathFragments(__dirname, `./files`), project.root, {
-    tmpl: '',
-    app: project.sourceRoot,
-    outputPath,
-  });
 }
 
 function updateProjectConfig(
