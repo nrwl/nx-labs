@@ -3,7 +3,7 @@ export interface SetupServerlessFunctionOptions {
   buildTarget?: string;
   lintTarget?: string;
   deployTarget?: string;
-  devTarget?: string;
+  serveTarget?: string;
   skipFormat?: boolean;
   skipPackageJson?: boolean;
   site?: string;

@@ -8,10 +8,11 @@ import {
   logger,
   readNxJson,
   readProjectConfiguration,
+  runTasksInSerial,
   Tree,
   updateProjectConfiguration,
 } from '@nrwl/devkit';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+
 import { awsLamdaTypesVersion, esbuildVersion } from '../../utils/version';
 
 import { Schema } from './schema';
@@ -25,8 +26,7 @@ function normalizeOptions(tree: Tree, schema: Schema): NormalizedSchema {
   return {
     ...schema,
     projectName,
-    devTarget: schema.devTarget ?? 'dev',
-    buildTarget: schema.buildTarget ?? 'build',
+    serveTarget: schema.serveTarget ?? 'serve',
     deployTarget: schema.deployTarget ?? 'deploy',
   };
 }
@@ -59,14 +59,12 @@ function updateProjectConfig(tree: Tree, options: NormalizedSchema) {
   const projectConfig = readProjectConfiguration(tree, options.projectName);
 
   if (projectConfig) {
-    projectConfig.targets[`${options.buildTarget}`].options.bundle = true;
-    projectConfig.targets[`${options.devTarget}`] = {
+    projectConfig.targets[`${options.serveTarget}`] = {
       command: 'sam build && sam local invoke',
     };
 
     projectConfig.targets[`${options.deployTarget}`] = {
-      dependsOn: [`${options.buildTarget}`],
-      command: 'sam deploy --guided',
+      command: 'sam build && sam deploy --guided',
     };
 
     updateProjectConfiguration(tree, options.projectName, projectConfig);

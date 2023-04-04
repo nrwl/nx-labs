@@ -9,6 +9,6 @@ export interface Schema {
   linter?: Linter;
   tags?: string;
   buildTarget?: string;
-  devTarget?: string;
+  serveTarget?: string;
   deployTarget?: string;
 }

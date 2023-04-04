@@ -17,8 +17,8 @@ describe('serverless', () => {
     expect(tree.exists('functions/hello/hello.ts'));
     expect(project.targets).toEqual(
       expect.objectContaining({
-        dev: {
-          command: 'npx netlify dev'
+        serve: {
+          command: 'npx netlify dev',
         },
         deploy: {
           dependsOn: ['lint'],
