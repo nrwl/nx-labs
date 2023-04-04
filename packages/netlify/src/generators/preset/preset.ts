@@ -15,7 +15,7 @@ export default async function (tree: Tree, options: PresetGeneratorSchema) {
     json.scripts.build ??= 'npx nx build';
     json.scripts.lint ??= 'npx nx lint';
     json.scripts.test ??= 'npx nx test';
-    json.scripts.dev ??= 'npx nx dev';
+    json.scripts.serve ??= 'npx nx serve';
     json.scripts.deploy ??= 'npx nx deploy';
     return json;
   });

@@ -23,7 +23,7 @@ describe('setupServerlessGenerator', () => {
       expect(tree.exists('netlify.toml'));
       expect(project.targets).toEqual(
         expect.objectContaining({
-          dev: {
+          serve: {
             command: 'npx netlify dev',
           },
           deploy: {
@@ -52,7 +52,7 @@ describe('setupServerlessGenerator', () => {
       expect(tree.exists('netlify.toml'));
       expect(project.targets).toEqual(
         expect.objectContaining({
-          dev: {
+          serve: {
             command: 'npx netlify dev',
           },
           deploy: {

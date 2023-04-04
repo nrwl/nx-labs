@@ -27,12 +27,11 @@ describe('AWS Lambda Setup Serverless Generator', () => {
     expect(tree.exists('template.yaml'));
     expect(projectConfig.targets).toEqual(
       expect.objectContaining({
-        dev: {
+        serve: {
           command: 'sam build && sam local invoke',
         },
         deploy: {
-          dependsOn: ['build'],
-          command: 'sam deploy --guided',
+          command: 'sam build && sam deploy --guided',
         },
       })
     );

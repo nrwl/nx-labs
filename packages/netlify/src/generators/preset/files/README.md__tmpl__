@@ -11,7 +11,7 @@ This workspace contains serverless functions that can be deployed to [Netlify](h
 The functions are located under `src/functions`, and you can run them locally using the following command:
 
 ```
-nx dev
+nx serve
 ```
 
 The default `hello` function will be available on `http://localhost:8888/.netlify/functions/hello`.

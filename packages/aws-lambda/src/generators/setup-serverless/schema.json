@@ -50,10 +50,10 @@
       "type": "string",
       "default": "build"
     },
-    "devTarget": {
-      "description": "The name of the dev target",
+    "serveTarget": {
+      "description": "The name of the serve target",
       "type": "string",
-      "default": "dev"
+      "default": "serve"
     },
     "deployTarget": {
       "description": "The name of the deploy target",

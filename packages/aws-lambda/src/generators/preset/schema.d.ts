@@ -4,7 +4,6 @@ export interface PresetGeneratorSchema {
   directory?: string;
   tags?: string;
   lintTarget?: string;
-  buildTarget?: string;
   deployTarget?: string;
 }
 

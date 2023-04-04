@@ -8,6 +8,5 @@ export interface Schema {
   linter?: Linter;
   tags?: string;
   lintTarget?: string;
-  buildTarget?: string;
   deployTarget?: string;
 }

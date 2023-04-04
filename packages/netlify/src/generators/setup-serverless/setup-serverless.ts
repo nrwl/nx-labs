@@ -8,10 +8,11 @@ import {
   logger,
   readNxJson,
   readProjectConfiguration,
+  runTasksInSerial,
   Tree,
   updateProjectConfiguration,
 } from '@nrwl/devkit';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+
 import {
   netlifyCliVersion,
   netlifyFunctionVersion,
@@ -27,7 +28,7 @@ function normalizeOptions(
     ...setupOptions,
     project,
     lintTarget: setupOptions.lintTarget ?? 'lint',
-    devTarget: setupOptions.devTarget ?? 'dev',
+    serveTarget: setupOptions.serveTarget ?? 'serve',
     buildTarget: setupOptions.buildTarget ?? 'build',
     deployTarget: setupOptions.deployTarget ?? 'deploy',
   };
@@ -65,7 +66,7 @@ function updateProjectConfig(
 
   if (projectConfig) {
     projectConfig.targets[`${options.buildTarget}`].options.bundle = true;
-    projectConfig.targets[`${options.devTarget}`] = {
+    projectConfig.targets[`${options.serveTarget}`] = {
       command: 'npx netlify dev',
     };
 

@@ -27,11 +27,6 @@
       "description": "Test runner to use for unit tests.",
       "default": "jest"
     },
-    "buildTarget": {
-      "description": "The name of the build target",
-      "type": "string",
-      "default": "build"
-    },
     "deployTarget": {
       "description": "The name of the deploy target",
       "type": "string",
