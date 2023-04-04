@@ -6,7 +6,6 @@ import {
   GeneratorCallback,
   joinPathFragments,
   logger,
-  names,
   readNxJson,
   readProjectConfiguration,
   Tree,
@@ -24,11 +23,9 @@ function normalizeOptions(
   setupOptions: SetupServerlessFunctionOptions
 ) {
   const project = setupOptions.project ?? readNxJson(tree).defaultProject;
-  const siteName = names(project).fileName;
   return {
     ...setupOptions,
     project,
-    site: setupOptions.site ?? siteName,
     lintTarget: setupOptions.lintTarget ?? 'lint',
     devTarget: setupOptions.devTarget ?? 'dev',
     buildTarget: setupOptions.buildTarget ?? 'build',
@@ -74,7 +71,9 @@ function updateProjectConfig(
 
     projectConfig.targets[`${options.deployTarget}`] = {
       dependsOn: [`${options.lintTarget}`],
-      command: 'npx netlify deploy --prod-if-unlocked',
+      command: options.site
+        ? `npx netlify deploy --prod-if-unlocked --site ${options.site}`
+        : 'npx netlify deploy --prod-if-unlocked',
     };
 
     updateProjectConfiguration(tree, options.project, projectConfig);
