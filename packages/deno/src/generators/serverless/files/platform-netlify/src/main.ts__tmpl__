@@ -1,0 +1,20 @@
+/**
+* Netlify Edge Function overview:
+* https://docs.netlify.com/edge-functions/overview/
+**/
+
+import type { Config, Context } from 'https://edge.netlify.com/'
+
+export default async function handler(req: Request, context: Context) {
+const content = `<html>
+  <body>
+    <h1>Hello <%= projectName %> 👋</h1>
+  </body>
+</html>`;
+
+ return new Response(content, {
+    status: 200,
+    headers: { 'Content-Type': 'text/html;charset=utf-8' },
+  });
+};
+

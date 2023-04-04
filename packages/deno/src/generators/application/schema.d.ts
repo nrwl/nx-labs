@@ -7,7 +7,6 @@ export interface DenoAppGeneratorSchema {
   withWatch?: boolean;
   monorepo?: boolean;
   rootProject?: boolean;
-  platform?: 'deno-deploy' | 'netlify' | 'none';
   framework?: 'oak' | 'none';
 }
 

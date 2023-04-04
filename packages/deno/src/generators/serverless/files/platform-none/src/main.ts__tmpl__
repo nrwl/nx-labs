@@ -1,0 +1,2 @@
+console.log('Hello <%= projectName %>')
+// TODO: Write awesome code 💻 

@@ -1,15 +1,14 @@
 import {
   joinPathFragments,
-  ProjectConfiguration,
+  readProjectConfiguration,
   Tree,
   updateProjectConfiguration,
 } from '@nrwl/devkit';
+import { DenoSetupServerlessSchema } from '../schema';
 import { assertNoTarget } from './utils';
 
-export function addAgnosticConfig(
-  tree: Tree,
-  projectConfig: ProjectConfiguration
-) {
+export function addAgnosticConfig(tree: Tree, opts: DenoSetupServerlessSchema) {
+  const projectConfig = readProjectConfiguration(tree, opts.project);
   assertNoTarget(projectConfig, 'deploy');
 
   projectConfig.targets.deploy = {

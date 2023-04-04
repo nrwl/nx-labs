@@ -2,24 +2,26 @@ import {
   addDependenciesToPackageJson,
   getPackageManagerCommand,
   joinPathFragments,
+  offsetFromRoot,
   ProjectConfiguration,
+  readProjectConfiguration,
   Tree,
   updateProjectConfiguration,
 } from '@nrwl/devkit';
+import { relative } from 'path';
+import { DenoSetupServerlessSchema } from '../schema';
 import { assertNoTarget } from './utils';
 
-export function addNetlifyConfig(
-  tree: Tree,
-  projectConfig: ProjectConfiguration
-) {
+export function addNetlifyConfig(tree: Tree, opts: DenoSetupServerlessSchema) {
+  const projectConfig = readProjectConfiguration(tree, opts.project);
   assertNoTarget(projectConfig, 'deploy');
   assertNoTarget(projectConfig, 'serve-functions');
 
-  addTargets(tree, projectConfig);
+  addTargets(tree, projectConfig, opts.site);
 
   const fnDir = joinPathFragments(projectConfig.root, 'functions');
   addEdgeFunction(tree, fnDir);
-  addNetlifyToml(tree, fnDir);
+  addNetlifyToml(tree, projectConfig, fnDir);
 
   return addDependenciesToPackageJson(
     tree,
@@ -30,17 +32,32 @@ export function addNetlifyConfig(
   );
 }
 
-function addTargets(tree: Tree, projectConfig: ProjectConfiguration) {
+function addTargets(
+  tree: Tree,
+  projectConfig: ProjectConfiguration,
+  siteName?: string
+) {
   const pm = getPackageManagerCommand();
+  const cwd =
+    projectConfig.root === '.' || projectConfig.root === ''
+      ? undefined
+      : projectConfig.root;
+
+  let siteArg = '--site=<Your-Netlify-Site-Name>';
+  if (siteName) {
+    siteArg = `--site=${siteName}`;
+  }
 
   projectConfig.targets.deploy = {
     executor: 'nx:run-commands',
     options: {
-      command: `${pm.exec} netlify deploy`,
+      command: `${pm.exec} netlify deploy ${siteArg}`,
+      cwd,
     },
     configurations: {
       production: {
-        command: `${pm.exec} netlify deploy --prod`,
+        command: `${pm.exec} netlify deploy --prod-if-unlocked ${siteArg}`,
+        cwd,
       },
     },
   };
@@ -48,30 +65,36 @@ function addTargets(tree: Tree, projectConfig: ProjectConfiguration) {
     executor: 'nx:run-commands',
     options: {
       command: `${pm.exec} netlify dev`,
+      cwd,
     },
   };
 
   updateProjectConfiguration(tree, projectConfig.name, projectConfig);
 }
 
-function addNetlifyToml(tree: Tree, fnDir: string) {
-  if (tree.exists('netlify.toml')) {
-    // TODO(caleb): merge settings?
-    console.warn('netlify.toml already exists, skipping.');
-  } else {
+function addNetlifyToml(
+  tree: Tree,
+  projectConfig: ProjectConfiguration,
+  fnDir: string
+) {
+  const fromProjectRootFnDir = relative(projectConfig.root, fnDir);
+  const netlifyPath = joinPathFragments(projectConfig.root, 'netlify.toml');
+  const offset = offsetFromRoot(projectConfig.root);
+
+  if (!tree.exists(netlifyPath)) {
     tree.write(
-      'netlify.toml',
+      netlifyPath,
       `# Netlify Configuration File: https://docs.netlify.com/configure-builds/file-based-configuration
 [build]
   # custom directory where edge functions are located.
   # each file in this directory will be considered a separate edge function.
-  edge_functions = "${fnDir}"
-  publish = "${fnDir}"
+  edge_functions = "${fromProjectRootFnDir}"
+  publish = "${fromProjectRootFnDir}"
 
 [functions]
   # provide all import aliases to netlify
   # https://docs.netlify.com/edge-functions/api/#import-maps
-  deno_import_map = "import_map.json"
+  deno_import_map = "${offset === './' ? '' : offset}import_map.json"
 
 # Read more about declaring edge functions: 
 # https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml

@@ -29,12 +29,12 @@ describe('setup-serverless --platform=netlify', () => {
       Object {
         "configurations": Object {
           "production": Object {
-            "command": "yarn netlify deploy --prod",
+            "command": "yarn netlify deploy --prod-if-unlocked --site=<Your-Netlify-Site-Name>",
           },
         },
         "executor": "nx:run-commands",
         "options": Object {
-          "command": "yarn netlify deploy",
+          "command": "yarn netlify deploy --site=<Your-Netlify-Site-Name>",
         },
       }
     `);
@@ -81,27 +81,30 @@ describe('setup-serverless --platform=netlify', () => {
       Object {
         "configurations": Object {
           "production": Object {
-            "command": "yarn netlify deploy --prod",
+            "command": "yarn netlify deploy --prod-if-unlocked --site=<Your-Netlify-Site-Name>",
+            "cwd": "apps/my-app",
           },
         },
         "executor": "nx:run-commands",
         "options": Object {
-          "command": "yarn netlify deploy",
+          "command": "yarn netlify deploy --site=<Your-Netlify-Site-Name>",
+          "cwd": "apps/my-app",
         },
       }
     `);
-    expect(tree.read('netlify.toml', 'utf-8')).toMatchInlineSnapshot(`
+    expect(tree.read('apps/my-app/netlify.toml', 'utf-8'))
+      .toMatchInlineSnapshot(`
       "# Netlify Configuration File: https://docs.netlify.com/configure-builds/file-based-configuration
       [build]
         # custom directory where edge functions are located.
         # each file in this directory will be considered a separate edge function.
-        edge_functions = \\"apps/my-app/functions\\"
-        publish = \\"apps/my-app/functions\\"
+        edge_functions = \\"functions\\"
+        publish = \\"functions\\"
 
       [functions]
         # provide all import aliases to netlify
         # https://docs.netlify.com/edge-functions/api/#import-maps
-        deno_import_map = \\"import_map.json\\"
+        deno_import_map = \\"../../import_map.json\\"
 
       # Read more about declaring edge functions: 
       # https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml
