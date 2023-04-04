@@ -1,8 +1,15 @@
 # @nrwl/deno
 
+[Deno](https://deno.com/runtime) is a JavaScript runtime that provides great tooling and hassle-free deployment.
+
+The following guides show you how to create a new Deno project and deploy to either [Deno Deploy](https://deno.com/deploy) or [Netlify](https://www.netlify.com/).
+
+- Deno Deploy: https://nx.dev/recipes/deployment/deno-deploy
+- Netlify: https://nx.dev/recipes/deployment/deno-netlify
+
 ## Setup
 
-Create a new Nx worksapce if you don't already have one.
+Create a new Nx workspace if you don't already have one.
 
 ```shell
 npx create-nx-workspace@latest deno-demo --preset=@nrwl/deno:preset
