@@ -21,11 +21,6 @@ const parsedArgs = yargsParser(process.argv, {
 
 console.log('parsedArgs', parsedArgs);
 
-if (!parsedArgs.local && !process.env.GITHUB_TOKEN_RELEASE_IT_NX) {
-  console.error('process.env.GITHUB_TOKEN_RELEASE_IT_NX is not set');
-  process.exit(1);
-}
-
 if (parsedArgs.help) {
   console.log(`
       Usage: yarn nx-release <version> [options]
@@ -159,9 +154,6 @@ childProcess.execSync(`find dist/npm -maxdepth 1 -name "*.tgz" -delete`, {
  */
 const DRY_RUN = !!parsedArgs['dry-run'];
 
-process.env.GITHUB_TOKEN = !parsedArgs.local
-  ? process.env.GITHUB_TOKEN_RELEASE_IT_NX
-  : 'dummy-gh-token';
 /**
  * Set the static options for release-it
  */
