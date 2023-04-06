@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@nrwl/aws-lambda": ["packages/aws-lambda/src/index.ts"],
       "@nrwl/deno": ["packages/deno/src/index.ts"],
       "@nrwl/netlify": ["packages/netlify/index.ts"],
       "@nrwl/rspack": ["packages/rspack/src/index.ts"],
