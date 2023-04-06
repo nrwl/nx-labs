@@ -27,7 +27,7 @@ describe('setupServerlessGenerator', () => {
             command: 'npx netlify dev',
           },
           deploy: {
-            dependsOn: ['lint'],
+            dependsOn: ['build','lint'],
             command: 'npx netlify deploy --prod-if-unlocked',
           },
         })
@@ -41,7 +41,7 @@ describe('setupServerlessGenerator', () => {
         name: 'api',
         framework: 'express',
         rootProject: true,
-        docker: true,
+        docker: false,
       });
 
       await setupServerlessGenerator(tree, {
@@ -56,7 +56,7 @@ describe('setupServerlessGenerator', () => {
             command: 'npx netlify dev',
           },
           deploy: {
-            dependsOn: ['lint'],
+            dependsOn: ['build','lint'],
             command: 'npx netlify deploy --prod-if-unlocked',
           },
         })
