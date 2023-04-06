@@ -8,7 +8,7 @@ import {
 } from '@nrwl/devkit';
 import { Linter } from '@nrwl/linter';
 import { applicationGenerator } from '@nrwl/node';
-import setupServerlessGenerator from '../setup-serverless/setup-serverless';
+import { setupServerlessGenerator  } from '../setup-serverless/setup-serverless';
 import { Schema } from './schema';
 
 function normalizeOptions(options: Schema): Schema {

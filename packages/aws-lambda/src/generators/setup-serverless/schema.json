@@ -45,11 +45,6 @@
       "description": "Test runner to use for unit tests.",
       "default": "jest"
     },
-    "buildTarget": {
-      "description": "The name of the build target",
-      "type": "string",
-      "default": "build"
-    },
     "serveTarget": {
       "description": "The name of the serve target",
       "type": "string",

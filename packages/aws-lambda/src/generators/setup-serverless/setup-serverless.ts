@@ -13,7 +13,7 @@ import {
   updateProjectConfiguration,
 } from '@nrwl/devkit';
 
-import { awsLamdaTypesVersion, esbuildVersion } from '../../utils/version';
+import { awsLamdaTypesVersion, esbuildVersion } from '../../../utils/version';
 
 import { Schema } from './schema';
 
@@ -34,7 +34,7 @@ function normalizeOptions(tree: Tree, schema: Schema): NormalizedSchema {
 function addAwsLamdaFiles(tree: Tree, options: NormalizedSchema) {
   const { projectName } = options;
   const projectConfig = readProjectConfiguration(tree, projectName);
-  if (!projectConfig || !options.buildTarget) {
+  if (!projectConfig) {
     return;
   }
 
