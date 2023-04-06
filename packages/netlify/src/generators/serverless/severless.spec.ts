@@ -21,7 +21,7 @@ describe('serverless', () => {
           command: 'npx netlify dev',
         },
         deploy: {
-          dependsOn: ['lint'],
+          dependsOn: ['build','lint'],
           command: 'npx netlify deploy --prod-if-unlocked',
         },
       })
