@@ -9,7 +9,7 @@ import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 
 import update from './update-tsconfig-and-remix-config-for-1-6-8';
 
-xdescribe('Update remix.config', () => {
+describe('Update remix.config', () => {
   it('should add watchPaths', async () => {
     const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     createLegacyRemixApp(tree, 'remix', 'apps/remix');
@@ -81,7 +81,7 @@ xdescribe('Update remix.config', () => {
   });
 });
 
-xdescribe('Update app tsconfig.json', () => {
+describe('Update app tsconfig.json', () => {
   it('should remove `basePath`', async () => {
     const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     createLegacyRemixApp(tree, 'remix', 'apps/remix');
@@ -123,32 +123,33 @@ xdescribe('Update app tsconfig.json', () => {
       sourceRoot: 'apps/not-remix/src',
     });
 
-    const notRemixTsConfigJson = `
-          {
-            "extends": "../../../../tsconfig.base.json",
-            "compilerOptions": {
-              "jsx": "react-jsx",
-              "allowJs": true,
-              "esModuleInterop": true,
-              "allowSyntheticDefaultImports": true,
-              "forceConsistentCasingInFileNames": true,
-              "strict": true,
-              "noImplicitOverride": true,
-              "noPropertyAccessFromIndexSignature": true,
-              "noImplicitReturns": true,
-              "noFallthroughCasesInSwitch": true
-            },
-            "files": [],
-            "include": [],
-            "references": [
-              {
-                "path": "./tsconfig.app.json"
-              },
-              {
-                "path": "./tsconfig.spec.json"
-              }
-            ]
-          }`;
+    const notRemixTsConfigJson =
+`{
+  "extends": "../../../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}
+`;
 
     tree.write('apps/not-remix/tsconfig.json', notRemixTsConfigJson);
 

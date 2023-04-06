@@ -19,33 +19,27 @@ export default async function (tree: Tree, schema: LoaderSchema) {
     );
   }
 
-  insertImport(tree, routeFilePath, 'ActionFunction', '@remix-run/node', {
+  insertImport(tree, routeFilePath, 'ActionArgs', '@remix-run/node', {
     typeOnly: true,
   });
   insertImport(tree, routeFilePath, 'json', '@remix-run/node');
   insertImport(tree, routeFilePath, 'useActionData', '@remix-run/react');
 
-  const defaultExportName = getDefaultExportName(tree, routeFilePath);
-  const actionTypeName = `${defaultExportName}ActionData`;
 
   insertStatementAfterImports(
     tree,
     routeFilePath,
     `
-    type ${actionTypeName} = {
-        message: string;
-    };
-    
-    export let action: ActionFunction = async ({ request }) => {
+    export const action = async ({ request }: ActionArgs) => {
       let formData = await request.formData();
-  
+
       return json({message: formData.toString()}, { status: 200 });
     };
-    
+
     `
   );
 
-  const statement = `\nconst actionMessage = useActionData<${actionTypeName}>();`;
+  const statement = `\nconst actionMessage = useActionData<typeof action>();`;
 
   try {
     insertStatementInDefaultFunction(tree, routeFilePath, statement);
