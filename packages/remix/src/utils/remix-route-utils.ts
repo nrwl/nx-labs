@@ -21,7 +21,7 @@ export function resolveRemixRouteFile(
 ): string {
   const project = readProjectConfiguration(tree, projectName);
   if (!project) throw new Error(`Project does not exist: ${projectName}`);
-  const { fileName: routePath } = names(
+  const { name: routePath } = names(
     path.replace(/^\//, '').replace(/\/$/, '')
   );
   const normalizedRoutePath = normalizeRoutePath(routePath, project.root);

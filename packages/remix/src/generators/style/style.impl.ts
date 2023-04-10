@@ -16,7 +16,7 @@ import {
 } from '../../utils/remix-route-utils';
 
 export default async function (tree: Tree, options: RemixStyleSchema) {
-  const { fileName: routePath, className: componentName } = names(
+  const { name: routePath } = names(
     options.path.replace(/^\//, '').replace(/\/$/, '').replace('.tsx', '')
   );
 
@@ -61,7 +61,7 @@ export default async function (tree: Tree, options: RemixStyleSchema) {
     routeFilePath,
     `
     import stylesUrl from '~/styles/${normalizedRoutePath}.css'
-    
+
     export const links: LinksFunction = () => {
       return [{ rel: 'stylesheet', href: stylesUrl }];
     };

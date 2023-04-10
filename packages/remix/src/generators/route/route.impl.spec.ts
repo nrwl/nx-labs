@@ -79,4 +79,21 @@ describe('route', () => {
       .toString();
     expect(content).toMatch('function ExampleIndex(');
   });
+
+  it('should handle routes that have a param', async () => {
+    await applicationGenerator(tree, { name: 'demo' });
+    await routeGenerator(tree, {
+      project: 'demo',
+      path: '/example/$withParam.tsx',
+      style: 'css',
+      loader: true,
+      action: true,
+      meta: true,
+    });
+
+    const content = tree
+      .read('apps/demo/app/routes/example/$withParam.tsx')
+      .toString();
+    expect(content).toMatch('function ExampleWithParam(');
+  });
 });
