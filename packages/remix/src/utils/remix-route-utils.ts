@@ -47,8 +47,8 @@ export function resolveRemixRouteFile(
   const fileName = normalizedRoutePath.endsWith(fileExtension)
     ? normalizedRoutePath
     : `${normalizedRoutePath}${fileExtension}`;
-  // TODO: what if someone changes the Remix app root folder in the remix.config.js?
-  const routeFilePath = joinPathFragments(project.root, 'app/routes', fileName);
+
+  const routeFilePath = joinPathFragments(resolveRemixAppDirectory(tree,projectName), 'routes', fileName);
   return routeFilePath;
 }
 
@@ -65,4 +65,15 @@ export function checkRoutePathForErrors(path: string) {
     path.match(/\w\/\/\w/) || // route/$withParams/index.tsx => route//index.tsx
     path.match(/\w\/\.\w/) // route/$withParams.tsx => route/.tsx
   )
+}
+
+export function resolveRemixAppDirectory(tree: Tree, projectName: string) {
+  const project = readProjectConfiguration(tree, projectName);
+  if (!project) throw new Error(`Project does not exist: ${projectName}`);
+
+  const remixConfigPath = joinPathFragments(project.root, 'remix.config.js');
+
+  const remixConfig = eval(tree.read(remixConfigPath,"utf-8"));
+
+  return joinPathFragments(project.root, remixConfig.appDirectory ?? 'app')
 }
