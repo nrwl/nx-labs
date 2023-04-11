@@ -21,7 +21,7 @@ export function resolveRemixRouteFile(
 ): string {
   const project = readProjectConfiguration(tree, projectName);
   if (!project) throw new Error(`Project does not exist: ${projectName}`);
-  const { name: routePath } = names(
+  const {name: routePath} = names(
     path.replace(/^\//, '').replace(/\/$/, '')
   );
   const normalizedRoutePath = normalizeRoutePath(routePath, project.root);
@@ -57,4 +57,12 @@ export function normalizeRoutePath(path: string, projectRoot: string) {
   if (path.indexOf('/routes/') > -1)
     return path.substring(path.indexOf('/routes/') + 8);
   return path.substring(projectRoot.length + 1);
+}
+
+export function checkRoutePathForErrors(path: string) {
+  return (
+    path.match(/\w\.\.\w/) || // route.$withParams.tsx => route..tsx
+    path.match(/\w\/\/\w/) || // route/$withParams/index.tsx => route//index.tsx
+    path.match(/\w\/\.\w/) // route/$withParams.tsx => route/.tsx
+  )
 }

@@ -21,6 +21,7 @@ describe('route', () => {
       loader: false,
       action: false,
       meta: false,
+      skipChecks: false
     });
     await styleGenerator(tree, {
       project: 'demo',
@@ -41,6 +42,7 @@ describe('route', () => {
       loader: false,
       action: false,
       meta: false,
+      skipChecks: false
     });
     await styleGenerator(tree, {
       project: 'demo',
@@ -51,6 +53,6 @@ describe('route', () => {
       tree.exists('apps/demo/app/styles/example/$withParam.css')
     ).toBeTruthy();
   });
-  
+
 
 });

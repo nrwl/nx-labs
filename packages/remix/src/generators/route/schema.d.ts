@@ -5,4 +5,5 @@ export interface RemixRouteSchema {
   action: boolean;
   meta: boolean;
   loader: boolean;
+  skipChecks: boolean;
 }
