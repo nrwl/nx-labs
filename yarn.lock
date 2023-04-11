@@ -3058,6 +3058,13 @@
   dependencies:
     esquery "^1.0.1"
 
+"@phenomnomnominal/tsquery@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@phenomnomnominal/tsquery/-/tsquery-5.0.1.tgz#a2a5abc89f92c01562a32806655817516653a388"
+  integrity sha512-3nVv+e2FQwsW8Aw6qTU6f+1rfcJ3hrcnvH/mu9i8YhxO+9sqbOfpL8m6PbET5+xKOlz/VSbp0RoYWYCtIsnmuA==
+  dependencies:
+    esquery "^1.4.0"
+
 "@pnpm/network.ca-file@^1.0.1":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@pnpm/network.ca-file/-/network.ca-file-1.0.2.tgz#2ab05e09c1af0cdf2fcf5035bea1484e222f7983"
