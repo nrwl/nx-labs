@@ -1,6 +1,6 @@
 import { formatFiles, GeneratorCallback, Tree } from '@nrwl/devkit';
 
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+import { runTasksInSerial } from '@nrwl/devkit';
 import applicationGenerator from '../application/application.impl';
 import setupGenerator from '../setup/setup.impl';
 import { normalizeOptions } from './lib/normalize-options';

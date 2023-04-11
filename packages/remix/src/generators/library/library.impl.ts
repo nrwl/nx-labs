@@ -13,7 +13,7 @@ import { libraryGenerator } from '@nrwl/react/src/generators/library/library';
 import { NxRemixGeneratorSchema } from './schema';
 import { Linter } from '@nrwl/linter';
 import { execSync } from 'child_process';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+import { runTasksInSerial } from '@nrwl/devkit';
 
 export default async function (tree: Tree, options: NxRemixGeneratorSchema) {
   const tasks: GeneratorCallback[] = [];
@@ -24,12 +24,7 @@ export default async function (tree: Tree, options: NxRemixGeneratorSchema) {
 
   const libGenTask = await libraryGenerator(tree, {
     name,
-
-    // Remix can only work with buildable libs and yarn/npm workspaces
-    buildable: true,
-    compiler: 'babel',
-
-    style: 'css',
+    style: options.style,
     unitTestRunner: 'jest',
     tags: options.tags,
     importPath: options.importPath,

@@ -25,6 +25,12 @@
       "type": "string",
       "description": "Add tags to the library (used for linting)"
     },
+    "style": {
+      "type": "string",
+      "description": "Generate a stylesheet",
+      "enum": ["none", "css"],
+      "default": "css"
+    },
     "importPath": {
       "type": "string",
       "description": "The library name used to import it, like @myorg/my-awesome-lib"

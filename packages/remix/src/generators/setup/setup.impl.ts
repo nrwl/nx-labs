@@ -1,6 +1,6 @@
 import { formatFiles, GeneratorCallback, Tree } from '@nrwl/devkit';
 import { initGenerator as jsInitGenerator } from '@nrwl/js';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+import { runTasksInSerial } from '@nrwl/devkit';
 
 export default async function (tree: Tree) {
   const tasks: GeneratorCallback[] = [];

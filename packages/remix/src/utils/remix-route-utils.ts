@@ -24,7 +24,7 @@ export function resolveRemixRouteFile(
   const {name: routePath} = names(
     path.replace(/^\//, '').replace(/\/$/, '')
   );
-  const normalizedRoutePath = normalizeRoutePath(routePath, project.root);
+  const normalizedRoutePath = normalizeRoutePath(routePath);
 
   // if no file extension specified, let's try to find it
   if (!fileExtension) {
@@ -48,15 +48,11 @@ export function resolveRemixRouteFile(
     ? normalizedRoutePath
     : `${normalizedRoutePath}${fileExtension}`;
 
-  const routeFilePath = joinPathFragments(resolveRemixAppDirectory(tree,projectName), 'routes', fileName);
-  return routeFilePath;
+  return joinPathFragments(resolveRemixAppDirectory(tree,projectName), 'routes', fileName);
 }
 
-export function normalizeRoutePath(path: string, projectRoot: string) {
-  if (path.indexOf(projectRoot) === -1) return path;
-  if (path.indexOf('/routes/') > -1)
-    return path.substring(path.indexOf('/routes/') + 8);
-  return path.substring(projectRoot.length + 1);
+export function normalizeRoutePath(path: string) {
+  return path.indexOf('/routes/') > -1 ? path.substring(path.indexOf('/routes/') + 8) : path;
 }
 
 export function checkRoutePathForErrors(path: string) {

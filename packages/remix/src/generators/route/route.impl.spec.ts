@@ -2,7 +2,7 @@ import {Tree} from '@nrwl/devkit';
 import {createTreeWithEmptyWorkspace} from '@nrwl/devkit/testing';
 import applicationGenerator from '../application/application.impl';
 import routeGenerator from './route.impl';
-
+import presetGenerator  from '../preset/preset.impl';
 describe('route', () => {
   let tree: Tree;
 
@@ -205,7 +205,7 @@ describe('route', () => {
 
     await routeGenerator(tree, {
       project: 'demo',
-      path: 'route.tsx', // route/$withParams.tsx => route/.tsx
+      path: 'route.tsx',
       style: 'css',
       loader: true,
       action: true,
@@ -216,5 +216,86 @@ describe('route', () => {
     expect(tree.exists('apps/demo/my-custom-dir/routes/route.tsx')).toBe(true);
 
 
+  });
+
+  it('should normalize route paths', async () => {
+    await applicationGenerator(tree, {name: 'demo'});
+
+    await routeGenerator(tree, {
+      project: 'demo',
+      path: 'routeRelativeToRoutesDir.tsx',
+      style: 'css',
+      loader: true,
+      action: true,
+      meta: true,
+      skipChecks: false,
+    });
+
+    expect(tree.exists('apps/demo/app/routes/routeRelativeToRoutesDir.tsx')).toBe(true);
+
+    await routeGenerator(tree, {
+      project: 'demo',
+      path: 'app/routes/routeRelativeToProjectRoot.tsx',
+      style: 'css',
+      loader: true,
+      action: true,
+      meta: true,
+      skipChecks: false,
+    });
+
+    expect(tree.exists('apps/demo/app/routes/routeRelativeToProjectRoot.tsx')).toBe(true);
+
+    await routeGenerator(tree, {
+      project: 'demo',
+      path: 'apps/demo/app/routes/routeRelativeToWorkspaceRoot.tsx',
+      style: 'css',
+      loader: true,
+      action: true,
+      meta: true,
+      skipChecks: false,
+    });
+
+    expect(tree.exists('apps/demo/app/routes/routeRelativeToWorkspaceRoot.tsx')).toBe(true);
+
+    await routeGenerator(tree, {
+      project: 'demo',
+      path: 'apps/demo/app/routes/route/using/v1/routing.tsx',
+      style: 'css',
+      loader: true,
+      action: true,
+      meta: true,
+      skipChecks: false,
+    });
+
+    expect(tree.exists('apps/demo/app/routes/route/using/v1/routing.tsx')).toBe(true);
+
+    await routeGenerator(tree, {
+      project: 'demo',
+      path: 'apps/demo/app/routes/route.using.v2.routing.tsx',
+      style: 'css',
+      loader: true,
+      action: true,
+      meta: true,
+      skipChecks: false,
+    });
+
+    expect(tree.exists('apps/demo/app/routes/route.using.v2.routing.tsx')).toBe(true);
+
+  })
+
+  it('should place the route correctly in a standalone app', async () => {
+    await presetGenerator(tree, {name: 'demo'});
+
+    await routeGenerator(tree, {
+      project: 'demo',
+      path: 'route.tsx',
+      style: 'none',
+      loader: true,
+      action: true,
+      meta: true,
+      skipChecks: false,
+    });
+
+    expect(tree.exists('app/routes/route.tsx')).toBe(true);
   })
 });

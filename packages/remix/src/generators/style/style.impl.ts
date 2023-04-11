@@ -6,24 +6,25 @@ import {
   stripIndents,
   Tree,
 } from '@nrwl/devkit';
-import { RemixStyleSchema } from './schema';
+import {RemixStyleSchema} from './schema';
 
-import { insertImport } from '../../utils/insert-import';
-import { insertStatementAfterImports } from '../../utils/insert-statement-after-imports';
+import {insertImport} from '../../utils/insert-import';
+import {insertStatementAfterImports} from '../../utils/insert-statement-after-imports';
 import {
   normalizeRoutePath,
   resolveRemixRouteFile,
 } from '../../utils/remix-route-utils';
+import {relative, dirname} from 'path';
 
 export default async function (tree: Tree, options: RemixStyleSchema) {
-  const { name: routePath } = names(
+  const {name: routePath} = names(
     options.path.replace(/^\//, '').replace(/\/$/, '').replace('.tsx', '')
   );
 
   const project = readProjectConfiguration(tree, options.project);
   if (!project) throw new Error(`Project does not exist: ${options.project}`);
 
-  const normalizedRoutePath = normalizeRoutePath(routePath, project.root);
+  const normalizedRoutePath = normalizeRoutePath(routePath);
 
   const stylesheetPath = joinPathFragments(
     project.root,
@@ -56,17 +57,32 @@ export default async function (tree: Tree, options: RemixStyleSchema) {
     typeOnly: true,
   });
 
-  insertStatementAfterImports(
-    tree,
-    routeFilePath,
-    `
+  if (project.root === '.') {
+    insertStatementAfterImports(
+      tree,
+      routeFilePath,
+      `
     import stylesUrl from '~/styles/${normalizedRoutePath}.css'
 
     export const links: LinksFunction = () => {
       return [{ rel: 'stylesheet', href: stylesUrl }];
     };
   `
-  );
+    );
+  } else {
+    insertStatementAfterImports(
+      tree,
+      routeFilePath,
+      `
+    import stylesUrl from '${relative(dirname(routeFilePath), stylesheetPath)}';
+
+    export const links: LinksFunction = () => {
+      return [{ rel: 'stylesheet', href: stylesUrl }];
+    };
+  `
+    );
+  }
+
 
   await formatFiles(tree);
 }

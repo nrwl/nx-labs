@@ -95,7 +95,7 @@ describe('remix e2e', () => {
       );
 
       expect(result.stdout).toContain(
-        `CREATE apps/${plugin}/app/routes/my.route.$withParams.tsx`
+        `CREATE ${plugin}/app/routes/my.route.$withParams.tsx`
       );
     }, 120000);
 
@@ -103,7 +103,7 @@ describe('remix e2e', () => {
       const result =  await runCommandAsync(`someWeirdUseCase=route-segment && yarn nx generate @nrwl/remix:route --project ${plugin} --path my.route.$someWeirdUseCase.tsx --force`);
 
       expect(result.stdout).toContain(
-        `CREATE apps/${plugin}/app/routes/my.route.route-segment.tsx`
+        `CREATE ${plugin}/app/routes/my.route.route-segment.tsx`
       );
     }, 120000);
 
@@ -122,7 +122,7 @@ describe('remix e2e', () => {
       );
 
       expect(result.stdout).toContain(
-        `CREATE apps/${plugin}/app/routes/my.route.$withParams.ts`
+        `CREATE ${plugin}/app/routes/my.route.$withParams.ts`
       );
     }, 120000);
 
@@ -130,7 +130,7 @@ describe('remix e2e', () => {
       const result =  await runCommandAsync(`someWeirdUseCase=route-segment && yarn nx generate @nrwl/remix:resource-route --project ${plugin} --path my.route.$someWeirdUseCase.tsx --force`);
 
       expect(result.stdout).toContain(
-        `CREATE apps/${plugin}/app/routes/my.route.route-segment.ts`
+        `CREATE ${plugin}/app/routes/my.route.route-segment.ts`
       );
     }, 120000);
   });
