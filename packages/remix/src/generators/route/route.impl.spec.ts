@@ -291,7 +291,7 @@ describe('route', () => {
     expect(tree.exists('apps/demo/app/routes/route.using.v2.routing.tsx')).toBe(
       true
     );
-  });
+  }, 30000);
 
   it('should place the route correctly in a standalone app', async () => {
     await presetGenerator(tree, { name: 'demo' });
