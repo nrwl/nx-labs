@@ -1,4 +1,5 @@
 import {
+  checkFilesExist,
   ensureNxProject,
   readJson,
   runCommandAsync,
@@ -82,61 +83,57 @@ describe('remix e2e', () => {
     }, 120000);
 
     it('should check for un-escaped dollar signs in routes', async () => {
-      expect.assertions(2);
-      try {
-        await runNxCommandAsync(
-          `generate @nrwl/remix:route --project ${plugin} --path my.route.$withParams.tsx`
-        );
-      } catch (e) {
-        expect(e.toString()).toContain('Error: Command failed:');
-      }
+      await expect(
+        async () =>
+          await runNxCommandAsync(
+            `generate @nrwl/remix:route --project ${plugin} --path my.route.$withParams.tsx`
+          )
+      ).rejects.toThrow();
 
-      const result = await runNxCommandAsync(
+      await runNxCommandAsync(
         `generate @nrwl/remix:route --project ${plugin} --path my.route.\\$withParams.tsx`
       );
 
-      expect(result.stdout).toContain(
-        `CREATE ${plugin}/app/routes/my.route.$withParams.tsx`
-      );
+      expect(() =>
+        checkFilesExist(`${plugin}/app/routes/my.route.$withParams.tsx`)
+      ).not.toThrow();
     }, 120000);
 
     it('should pass un-escaped dollar signs in routes with skipChecks flag', async () => {
-      const result = await runCommandAsync(
+      await runCommandAsync(
         `someWeirdUseCase=route-segment && yarn nx generate @nrwl/remix:route --project ${plugin} --path my.route.$someWeirdUseCase.tsx --force`
       );
 
-      expect(result.stdout).toContain(
-        `CREATE ${plugin}/app/routes/my.route.route-segment.tsx`
-      );
+      expect(() =>
+        checkFilesExist(`${plugin}/app/routes/my.route.route-segment.tsx`)
+      ).not.toThrow();
     }, 120000);
 
     it('should check for un-escaped dollar signs in resource routes', async () => {
-      expect.assertions(2);
-      try {
-        await runNxCommandAsync(
-          `generate @nrwl/remix:resource-route --project ${plugin} --path my.route.$withParams.ts`
-        );
-      } catch (e) {
-        expect(e.toString()).toContain('Error: Command failed:');
-      }
+      await expect(
+        async () =>
+          await runNxCommandAsync(
+            `generate @nrwl/remix:resource-route --project ${plugin} --path my.route.$withParams.ts`
+          )
+      ).rejects.toThrow();
 
-      const result = await runNxCommandAsync(
+      await runNxCommandAsync(
         `generate @nrwl/remix:resource-route --project ${plugin} --path my.route.\\$withParams.ts`
       );
 
-      expect(result.stdout).toContain(
-        `CREATE ${plugin}/app/routes/my.route.$withParams.ts`
-      );
+      expect(() =>
+        checkFilesExist(`${plugin}/app/routes/my.route.$withParams.ts`)
+      ).not.toThrow();
     }, 120000);
 
     it('should pass un-escaped dollar signs in resource routes with skipChecks flag', async () => {
-      const result = await runCommandAsync(
-        `someWeirdUseCase=route-segment && yarn nx generate @nrwl/remix:resource-route --project ${plugin} --path my.route.$someWeirdUseCase.tsx --force`
+      await runCommandAsync(
+        `someWeirdUseCase=route-segment && yarn nx generate @nrwl/remix:resource-route --project ${plugin} --path my.route.$someWeirdUseCase.ts --force`
       );
 
-      expect(result.stdout).toContain(
-        `CREATE ${plugin}/app/routes/my.route.route-segment.ts`
-      );
+      expect(() =>
+        checkFilesExist(`${plugin}/app/routes/my.route.route-segment.ts`)
+      ).not.toThrow();
     }, 120000);
   });
 });
