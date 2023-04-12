@@ -1,4 +1,4 @@
-import {SupportedStyles} from "@nrwl/react";
+import { SupportedStyles } from '@nrwl/react';
 
 export interface NxRemixGeneratorSchema {
   name: string;

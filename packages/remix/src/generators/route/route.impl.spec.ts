@@ -1,18 +1,18 @@
-import {Tree} from '@nrwl/devkit';
-import {createTreeWithEmptyWorkspace} from '@nrwl/devkit/testing';
+import { Tree } from '@nrwl/devkit';
+import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 import applicationGenerator from '../application/application.impl';
+import presetGenerator from '../preset/preset.impl';
 import routeGenerator from './route.impl';
-import presetGenerator  from '../preset/preset.impl';
 describe('route', () => {
   let tree: Tree;
 
   beforeEach(() => {
-    tree = createTreeWithEmptyWorkspace({layout: 'apps-libs'});
+    tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     tree.write('.gitignore', `/node_modules/dist`);
   });
 
   it('should add route component', async () => {
-    await applicationGenerator(tree, {name: 'demo'});
+    await applicationGenerator(tree, { name: 'demo' });
     await routeGenerator(tree, {
       project: 'demo',
       path: 'path/to/example',
@@ -34,7 +34,7 @@ describe('route', () => {
   });
 
   it('should support --style=none', async () => {
-    await applicationGenerator(tree, {name: 'demo'});
+    await applicationGenerator(tree, { name: 'demo' });
     await routeGenerator(tree, {
       project: 'demo',
       path: 'example',
@@ -51,7 +51,7 @@ describe('route', () => {
   });
 
   it('should handle trailing and prefix slashes', async () => {
-    await applicationGenerator(tree, {name: 'demo'});
+    await applicationGenerator(tree, { name: 'demo' });
     await routeGenerator(tree, {
       project: 'demo',
       path: '/example/',
@@ -67,7 +67,7 @@ describe('route', () => {
   });
 
   it('should handle routes that end in a file', async () => {
-    await applicationGenerator(tree, {name: 'demo'});
+    await applicationGenerator(tree, { name: 'demo' });
     await routeGenerator(tree, {
       project: 'demo',
       path: '/example/index.tsx',
@@ -85,7 +85,7 @@ describe('route', () => {
   });
 
   it('should handle routes that have a param', async () => {
-    await applicationGenerator(tree, {name: 'demo'});
+    await applicationGenerator(tree, { name: 'demo' });
     await routeGenerator(tree, {
       project: 'demo',
       path: '/example/$withParam.tsx',
@@ -103,7 +103,7 @@ describe('route', () => {
   });
 
   it('should error if it detects a possible missing route param because of un-escaped dollar sign', async () => {
-    await applicationGenerator(tree, {name: 'demo'});
+    await applicationGenerator(tree, { name: 'demo' });
 
     expect.assertions(3);
 
@@ -151,7 +151,7 @@ describe('route', () => {
   });
 
   it('should succeed if skipChecks flag is passed, and it detects a possible missing route param because of un-escaped dollar sign', async () => {
-    await applicationGenerator(tree, {name: 'demo'});
+    await applicationGenerator(tree, { name: 'demo' });
 
     await routeGenerator(tree, {
       project: 'demo',
@@ -188,20 +188,22 @@ describe('route', () => {
     });
 
     expect(tree.exists('apps/demo/app/routes/route3/.tsx')).toBe(true);
-
   });
 
   it('should place routes correctly when app dir is changed', async () => {
-    await applicationGenerator(tree, {name: 'demo'});
+    await applicationGenerator(tree, { name: 'demo' });
 
-    tree.write('apps/demo/remix.config.js', `
+    tree.write(
+      'apps/demo/remix.config.js',
+      `
     /**
      * @type {import('@remix-run/dev').AppConfig}
      */
     module.exports = {
       ignoredRouteFiles: ["**/.*"],
       appDirectory: "my-custom-dir",
-    };`);
+    };`
+    );
 
     await routeGenerator(tree, {
       project: 'demo',
@@ -214,12 +216,10 @@ describe('route', () => {
     });
 
     expect(tree.exists('apps/demo/my-custom-dir/routes/route.tsx')).toBe(true);
-
-
   });
 
   it('should normalize route paths', async () => {
-    await applicationGenerator(tree, {name: 'demo'});
+    await applicationGenerator(tree, { name: 'demo' });
 
     await routeGenerator(tree, {
       project: 'demo',
@@ -231,7 +231,9 @@ describe('route', () => {
       skipChecks: false,
     });
 
-    expect(tree.exists('apps/demo/app/routes/routeRelativeToRoutesDir.tsx')).toBe(true);
+    expect(
+      tree.exists('apps/demo/app/routes/routeRelativeToRoutesDir.tsx')
+    ).toBe(true);
 
     await routeGenerator(tree, {
       project: 'demo',
@@ -243,7 +245,9 @@ describe('route', () => {
       skipChecks: false,
     });
 
-    expect(tree.exists('apps/demo/app/routes/routeRelativeToProjectRoot.tsx')).toBe(true);
+    expect(
+      tree.exists('apps/demo/app/routes/routeRelativeToProjectRoot.tsx')
+    ).toBe(true);
 
     await routeGenerator(tree, {
       project: 'demo',
@@ -255,7 +259,9 @@ describe('route', () => {
       skipChecks: false,
     });
 
-    expect(tree.exists('apps/demo/app/routes/routeRelativeToWorkspaceRoot.tsx')).toBe(true);
+    expect(
+      tree.exists('apps/demo/app/routes/routeRelativeToWorkspaceRoot.tsx')
+    ).toBe(true);
 
     await routeGenerator(tree, {
       project: 'demo',
@@ -267,7 +273,9 @@ describe('route', () => {
       skipChecks: false,
     });
 
-    expect(tree.exists('apps/demo/app/routes/route/using/v1/routing.tsx')).toBe(true);
+    expect(tree.exists('apps/demo/app/routes/route/using/v1/routing.tsx')).toBe(
+      true
+    );
 
     await routeGenerator(tree, {
       project: 'demo',
@@ -279,12 +287,13 @@ describe('route', () => {
       skipChecks: false,
     });
 
-    expect(tree.exists('apps/demo/app/routes/route.using.v2.routing.tsx')).toBe(true);
-
-  })
+    expect(tree.exists('apps/demo/app/routes/route.using.v2.routing.tsx')).toBe(
+      true
+    );
+  });
 
   it('should place the route correctly in a standalone app', async () => {
-    await presetGenerator(tree, {name: 'demo'});
+    await presetGenerator(tree, { name: 'demo' });
 
     await routeGenerator(tree, {
       project: 'demo',
@@ -297,5 +306,5 @@ describe('route', () => {
     });
 
     expect(tree.exists('app/routes/route.tsx')).toBe(true);
-  })
+  });
 });

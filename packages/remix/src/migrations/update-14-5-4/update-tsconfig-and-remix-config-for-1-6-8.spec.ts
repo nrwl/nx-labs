@@ -123,8 +123,7 @@ describe('Update app tsconfig.json', () => {
       sourceRoot: 'apps/not-remix/src',
     });
 
-    const notRemixTsConfigJson =
-`{
+    const notRemixTsConfigJson = `{
   "extends": "../../../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",

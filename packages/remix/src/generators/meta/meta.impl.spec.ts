@@ -19,7 +19,7 @@ describe('meta', () => {
       loader: false,
       action: false,
       meta: false,
-      skipChecks: false
+      skipChecks: false,
     });
   });
 

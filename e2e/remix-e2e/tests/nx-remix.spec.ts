@@ -1,6 +1,7 @@
 import {
   ensureNxProject,
-  readJson, runCommandAsync,
+  readJson,
+  runCommandAsync,
   runNxCommandAsync,
   uniq,
   updateFile,
@@ -100,7 +101,9 @@ describe('remix e2e', () => {
     }, 120000);
 
     it('should pass un-escaped dollar signs in routes with skipChecks flag', async () => {
-      const result =  await runCommandAsync(`someWeirdUseCase=route-segment && yarn nx generate @nrwl/remix:route --project ${plugin} --path my.route.$someWeirdUseCase.tsx --force`);
+      const result = await runCommandAsync(
+        `someWeirdUseCase=route-segment && yarn nx generate @nrwl/remix:route --project ${plugin} --path my.route.$someWeirdUseCase.tsx --force`
+      );
 
       expect(result.stdout).toContain(
         `CREATE ${plugin}/app/routes/my.route.route-segment.tsx`
@@ -127,7 +130,9 @@ describe('remix e2e', () => {
     }, 120000);
 
     it('should pass un-escaped dollar signs in resource routes with skipChecks flag', async () => {
-      const result =  await runCommandAsync(`someWeirdUseCase=route-segment && yarn nx generate @nrwl/remix:resource-route --project ${plugin} --path my.route.$someWeirdUseCase.tsx --force`);
+      const result = await runCommandAsync(
+        `someWeirdUseCase=route-segment && yarn nx generate @nrwl/remix:resource-route --project ${plugin} --path my.route.$someWeirdUseCase.tsx --force`
+      );
 
       expect(result.stdout).toContain(
         `CREATE ${plugin}/app/routes/my.route.route-segment.ts`

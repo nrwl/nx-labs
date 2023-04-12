@@ -1,26 +1,28 @@
 import {
   formatFiles,
-  joinPathFragments,
   names,
   readProjectConfiguration,
   stripIndents,
   Tree,
 } from '@nrwl/devkit';
-import {RemixRouteSchema} from './schema';
+import {
+  checkRoutePathForErrors,
+  resolveRemixRouteFile,
+} from '../../utils/remix-route-utils';
+import ActionGenerator from '../action/action.impl';
 import LoaderGenerator from '../loader/loader.impl';
 import MetaGenerator from '../meta/meta.impl';
-import ActionGenerator from '../action/action.impl';
 import StyleGenerator from '../style/style.impl';
-import {checkRoutePathForErrors, resolveRemixRouteFile} from '../../utils/remix-route-utils';
+import { RemixRouteSchema } from './schema';
 
 export default async function (tree: Tree, options: RemixRouteSchema) {
   const project = readProjectConfiguration(tree, options.project);
   if (!project) throw new Error(`Project does not exist: ${options.project}`);
 
-  if (
-    !options.skipChecks && checkRoutePathForErrors(options.path)
-  ) {
-    throw new Error(`Your route path has an indicator of an un-escaped dollar sign for a route param. If this was intended, include the --skipChecks flag.`)
+  if (!options.skipChecks && checkRoutePathForErrors(options.path)) {
+    throw new Error(
+      `Your route path has an indicator of an un-escaped dollar sign for a route param. If this was intended, include the --skipChecks flag.`
+    );
   }
 
   const routeFilePath = resolveRemixRouteFile(
@@ -30,7 +32,7 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
     '.tsx'
   );
 
-  const {className: componentName} = names(
+  const { className: componentName } = names(
     options.path.replace(/^\//, '').replace(/\/$/, '').replace('.tsx', '')
   );
 

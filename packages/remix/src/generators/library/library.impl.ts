@@ -5,15 +5,15 @@ import {
   joinPathFragments,
   names,
   readProjectConfiguration,
+  runTasksInSerial,
   Tree,
   updateJson,
   updateProjectConfiguration,
 } from '@nrwl/devkit';
-import { libraryGenerator } from '@nrwl/react/src/generators/library/library';
-import { NxRemixGeneratorSchema } from './schema';
 import { Linter } from '@nrwl/linter';
+import { libraryGenerator } from '@nrwl/react/src/generators/library/library';
 import { execSync } from 'child_process';
-import { runTasksInSerial } from '@nrwl/devkit';
+import { NxRemixGeneratorSchema } from './schema';
 
 export default async function (tree: Tree, options: NxRemixGeneratorSchema) {
   const tasks: GeneratorCallback[] = [];

@@ -4,7 +4,7 @@ import {
   Tree,
 } from '@nrwl/devkit';
 
-import { cypressProjectGenerator, cypressInitGenerator } from '@nrwl/cypress';
+import { cypressInitGenerator, cypressProjectGenerator } from '@nrwl/cypress';
 
 export default async function (tree: Tree, options: any) {
   const initSideEffects = await cypressInitGenerator(tree, {});

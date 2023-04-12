@@ -1,17 +1,16 @@
-import {Tree} from '@nrwl/devkit';
-import {createTreeWithEmptyWorkspace} from '@nrwl/devkit/testing';
+import { Tree } from '@nrwl/devkit';
+import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 import applicationGenerator from '../application/application.impl';
 import resourceRouteGenerator from './resource-route.impl';
-import routeGenerator from "../route/route.impl";
 
 describe('resource route', () => {
   let tree: Tree;
 
   beforeEach(async () => {
-    tree = createTreeWithEmptyWorkspace({layout: 'apps-libs'});
+    tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     tree.write('.gitignore', `/node_modules/dist`);
 
-    await applicationGenerator(tree, {name: 'demo'});
+    await applicationGenerator(tree, { name: 'demo' });
   });
 
   it('should not create a component', async () => {
@@ -20,7 +19,7 @@ describe('resource route', () => {
       path: '/example/',
       action: false,
       loader: true,
-      skipChecks: false
+      skipChecks: false,
     });
     const fileContents = tree.read('apps/demo/app/routes/example.ts', 'utf-8');
     expect(fileContents).not.toMatch('export default function');
@@ -34,7 +33,7 @@ describe('resource route', () => {
           path: 'example',
           action: false,
           loader: false,
-          skipChecks: false
+          skipChecks: false,
         })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       `"The resource route generator requires either \`loader\` or \`action\` to be true"`
@@ -58,7 +57,7 @@ describe('resource route', () => {
         path: config.path,
         action: false,
         loader: true,
-        skipChecks: false
+        skipChecks: false,
       });
 
       expect(tree.exists('apps/demo/app/routes/example.ts')).toBeTruthy();
@@ -106,7 +105,6 @@ describe('resource route', () => {
   });
 
   it('should succeed if skipChecks flag is passed, and it detects a possible missing route param because of un-escaped dollar sign', async () => {
-
     await resourceRouteGenerator(tree, {
       project: 'demo',
       path: 'route1/..ts', // route.$withParams.tsx => route..tsx
@@ -135,8 +133,6 @@ describe('resource route', () => {
       skipChecks: true,
     });
 
-
     expect(tree.exists('apps/demo/app/routes/route3/.ts')).toBe(true);
-
   });
 });

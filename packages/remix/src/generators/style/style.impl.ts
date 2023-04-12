@@ -6,18 +6,18 @@ import {
   stripIndents,
   Tree,
 } from '@nrwl/devkit';
-import {RemixStyleSchema} from './schema';
+import { RemixStyleSchema } from './schema';
 
-import {insertImport} from '../../utils/insert-import';
-import {insertStatementAfterImports} from '../../utils/insert-statement-after-imports';
+import { dirname, relative } from 'path';
+import { insertImport } from '../../utils/insert-import';
+import { insertStatementAfterImports } from '../../utils/insert-statement-after-imports';
 import {
   normalizeRoutePath,
   resolveRemixRouteFile,
 } from '../../utils/remix-route-utils';
-import {relative, dirname} from 'path';
 
 export default async function (tree: Tree, options: RemixStyleSchema) {
-  const {name: routePath} = names(
+  const { name: routePath } = names(
     options.path.replace(/^\//, '').replace(/\/$/, '').replace('.tsx', '')
   );
 
@@ -82,7 +82,6 @@ export default async function (tree: Tree, options: RemixStyleSchema) {
   `
     );
   }
-
 
   await formatFiles(tree);
 }

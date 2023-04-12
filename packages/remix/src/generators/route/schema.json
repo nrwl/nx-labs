@@ -50,7 +50,7 @@
       "description": "Generate a loader function",
       "default": false
     },
-    "skipChecks" : {
+    "skipChecks": {
       "type": "boolean",
       "description": "Skip route error detection",
       "default": false
