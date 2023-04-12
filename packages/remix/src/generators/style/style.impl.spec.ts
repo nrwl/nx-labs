@@ -55,6 +55,38 @@ describe('route', () => {
     ).toBeTruthy();
   });
 
+  it('should place styles correctly when app dir is changed', async () => {
+    await applicationGenerator(tree, { name: 'demo' });
+
+    tree.write(
+      'apps/demo/remix.config.js',
+      `
+    /**
+     * @type {import('@remix-run/dev').AppConfig}
+     */
+    module.exports = {
+      ignoredRouteFiles: ["**/.*"],
+      appDirectory: "my-custom-dir",
+    };`
+    );
+
+    await routeGenerator(tree, {
+      project: 'demo',
+      path: 'route.tsx',
+      style: 'none',
+      loader: true,
+      action: true,
+      meta: true,
+      skipChecks: false,
+    });
+    await styleGenerator(tree, {
+      project: 'demo',
+      path: '/route.tsx',
+    });
+
+    expect(tree.exists('apps/demo/my-custom-dir/styles/route.css')).toBe(true);
+  });
+
   it('should import stylesheet with a relative path in an integrated workspace', async () => {
     await applicationGenerator(tree, { name: 'demo' });
     await routeGenerator(tree, {

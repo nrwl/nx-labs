@@ -13,6 +13,7 @@ import { insertImport } from '../../utils/insert-import';
 import { insertStatementAfterImports } from '../../utils/insert-statement-after-imports';
 import {
   normalizeRoutePath,
+  resolveRemixAppDirectory,
   resolveRemixRouteFile,
 } from '../../utils/remix-route-utils';
 
@@ -27,8 +28,8 @@ export default async function (tree: Tree, options: RemixStyleSchema) {
   const normalizedRoutePath = normalizeRoutePath(routePath);
 
   const stylesheetPath = joinPathFragments(
-    project.root,
-    'app/styles',
+    resolveRemixAppDirectory(tree, project.name),
+    'styles',
     `${normalizedRoutePath}.css`
   );
 

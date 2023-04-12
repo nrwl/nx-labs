@@ -216,6 +216,7 @@ describe('route', () => {
     });
 
     expect(tree.exists('apps/demo/my-custom-dir/routes/route.tsx')).toBe(true);
+    expect(tree.exists('apps/demo/my-custom-dir/styles/route.css')).toBe(true);
   });
 
   it('should normalize route paths', async () => {
