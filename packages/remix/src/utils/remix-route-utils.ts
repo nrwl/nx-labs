@@ -21,10 +21,8 @@ export function resolveRemixRouteFile(
 ): string {
   const project = readProjectConfiguration(tree, projectName);
   if (!project) throw new Error(`Project does not exist: ${projectName}`);
-  const { fileName: routePath } = names(
-    path.replace(/^\//, '').replace(/\/$/, '')
-  );
-  const normalizedRoutePath = normalizeRoutePath(routePath, project.root);
+  const { name: routePath } = names(path.replace(/^\//, '').replace(/\/$/, ''));
+  const normalizedRoutePath = normalizeRoutePath(routePath);
 
   // if no file extension specified, let's try to find it
   if (!fileExtension) {
@@ -47,14 +45,35 @@ export function resolveRemixRouteFile(
   const fileName = normalizedRoutePath.endsWith(fileExtension)
     ? normalizedRoutePath
     : `${normalizedRoutePath}${fileExtension}`;
-  // TODO: what if someone changes the Remix app root folder in the remix.config.js?
-  const routeFilePath = joinPathFragments(project.root, 'app/routes', fileName);
-  return routeFilePath;
+
+  return joinPathFragments(
+    resolveRemixAppDirectory(tree, projectName),
+    'routes',
+    fileName
+  );
 }
 
-export function normalizeRoutePath(path: string, projectRoot: string) {
-  if (path.indexOf(projectRoot) === -1) return path;
-  if (path.indexOf('/routes/') > -1)
-    return path.substring(path.indexOf('/routes/') + 8);
-  return path.substring(projectRoot.length + 1);
+export function normalizeRoutePath(path: string) {
+  return path.indexOf('/routes/') > -1
+    ? path.substring(path.indexOf('/routes/') + 8)
+    : path;
+}
+
+export function checkRoutePathForErrors(path: string) {
+  return (
+    path.match(/\w\.\.\w/) || // route.$withParams.tsx => route..tsx
+    path.match(/\w\/\/\w/) || // route/$withParams/index.tsx => route//index.tsx
+    path.match(/\w\/\.\w/) // route/$withParams.tsx => route/.tsx
+  );
+}
+
+export function resolveRemixAppDirectory(tree: Tree, projectName: string) {
+  const project = readProjectConfiguration(tree, projectName);
+  if (!project) throw new Error(`Project does not exist: ${projectName}`);
+
+  const remixConfigPath = joinPathFragments(project.root, 'remix.config.js');
+
+  const remixConfig = eval(tree.read(remixConfigPath, 'utf-8'));
+
+  return joinPathFragments(project.root, remixConfig.appDirectory ?? 'app');
 }

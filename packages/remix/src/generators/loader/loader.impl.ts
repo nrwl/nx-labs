@@ -1,10 +1,9 @@
 import { formatFiles, Tree } from '@nrwl/devkit';
-import { LoaderSchema } from './schema';
 import { insertImport } from '../../utils/insert-import';
 import { insertStatementAfterImports } from '../../utils/insert-statement-after-imports';
-import { getDefaultExportName } from '../../utils/get-default-export-name';
 import { insertStatementInDefaultFunction } from '../../utils/insert-statement-in-default-function';
 import { resolveRemixRouteFile } from '../../utils/remix-route-utils';
+import { LoaderSchema } from './schema';
 
 export default async function (tree: Tree, schema: LoaderSchema) {
   const routeFilePath = resolveRemixRouteFile(
@@ -19,33 +18,26 @@ export default async function (tree: Tree, schema: LoaderSchema) {
     );
   }
 
-  insertImport(tree, routeFilePath, 'LoaderFunction', '@remix-run/node', {
-    typeOnly: true,
-  });
   insertImport(tree, routeFilePath, 'useLoaderData', '@remix-run/react');
   insertImport(tree, routeFilePath, 'json', '@remix-run/node');
-
-  const defaultExportName = getDefaultExportName(tree, routeFilePath);
-  const loaderTypeName = `${defaultExportName}LoaderData`;
+  insertImport(tree, routeFilePath, 'LoaderArgs', '@remix-run/node', {
+    typeOnly: true,
+  });
 
   insertStatementAfterImports(
     tree,
     routeFilePath,
     `
-    type ${loaderTypeName} = {
-        message: string;
-    };
-
-    export const loader: LoaderFunction = async () => {
+    export const loader = async ({request}: LoaderArgs ) => {
       return json({
         message: 'Hello, world!',
       })
     };
-    
+
     `
   );
 
-  const statement = `\nconst data = useLoaderData<${loaderTypeName}>();`;
+  const statement = `\nconst data = useLoaderData<typeof loader>();`;
 
   try {
     insertStatementInDefaultFunction(tree, routeFilePath, statement);

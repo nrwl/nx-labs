@@ -1,10 +1,9 @@
 import { formatFiles, Tree } from '@nrwl/devkit';
-import { LoaderSchema } from './schema';
 import { insertImport } from '../../utils/insert-import';
 import { insertStatementAfterImports } from '../../utils/insert-statement-after-imports';
-import { getDefaultExportName } from '../../utils/get-default-export-name';
 import { insertStatementInDefaultFunction } from '../../utils/insert-statement-in-default-function';
 import { resolveRemixRouteFile } from '../../utils/remix-route-utils';
+import { LoaderSchema } from './schema';
 
 export default async function (tree: Tree, schema: LoaderSchema) {
   const routeFilePath = resolveRemixRouteFile(
@@ -19,33 +18,26 @@ export default async function (tree: Tree, schema: LoaderSchema) {
     );
   }
 
-  insertImport(tree, routeFilePath, 'ActionFunction', '@remix-run/node', {
+  insertImport(tree, routeFilePath, 'ActionArgs', '@remix-run/node', {
     typeOnly: true,
   });
   insertImport(tree, routeFilePath, 'json', '@remix-run/node');
   insertImport(tree, routeFilePath, 'useActionData', '@remix-run/react');
 
-  const defaultExportName = getDefaultExportName(tree, routeFilePath);
-  const actionTypeName = `${defaultExportName}ActionData`;
-
   insertStatementAfterImports(
     tree,
     routeFilePath,
     `
-    type ${actionTypeName} = {
-        message: string;
-    };
-    
-    export let action: ActionFunction = async ({ request }) => {
+    export const action = async ({ request }: ActionArgs) => {
       let formData = await request.formData();
-  
+
       return json({message: formData.toString()}, { status: 200 });
     };
-    
+
     `
   );
 
-  const statement = `\nconst actionMessage = useActionData<${actionTypeName}>();`;
+  const statement = `\nconst actionMessage = useActionData<typeof action>();`;
 
   try {
     insertStatementInDefaultFunction(tree, routeFilePath, statement);

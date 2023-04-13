@@ -19,6 +19,7 @@ describe('action', () => {
       loader: false,
       action: false,
       meta: false,
+      skipChecks: false,
     });
   });
 
@@ -43,19 +44,23 @@ describe('action', () => {
       });
       it('should add imports', async () => {
         const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+        expect(content).toMatch(`import { json } from '@remix-run/node';`);
         expect(content).toMatch(
-          `import type { ActionFunction } from '@remix-run/node';`
+          `import type { ActionArgs } from '@remix-run/node';`
+        );
+        expect(content).toMatch(
+          `import { useActionData } from '@remix-run/react';`
         );
       });
 
       it('should add action function', () => {
-        const actionFunction = `type ExampleActionData = {`;
+        const actionFunction = `export const action = async ({ request }: ActionArgs)`;
         const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
         expect(content).toMatch(actionFunction);
       });
 
       it('should add useActionData to component', () => {
-        const useActionData = `export default function Example() {`;
+        const useActionData = `const actionMessage = useActionData<typeof action>();`;
 
         const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
         expect(content).toMatch(useActionData);

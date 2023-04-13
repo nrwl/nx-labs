@@ -19,6 +19,7 @@ describe('loader', () => {
       loader: false,
       action: false,
       meta: false,
+      skipChecks: false,
     });
   });
 
@@ -43,21 +44,23 @@ describe('loader', () => {
 
       it('should add imports', async () => {
         const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+        expect(content).toMatch(`import { json } from '@remix-run/node';`);
         expect(content).toMatch(
-          `import type { LoaderFunction } from '@remix-run/node';`
+          `import type { LoaderArgs } from '@remix-run/node';`
+        );
+        expect(content).toMatch(
+          `import { useLoaderData } from '@remix-run/react';`
         );
       });
 
       it('should add loader function', () => {
-        const loaderFunctionType = `type ExampleLoaderData`;
-        const loaderFunction = `export const loader: LoaderFunction = async`;
+        const loaderFunction = `export const loader = async`;
         const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
-        expect(content).toMatch(loaderFunctionType);
         expect(content).toMatch(loaderFunction);
       });
 
       it('should add useLoaderData to component', () => {
-        const useLoaderData = `const data = useLoaderData<ExampleLoaderData>();`;
+        const useLoaderData = `const data = useLoaderData<typeof loader>();`;
 
         const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
         expect(content).toMatch(useLoaderData);

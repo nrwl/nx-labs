@@ -7,11 +7,11 @@ import {
   joinPathFragments,
   offsetFromRoot,
   readJson,
+  runTasksInSerial,
   Tree,
   updateJson,
 } from '@nrwl/devkit';
 import { extractTsConfigBase } from '@nrwl/js/src/utils/typescript/create-ts-config';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 import {
   eslintVersion,
   isbotVersion,

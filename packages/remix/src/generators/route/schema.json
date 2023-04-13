@@ -49,6 +49,11 @@
       "type": "boolean",
       "description": "Generate a loader function",
       "default": false
+    },
+    "skipChecks": {
+      "type": "boolean",
+      "description": "Skip route error detection",
+      "default": false
     }
   },
   "required": ["project", "path"]

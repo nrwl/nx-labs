@@ -1,10 +1,19 @@
 import { formatFiles, Tree } from '@nrwl/devkit';
-import { RemixRouteSchema } from './schema';
-import loaderGenerator from '../loader/loader.impl';
+import {
+  checkRoutePathForErrors,
+  resolveRemixRouteFile,
+} from '../../utils/remix-route-utils';
 import actionGenerator from '../action/action.impl';
-import { resolveRemixRouteFile } from '../../utils/remix-route-utils';
+import loaderGenerator from '../loader/loader.impl';
+import { RemixRouteSchema } from './schema';
 
 export default async function (tree: Tree, options: RemixRouteSchema) {
+  if (!options.skipChecks && checkRoutePathForErrors(options.path)) {
+    throw new Error(
+      `Your route path has an indicator of an un-escaped dollar sign for a route param. If this was intended, include the --skipChecks flag.`
+    );
+  }
+
   const routeFilePath = resolveRemixRouteFile(
     tree,
     options.path,
