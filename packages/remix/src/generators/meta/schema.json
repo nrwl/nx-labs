@@ -21,6 +21,12 @@
       },
       "x-prompt": "What project is this route for?",
       "pattern": "^[a-zA-Z].*$"
+    },
+    "version": {
+      "type": "string",
+      "description": "The version of the meta convention to use",
+      "x-prompt": "Which version of the meta convention should be used?",
+      "enum": ["1", "2"]
     }
   },
   "required": ["path", "project"]

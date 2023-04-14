@@ -1,17 +1,17 @@
-import { Tree } from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+import {Tree} from '@nrwl/devkit';
+import {createTreeWithEmptyWorkspace} from '@nrwl/devkit/testing';
 import applicationGenerator from '../application/application.impl';
 import routeGenerator from '../route/route.impl';
 import metaGenerator from './meta.impl';
+import {getRemixConfigPath} from "../../utils/remix-config";
 
 describe('meta', () => {
   let tree: Tree;
-
   beforeEach(async () => {
-    tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
+    tree = createTreeWithEmptyWorkspace({layout: 'apps-libs'});
     tree.write('.gitignore', `/node_modules/dist`);
 
-    await applicationGenerator(tree, { name: 'demo' });
+    await applicationGenerator(tree, {name: 'demo'});
     await routeGenerator(tree, {
       path: 'example',
       project: 'demo',
@@ -21,39 +21,57 @@ describe('meta', () => {
       meta: false,
       skipChecks: false,
     });
+  })
+
+  it('should use v1 when specified', async () => {
+    await metaGenerator(tree, {
+      path: 'example',
+      project: 'demo',
+      version: '1'
+    });
+
+    const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+    expect(content).toMatch(
+      `import type { MetaFunction } from '@remix-run/node';`
+    );
+
+    expect(content).toMatch(`export const meta: MetaFunction`);
+    expect(content).toMatch(`return {`);
   });
 
-  [
-    {
-      path: 'apps/demo/app/routes/example.tsx',
-    },
-    {
+  it('should use v2 when specified', async () => {
+    await metaGenerator(tree, {
       path: 'example',
-    },
-    {
-      path: 'example.tsx',
-    },
-  ].forEach((config) => {
-    describe(`add loader using route path "${config.path}"`, () => {
-      beforeEach(async () => {
-        await metaGenerator(tree, {
-          path: config.path,
-          project: 'demo',
-        });
-      });
-
-      it('should add imports', async () => {
-        const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
-        expect(content).toMatch(
-          `import type { MetaFunction } from '@remix-run/node';`
-        );
-      });
-
-      it('should add meta function', () => {
-        const metaFunction = `export const meta: MetaFunction`;
-        const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
-        expect(content).toMatch(metaFunction);
-      });
+      project: 'demo',
+      version: '2'
     });
+
+    const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+    expect(content).toMatch(
+      `import type { V2_MetaFunction } from '@remix-run/node';`
+    );
+
+    expect(content).toMatch(`export const meta: V2_MetaFunction`);
+    expect(content).toMatch(`return [`);
+  })
+
+  it('should detect v2_meta future flag when version is not specified', async () => {
+    const remixConfigPath = getRemixConfigPath(tree,'demo');
+    let remixConfigContent = tree.read(remixConfigPath, 'utf-8');
+    remixConfigContent = remixConfigContent.replace('module.exports = {','module.exports = {\nfuture:{v2_meta: true},\n');
+    tree.write(remixConfigPath,remixConfigContent);
+
+    await metaGenerator(tree, {
+      path: 'example',
+      project: 'demo',
+    });
+
+    const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+    expect(content).toMatch(
+      `import type { V2_MetaFunction } from '@remix-run/node';`
+    );
+
+    expect(content).toMatch(`export const meta: V2_MetaFunction`);
+    expect(content).toMatch(`return [`);
   });
 });
