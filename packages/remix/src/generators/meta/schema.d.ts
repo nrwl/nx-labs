@@ -1,5 +1,5 @@
 export interface MetaSchema {
   path: string;
   project: string;
-  version?: '1' | '2'
+  version?: '1' | '2';
 }

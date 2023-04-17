@@ -1,11 +1,8 @@
-import {Tree} from "@nrwl/devkit";
-import {MetaSchema} from "../schema";
-import {getRemixFutureFlags} from "../../../utils/remix-config";
+import { Tree } from '@nrwl/devkit';
+import { getRemixFutureFlags } from '../../../utils/remix-config';
+import { MetaSchema } from '../schema';
 
-export function normalizeOptions(
-  tree: Tree,
-  options: MetaSchema
-): MetaSchema {
+export function normalizeOptions(tree: Tree, options: MetaSchema): MetaSchema {
   let normalizedVersion = options.version;
 
   if (!normalizedVersion) {
@@ -17,6 +14,6 @@ export function normalizeOptions(
 
   return {
     ...options,
-    version: normalizedVersion
+    version: normalizedVersion,
   };
 }

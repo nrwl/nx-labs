@@ -1,5 +1,10 @@
-import {joinPathFragments, names, readProjectConfiguration, Tree,} from '@nrwl/devkit';
-import {getRemixConfigValues} from "./remix-config";
+import {
+  joinPathFragments,
+  names,
+  readProjectConfiguration,
+  Tree,
+} from '@nrwl/devkit';
+import { getRemixConfigValues } from './remix-config';
 
 /**
  *
@@ -17,7 +22,7 @@ export function resolveRemixRouteFile(
 ): string {
   const project = readProjectConfiguration(tree, projectName);
   if (!project) throw new Error(`Project does not exist: ${projectName}`);
-  const {name: routePath} = names(path.replace(/^\//, '').replace(/\/$/, ''));
+  const { name: routePath } = names(path.replace(/^\//, '').replace(/\/$/, ''));
   const normalizedRoutePath = normalizeRoutePath(routePath);
 
   // if no file extension specified, let's try to find it

@@ -91,6 +91,28 @@
           "alwaysAddToPackageJson": true
         }
       }
+    },
+    "15.9.2": {
+      "@remix-run/node": {
+        "version": "^1.15.0",
+        "alwaysAddToPackageJson": true
+      },
+      "@remix-run/react": {
+        "version": "^1.15.0",
+        "alwaysAddToPackageJson": true
+      },
+      "@remix-run/serve": {
+        "version": "^1.15.0",
+        "alwaysAddToPackageJson": true
+      },
+      "@remix-run/dev": {
+        "version": "^1.15.0",
+        "alwaysAddToPackageJson": true
+      },
+      "@remix-run/eslint-config": {
+        "version": "^1.15.0",
+        "alwaysAddToPackageJson": true
+      }
     }
   }
 }

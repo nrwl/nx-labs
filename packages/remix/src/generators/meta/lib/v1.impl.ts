@@ -1,9 +1,9 @@
-import {formatFiles, Tree} from '@nrwl/devkit';
-import {MetaSchema} from '../schema';
-import {insertImport} from '../../../utils/insert-import';
-import {insertStatementAfterImports} from '../../../utils/insert-statement-after-imports';
-import {getDefaultExportName} from '../../../utils/get-default-export-name';
-import {resolveRemixRouteFile} from '../../../utils/remix-route-utils';
+import { formatFiles, Tree } from '@nrwl/devkit';
+import { getDefaultExportName } from '../../../utils/get-default-export-name';
+import { insertImport } from '../../../utils/insert-import';
+import { insertStatementAfterImports } from '../../../utils/insert-statement-after-imports';
+import { resolveRemixRouteFile } from '../../../utils/remix-route-utils';
+import { MetaSchema } from '../schema';
 
 export async function v1MetaGenerator(tree: Tree, schema: MetaSchema) {
   const routeFilePath = resolveRemixRouteFile(

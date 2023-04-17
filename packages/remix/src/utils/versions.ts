@@ -1,6 +1,6 @@
-import {readJson, Tree} from "@nrwl/devkit";
+import { readJson, Tree } from '@nrwl/devkit';
 
-export const remixVersion = '^1.14.3';
+export const remixVersion = '^1.15.0';
 export const isbotVersion = '^3.6.5';
 export const reactVersion = '^18.2.0';
 export const reactDomVersion = '^18.2.0';
@@ -9,14 +9,15 @@ export const typesReactDomVersion = '^18.0.8';
 export const eslintVersion = '^8.27.0';
 export const typescriptVersion = '^4.8.4';
 
-export function getRemixVersion(
-  tree: Tree
-): string {
-  return getPackageVersion(tree, '@remix-run/dev') ?? remixVersion
+export function getRemixVersion(tree: Tree): string {
+  return getPackageVersion(tree, '@remix-run/dev') ?? remixVersion;
 }
 
 export function getPackageVersion(tree: Tree, packageName: string) {
   const packageJsonContents = readJson(tree, 'package.json');
-  return packageJsonContents?.['devDependencies']?.[packageName] ?? packageJsonContents?.['dependencies']?.[packageName] ?? null;
+  return (
+    packageJsonContents?.['devDependencies']?.[packageName] ??
+    packageJsonContents?.['dependencies']?.[packageName] ??
+    null
+  );
 }
-

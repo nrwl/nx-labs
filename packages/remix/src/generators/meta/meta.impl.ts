@@ -1,9 +1,9 @@
-import {Tree} from '@nrwl/devkit';
-import {MetaSchema} from './schema';
+import { Tree } from '@nrwl/devkit';
+import { MetaSchema } from './schema';
 
-import {v1MetaGenerator} from "./lib/v1.impl";
-import {normalizeOptions} from "./lib/normalize-options";
-import {v2MetaGenerator} from "./lib/v2.impl";
+import { normalizeOptions } from './lib/normalize-options';
+import { v1MetaGenerator } from './lib/v1.impl';
+import { v2MetaGenerator } from './lib/v2.impl';
 
 export default async function (tree: Tree, schema: MetaSchema) {
   const options = normalizeOptions(tree, schema);
@@ -15,5 +15,4 @@ export default async function (tree: Tree, schema: MetaSchema) {
   } else {
     throw new Error('Invalid version provided.');
   }
-
 }

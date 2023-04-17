@@ -1,4 +1,8 @@
-import {joinPathFragments, readProjectConfiguration, Tree} from "@nrwl/devkit";
+import {
+  joinPathFragments,
+  readProjectConfiguration,
+  Tree,
+} from '@nrwl/devkit';
 import type { AppConfig } from '@remix-run/dev';
 
 export function getRemixConfigPath(tree: Tree, projectName: string) {
@@ -14,9 +18,11 @@ export function getRemixConfigValues(tree: Tree, projectName: string) {
   return eval(tree.read(remixConfigPath, 'utf-8')) as AppConfig;
 }
 
-export function getRemixFutureFlags(tree: Tree, projectName: string): AppConfig['future'] {
-  const configValues = getRemixConfigValues(tree,projectName);
+export function getRemixFutureFlags(
+  tree: Tree,
+  projectName: string
+): AppConfig['future'] {
+  const configValues = getRemixConfigValues(tree, projectName);
 
   return configValues?.future;
-
 }
