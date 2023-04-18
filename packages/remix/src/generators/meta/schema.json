@@ -24,9 +24,7 @@
     },
     "version": {
       "type": "string",
-      "description": "The version of the meta convention to use",
-      "x-prompt": "Which version of the meta convention should be used?",
-      "enum": ["1", "2"]
+      "description": "The version of the meta convention to use"
     }
   },
   "required": ["path", "project"]

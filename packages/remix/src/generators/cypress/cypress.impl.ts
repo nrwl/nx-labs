@@ -1,12 +1,15 @@
 import {
+  ensurePackage,
   joinPathFragments,
   readProjectConfiguration,
   Tree,
 } from '@nrwl/devkit';
 
-import { cypressInitGenerator, cypressProjectGenerator } from '@nrwl/cypress';
+import { version as nxVersion } from 'nx/package.json';
 
 export default async function (tree: Tree, options: any) {
+  const { cypressInitGenerator, cypressProjectGenerator } = ensurePackage('@nrwl/cypress', nxVersion);
+
   const initSideEffects = await cypressInitGenerator(tree, {});
   const projSideEffects = await cypressProjectGenerator(tree, {
     ...options,
@@ -54,7 +57,7 @@ Cypress.on("uncaught:exception", (err) => {
 
   // returning this in case the cypress generator has any side effects
   return async () => {
-    await initSideEffects;
-    await projSideEffects;
+    await initSideEffects();
+    await projSideEffects();
   };
 }

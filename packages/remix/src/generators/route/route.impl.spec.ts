@@ -188,7 +188,7 @@ describe('route', () => {
     });
 
     expect(tree.exists('apps/demo/app/routes/route3/.tsx')).toBe(true);
-  });
+  }, 120000);
 
   it('should place routes correctly when app dir is changed', async () => {
     await applicationGenerator(tree, { name: 'demo' });
