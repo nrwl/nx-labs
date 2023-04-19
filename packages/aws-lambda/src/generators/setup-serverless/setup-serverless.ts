@@ -60,7 +60,7 @@ function updateProjectConfig(tree: Tree, options: NormalizedSchema) {
 
   if (projectConfig) {
     projectConfig.targets[`${options.serveTarget}`] = {
-      command: 'sam build && sam local invoke',
+      command: 'sam build && sam local start-api',
     };
 
     projectConfig.targets[`${options.deployTarget}`] = {
