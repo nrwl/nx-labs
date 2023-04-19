@@ -92,7 +92,7 @@
         }
       }
     },
-    "15.9.2": {
+    "15.9.6": {
       "@remix-run/node": {
         "version": "^1.15.0",
         "alwaysAddToPackageJson": true
