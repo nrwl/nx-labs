@@ -28,7 +28,7 @@ describe('AWS Lambda Setup Serverless Generator', () => {
     expect(projectConfig.targets).toEqual(
       expect.objectContaining({
         serve: {
-          command: 'sam build && sam local invoke',
+          command: 'sam build && sam local start-api',
         },
         deploy: {
           command: 'sam build && sam deploy --guided',
