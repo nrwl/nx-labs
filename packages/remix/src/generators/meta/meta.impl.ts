@@ -1,37 +1,18 @@
-import { formatFiles, Tree } from '@nrwl/devkit';
-import { LoaderSchema } from './schema';
-import { insertImport } from '../../utils/insert-import';
-import { insertStatementAfterImports } from '../../utils/insert-statement-after-imports';
-import { getDefaultExportName } from '../../utils/get-default-export-name';
-import { resolveRemixRouteFile } from '../../utils/remix-route-utils';
+import { Tree } from '@nrwl/devkit';
+import { MetaSchema } from './schema';
 
-export default async function (tree: Tree, schema: LoaderSchema) {
-  const routeFilePath = resolveRemixRouteFile(
-    tree,
-    schema.path,
-    schema.project
-  );
+import { normalizeOptions } from './lib/normalize-options';
+import { v1MetaGenerator } from './lib/v1.impl';
+import { v2MetaGenerator } from './lib/v2.impl';
 
-  if (!tree.exists(routeFilePath)) {
-    throw new Error(
-      `Route path does not exist: ${routeFilePath}. Please generate a Remix route first.`
-    );
+export default async function (tree: Tree, schema: MetaSchema) {
+  const options = normalizeOptions(tree, schema);
+
+  if (options.version === '1') {
+    await v1MetaGenerator(tree, options);
+  } else if (options.version === '2') {
+    await v2MetaGenerator(tree, options);
+  } else {
+    throw new Error('Invalid version provided.');
   }
-
-  insertImport(tree, routeFilePath, 'MetaFunction', '@remix-run/node', {
-    typeOnly: true,
-  });
-
-  const defaultExportName = getDefaultExportName(tree, routeFilePath);
-  insertStatementAfterImports(
-    tree,
-    routeFilePath,
-    `   
-    export const meta: MetaFunction = () =>{
-      return { title: '${defaultExportName} Route' };
-    };
-    
-    `
-  );
-  await formatFiles(tree);
 }

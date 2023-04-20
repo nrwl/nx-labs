@@ -35,6 +35,7 @@
     "@nrwl/react": "15.9.2",
     "@nrwl/workspace": "15.9.2",
     "@phenomnomnominal/tsquery": "^5.0.1",
+    "@remix-run/dev": "1.15.0",
     "@rspack/core": "^0.1.0",
     "@rspack/dev-server": "^0.1.0",
     "@rspack/less-loader": "^0.0.22",

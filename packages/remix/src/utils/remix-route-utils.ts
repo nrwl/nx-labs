@@ -4,6 +4,7 @@ import {
   readProjectConfiguration,
   Tree,
 } from '@nrwl/devkit';
+import { getRemixConfigValues } from './remix-config';
 
 /**
  *
@@ -69,11 +70,7 @@ export function checkRoutePathForErrors(path: string) {
 
 export function resolveRemixAppDirectory(tree: Tree, projectName: string) {
   const project = readProjectConfiguration(tree, projectName);
-  if (!project) throw new Error(`Project does not exist: ${projectName}`);
-
-  const remixConfigPath = joinPathFragments(project.root, 'remix.config.js');
-
-  const remixConfig = eval(tree.read(remixConfigPath, 'utf-8'));
+  const remixConfig = getRemixConfigValues(tree, projectName);
 
   return joinPathFragments(project.root, remixConfig.appDirectory ?? 'app');
 }
