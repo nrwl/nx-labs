@@ -68,8 +68,6 @@ async function main() {
   // Disable daemon so we always generate new graph.
   process.env.NX_DAEMON = 'false';
 
-  let result = { projects: [] as string[] };
-
   // Branch may not contain last deployed SHA
   if (baseSha !== 'HEAD^') {
     logDebug(`\n≫ Validating base ref: ${baseSha}\n`);
@@ -85,20 +83,23 @@ async function main() {
 
   logDebug(`\n≫ Comparing ${baseSha}...${headSha}\n`);
 
-  const output = execSync(
-    `npx nx print-affected --base=${baseSha} --head=${headSha}`,
+  const graphJsonPath = join(tmpdir(), '.nx-affected-graph.json');
+  execSync(
+    `npx nx affected:graph --base=${baseSha} --head=${headSha} --file=${graphJsonPath}`,
     {
       cwd: root,
     }
-  ).toString();
-  result = JSON.parse(output);
+  );
+  const projects = JSON.parse(
+    readFileSync(graphJsonPath).toString()
+  ).affectedProjects;
 
-  logDebug(`≫ Affected projects:\n  - ${result.projects.join('\n  - ')}\n`);
+  logDebug(`≫ Affected projects:\n  - ${projects.join('\n  - ')}\n`);
 
   // Clean up temporary node_modules that we installed Nx to.
   rmSync(join(root, 'node_modules'), { recursive: true, force: true });
 
-  if (result.projects.includes(project)) {
+  if (projects.includes(project)) {
     exitWithBuild(`✅ - Build can proceed since ${project} is affected`);
   } else {
     exitWithoutBuild(`🛑 - Build cancelled since ${project} is not affected`);
