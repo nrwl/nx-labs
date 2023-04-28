@@ -176,7 +176,7 @@ Object {
     "deploy": Object {
       "configurations": Object {
         "production": Object {
-          "command": "yarn netlify deploy --prod-if-unlocked --site=<Your-Netlify-Site-Name>",
+          "command": "yarn netlify deploy --site=<Your-Netlify-Site-Name>",
           "cwd": "apps/my-netlify-app",
         },
       },

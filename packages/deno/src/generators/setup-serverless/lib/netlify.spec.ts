@@ -29,7 +29,7 @@ describe('setup-serverless --platform=netlify', () => {
       Object {
         "configurations": Object {
           "production": Object {
-            "command": "yarn netlify deploy --prod-if-unlocked --site=<Your-Netlify-Site-Name>",
+            "command": "yarn netlify deploy --site=<Your-Netlify-Site-Name>",
           },
         },
         "executor": "nx:run-commands",
@@ -81,7 +81,7 @@ describe('setup-serverless --platform=netlify', () => {
       Object {
         "configurations": Object {
           "production": Object {
-            "command": "yarn netlify deploy --prod-if-unlocked --site=<Your-Netlify-Site-Name>",
+            "command": "yarn netlify deploy --site=<Your-Netlify-Site-Name>",
             "cwd": "apps/my-app",
           },
         },

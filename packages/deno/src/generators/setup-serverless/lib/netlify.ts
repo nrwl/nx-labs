@@ -56,7 +56,7 @@ function addTargets(
     },
     configurations: {
       production: {
-        command: `${pm.exec} netlify deploy --prod-if-unlocked ${siteArg}`,
+        command: `${pm.exec} netlify deploy ${siteArg}`,
         cwd,
       },
     },
