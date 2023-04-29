@@ -28,7 +28,7 @@ describe('setupServerlessGenerator', () => {
           },
           deploy: {
             dependsOn: ['build','lint'],
-            command: 'npx netlify deploy --prod-if-unlocked',
+            command: 'npx netlify deploy',
           },
         })
       );
@@ -57,7 +57,7 @@ describe('setupServerlessGenerator', () => {
           },
           deploy: {
             dependsOn: ['build','lint'],
-            command: 'npx netlify deploy --prod-if-unlocked',
+            command: 'npx netlify deploy',
           },
         })
       );

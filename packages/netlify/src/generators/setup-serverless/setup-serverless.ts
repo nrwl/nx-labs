@@ -73,8 +73,8 @@ function updateProjectConfig(
     projectConfig.targets[`${options.deployTarget}`] = {
       dependsOn: [`${options.buildTarget}`,`${options.lintTarget}`],
       command: options.site
-        ? `npx netlify deploy --prod-if-unlocked --site ${options.site}`
-        : 'npx netlify deploy --prod-if-unlocked',
+        ? `npx netlify deploy --site ${options.site}`
+        : 'npx netlify deploy',
     };
 
     updateProjectConfiguration(tree, options.project, projectConfig);
