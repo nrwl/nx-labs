@@ -42,7 +42,8 @@
       "options": {
         "lintFilePatterns": [
           "packages/internal/**/*.ts",
-          "packages/internal/package.json"
+          "packages/internal/package.json",
+          "packages/internal/generators.json"
         ]
       }
     },
