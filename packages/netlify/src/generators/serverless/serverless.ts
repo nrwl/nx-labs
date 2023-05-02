@@ -48,3 +48,5 @@ export async function serverlessGenerator(tree: Tree, schema: Schema) {
 
   return runTasksInSerial(...tasks);
 }
+
+export default serverlessGenerator;
