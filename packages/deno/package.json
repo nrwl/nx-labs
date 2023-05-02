@@ -9,5 +9,8 @@
     "fs-extra": "^11.0.0",
     "@nx/js": "^16.0.0",
     "@nx/devkit": "^16.0.0"
+  },
+  "nx-migrations": {
+    "migrations": "./migrations.json"
   }
 }

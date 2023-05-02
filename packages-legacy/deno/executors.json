@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "executors": {
+    "bundle": {
+      "implementation": "@nx/deno/src/executors/bundle/bundle.impl",
+      "schema": "@nx/deno/src/executors/bundle/schema.json",
+      "description": "Output a single JavaScript file with all dependencies.",
+      "x-deprecated": "Use @nrwl/deno:emit instead. This will be removed in when `deno bundle` is removed."
+    },
+    "emit": {
+      "implementation": "@nx/deno/src/executors/emit/emit.impl",
+      "schema": "@nx/deno/src/executors/emit/schema.json",
+      "description": "Bundle or transpile to a JavaScript file."
+    },
+    "run": {
+      "implementation": "@nx/deno/src/executors/run/run.impl",
+      "schema": "@nx/deno/src/executors/run/schema.json",
+      "description": "Run a JavaScript or TypeScript program in watch mode"
+    },
+    "lint": {
+      "implementation": "@nx/deno/src/executors/lint/lint.impl",
+      "schema": "@nx/deno/src/executors/lint/schema.json",
+      "description": "Lint JavaScript/TypeScript source code"
+    },
+    "test": {
+      "implementation": "@nx/deno/src/executors/test/test.impl",
+      "schema": "@nx/deno/src/executors/test/schema.json",
+      "description": "Test JavaScript/TypeScript source code"
+    }
+  }
+}

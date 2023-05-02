@@ -1,11 +1,11 @@
 {
-  "name": "@nx/rspack",
+  "name": "@nrwl/rspack",
   "version": "0.0.1",
   "type": "commonjs",
   "repository": {
     "type": "git",
     "url": "https://github.com/nrwl/nx-labs.git",
-    "directory": "packages/rspack"
+    "directory": "packages-legacy/rspack"
   },
   "keywords": [
     "Monorepo",
@@ -19,17 +19,9 @@
   "generators": "./generators.json",
   "executors": "./executors.json",
   "dependencies": {
-    "@nx/js": "^16.0.0",
-    "@nx/linter": "^16.0.0",
-    "@nx/devkit": "^16.0.0",
-    "@phenomnomnominal/tsquery": "~5.0.1",
-    "ajv": "^8.12.0",
-    "ajv-keywords": "5.1.0",
-    "less-loader": "11.1.0",
-    "sass-loader": "^12.2.0",
-    "stylus-loader": "^7.1.0"
+    "@nx/rspack": "file:../../packages/rspack"
   },
   "nx-migrations": {
-    "migrations": "./migrations.json"
+    "migrations": "@nx/rspack/migrations.json"
   }
 }

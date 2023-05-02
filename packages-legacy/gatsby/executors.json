@@ -1,0 +1,26 @@
+{
+  "executors": {
+    "build": {
+      "implementation": "@nx/gatsby/src/executors/build/build.impl",
+      "schema": "@nx/gatsby/src/executors/build/schema.json",
+      "description": "Build a Gatsby app"
+    },
+    "server": {
+      "implementation": "@nx/gatsby/src/executors/server/server.impl",
+      "schema": "@nx/gatsby/src/executors/server/schema.json",
+      "description": "Starts server for app"
+    }
+  },
+  "builders": {
+    "build": {
+      "implementation": "@nx/gatsby/src/executors/build/compat",
+      "schema": "@nx/gatsby/src/executors/build/schema.json",
+      "description": "Build a Gatsby app"
+    },
+    "server": {
+      "implementation": "@nx/gatsby/src/executors/server/compat",
+      "schema": "@nx/gatsby/src/executors/server/schema.json",
+      "description": "Starts server for app"
+    }
+  }
+}
