@@ -16,6 +16,16 @@ process.chdir(`dist/packages/${name}`);
 
 const json = JSON.parse(readFileSync(`package.json`).toString());
 json.version = version;
+
+// TODO: Revisit this to make it better
+for (const deps of [json.dependencies, json.devDependencies, json.peerDependencies, json.optionalDependencies]) {
+  for (const [ dep, depVersion] of Object.entries(deps ?? {})) {
+    if (depVersion === '*' || depVersion.startsWith('file:')) {
+      deps[dep] = version;
+    }
+  }
+}
+
 writeFileSync(`package.json`, JSON.stringify(json, null, 2));
 
 // USAGE example: NPM_OTP=381781 node tools/scripts/publish.mjs remix 15.8.5 latest
