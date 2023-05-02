@@ -1,7 +1,6 @@
 import { cypressInitGenerator } from '@nrwl/cypress';
 import { jestInitGenerator } from '@nrwl/jest';
 import { reactDomVersion, reactInitGenerator, reactVersion } from '@nrwl/react';
-import { setDefaultCollection } from '@nrwl/workspace/src/utilities/set-default-collection';
 import {
   addDependenciesToPackageJson,
   convertNxGenerator,
@@ -10,6 +9,7 @@ import {
   Tree,
   updateJson,
 } from '@nx/devkit';
+import { setDefaultCollection } from '@nx/workspace/src/utilities/set-default-collection';
 
 import {
   babelPluginModuleResolverVersion,
@@ -31,7 +31,7 @@ import {
   testingLibraryReactVersion,
 } from '../../utils/versions';
 
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
 import { InitSchema } from './schema';
 
 function updateDependencies(host: Tree) {

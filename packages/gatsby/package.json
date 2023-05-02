@@ -37,9 +37,9 @@
     "@nrwl/linter": "*",
     "@nrwl/jest": "*",
     "@nrwl/react": "*",
-    "@nrwl/workspace": "*",
     "gatsby-cli": "^4.2.0",
     "gatsby-codemods": "^3.2.0",
-    "@nx/devkit": "16.0.1"
+    "@nx/devkit": "16.0.1",
+    "@nx/workspace": "16.0.1"
   }
 }

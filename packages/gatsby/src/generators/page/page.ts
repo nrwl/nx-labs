@@ -4,7 +4,7 @@ import {
 } from '@nrwl/react';
 import { convertNxGenerator, Tree } from '@nx/devkit';
 
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
 import { addStyleDependencies } from '../../utils/styles';
 
 interface Schema {

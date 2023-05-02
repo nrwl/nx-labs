@@ -1,4 +1,3 @@
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 import {
   addDependenciesToPackageJson,
   formatFiles,
@@ -6,6 +5,7 @@ import {
   removeDependenciesFromPackageJson,
   Tree,
 } from '@nx/devkit';
+import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
 import { sassVersion } from '../../utils/versions';
 
 /**
