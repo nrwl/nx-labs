@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "SchematicsNxServerlessPreset",
   "title": "Nx Serverless Preset",
   "description": "Preset for Nx Serverless",
@@ -23,7 +22,10 @@
     },
     "unitTestRunner": {
       "type": "string",
-      "enum": ["jest", "none"],
+      "enum": [
+        "jest",
+        "none"
+      ],
       "description": "Test runner to use for unit tests.",
       "default": "jest"
     },
@@ -51,5 +53,7 @@
       "type": "string"
     }
   },
-  "required": ["name"]
+  "required": [
+    "name"
+  ]
 }

@@ -1,7 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
   "version": 2,
-  "cli": "nx",
   "title": "Deno Lint executor",
   "description": "Lint JavaScript/TypeScript source code with Deno",
   "type": "object",
@@ -25,7 +24,9 @@
       "default": false
     },
     "quiet": {
-      "aliases": ["q"],
+      "aliases": [
+        "q"
+      ],
       "type": "boolean",
       "description": "Suppress diagnostic output",
       "default": false
@@ -53,5 +54,7 @@
       "default": false
     }
   },
-  "required": ["denoConfig"]
+  "required": [
+    "denoConfig"
+  ]
 }

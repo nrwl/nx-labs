@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "DenoServerlessGenerator",
   "title": "Create a Deno Serverless Application",
   "description": "Create an app that is setup to run in a serverless environment.",
@@ -19,13 +18,19 @@
     "unitTestRunner": {
       "type": "string",
       "description": "Add a testing target for this application.",
-      "enum": ["deno", "none"],
+      "enum": [
+        "deno",
+        "none"
+      ],
       "default": "deno"
     },
     "linter": {
       "type": "string",
       "description": "Add a linting target for this application.",
-      "enum": ["deno", "none"],
+      "enum": [
+        "deno",
+        "none"
+      ],
       "default": "deno"
     },
     "tags": {
@@ -42,7 +47,11 @@
     "platform": {
       "type": "string",
       "description": "Setup serverless support for a specific platform.",
-      "enum": ["netlify", "deno-deploy", "none"],
+      "enum": [
+        "netlify",
+        "deno-deploy",
+        "none"
+      ],
       "x-prompt": "Which platform would you like to use?",
       "default": "netlify"
     },
@@ -52,5 +61,7 @@
       "x-priority": "important"
     }
   },
-  "required": ["name"]
+  "required": [
+    "name"
+  ]
 }

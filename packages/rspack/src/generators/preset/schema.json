@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "Preset",
   "title": "Standalone React and rspack preset",
   "type": "object",
@@ -17,8 +16,15 @@
     "framework": {
       "type": "string",
       "description": "The framework to use for the application.",
-      "enum": ["none", "react", "web", "nest"],
-      "alias": ["uiFramework"],
+      "enum": [
+        "none",
+        "react",
+        "web",
+        "nest"
+      ],
+      "alias": [
+        "uiFramework"
+      ],
       "x-priority": "important",
       "default": "react"
     },
@@ -37,13 +43,19 @@
     "unitTestRunner": {
       "type": "string",
       "description": "The unit test runner to use.",
-      "enum": ["none", "jest"],
+      "enum": [
+        "none",
+        "jest"
+      ],
       "default": "jest"
     },
     "e2eTestRunner": {
       "type": "string",
       "description": "The e2e test runner to use.",
-      "enum": ["none", "cypress"],
+      "enum": [
+        "none",
+        "cypress"
+      ],
       "default": "cypress"
     },
     "directory": {
@@ -59,7 +71,9 @@
       "type": "boolean",
       "description": "Creates an integrated monorepo.",
       "default": false,
-      "aliases": ["integrated"]
+      "aliases": [
+        "integrated"
+      ]
     },
     "rootProject": {
       "type": "boolean",
@@ -67,5 +81,7 @@
       "default": true
     }
   },
-  "required": ["name"]
+  "required": [
+    "name"
+  ]
 }

@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "SchematicsNxAWSLamdaServerlessPreset",
   "title": "Nx AWS Lambda Serverless Preset",
   "description": "Preset for Nx Serverless",
@@ -23,7 +22,10 @@
     },
     "unitTestRunner": {
       "type": "string",
-      "enum": ["jest", "none"],
+      "enum": [
+        "jest",
+        "none"
+      ],
       "description": "Test runner to use for unit tests.",
       "default": "jest"
     },
@@ -42,5 +44,7 @@
       "description": "Add tags to the application (used for linting)."
     }
   },
-  "required": ["name"]
+  "required": [
+    "name"
+  ]
 }

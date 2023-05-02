@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "NxRemixCypress",
   "title": "",
   "type": "object",
@@ -33,7 +32,10 @@
     "linter": {
       "description": "The tool to use for running lint checks.",
       "type": "string",
-      "enum": ["eslint", "none"],
+      "enum": [
+        "eslint",
+        "none"
+      ],
       "default": "eslint"
     },
     "js": {
@@ -52,5 +54,7 @@
       "default": false
     }
   },
-  "required": ["name"]
+  "required": [
+    "name"
+  ]
 }

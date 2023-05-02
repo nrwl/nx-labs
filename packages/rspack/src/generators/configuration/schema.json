@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "Rspack",
   "title": "",
   "type": "object",
@@ -20,8 +19,15 @@
       "type": "string",
       "description": "The framework used by the project.",
       "x-prompt": "What framework is the project you want to convert using?",
-      "enum": ["none", "react", "web", "nest"],
-      "alias": ["uiFramework"],
+      "enum": [
+        "none",
+        "react",
+        "web",
+        "nest"
+      ],
+      "alias": [
+        "uiFramework"
+      ],
       "x-priority": "important"
     },
     "main": {
@@ -37,7 +43,10 @@
     "target": {
       "type": "string",
       "description": "Target platform for the build, same as the rspack config option.",
-      "enum": ["node", "web"],
+      "enum": [
+        "node",
+        "web"
+      ],
       "default": "web"
     },
     "devServer": {
@@ -48,7 +57,12 @@
     "style": {
       "type": "string",
       "description": "The style solution to use.",
-      "enum": ["none", "css", "scss", "less"]
+      "enum": [
+        "none",
+        "css",
+        "scss",
+        "less"
+      ]
     },
     "newProject": {
       "type": "boolean",
@@ -69,5 +83,7 @@
       "x-priority": "internal"
     }
   },
-  "required": ["project"]
+  "required": [
+    "project"
+  ]
 }

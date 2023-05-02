@@ -1,7 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
   "version": 2,
-  "cli": "nx",
   "title": "Rspack build executor",
   "description": "",
   "type": "object",
@@ -9,7 +8,10 @@
     "target": {
       "type": "string",
       "description": "The platform to target (e.g. web, node).",
-      "enum": ["web", "node"]
+      "enum": [
+        "web",
+        "node"
+      ]
     },
     "main": {
       "type": "string",
@@ -58,10 +60,20 @@
     "mode": {
       "type": "string",
       "description": "Mode to run the build in.",
-      "enum": ["development", "production", "none"]
+      "enum": [
+        "development",
+        "production",
+        "none"
+      ]
     }
   },
-  "required": ["target", "main", "outputPath", "tsConfig", "rspackConfig"],
+  "required": [
+    "target",
+    "main",
+    "outputPath",
+    "tsConfig",
+    "rspackConfig"
+  ],
   "definitions": {
     "assetPattern": {
       "oneOf": [
@@ -94,7 +106,11 @@
             }
           },
           "additionalProperties": false,
-          "required": ["glob", "input", "output"]
+          "required": [
+            "glob",
+            "input",
+            "output"
+          ]
         },
         {
           "type": "string"

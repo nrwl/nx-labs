@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "NxRemixSetup",
   "title": "",
   "type": "object",
@@ -8,7 +7,11 @@
     "packageManager": {
       "type": "string",
       "description": "The package manager to setup for",
-      "enum": ["yarn", "npm", "pnpm"]
+      "enum": [
+        "yarn",
+        "npm",
+        "pnpm"
+      ]
     }
   }
 }

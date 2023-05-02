@@ -1,7 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
   "$id": "NxRemixLibrary",
-  "cli": "nx",
   "title": "Create a Library",
   "type": "object",
   "examples": [
@@ -28,7 +27,10 @@
     "style": {
       "type": "string",
       "description": "Generate a stylesheet",
-      "enum": ["none", "css"],
+      "enum": [
+        "none",
+        "css"
+      ],
       "default": "css"
     },
     "importPath": {
@@ -41,5 +43,7 @@
       "default": false
     }
   },
-  "required": ["name"]
+  "required": [
+    "name"
+  ]
 }

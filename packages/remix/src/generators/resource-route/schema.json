@@ -1,7 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
   "$id": "NxRemixResourceRoute",
-  "cli": "nx",
   "title": "Create a Resource Route",
   "type": "object",
   "examples": [
@@ -45,5 +44,8 @@
       "default": false
     }
   },
-  "required": ["project", "path"]
+  "required": [
+    "project",
+    "path"
+  ]
 }

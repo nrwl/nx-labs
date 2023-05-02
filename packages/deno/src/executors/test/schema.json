@@ -1,7 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
   "version": 2,
-  "cli": "nx",
   "title": "Deno Test Executor",
   "description": "Test JavaScript/TypeScript source code with Deno",
   "type": "object",
@@ -16,14 +15,27 @@
       "default": false
     },
     "check": {
-      "oneOf": [{ "type": "boolean" }, { "type": "string" }],
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "string"
+        }
+      ],
       "description": "Run type checking for the project",
-      "enum": ["none", "local", "all"],
+      "enum": [
+        "none",
+        "local",
+        "all"
+      ],
       "default": "local",
       "x-priority": "important"
     },
     "coverageDirectory": {
-      "aliases": ["coverage"],
+      "aliases": [
+        "coverage"
+      ],
       "type": "string",
       "description": "Directory where coverage reports are output"
     },
@@ -37,17 +49,23 @@
       "default": false
     },
     "failFast": {
-      "aliases": ["bail"],
+      "aliases": [
+        "bail"
+      ],
       "oneOf": [
         {
           "type": "number"
         },
-        { "type": "boolean" }
+        {
+          "type": "boolean"
+        }
       ],
       "description": "Stop after N failures. Defaults to stopping after the first failure if no number is provided"
     },
     "filter": {
-      "aliases": ["f"],
+      "aliases": [
+        "f"
+      ],
       "type": "string",
       "description": "Run tests with this string or pattern in the test name"
     },
@@ -57,26 +75,53 @@
     },
     "inspect": {
       "description": "Activate inspector on host:port, wait for debugger to connect before running user code. Defaults to 127.0.0.1:9229 if no host:port is provided",
-      "oneOf": [{ "type": "boolean" }, { "type": "string" }]
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "string"
+        }
+      ]
     },
     "location": {
       "type": "string",
       "description": "value of 'globalThis.location', use by web APIs"
     },
     "parallel": {
-      "aliases": ["p"],
-      "oneOf": [{ "type": "boolean" }, { "type": "number" }],
+      "aliases": [
+        "p"
+      ],
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "number"
+        }
+      ],
       "description": "Run tests in parallel. Parallelism defaults to the number of avalible CPUs. If a number is provided then that value will be set the DENO_JOBS environment variable."
     },
     "quiet": {
-      "aliases": ["q"],
+      "aliases": [
+        "q"
+      ],
       "type": "boolean",
       "description": "Suppress diagnostic output"
     },
     "reload": {
       "description": "Reload source code cache (recompile TypeScript)",
-      "aliases": ["r"],
-      "oneOf": [{ "type": "boolean" }, { "type": "string" }]
+      "aliases": [
+        "r"
+      ],
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "string"
+        }
+      ]
     },
     "seed": {
       "type": "number",
@@ -91,5 +136,7 @@
       "description": "Enable unstable APIs and features"
     }
   },
-  "required": ["denoConfig"]
+  "required": [
+    "denoConfig"
+  ]
 }

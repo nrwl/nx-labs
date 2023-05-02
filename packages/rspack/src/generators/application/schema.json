@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "Application",
   "title": "Application generator for React + rspack",
   "type": "object",
@@ -26,8 +25,15 @@
       "type": "string",
       "description": "The framework to use for the application.",
       "x-prompt": "What framework do you want to use when generating this application?",
-      "enum": ["none", "react", "web", "nest"],
-      "alias": ["uiFramework"],
+      "enum": [
+        "none",
+        "react",
+        "web",
+        "nest"
+      ],
+      "alias": [
+        "uiFramework"
+      ],
       "x-priority": "important",
       "default": "react"
     },
@@ -66,13 +72,19 @@
     "unitTestRunner": {
       "type": "string",
       "description": "The unit test runner to use.",
-      "enum": ["none", "jest"],
+      "enum": [
+        "none",
+        "jest"
+      ],
       "default": "jest"
     },
     "e2eTestRunner": {
       "type": "string",
       "description": "The e2e test runner to use.",
-      "enum": ["none", "cypress"],
+      "enum": [
+        "none",
+        "cypress"
+      ],
       "default": "cypress"
     },
     "directory": {
@@ -87,12 +99,16 @@
     "monorepo": {
       "type": "boolean",
       "description": "Creates an integrated monorepo.",
-      "aliases": ["integrated"]
+      "aliases": [
+        "integrated"
+      ]
     },
     "rootProject": {
       "type": "boolean",
       "x-priority": "internal"
     }
   },
-  "required": ["name"]
+  "required": [
+    "name"
+  ]
 }

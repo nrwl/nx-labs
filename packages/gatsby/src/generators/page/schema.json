@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "NxGatsbyReactPage",
   "title": "Create a React Page for Gatsby",
   "type": "object",
@@ -100,5 +99,8 @@
       "default": false
     }
   },
-  "required": ["name", "project"]
+  "required": [
+    "name",
+    "project"
+  ]
 }

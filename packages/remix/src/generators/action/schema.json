@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "action",
   "type": "object",
   "properties": {
@@ -23,5 +22,8 @@
       "pattern": "^[a-zA-Z].*$"
     }
   },
-  "required": ["path", "project"]
+  "required": [
+    "path",
+    "project"
+  ]
 }

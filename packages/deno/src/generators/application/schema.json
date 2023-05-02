@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "Application",
   "title": "Generate an Deno application.",
   "description": "Setup a new Deno application in the workspace.",
@@ -19,13 +18,19 @@
     "unitTestRunner": {
       "type": "string",
       "description": "Add a testing target for this application.",
-      "enum": ["deno", "none"],
+      "enum": [
+        "deno",
+        "none"
+      ],
       "default": "deno"
     },
     "linter": {
       "type": "string",
       "description": "Add a linting target for this application.",
-      "enum": ["deno", "none"],
+      "enum": [
+        "deno",
+        "none"
+      ],
       "default": "deno"
     },
     "tags": {
@@ -47,7 +52,9 @@
     "monorepo": {
       "type": "boolean",
       "description": "Creates an integrated monorepo.",
-      "aliases": ["integrated"],
+      "aliases": [
+        "integrated"
+      ],
       "x-priority": "internal"
     },
     "rootProject": {
@@ -55,5 +62,7 @@
       "x-priority": "internal"
     }
   },
-  "required": ["name"]
+  "required": [
+    "name"
+  ]
 }

@@ -1,7 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
   "$id": "NxRemixRouteStyle",
-  "cli": "nx",
   "title": "Add style import to a route",
   "type": "object",
   "examples": [
@@ -30,5 +29,8 @@
       "pattern": "^[a-zA-Z].*$"
     }
   },
-  "required": ["project", "path"]
+  "required": [
+    "project",
+    "path"
+  ]
 }

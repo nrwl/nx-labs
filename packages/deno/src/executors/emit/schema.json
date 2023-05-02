@@ -1,7 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
   "version": 2,
-  "cli": "nx",
   "title": "Deno Emit Executor",
   "description": "Output a single JavaScript file with all dependencies",
   "type": "object",
@@ -24,5 +23,9 @@
       "default": true
     }
   },
-  "required": ["main", "outputFile", "denoConfig"]
+  "required": [
+    "main",
+    "outputFile",
+    "denoConfig"
+  ]
 }
