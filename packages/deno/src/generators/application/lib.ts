@@ -7,7 +7,7 @@ import {
   offsetFromRoot,
   ProjectConfiguration,
   Tree,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { join } from 'path';
 import { DenoAppGeneratorSchema, DenoAppNormalizedSchema } from './schema';
 
@@ -16,7 +16,7 @@ export function normalizeOptions(
   options: DenoAppGeneratorSchema
 ): DenoAppNormalizedSchema {
   // --monorepo takes precedence over --rootProject
-  // This is for running `create-nx-workspace --preset=@nrwl/deno --monorepo`
+  // This is for running `create-nx-workspace --preset=@nx/deno --monorepo`
   const rootProject = !options.monorepo && options.rootProject;
 
   const name = names(options.name).fileName;
@@ -77,7 +77,7 @@ export function addProjectConfig(tree: Tree, opts: DenoAppNormalizedSchema) {
   );
   const targets: ProjectConfiguration['targets'] = {
     build: {
-      executor: '@nrwl/deno:emit',
+      executor: '@nx/deno:emit',
       outputs: [
         joinPathFragments(
           'dist',
@@ -95,13 +95,13 @@ export function addProjectConfig(tree: Tree, opts: DenoAppNormalizedSchema) {
       },
     },
     serve: {
-      executor: '@nrwl/deno:run',
+      executor: '@nx/deno:run',
       options: {
         buildTarget: `${opts.projectName}:build`,
       },
     },
     test: {
-      executor: '@nrwl/deno:test',
+      executor: '@nx/deno:test',
       outputs: [coverageDirectory],
       options: {
         coverageDirectory,
@@ -109,7 +109,7 @@ export function addProjectConfig(tree: Tree, opts: DenoAppNormalizedSchema) {
       },
     },
     lint: {
-      executor: '@nrwl/deno:lint',
+      executor: '@nx/deno:lint',
       options: {
         denoConfig: joinPathFragments(opts.projectRoot, 'deno.json'),
       },

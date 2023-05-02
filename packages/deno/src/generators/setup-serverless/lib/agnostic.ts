@@ -3,7 +3,7 @@ import {
   readProjectConfiguration,
   Tree,
   updateProjectConfiguration,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { DenoSetupServerlessSchema } from '../schema';
 import { assertNoTarget } from './utils';
 

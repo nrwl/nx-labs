@@ -5,7 +5,7 @@ import {
   readProjectConfiguration,
   stripIndents,
   Tree,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { RemixStyleSchema } from './schema';
 
 import { dirname, relative } from 'path';

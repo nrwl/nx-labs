@@ -1,4 +1,4 @@
-import { readProjectConfiguration, Tree } from '@nrwl/devkit';
+import { readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from 'nx/src/devkit-testing-exports';
 import { serverlessGenerator } from './serverless';
 describe('serverless', () => {
@@ -21,7 +21,7 @@ describe('serverless', () => {
           command: 'npx netlify dev',
         },
         deploy: {
-          dependsOn: ['build','lint'],
+          dependsOn: ['build', 'lint'],
           command: 'npx netlify deploy',
         },
       })

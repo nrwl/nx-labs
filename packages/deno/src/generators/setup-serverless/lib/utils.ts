@@ -1,4 +1,4 @@
-import { ProjectConfiguration, stripIndents } from '@nrwl/devkit';
+import { ProjectConfiguration, stripIndents } from '@nx/devkit';
 
 export function assertNoTarget(
   projectConfig: ProjectConfiguration,

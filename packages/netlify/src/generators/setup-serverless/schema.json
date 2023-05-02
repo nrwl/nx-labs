@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "SchematicsNxSetupServerless",
   "title": "Nx Node Setup Serverless Function Schema",
   "description": "Nx Node Setup Serverless Function Schema.",

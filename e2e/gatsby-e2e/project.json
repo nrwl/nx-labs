@@ -1,9 +1,11 @@
 {
+  "name": "gatsby-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "e2e/gatsby-e2e",
   "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "@nrwl/nx-plugin:e2e",
+      "executor": "@nx/plugin:e2e",
       "options": {
         "target": "gatsby:build",
         "jestConfig": "e2e/gatsby-e2e/jest.config.js"
@@ -11,6 +13,5 @@
     }
   },
   "tags": [],
-  "implicitDependencies": ["gatsby"],
-  "name": "gatsby-e2e"
+  "implicitDependencies": ["gatsby"]
 }

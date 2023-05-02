@@ -1,12 +1,12 @@
-import { readJson, readProjectConfiguration, Tree } from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+import { readJson, readProjectConfiguration, Tree } from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { denoServerlessGenerator } from './serverless';
 
 describe('serverless generator', () => {
   let tree: Tree;
 
-  beforeEach(() => {
-    tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
+  beforeEach(async () => {
+    tree = createTreeWithEmptyWorkspace();
   });
 
   it('should setup netlify project', async () => {
@@ -16,11 +16,11 @@ describe('serverless generator', () => {
     });
 
     expect(readProjectConfiguration(tree, 'my-netlify-app')).toMatchSnapshot();
-    expect(readJson(tree, 'apps/my-netlify-app/deno.json')).toEqual({
-      importMap: '../../import_map.json',
+    expect(readJson(tree, 'my-netlify-app/deno.json')).toEqual({
+      importMap: '../import_map.json',
     });
 
-    expect(tree.read('apps/my-netlify-app/netlify.toml', 'utf-8'))
+    expect(tree.read('my-netlify-app/netlify.toml', 'utf-8'))
       .toMatchInlineSnapshot(`
       "# Netlify Configuration File: https://docs.netlify.com/configure-builds/file-based-configuration
       [build]
@@ -32,7 +32,7 @@ describe('serverless generator', () => {
       [functions]
         # provide all import aliases to netlify
         # https://docs.netlify.com/edge-functions/api/#import-maps
-        deno_import_map = \\"../../import_map.json\\"
+        deno_import_map = \\"../import_map.json\\"
 
       # Read more about declaring edge functions:
       # https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml
@@ -44,8 +44,8 @@ describe('serverless generator', () => {
 
       "
     `);
-    expect(tree.exists('apps/my-netlify-app/functions')).toBeFalsy();
-    expect(tree.read('apps/my-netlify-app/src/main.ts', 'utf-8'))
+    expect(tree.exists('my-netlify-app/functions')).toBeFalsy();
+    expect(tree.read('my-netlify-app/src/main.ts', 'utf-8'))
       .toMatchInlineSnapshot(`
       "/**
        * Netlify Edge Function overview:
@@ -79,13 +79,13 @@ describe('serverless generator', () => {
     expect(
       readProjectConfiguration(tree, 'my-deno-deploy-app')
     ).toMatchSnapshot();
-    expect(readJson(tree, 'apps/my-deno-deploy-app/deno.json')).toEqual({
-      importMap: '../../import_map.json',
+    expect(readJson(tree, 'my-deno-deploy-app/deno.json')).toEqual({
+      importMap: '../import_map.json',
     });
 
-    expect(tree.exists('apps/my-deno-deploy-app/netlify.toml')).toBeFalsy();
-    expect(tree.exists('apps/my-deno-deploy-app/functions')).toBeFalsy();
-    expect(tree.read('apps/my-deno-deploy-app/src/main.ts', 'utf-8'))
+    expect(tree.exists('my-deno-deploy-app/netlify.toml')).toBeFalsy();
+    expect(tree.exists('my-deno-deploy-app/functions')).toBeFalsy();
+    expect(tree.read('my-deno-deploy-app/src/main.ts', 'utf-8'))
       .toMatchInlineSnapshot(`
       "import { serve } from 'https://deno.land/std@0.181.0/http/server.ts';
 
@@ -122,13 +122,13 @@ describe('serverless generator', () => {
     });
 
     expect(readProjectConfiguration(tree, 'my-plain-app')).toMatchSnapshot();
-    expect(readJson(tree, 'apps/my-plain-app/deno.json')).toEqual({
-      importMap: '../../import_map.json',
+    expect(readJson(tree, 'my-plain-app/deno.json')).toEqual({
+      importMap: '../import_map.json',
     });
 
-    expect(tree.exists('apps/my-plain-app/netlify.toml')).toBeFalsy();
-    expect(tree.exists('apps/my-plain-app/functions')).toBeFalsy();
-    expect(tree.read('apps/my-plain-app/src/main.ts', 'utf-8'))
+    expect(tree.exists('my-plain-app/netlify.toml')).toBeFalsy();
+    expect(tree.exists('my-plain-app/functions')).toBeFalsy();
+    expect(tree.read('my-plain-app/src/main.ts', 'utf-8'))
       .toMatchInlineSnapshot(`
       "console.log('Hello my-plain-app');
       // TODO: Write awesome code 💻
@@ -146,13 +146,13 @@ describe('serverless generator', () => {
     expect(
       readProjectConfiguration(tree, 'nested-my-plain-app')
     ).toMatchSnapshot();
-    expect(readJson(tree, 'apps/nested/my-plain-app/deno.json')).toEqual({
-      importMap: '../../../import_map.json',
+    expect(readJson(tree, 'nested/my-plain-app/deno.json')).toEqual({
+      importMap: '../../import_map.json',
     });
 
-    expect(tree.exists('apps/nested/my-plain-app/netlify.toml')).toBeFalsy();
-    expect(tree.exists('apps/nested/my-plain-app/functions')).toBeFalsy();
-    expect(tree.read('apps/nested/my-plain-app/src/main.ts', 'utf-8'))
+    expect(tree.exists('nested/my-plain-app/netlify.toml')).toBeFalsy();
+    expect(tree.exists('nested/my-plain-app/functions')).toBeFalsy();
+    expect(tree.read('nested/my-plain-app/src/main.ts', 'utf-8'))
       .toMatchInlineSnapshot(`
       "console.log('Hello nested-my-plain-app');
       // TODO: Write awesome code 💻

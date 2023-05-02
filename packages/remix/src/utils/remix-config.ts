@@ -1,8 +1,4 @@
-import {
-  joinPathFragments,
-  readProjectConfiguration,
-  Tree,
-} from '@nrwl/devkit';
+import { joinPathFragments, readProjectConfiguration, Tree } from '@nx/devkit';
 import type { AppConfig } from '@remix-run/dev';
 
 export function getRemixConfigPath(tree: Tree, projectName: string) {

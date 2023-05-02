@@ -12,14 +12,14 @@
  *   yarn check-versions react
  */
 
-import { join, relative } from 'path';
-import { gt } from 'semver';
-import { readJsonSync, writeJsonSync } from 'fs-extra';
+import { names } from '@nx/devkit';
 import * as chalk from 'chalk';
-import * as glob from 'glob';
 import { execSync } from 'child_process';
 import { readFileSync, writeFileSync } from 'fs';
-import {names} from "@nrwl/devkit";
+import { readJsonSync, writeJsonSync } from 'fs-extra';
+import * as glob from 'glob';
+import { join, relative } from 'path';
+import { gt } from 'semver';
 
 const root = join(__dirname, '..');
 const excluded = ['nxVersion'];
@@ -118,8 +118,8 @@ function getVersions(path: string) {
       : path;
   try {
     return require(versionsPath);
-  } catch (e){
-    console.log(e)
+  } catch (e) {
+    console.log(e);
     throw new Error(`Could not load ${path}. Please make sure it is valid.`);
   }
 }

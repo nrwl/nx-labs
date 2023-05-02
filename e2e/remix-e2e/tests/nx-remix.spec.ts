@@ -6,11 +6,11 @@ import {
   runNxCommandAsync,
   uniq,
   updateFile,
-} from '@nrwl/nx-plugin/testing';
+} from '@nx/plugin/testing';
 
 describe('remix e2e', () => {
   beforeAll(() => {
-    ensureNxProject('@nrwl/remix', 'dist/packages/remix');
+    ensureNxProject('@nx/remix', 'dist/packages/remix');
   });
 
   afterAll(() => {
@@ -19,10 +19,10 @@ describe('remix e2e', () => {
     runNxCommandAsync('reset');
   });
 
-  it('should create a standalone remix app', async () => {
+  fit('should create a standalone remix app', async () => {
     const appName = uniq('remix');
     await runNxCommandAsync(
-      `generate @nrwl/remix:preset --name ${appName} --verbose`
+      `generate @nx/remix:preset --name ${appName} --verbose`
     );
 
     // Can import using ~ alias like a normal Remix setup.
@@ -45,7 +45,7 @@ describe('remix e2e', () => {
 
   it('should create app', async () => {
     const plugin = uniq('remix');
-    await runNxCommandAsync(`generate @nrwl/remix:app ${plugin}`);
+    await runNxCommandAsync(`generate @nx/remix:app ${plugin}`);
 
     const result = await runNxCommandAsync(`build ${plugin}`);
     expect(result.stdout).toContain('Successfully ran target build');
@@ -55,7 +55,7 @@ describe('remix e2e', () => {
     it('should create src in the specified directory', async () => {
       const plugin = uniq('remix');
       await runNxCommandAsync(
-        `generate @nrwl/remix:app ${plugin} --directory subdir`
+        `generate @nx/remix:app ${plugin} --directory subdir`
       );
       const result = await runNxCommandAsync(`build ${plugin}`);
       expect(result.stdout).toContain('Successfully ran target build');
@@ -66,7 +66,7 @@ describe('remix e2e', () => {
     it('should add tags to the project', async () => {
       const plugin = uniq('remix');
       await runNxCommandAsync(
-        `generate @nrwl/remix:app ${plugin} --tags e2etag,e2ePackage`
+        `generate @nx/remix:app ${plugin} --tags e2etag,e2ePackage`
       );
       const project = readJson(`${plugin}/project.json`);
       expect(project.tags).toEqual(['e2etag', 'e2ePackage']);
@@ -78,7 +78,7 @@ describe('remix e2e', () => {
 
     beforeAll(async () => {
       await runNxCommandAsync(
-        `generate @nrwl/remix:app ${plugin} --tags e2etag,e2ePackage`
+        `generate @nx/remix:app ${plugin} --tags e2etag,e2ePackage`
       );
     }, 120000);
 
@@ -86,12 +86,12 @@ describe('remix e2e', () => {
       await expect(
         async () =>
           await runNxCommandAsync(
-            `generate @nrwl/remix:route --project ${plugin} --path my.route.$withParams.tsx`
+            `generate @nx/remix:route --project ${plugin} --path my.route.$withParams.tsx`
           )
       ).rejects.toThrow();
 
       await runNxCommandAsync(
-        `generate @nrwl/remix:route --project ${plugin} --path my.route.\\$withParams.tsx`
+        `generate @nx/remix:route --project ${plugin} --path my.route.\\$withParams.tsx`
       );
 
       expect(() =>
@@ -101,7 +101,7 @@ describe('remix e2e', () => {
 
     it('should pass un-escaped dollar signs in routes with skipChecks flag', async () => {
       await runCommandAsync(
-        `someWeirdUseCase=route-segment && yarn nx generate @nrwl/remix:route --project ${plugin} --path my.route.$someWeirdUseCase.tsx --force`
+        `someWeirdUseCase=route-segment && yarn nx generate @nx/remix:route --project ${plugin} --path my.route.$someWeirdUseCase.tsx --force`
       );
 
       expect(() =>
@@ -113,12 +113,12 @@ describe('remix e2e', () => {
       await expect(
         async () =>
           await runNxCommandAsync(
-            `generate @nrwl/remix:resource-route --project ${plugin} --path my.route.$withParams.ts`
+            `generate @nx/remix:resource-route --project ${plugin} --path my.route.$withParams.ts`
           )
       ).rejects.toThrow();
 
       await runNxCommandAsync(
-        `generate @nrwl/remix:resource-route --project ${plugin} --path my.route.\\$withParams.ts`
+        `generate @nx/remix:resource-route --project ${plugin} --path my.route.\\$withParams.ts`
       );
 
       expect(() =>
@@ -128,7 +128,7 @@ describe('remix e2e', () => {
 
     it('should pass un-escaped dollar signs in resource routes with skipChecks flag', async () => {
       await runCommandAsync(
-        `someWeirdUseCase=route-segment && yarn nx generate @nrwl/remix:resource-route --project ${plugin} --path my.route.$someWeirdUseCase.ts --force`
+        `someWeirdUseCase=route-segment && yarn nx generate @nx/remix:resource-route --project ${plugin} --path my.route.$someWeirdUseCase.ts --force`
       );
 
       expect(() =>

@@ -11,7 +11,7 @@ import {
   runTasksInSerial,
   Tree,
   updateProjectConfiguration,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 
 import {
   netlifyCliVersion,
@@ -71,7 +71,7 @@ function updateProjectConfig(
     };
 
     projectConfig.targets[`${options.deployTarget}`] = {
-      dependsOn: [`${options.buildTarget}`,`${options.lintTarget}`],
+      dependsOn: [`${options.buildTarget}`, `${options.lintTarget}`],
       command: options.site
         ? `npx netlify deploy --site ${options.site}`
         : 'npx netlify deploy',

@@ -6,7 +6,7 @@ import {
   runCommand,
   tmpProjPath,
   uniq,
-} from '@nrwl/nx-plugin/testing';
+} from '@nx/plugin/testing';
 
 describe('nx-ignore e2e', () => {
   let proj: string;
@@ -31,20 +31,20 @@ describe('nx-ignore e2e', () => {
         2
       )
     );
-    runCommand(`git init`);
-    runCommand(`git add .`);
-    runCommand(`git commit -m 'init'`);
+    runCommand(`git init`, {});
+    runCommand(`git add .`, {});
+    runCommand(`git commit -m 'init'`, {});
   });
 
   it('should deploy if the latest commit touches the project', async () => {
     writeFileSync(join(projRoot, 'main.ts'), `console.log('bye');\n`);
-    runCommand('git commit -am "update main"');
+    runCommand('git commit -am "update main"', {});
 
-    let result = runCommand(`npx nx-ignore ${proj}`);
+    let result = runCommand(`npx nx-ignore ${proj}`, {});
     expect(result).toMatch(/Build can proceed/);
 
-    runCommand('git commit -m "nothing" --allow-empty');
-    result = runCommand(`npx nx-ignore ${proj}`);
+    runCommand('git commit -m "nothing" --allow-empty', {});
+    result = runCommand(`npx nx-ignore ${proj}`, {});
     expect(result).toMatch(/Build cancelled/);
   }, 120_000);
 
@@ -57,18 +57,18 @@ describe('nx-ignore e2e', () => {
       `[nx skip ${proj}] test`,
     ].forEach((msg) => {
       writeFileSync(join(projRoot, 'main.ts'), `console.log('bye');\n`);
-      runCommand(`git commit -am "${msg}"`);
+      runCommand(`git commit -am "${msg}"`, {});
 
-      const result = runCommand(`npx nx-ignore ${proj}`);
+      const result = runCommand(`npx nx-ignore ${proj}`, {});
       expect(result).toMatch(/Skip build/);
     });
   }, 120_000);
 
   it('should force deploy based on commit message', async () => {
     ['[nx deploy] test', `[nx deploy ${proj}] test`].forEach((msg) => {
-      runCommand(`git commit -m "${msg}" --allow-empty`);
+      runCommand(`git commit -m "${msg}" --allow-empty`, {});
 
-      const result = runCommand(`npx nx-ignore ${proj}`);
+      const result = runCommand(`npx nx-ignore ${proj}`, {});
       expect(result).toMatch(/Forced build/);
     });
   }, 120_000);

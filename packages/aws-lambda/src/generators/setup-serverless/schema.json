@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "SchematicsNxAwsLamdaApp",
   "title": "Nx AWS Lambda Setup Serverless Application Options Schema",
   "description": "Nx AWS Lambda Setup Serverless Application Options Schema.",

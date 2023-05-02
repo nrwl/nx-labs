@@ -1,4 +1,4 @@
-import { joinPathFragments, logger, Tree } from '@nrwl/devkit';
+import { joinPathFragments, logger, Tree } from '@nx/devkit';
 import { getRemixProjects } from '../../utils/get-remix-projects';
 
 /**

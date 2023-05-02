@@ -5,7 +5,7 @@
   "sourceRoot": "e2e/deno-e2e/src",
   "targets": {
     "e2e": {
-      "executor": "@nrwl/nx-plugin:e2e",
+      "executor": "@nx/plugin:e2e",
       "options": {
         "target": "deno:build",
         "jestConfig": "e2e/deno-e2e/jest.config.ts",

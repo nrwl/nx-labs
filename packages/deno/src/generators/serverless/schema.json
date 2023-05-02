@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "DenoServerlessGenerator",
   "title": "Create a Deno Serverless Application",
   "description": "Create an app that is setup to run in a serverless environment.",

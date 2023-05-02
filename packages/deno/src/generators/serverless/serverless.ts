@@ -11,7 +11,7 @@ import {
   Tree,
   updateProjectConfiguration,
   writeJson,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { join, relative } from 'path';
 import initDeno from '../init/generator';
 import denoSetupServerless from '../setup-serverless/setup-serverless';
@@ -91,7 +91,7 @@ export function addProject(tree: Tree, opts: NormalizedSchema) {
 
   const targets: ProjectConfiguration['targets'] = {
     build: {
-      executor: '@nrwl/deno:emit',
+      executor: '@nx/deno:emit',
       outputs: [
         joinPathFragments(
           'dist',
@@ -109,13 +109,13 @@ export function addProject(tree: Tree, opts: NormalizedSchema) {
       },
     },
     serve: {
-      executor: '@nrwl/deno:run',
+      executor: '@nx/deno:run',
       options: {
         buildTarget: `${opts.projectName}:build`,
       },
     },
     test: {
-      executor: '@nrwl/deno:test',
+      executor: '@nx/deno:test',
       outputs: [coverageDirectory],
       options: {
         coverageDirectory,
@@ -123,7 +123,7 @@ export function addProject(tree: Tree, opts: NormalizedSchema) {
       },
     },
     lint: {
-      executor: '@nrwl/deno:lint',
+      executor: '@nx/deno:lint',
       options: {
         denoConfig: joinPathFragments(opts.projectRoot, 'deno.json'),
       },

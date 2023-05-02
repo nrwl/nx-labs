@@ -5,7 +5,7 @@ import {
   ProjectGraphBuilder,
   ProjectGraphProcessorContext,
   workspaceRoot,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { existsSync } from 'fs';
 import {
   createProjectRootMappings,
@@ -89,7 +89,7 @@ function isDenoProject(project: ProjectConfiguration) {
 
   if (
     Object.values(project.targets).some((target) =>
-      target.executor.startsWith('@nrwl/deno')
+      target.executor.startsWith('@nx/deno')
     )
   ) {
     return true;

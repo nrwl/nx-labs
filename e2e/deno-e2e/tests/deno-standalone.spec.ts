@@ -1,4 +1,4 @@
-import { names } from '@nrwl/devkit';
+import { names } from '@nx/devkit';
 import {
   checkFilesExist,
   ensureNxProject,
@@ -8,7 +8,7 @@ import {
   tmpProjPath,
   uniq,
   updateFile,
-} from '@nrwl/nx-plugin/testing';
+} from '@nx/plugin/testing';
 import { unlinkSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import {
@@ -28,11 +28,12 @@ describe('Deno standalone app', () => {
   // consumes 1 workspace. The tests should each operate
   // on a unique project in the workspace, such that they
   // are not dependant on one another.
-  beforeAll(() => {
-    ensureNxProject('@nrwl/deno', 'dist/packages/deno');
+  beforeAll(async () => {
+    ensureNxProject('@nx/deno', 'dist/packages/deno');
     const nxVersion = readJson('package.json').devDependencies['nx'];
-    runCommand(`yarn add -D @nrwl/js@${nxVersion}`);
-  });
+    runCommand(`yarn add -D @nx/js@${nxVersion}`, {});
+    await runNxCommandAsync(`generate @nx/js:init`);
+  }, 60_000);
 
   afterAll(async () => {
     // `nx reset` kills the daemon, and performs
@@ -42,7 +43,7 @@ describe('Deno standalone app', () => {
 
   describe('application', () => {
     it('should create deno app', async () => {
-      await runNxCommandAsync(`generate @nrwl/deno:preset ${appName}`);
+      await runNxCommandAsync(`generate @nx/deno:preset ${appName}`);
       expect(readJson(`import_map.json`)).toEqual({ imports: {} });
       expect(readJson(`deno.json`)).toEqual({
         importMap: 'import_map.json',
@@ -117,7 +118,7 @@ Deno.test('Another File', async () => {
       const nestedAppName = uniq('deno-app');
       it('should create app in the specified directory', async () => {
         await runNxCommandAsync(
-          `generate @nrwl/deno:app ${nestedAppName} --directory nested`
+          `generate @nx/deno:app ${nestedAppName} --directory nested`
         );
         expect(
           workspaceFileExists(`nested/${nestedAppName}/src/main.ts`)
@@ -164,7 +165,7 @@ Deno.test('Another File', async () => {
 
     it('should add tags to app project', async () => {
       await runNxCommandAsync(
-        `generate @nrwl/deno:app ${appName}-tagged --tags scope:deno,type:app`
+        `generate @nx/deno:app ${appName}-tagged --tags scope:deno,type:app`
       );
       const project = readJson(`${appName}-tagged/project.json`);
       expect(project.tags).toEqual(['scope:deno', 'type:app']);
@@ -173,7 +174,7 @@ Deno.test('Another File', async () => {
 
   describe('library', () => {
     it('should create deno lib', async () => {
-      await runNxCommandAsync(`generate @nrwl/deno:lib ${libName}`);
+      await runNxCommandAsync(`generate @nx/deno:lib ${libName}`);
       expect(readJson(`import_map.json`)).toEqual({
         imports: {
           [`@proj/${libName}`]: `./${libName}/mod.ts`,
@@ -196,12 +197,12 @@ Deno.test('Another File', async () => {
 
       // create js lib to ensure tsconfig is setup
       await runNxCommandAsync(
-        `generate @nrwl/js:lib ${uniq('js-lib')} --no-interactive --verbose`
+        `generate @nx/js:lib ${uniq('js-lib')} --no-interactive --verbose`
       );
       checkFilesExist('tsconfig.base.json');
 
       await runNxCommandAsync(
-        `generate @nrwl/deno:lib ${withNodeLibName} --node`
+        `generate @nx/deno:lib ${withNodeLibName} --node`
       );
 
       expect(readJson(`import_map.json`).imports).toEqual(
@@ -280,7 +281,7 @@ Deno.test('Another File', async () => {
       const nestedLibName = uniq('deno-lib');
       it('should create lib in the specified directory', async () => {
         await runNxCommandAsync(
-          `generate @nrwl/deno:lib ${nestedLibName} --directory nested`
+          `generate @nx/deno:lib ${nestedLibName} --directory nested`
         );
         expect(readJson(`import_map.json`)).toEqual({
           imports: {
@@ -319,7 +320,7 @@ Deno.test('Another File', async () => {
     });
     it('should add tags to lib project', async () => {
       await runNxCommandAsync(
-        `generate @nrwl/deno:lib ${libName}-tagged --tags scope:deno,type:lib`
+        `generate @nx/deno:lib ${libName}-tagged --tags scope:deno,type:lib`
       );
       const project = readJson(`${libName}-tagged/project.json`);
       expect(project.tags).toEqual(['scope:deno', 'type:lib']);

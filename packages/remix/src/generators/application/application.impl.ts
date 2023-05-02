@@ -10,8 +10,8 @@ import {
   runTasksInSerial,
   Tree,
   updateJson,
-} from '@nrwl/devkit';
-import { extractTsConfigBase } from '@nrwl/js/src/utils/typescript/create-ts-config';
+} from '@nx/devkit';
+import { extractTsConfigBase } from '@nx/js/src/utils/typescript/create-ts-config';
 import {
   eslintVersion,
   isbotVersion,

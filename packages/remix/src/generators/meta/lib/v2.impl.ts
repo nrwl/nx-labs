@@ -1,4 +1,4 @@
-import { formatFiles, Tree } from '@nrwl/devkit';
+import { formatFiles, Tree } from '@nx/devkit';
 import { getDefaultExportName } from '../../../utils/get-default-export-name';
 import { insertImport } from '../../../utils/insert-import';
 import { insertStatementAfterImports } from '../../../utils/insert-statement-after-imports';

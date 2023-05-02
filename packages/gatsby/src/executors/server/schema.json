@@ -1,5 +1,4 @@
 {
-  "cli": "nx",
   "title": "Gatsby development server",
   "description": "Gatsby development server",
   "type": "object",

@@ -1,7 +1,7 @@
+import type { ExecutorContext } from '@nx/devkit';
 import { fork } from 'child_process';
 import { join } from 'path';
 import { GatsbyPluginBuilderSchema } from './schema';
-import type { ExecutorContext } from '@nrwl/devkit';
 
 export default async function buildExecutor(
   options: GatsbyPluginBuilderSchema,

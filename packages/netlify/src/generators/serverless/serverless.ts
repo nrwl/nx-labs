@@ -2,11 +2,11 @@ import {
   extractLayoutDirectory,
   GeneratorCallback,
   names,
+  runTasksInSerial,
   Tree,
-  runTasksInSerial
-} from '@nrwl/devkit';
-import { Linter } from '@nrwl/linter';
-import { applicationGenerator } from '@nrwl/node';
+} from '@nx/devkit';
+import { Linter } from '@nx/linter';
+import { applicationGenerator } from '@nx/node';
 import setupServerlessGenerator from '../setup-serverless/setup-serverless';
 import { Schema } from './schema';
 

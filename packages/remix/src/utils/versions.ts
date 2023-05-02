@@ -1,4 +1,4 @@
-import { readJson, Tree } from '@nrwl/devkit';
+import { readJson, Tree } from '@nx/devkit';
 
 export const remixVersion = '^1.15.0';
 export const isbotVersion = '^3.6.5';

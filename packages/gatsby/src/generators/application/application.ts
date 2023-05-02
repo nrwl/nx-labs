@@ -1,19 +1,19 @@
-import { convertNxGenerator, formatFiles, Tree } from '@nrwl/devkit';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+import { convertNxGenerator, formatFiles, Tree } from '@nx/devkit';
+import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
 
+import { addStyleDependencies } from '../../utils/styles';
 import { gatsbyInitGenerator } from '../init/init';
-import { Schema } from './schema';
-import { normalizeOptions } from './lib/normalize-options';
 import { addCypress } from './lib/add-cypress';
+import { addGitIgnoreEntry } from './lib/add-git-ignore-entry';
 import { addJest } from './lib/add-jest';
 import { addLinting } from './lib/add-linting';
+import { addPrettierIgnoreEntry } from './lib/add-prettier-ignore-entry';
 import { addProject } from './lib/add-project';
 import { createApplicationFiles } from './lib/create-application-files';
-import { addStyleDependencies } from '../../utils/styles';
-import { updateJestConfig } from './lib/update-jest-config';
-import { addPrettierIgnoreEntry } from './lib/add-prettier-ignore-entry';
-import { addGitIgnoreEntry } from './lib/add-git-ignore-entry';
+import { normalizeOptions } from './lib/normalize-options';
 import { setDefaults } from './lib/set-defaults';
+import { updateJestConfig } from './lib/update-jest-config';
+import { Schema } from './schema';
 
 export async function applicationGenerator(host: Tree, schema: Schema) {
   const options = normalizeOptions(host, schema);

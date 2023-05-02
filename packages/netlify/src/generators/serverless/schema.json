@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "SchematicsNxServerlessApp",
   "title": "Nx Netlify Serverless Application Options Schema",
   "description": "Nx Netlify Serverless Application Options Schema.",

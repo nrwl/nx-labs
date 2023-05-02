@@ -5,7 +5,7 @@ import {
   stripIndents,
   Tree,
   updateJson,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { getRootTsConfigPathInTree, TsConfigPaths } from './ts-config';
 
 interface ImportOptions {
@@ -23,7 +23,7 @@ export function addImports(tree: Tree, options: ImportOptions) {
   if (!tree.exists('import_map.json')) {
     throw new Error(stripIndents`import_map.json does not exist in the root of the workspace.
       This means the workspace has not been initialized for Deno.
-      You can do this by running 'nx g @nrwl/deno:init'`);
+      You can do this by running 'nx g @nx/deno:init'`);
   }
 
   updateJson(tree, 'import_map.json', (json) => {
