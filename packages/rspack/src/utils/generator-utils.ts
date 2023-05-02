@@ -512,7 +512,7 @@ export function determineFrameworkAndTarget(
     // Try to infer from jest config if the env is node
     let jestConfigPath: string;
     if (
-      targets?.test?.executor !== '@nrwl/jest:jest' &&
+      targets?.test?.executor !== '@nx/jest:jest' &&
       targets?.test?.options?.jestConfig
     ) {
       jestConfigPath = targets?.test?.options?.jestConfig;

@@ -23,7 +23,6 @@
   },
   "devDependencies": {
     "@nrwl/detox": "16.0.1",
-    "@nrwl/jest": "16.0.1",
     "@nrwl/node": "16.0.1",
     "@nrwl/nx-plugin": "16.0.1",
     "@nrwl/react": "16.0.1",
@@ -65,6 +64,7 @@
     "@nx/linter": "16.0.1",
     "@nx/js": "16.0.1",
     "@nx/cypress": "16.0.1",
-    "@nx/eslint-plugin": "16.0.1"
+    "@nx/eslint-plugin": "16.0.1",
+    "@nx/jest": "16.0.1"
   }
 }

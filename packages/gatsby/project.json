@@ -5,7 +5,7 @@
   "projectType": "library",
   "targets": {
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "options": {
         "jestConfig": "packages/gatsby/jest.config.ts",
         "passWithNoTests": true
