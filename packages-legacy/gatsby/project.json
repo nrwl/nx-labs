@@ -1,0 +1,35 @@
+{
+  "name": "gatsby-legacy",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages-legacy/gatsby",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "dependsOn": ["^build"],
+      "options": {
+        "main": "packages-legacy/gatsby/index.ts",
+        "tsConfig": "packages-legacy/gatsby/tsconfig.json",
+        "outputPath": "dist/packages/gatsby-legacy",
+        "updateBuildableProjectDepsInPackageJson": false,
+        "assets": [
+          "packages-legacy/gatsby-legacy/*.md",
+
+          {
+            "input": "packages-legacy/gatsby",
+            "glob": "**/*.json",
+            "ignore": ["**/tsconfig*.json", "project.json"],
+            "output": "/"
+          },
+          {
+            "input": "packages-legacy/gatsby",
+            "glob": "**/*.d.ts",
+            "output": "/"
+          },
+          "LICENSE"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

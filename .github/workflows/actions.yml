@@ -78,8 +78,10 @@ jobs:
           node-version: '16'
       - run: yarn
       - run: deno info && deno --version
+      - run: ls -a
       - run: npx nx affected --target=lint --parallel --max-parallel=3
       - run: npx nx affected --target=build --parallel --max-parallel=3
+      - run: tree dist/packages -L 2
       - run: npx nx affected --target=test --parallel --max-parallel=2
       - run: npx nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e,gatsby-e2e
       - run: npx nx-cloud stop-all-agents

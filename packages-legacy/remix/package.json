@@ -1,0 +1,15 @@
+{
+  "name": "@nrwl/remix",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "generators": "./generators.json",
+  "dependencies": {
+    "@nx/remix": "file:../../packages/remix"
+  },
+  "repository": {
+    "directory": "packages-legacy/remix"
+  },
+  "nx-migrations": {
+    "migrations": "@nx/remix/migrations.json"
+  }
+}

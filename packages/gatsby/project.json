@@ -57,18 +57,14 @@
       "outputs": ["{options.outputPath}"]
     },
     "build": {
-      "dependsOn": [
-        {
-          "target": "build-base"
-        }
-      ],
       "executor": "nx:run-commands",
-      "outputs": ["build/packages/gatsby"],
+      "outputs": ["dist/packages/gatsby"],
       "options": {
         "commands": [
           {
             "command": "node ./tools/scripts/copy-readme.js gatsby"
-          }
+          },
+          "node ./scripts/add-dependency-to-build.js gatsby @nrwl/gatsby"
         ],
         "parallel": false
       }

@@ -26,10 +26,13 @@
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build", "build-base"]
     },
     "lint": {
       "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+    },
+    "e2e": {
+      "dependsOn": ["^build"]
     }
   }
 }

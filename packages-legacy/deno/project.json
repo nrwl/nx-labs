@@ -1,0 +1,34 @@
+{
+  "name": "deno-legacy",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages-legacy/deno",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "dependsOn": ["^build"],
+      "options": {
+        "main": "packages-legacy/deno/index.ts",
+        "tsConfig": "packages-legacy/deno/tsconfig.json",
+        "outputPath": "dist/packages/deno-legacy",
+        "updateBuildableProjectDepsInPackageJson": false,
+        "assets": [
+          "packages-legacy/deno/*.md",
+          {
+            "input": "packages-legacy/deno",
+            "glob": "**/*.json",
+            "ignore": ["**/tsconfig*.json", "project.json"],
+            "output": "/"
+          },
+          {
+            "input": "packages-legacy/deno",
+            "glob": "**/*.d.ts",
+            "output": "/"
+          },
+          "LICENSE"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

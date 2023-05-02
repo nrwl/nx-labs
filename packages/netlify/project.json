@@ -5,6 +5,10 @@
   "projectType": "library",
   "targets": {
     "build": {
+      "outputs": ["dist/packages/netlify"],
+      "command": "node ./scripts/add-dependency-to-build.js netlify @nrwl/netlify"
+    },
+    "build-base": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
@@ -27,7 +31,8 @@
             "input": "./packages/netlify",
             "glob": "generators.json",
             "output": "."
-          }
+          },
+          "LICENSE"
         ]
       }
     },

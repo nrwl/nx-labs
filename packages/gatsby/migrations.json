@@ -1,4 +1,30 @@
 {
+  "generators": {
+    "add-js-include-11.6.0": {
+      "cli": "nx",
+      "version": "11.6.0-beta.0",
+      "description": "Add js patterns to tsconfig.app.json",
+      "factory": "./src/migrations/update-11-6-0/add-js-include-11-6-0"
+    },
+    "replace-node-sass-with-sass-12-6-1": {
+      "cli": "nx",
+      "version": "12.6.0-beta.12",
+      "description": "Replace node-sass with sass in package.json",
+      "factory": "./src/migrations/update-12-6-1/replace-node-sass-with-sass-12-6-1"
+    },
+    "replace-gatsby-image-with-gatsby-plugin-image-12.9.1": {
+      "cli": "nx",
+      "version": "12.9.1-beta.1",
+      "description": "Replace gatsby-image with gatsby-image-plugin in package.json",
+      "factory": "./src/migrations/update-12-9-1/replace-gatsby-image-with-gatsby-plugin-image-12-9-1"
+    },
+    "update-16-0-0-add-nx-packages": {
+      "cli": "nx",
+      "version": "16.0.0-beta.1",
+      "description": "Replace @nrwl/gatsby with @nx/gatsby",
+      "implementation": "./src/migrations/update-16-0-0-add-nx-packages/update-16-0-0-add-nx-packages"
+    }
+  },
   "schematics": {},
   "packageJsonUpdates": {
     "12.0.0": {
@@ -588,26 +614,6 @@
           "alwaysAddToPackageJson": false
         }
       }
-    }
-  },
-  "generators": {
-    "add-js-include-11.6.0": {
-      "cli": "nx",
-      "version": "11.6.0-beta.0",
-      "description": "Add js patterns to tsconfig.app.json",
-      "factory": "./src/migrations/update-11-6-0/add-js-include-11-6-0"
-    },
-    "replace-node-sass-with-sass-12-6-1": {
-      "cli": "nx",
-      "version": "12.6.0-beta.12",
-      "description": "Replace node-sass with sass in package.json",
-      "factory": "./src/migrations/update-12-6-1/replace-node-sass-with-sass-12-6-1"
-    },
-    "replace-gatsby-image-with-gatsby-plugin-image-12.9.1": {
-      "cli": "nx",
-      "version": "12.9.1-beta.1",
-      "description": "Replace gatsby-image with gatsby-image-plugin in package.json",
-      "factory": "./src/migrations/update-12-9-1/replace-gatsby-image-with-gatsby-plugin-image-12-9-1"
     }
   }
 }
