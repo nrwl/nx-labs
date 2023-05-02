@@ -29,13 +29,9 @@
           },
           {
             "input": "./packages/deno",
-            "glob": "generators.json",
-            "output": "."
-          },
-          {
-            "input": "./packages/deno",
-            "glob": "executors.json",
-            "output": "."
+            "glob": "**.json",
+            "output": ".",
+            "ignore": ["**/tsconfig*.json", "project.json", ".eslintrc.json"]
           },
           "LICENSE"
         ]

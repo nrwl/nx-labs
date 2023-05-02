@@ -15,6 +15,7 @@
         "outputPath": "dist/packages/aws-lambda",
         "main": "packages/aws-lambda/src/index.ts",
         "tsConfig": "packages/aws-lambda/tsconfig.lib.json",
+
         "assets": [
           "packages/aws-lambda/*.md",
           {
@@ -29,8 +30,9 @@
           },
           {
             "input": "./packages/aws-lambda",
-            "glob": "generators.json",
-            "output": "."
+            "glob": "**.json",
+            "output": ".",
+            "ignore": ["**/tsconfig*.json", "project.json", ".eslintrc.json"]
           },
           "LICENSE"
         ]
