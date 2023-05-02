@@ -1,9 +1,0 @@
-{
-  "generators": {
-    "migrate-to-nx-scope": {
-      "factory": "./src/generators/migrate-to-nx-scope/generator",
-      "schema": "./src/generators/migrate-to-nx-scope/schema.json",
-      "description": "migrate-to-nx-scope generator"
-    }
-  }
-}

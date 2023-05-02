@@ -15,7 +15,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nx-labs/internal": ["packages/internal/src/index.ts"],
       "@nx/aws-lambda": ["packages/aws-lambda/src/index.ts"],
       "@nx/deno": ["packages/deno/src/index.ts"],
       "@nx/gatsby": ["packages/gatsby/src/index.ts"],
