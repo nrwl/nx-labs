@@ -1,6 +1,6 @@
-import { applicationGenerator } from '@nrwl/node';
 import { readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
+import { applicationGenerator } from '@nx/node';
 import { setupServerlessGenerator } from './setup-serverless';
 describe('setupServerlessGenerator', () => {
   let tree: Tree;

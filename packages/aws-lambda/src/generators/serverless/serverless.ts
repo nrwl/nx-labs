@@ -1,4 +1,3 @@
-import { applicationGenerator } from '@nrwl/node';
 import {
   convertNxGenerator,
   extractLayoutDirectory,
@@ -8,6 +7,7 @@ import {
   Tree,
 } from '@nx/devkit';
 import { Linter } from '@nx/linter';
+import { applicationGenerator } from '@nx/node';
 import { setupServerlessGenerator } from '../setup-serverless/setup-serverless';
 import { Schema } from './schema';
 
