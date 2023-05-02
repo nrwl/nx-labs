@@ -1,5 +1,5 @@
 {
-  "name": "@nrwl/gatsby",
+  "name": "@nx/gatsby",
   "version": "0.0.1",
   "description": "Gatsby Plugin for Nx",
   "repository": {

@@ -1,5 +1,8 @@
-import { Tree } from '@nrwl/tao/src/shared/tree';
-import { addDependenciesToPackageJson, GeneratorCallback } from '@nx/devkit';
+import {
+  addDependenciesToPackageJson,
+  GeneratorCallback,
+  Tree,
+} from '@nx/devkit';
 import { CSS_IN_JS_DEPENDENCIES } from '@nx/react';
 import {
   gatsbyPluginEmotionVersion,

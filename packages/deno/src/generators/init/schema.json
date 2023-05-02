@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/schema",
   "$id": "Init",
-  "title": "Initilize @nrwl/deno",
-  "description": "Setup the workspace to build Deno projects. Deno must be installed prior to use the @nrwl/deno plugin",
+  "title": "Initilize @nx/deno",
+  "description": "Setup the workspace to build Deno projects. Deno must be installed prior to use the @nx/deno plugin",
   "type": "object",
   "properties": {},
   "required": []

@@ -1,11 +1,11 @@
-# @nrwl/aws-lambda
+# @nx/aws-lambda
 
 ## Setup
 
 Create a new Nx worksapce if you don't already have one.
 
 ```shell
-npx create-nx-workspace@latest aws-lambda-demo --preset=@nrwl/aws-lambda:preset
+npx create-nx-workspace@latest aws-lambda-demo --preset=@nx/aws-lambda:preset
 ```
 
 Now, you can go into the `aws-lambda-demo` folder and start development.
@@ -49,11 +49,11 @@ You can add aws-lambda to any existing Nx workspace.
 First, install the plugin:
 
 ```bash
-npm install -DE @nrwl/aws-lambda@latest
+npm install -DE @nx/aws-lambda@latest
 ```
 
 ## Create a new Aws Lambda App
 
 ```shell
-npx nx g @nrwl/aws-lambda:serverless
+npx nx g @nx/aws-lambda:serverless
 ```

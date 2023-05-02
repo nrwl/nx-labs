@@ -1,7 +1,7 @@
-import { Tree } from '@nrwl/tao/src/shared/tree';
 import {
   addDependenciesToPackageJson,
   joinPathFragments,
+  Tree,
   updateJson,
 } from '@nx/devkit';
 import { Linter, lintProjectGenerator } from '@nx/linter';

@@ -6,7 +6,7 @@
     "init": {
       "factory": "./src/generators/init/init#gatsbyInitSchematic",
       "schema": "./src/generators/init/schema.json",
-      "description": "Initialize the @nrwl/gatsby plugin",
+      "description": "Initialize the @nx/gatsby plugin",
       "hidden": true
     },
     "application": {
@@ -31,7 +31,7 @@
     "init": {
       "factory": "./src/generators/init/init",
       "schema": "./src/generators/init/schema.json",
-      "description": "Initialize the @nrwl/gatsby plugin",
+      "description": "Initialize the @nx/gatsby plugin",
       "hidden": true
     },
     "application": {
