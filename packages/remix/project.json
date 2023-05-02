@@ -4,6 +4,9 @@
   "sourceRoot": "packages/remix/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "command": "node ./scripts/add-dependency-to-build.js remix @nrwl/remix"
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
@@ -19,7 +22,7 @@
         "passWithNoTests": true
       }
     },
-    "build": {
+    "build-base": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {

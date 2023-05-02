@@ -5,6 +5,9 @@
   "projectType": "library",
   "targets": {
     "build": {
+      "command": "node ./scripts/add-dependency-to-build.js netlify @nrwl/netlify"
+    },
+    "build-base": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
