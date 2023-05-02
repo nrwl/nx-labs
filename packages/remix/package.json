@@ -4,10 +4,10 @@
   "main": "src/index.js",
   "generators": "./generators.json",
   "dependencies": {
-    "@nrwl/react": "^15.9.2",
     "tslib": "^2.3.1",
     "@nx/devkit": "16.0.1",
-    "@nx/js": "16.0.1"
+    "@nx/js": "16.0.1",
+    "@nx/react": "16.0.1"
   },
   "ng-update": {
     "requirements": {},

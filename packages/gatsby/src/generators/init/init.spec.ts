@@ -14,7 +14,7 @@ xdescribe('init', () => {
     await gatsbyInitGenerator(tree, {});
     const packageJson = readJson(tree, 'package.json');
     expect(packageJson.dependencies['@nrwl/gatsby']).toBeUndefined();
-    expect(packageJson.dependencies['@nrwl/react']).toBeUndefined();
+    expect(packageJson.dependencies['@nx/react']).toBeUndefined();
     expect(packageJson.dependencies['gatsby']).toBeDefined();
   });
 

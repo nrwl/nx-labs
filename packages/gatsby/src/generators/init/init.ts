@@ -1,4 +1,3 @@
-import { reactDomVersion, reactInitGenerator, reactVersion } from '@nrwl/react';
 import { cypressInitGenerator } from '@nx/cypress';
 import {
   addDependenciesToPackageJson,
@@ -9,6 +8,7 @@ import {
   updateJson,
 } from '@nx/devkit';
 import { jestInitGenerator } from '@nx/jest';
+import { reactDomVersion, reactInitGenerator, reactVersion } from '@nx/react';
 import { setDefaultCollection } from '@nx/workspace/src/utilities/set-default-collection';
 
 import {

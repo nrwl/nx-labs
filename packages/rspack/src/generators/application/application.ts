@@ -65,7 +65,7 @@ export default async function (
   } else {
     // default to react
     const { applicationGenerator: reactAppGenerator } = ensurePackage(
-      '@nrwl/react',
+      '@nx/react',
       nxVersion
     );
     const createAppTask = await reactAppGenerator(tree, {

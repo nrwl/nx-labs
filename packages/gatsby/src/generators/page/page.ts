@@ -1,8 +1,8 @@
+import { convertNxGenerator, Tree } from '@nx/devkit';
 import {
   componentGenerator as reactComponentGenerator,
   SupportedStyles,
-} from '@nrwl/react';
-import { convertNxGenerator, Tree } from '@nx/devkit';
+} from '@nx/react';
 
 import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
 import { addStyleDependencies } from '../../utils/styles';

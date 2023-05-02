@@ -1,5 +1,5 @@
-import { assertValidStyle } from '@nrwl/react';
 import { getWorkspaceLayout, joinPathFragments, names, Tree } from '@nx/devkit';
+import { assertValidStyle } from '@nx/react';
 import { Schema } from '../schema';
 
 export interface NormalizedSchema extends Schema {

@@ -249,7 +249,7 @@ xdescribe('app', () => {
     });
 
     expect(tree.read('apps/my-app/jest.config.ts', 'utf-8')).toContain(
-      `'^(?!.*\\\\.(js|jsx|ts|tsx|css|json)$)': '@nrwl/react/plugins/jest'`
+      `'^(?!.*\\\\.(js|jsx|ts|tsx|css|json)$)': '@nx/react/plugins/jest'`
     );
   });
 
