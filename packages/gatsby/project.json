@@ -10,9 +10,7 @@
         "jestConfig": "packages/gatsby/jest.config.ts",
         "passWithNoTests": true
       },
-      "outputs": [
-        "coverage/packages/gatsby"
-      ]
+      "outputs": ["coverage/packages/gatsby"]
     },
     "build-base": {
       "executor": "@nrwl/js:tsc",
@@ -39,18 +37,13 @@
           {
             "input": "packages/gatsby",
             "glob": "**/*.json",
-            "ignore": [
-              "**/tsconfig*.json",
-              "project.json"
-            ],
+            "ignore": ["**/tsconfig*.json", "project.json"],
             "output": "/"
           },
           {
             "input": "packages/gatsby",
             "glob": "**/*.js",
-            "ignore": [
-              "**/jest.config.js"
-            ],
+            "ignore": ["**/jest.config.js"],
             "output": "/"
           },
           {
@@ -61,9 +54,7 @@
           "LICENSE"
         ]
       },
-      "outputs": [
-        "{options.outputPath}"
-      ]
+      "outputs": ["{options.outputPath}"]
     },
     "build": {
       "dependsOn": [
@@ -72,9 +63,7 @@
         }
       ],
       "executor": "nx:run-commands",
-      "outputs": [
-        "build/packages/gatsby"
-      ],
+      "outputs": ["build/packages/gatsby"],
       "options": {
         "commands": [
           {
@@ -85,7 +74,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "packages/gatsby/**/*.ts",
@@ -97,9 +86,7 @@
           "packages/gatsby/**/*.d.ts"
         ]
       },
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     },
     "publish": {
       "executor": "nx:run-commands",

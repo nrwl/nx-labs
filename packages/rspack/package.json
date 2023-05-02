@@ -20,13 +20,13 @@
   "executors": "./executors.json",
   "dependencies": {
     "@nrwl/js": "^15.8.1",
-    "@nrwl/linter": "^15.8.1",
     "@phenomnomnominal/tsquery": "~5.0.1",
     "ajv": "^8.12.0",
     "ajv-keywords": "5.1.0",
     "less-loader": "11.1.0",
     "sass-loader": "^12.2.0",
     "stylus-loader": "^7.1.0",
-    "@nx/devkit": "16.0.1"
+    "@nx/devkit": "16.0.1",
+    "@nx/linter": "16.0.1"
   }
 }

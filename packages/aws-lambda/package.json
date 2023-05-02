@@ -5,7 +5,7 @@
   "generators": "./generators.json",
   "dependencies": {
     "@nrwl/node": "*",
-    "@nrwl/linter": "*",
-    "@nx/devkit": "16.0.1"
+    "@nx/devkit": "16.0.1",
+    "@nx/linter": "16.0.1"
   }
 }

@@ -1,4 +1,3 @@
-import { Linter } from '@nrwl/linter';
 import { libraryGenerator } from '@nrwl/react/src/generators/library/library';
 import {
   detectPackageManager,
@@ -12,6 +11,7 @@ import {
   updateJson,
   updateProjectConfiguration,
 } from '@nx/devkit';
+import { Linter } from '@nx/linter';
 import { execSync } from 'child_process';
 import { NxRemixGeneratorSchema } from './schema';
 

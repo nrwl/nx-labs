@@ -1,4 +1,3 @@
-import { Linter } from '@nrwl/linter';
 import { applicationGenerator } from '@nrwl/node';
 import {
   extractLayoutDirectory,
@@ -7,6 +6,7 @@ import {
   runTasksInSerial,
   Tree,
 } from '@nx/devkit';
+import { Linter } from '@nx/linter';
 import setupServerlessGenerator from '../setup-serverless/setup-serverless';
 import { Schema } from './schema';
 
