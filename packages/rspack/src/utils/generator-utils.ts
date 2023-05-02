@@ -1,4 +1,3 @@
-import { ensureTypescript } from '@nrwl/js/src/utils/typescript/ensure-typescript';
 import {
   joinPathFragments,
   logger,
@@ -7,6 +6,7 @@ import {
   Tree,
   updateProjectConfiguration,
 } from '@nx/devkit';
+import { ensureTypescript } from '@nx/js/src/utils/typescript/ensure-typescript';
 import { RspackExecutorSchema } from '../executors/rspack/schema';
 import { ConfigurationSchema } from '../generators/configuration/schema';
 import { Framework } from '../generators/init/schema';
@@ -50,10 +50,10 @@ export function findExistingTargetsInProject(
   };
 
   const unsupportedExecutors = [
-    '@nrwl/js:babel',
-    '@nrwl/js:node',
-    '@nrwl/js:swc',
-    '@nrwl/js:tsc',
+    '@nx/js:babel',
+    '@nx/js:node',
+    '@nx/js:swc',
+    '@nx/js:tsc',
     '@nrwl/angular:ng-packagr-lite',
     '@nrwl/angular:package',
     '@nrwl/angular:webpack-browser',

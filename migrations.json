@@ -67,9 +67,9 @@
     {
       "cli": "nx",
       "version": "16.0.0-beta.1",
-      "description": "Replace @nrwl/js with @nx/js",
+      "description": "Replace @nx/js with @nx/js",
       "implementation": "./src/migrations/update-16-0-0-add-nx-packages/update-16-0-0-add-nx-packages",
-      "package": "@nrwl/js",
+      "package": "@nx/js",
       "name": "update-16-0-0-add-nx-packages"
     },
     {

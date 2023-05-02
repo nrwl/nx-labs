@@ -31,7 +31,7 @@ describe('Deno integrated monorepo', () => {
   beforeAll(() => {
     ensureNxProject('@nrwl/deno', 'dist/packages/deno');
     const nxVersion = readJson('package.json').devDependencies['nx'];
-    runCommand(`yarn add -D @nrwl/js@${nxVersion}`);
+    runCommand(`yarn add -D @nx/js@${nxVersion}`);
   });
 
   afterAll(async () => {
@@ -248,7 +248,7 @@ console.log('123');
       const withNode = `${libName}-with-node`;
       // create js lib to ensure tsconfig is setup
       await runNxCommandAsync(
-        `generate @nrwl/js:lib ${uniq('js-lib')} --no-interactive`
+        `generate @nx/js:lib ${uniq('js-lib')} --no-interactive`
       );
       checkFilesExist('tsconfig.base.json');
 

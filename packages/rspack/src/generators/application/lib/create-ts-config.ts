@@ -8,10 +8,10 @@ export function editTsConfig(
   framework: Framework,
   relativePathToRootTsConfig: string
 ) {
-  // Nx 15.8 moved util to @nrwl/js, but it is in @nx/workspace in 15.7
+  // Nx 15.8 moved util to @nx/js, but it is in @nx/workspace in 15.7
   let shared: any;
   try {
-    shared = require('@nrwl/js/src/utils/typescript/create-ts-config');
+    shared = require('@nx/js/src/utils/typescript/create-ts-config');
   } catch {
     shared = require('@nx/workspace/src/utils/create-ts-config');
   }

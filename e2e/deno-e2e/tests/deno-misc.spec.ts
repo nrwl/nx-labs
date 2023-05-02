@@ -24,7 +24,7 @@ describe('Deno Misc Tests', () => {
 
   it('should add existing project to deno imports', async () => {
     await runNxCommandAsync('generate @nrwl/deno:app api');
-    await runNxCommandAsync('generate @nrwl/js:lib my-types');
+    await runNxCommandAsync('generate @nx/js:lib my-types');
     // change my-types index.ts file to be deno compatible
     updateFile(
       'libs/my-types/src/index.ts',

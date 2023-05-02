@@ -1,10 +1,10 @@
-import { initGenerator as jsInitGenerator } from '@nrwl/js';
 import {
   formatFiles,
   GeneratorCallback,
   runTasksInSerial,
   Tree,
 } from '@nx/devkit';
+import { initGenerator as jsInitGenerator } from '@nx/js';
 
 export default async function (tree: Tree) {
   const tasks: GeneratorCallback[] = [];

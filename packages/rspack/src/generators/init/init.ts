@@ -20,8 +20,8 @@ export async function rspackInitGenerator(
   schema: InitGeneratorSchema
 ) {
   const tasks: GeneratorCallback[] = [];
-  const { initGenerator } = ensurePackage<typeof import('@nrwl/js')>(
-    '@nrwl/js',
+  const { initGenerator } = ensurePackage<typeof import('@nx/js')>(
+    '@nx/js',
     nxVersion
   );
   const jsInitTask = await initGenerator(tree, {

@@ -13,7 +13,7 @@
       "outputs": ["coverage/packages/gatsby"]
     },
     "build-base": {
-      "executor": "@nrwl/js:tsc",
+      "executor": "@nx/js:tsc",
       "options": {
         "outputPath": "dist/packages/gatsby",
         "tsConfig": "packages/gatsby/tsconfig.lib.json",
