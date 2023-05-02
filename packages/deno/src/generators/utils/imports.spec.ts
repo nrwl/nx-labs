@@ -164,7 +164,7 @@ async function addNodeAndDenoProjects(tree: Tree, name: string) {
     projectType: 'library',
     targets: {
       build: {
-        executor: '@nrwl/esbuild:esbuild',
+        executor: '@nx/esbuild:esbuild',
         options: {},
       },
     },

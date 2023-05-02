@@ -737,9 +737,9 @@ export function createAppJsx(name: string) {
               </summary>
               <pre>
                 <span># Generate UI lib</span>
-                nx g @nrwl/angular:lib ui
+                nx g @nx/angular:lib ui
                 <span># Add a component</span>
-                nx g @nrwl/angular:component button --project ui
+                nx g @nx/angular:component button --project ui
               </pre>
             </details>
             <details>

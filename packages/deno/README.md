@@ -1,4 +1,4 @@
-# @nrwl/deno
+# @nx/deno
 
 [Deno](https://deno.com/runtime) is a JavaScript runtime that provides great tooling and hassle-free deployment.
 
@@ -12,7 +12,7 @@ The following guides show you how to create a new Deno project and deploy to eit
 Create a new Nx workspace if you don't already have one.
 
 ```shell
-npx create-nx-workspace@latest deno-demo --preset=@nrwl/deno:preset
+npx create-nx-workspace@latest deno-demo --preset=@nx/deno:preset
 ```
 
 Now, you can go into the `deno-demo` folder and start development.
@@ -39,7 +39,7 @@ You can add Deno to any existing Nx workspace.
 First, install the plugin:
 
 ```bash
-npm install -DE @nrwl/deno@latest
+npm install -DE @nx/deno@latest
 ```
 
 ## Create a new Deno App
@@ -47,7 +47,7 @@ npm install -DE @nrwl/deno@latest
 You can create additional Deno apps
 
 ```shell
-npx nx g @nrwl/deno:app
+npx nx g @nx/deno:app
 ```
 
 You can run `npx nx serve <your-Deno-app-name>` and see the sample web server on htts://localhost:8000
@@ -60,12 +60,12 @@ npx nx lint <your-Deno-app-name>
 npx nx build <your-Deno-app-name>
 ```
 
-Building/Bundling is an optional step in Deno so you don't have to build when using @nrwl/deno, but it can be useful to bundle the code into a single file for easier portability if you so need it.
+Building/Bundling is an optional step in Deno so you don't have to build when using @nx/deno, but it can be useful to bundle the code into a single file for easier portability if you so need it.
 
 ## Create a new Deno Library
 
 ```shell
-npx nx g @nrwl/deno:lib
+npx nx g @nx/deno:lib
 ```
 
 Deno libraies only come with lint/test targets to run.

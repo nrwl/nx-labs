@@ -10,4 +10,4 @@ Nx is a next generation build system with first class monorepo support and power
 
 > ⚠️ The Gatsby plugin is deprecated and will be removed in Nx 16. We are committed to providing high-quality tooling to community, and we no longer have the capacity to keep this plugin updated.
 >
-> If you are interested in taking stewardship please contact jack@nrwl.io or drop a message in our [community Slack](https://go.nrwl.io/join-slack?utm_source=nx.dev).
+> If you are interested in taking stewardship please contact jack@nx.io or drop a message in our [community Slack](https://go.nrwl.io/join-slack?utm_source=nx.dev).

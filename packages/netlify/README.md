@@ -1,11 +1,11 @@
-# @nrwl/netlify
+# @nx/netlify
 
 ## Setup
 
 Create a new Nx worksapce if you don't already have one.
 
 ```shell
-npx create-nx-workspace@latest netlify-demo --preset=@nrwl/netlify:preset
+npx create-nx-workspace@latest netlify-demo --preset=@nx/netlify:preset
 ```
 
 Now, you can go into the `netlify-demo` folder and start development.
@@ -28,5 +28,5 @@ This command will prompt you to setup the project the first time you deploy.
 ## Create a new Netlify Serverless App
 
 ```shell
-npx nx g @nrwl/netlify:serverless
+npx nx g @nx/netlify:serverless
 ```

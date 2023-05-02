@@ -6,13 +6,13 @@ Nx makes supercharges your builds, and the optional [Nx Cloud](https://nx.app) p
 
 ## Creating new Remix workspace
 
-Use `--preset=@nrwl/remix` when creating new workspace.
+Use `--preset=@nx/remix` when creating new workspace.
 
 e.g.
 
 ```bash
 npx create-nx-workspace@latest acme \
---preset=@nrwl/remix \
+--preset=@nx/remix \
 --project=demo
 ```
 
@@ -40,22 +40,22 @@ You can add Remix to any existing Nx workspace.
 First, install the plugin:
 
 ```bash
-npm install --save-dev @nrwl/remix
+npm install --save-dev @nx/remix
 
 # Or with yarn
-yarn add -D @nrwl/remix
+yarn add -D @nx/remix
 ```
 
 Then, run the setup generator:
 
 ```bash
-npx nx g @nrwl/remix:setup
+npx nx g @nx/remix:setup
 ```
 
 You can then add your first app and run it:
 
 ```bash
-npx nx g @nrwl/remix:app demo
+npx nx g @nx/remix:app demo
 ```
 
 ## Adding new routes
@@ -76,7 +76,7 @@ Browse to `http://localhost:3000/foo/bar` to see the new route.
 The Remix setup leverages npm/yarn/pnpm workspaces and Nx buildable libraries.
 
 ```bash
-npx nx g @nrwl/remix:lib mylib
+npx nx g @nx/remix:lib mylib
 ```
 
 Import the new library in your app.

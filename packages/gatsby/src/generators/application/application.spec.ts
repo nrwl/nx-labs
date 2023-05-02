@@ -336,7 +336,7 @@ xdescribe('app', () => {
     expect(eslintJson).toMatchInlineSnapshot(`
       Object {
         "extends": Array [
-          "plugin:@nrwl/nx/react",
+          "plugin:@nx/nx/react",
           "../../.eslintrc.json",
         ],
         "ignorePatterns": Array [
