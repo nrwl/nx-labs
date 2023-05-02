@@ -58,7 +58,7 @@
     },
     "build": {
       "executor": "nx:run-commands",
-      "outputs": ["build/packages/gatsby"],
+      "outputs": ["dist/packages/gatsby"],
       "options": {
         "commands": [
           {

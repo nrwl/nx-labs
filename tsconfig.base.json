@@ -18,6 +18,7 @@
       "@nx-labs/internal": ["packages/internal/src/index.ts"],
       "@nx/aws-lambda": ["packages/aws-lambda/src/index.ts"],
       "@nx/deno": ["packages/deno/src/index.ts"],
+      "@nx/gatsby": ["packages/gatsby/src/index.ts"],
       "@nx/netlify": ["packages/netlify/index.ts"],
       "@nx/remix": ["packages/remix/src/index.ts"],
       "@nx/rspack": ["packages/rspack/src/index.ts"]
