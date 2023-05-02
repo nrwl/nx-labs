@@ -39,7 +39,7 @@ export async function* denoServeExecutor(
 
     // need to emit a success for other executors that
     // might be waiting on this dev server in watch mode
-    // i.e. @nrwl/cypress
+    // i.e. @nx/cypress
     if (opts.watch) {
       next({ success: true });
     }

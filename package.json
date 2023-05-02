@@ -22,7 +22,6 @@
     "nx-cloud": "16.0.5"
   },
   "devDependencies": {
-    "@nrwl/cypress": "16.0.1",
     "@nrwl/detox": "16.0.1",
     "@nrwl/eslint-plugin-nx": "16.0.1",
     "@nrwl/jest": "16.0.1",
@@ -65,6 +64,7 @@
     "@nx/devkit": "16.0.1",
     "@nx/workspace": "16.0.1",
     "@nx/linter": "16.0.1",
-    "@nx/js": "16.0.1"
+    "@nx/js": "16.0.1",
+    "@nx/cypress": "16.0.1"
   }
 }

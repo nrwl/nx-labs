@@ -1,6 +1,6 @@
-import { cypressInitGenerator } from '@nrwl/cypress';
 import { jestInitGenerator } from '@nrwl/jest';
 import { reactDomVersion, reactInitGenerator, reactVersion } from '@nrwl/react';
+import { cypressInitGenerator } from '@nx/cypress';
 import {
   addDependenciesToPackageJson,
   convertNxGenerator,

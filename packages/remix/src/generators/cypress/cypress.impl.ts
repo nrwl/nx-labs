@@ -9,7 +9,7 @@ import { version as nxVersion } from 'nx/package.json';
 
 export default async function (tree: Tree, options: any) {
   const { cypressInitGenerator, cypressProjectGenerator } = ensurePackage(
-    '@nrwl/cypress',
+    '@nx/cypress',
     nxVersion
   );
 

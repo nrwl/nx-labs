@@ -33,13 +33,13 @@
     "gatsby": "^4.2.0"
   },
   "dependencies": {
-    "@nrwl/cypress": "*",
     "@nrwl/jest": "*",
     "@nrwl/react": "*",
     "gatsby-cli": "^4.2.0",
     "gatsby-codemods": "^3.2.0",
     "@nx/devkit": "16.0.1",
     "@nx/workspace": "16.0.1",
-    "@nx/linter": "16.0.1"
+    "@nx/linter": "16.0.1",
+    "@nx/cypress": "16.0.1"
   }
 }
