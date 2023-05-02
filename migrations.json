@@ -1,0 +1,156 @@
+{
+  "migrations": [
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.0",
+      "description": "Remove @nrwl/cli.",
+      "implementation": "./src/migrations/update-16-0-0/remove-nrwl-cli",
+      "package": "nx",
+      "name": "16.0.0-remove-nrwl-cli"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.9",
+      "description": "Replace `dependsOn.projects` and `inputs` definitions with new configuration format.",
+      "implementation": "./src/migrations/update-16-0-0/update-depends-on-to-tokens",
+      "package": "nx",
+      "name": "16.0.0-tokens-for-depends-on"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.0",
+      "description": "Replace @nrwl/nx-cloud with nx-cloud",
+      "implementation": "./src/migrations/update-16-0-0/update-nx-cloud-runner",
+      "package": "nx",
+      "name": "16.0.0-update-nx-cloud-runner"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.1",
+      "description": "Replace @nrwl/devkit with @nx/devkit",
+      "implementation": "./src/migrations/update-16-0-0-add-nx-packages/update-16-0-0-add-nx-packages",
+      "package": "@nrwl/devkit",
+      "name": "update-16-0-0-add-nx-packages"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.1",
+      "description": "Replace @nrwl/workspace with @nx/workspace",
+      "implementation": "./src/migrations/update-16-0-0-add-nx-packages/update-16-0-0-add-nx-packages",
+      "package": "@nrwl/workspace",
+      "name": "update-16-0-0-add-nx-packages"
+    },
+    {
+      "version": "16.0.0-beta.4",
+      "description": "Generates a plugin called 'workspace-plugin' containing your workspace generators.",
+      "cli": "nx",
+      "implementation": "./src/migrations/update-16-0-0/move-workspace-generators-to-local-plugin",
+      "package": "@nrwl/workspace",
+      "name": "16-0-0-move-workspace-generators-into-local-plugin"
+    },
+    {
+      "version": "16.0.0-beta.9",
+      "description": "Fix .babelrc presets if it contains an invalid entry for @nx/web/babel.",
+      "cli": "nx",
+      "implementation": "./src/migrations/update-16-0-0/fix-invalid-babelrc",
+      "package": "@nrwl/workspace",
+      "name": "16-0-0-fix-invalid-babelrc"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.1",
+      "description": "Replace @nrwl/linter with @nx/linter",
+      "implementation": "./src/migrations/update-16-0-0-add-nx-packages/update-16-0-0-add-nx-packages",
+      "package": "@nrwl/linter",
+      "name": "update-16-0-0-add-nx-packages"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.1",
+      "description": "Replace @nrwl/js with @nx/js",
+      "implementation": "./src/migrations/update-16-0-0-add-nx-packages/update-16-0-0-add-nx-packages",
+      "package": "@nrwl/js",
+      "name": "update-16-0-0-add-nx-packages"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.1",
+      "description": "Replace @nrwl/cypress with @nx/cypress",
+      "implementation": "./src/migrations/update-16-0-0-add-nx-packages/update-16-0-0-add-nx-packages",
+      "package": "@nrwl/cypress",
+      "name": "update-16-0-0-add-nx-packages"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.1",
+      "description": "Replace @nrwl/eslint-plugin-nx with @nx/eslint-plugin",
+      "implementation": "./src/migrations/update-16-0-0-add-nx-packages/update-16-0-0-add-nx-packages",
+      "package": "@nrwl/eslint-plugin-nx",
+      "name": "update-16-0-0-add-nx-packages"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.1",
+      "description": "Replace @nrwl/jest with @nx/jest",
+      "implementation": "./src/migrations/update-16-0-0-add-nx-packages/update-16-0-0-add-nx-packages",
+      "package": "@nrwl/jest",
+      "name": "update-16-0-0-add-nx-packages"
+    },
+    {
+      "version": "16.0.0-beta.1",
+      "cli": "nx",
+      "description": "Removes CLI property within schema.json files and moves generators and schematics to the proper root node in migrations.json",
+      "factory": "./src/migrations/update-16-0-0/cli-in-schema-json",
+      "package": "@nrwl/nx-plugin",
+      "name": "update-remove-cli-prop"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.1",
+      "description": "Replace @nrwl/nx-plugin with @nx/plugin",
+      "implementation": "./src/migrations/update-16-0-0-add-nx-packages/update-16-0-0-add-nx-packages",
+      "package": "@nrwl/nx-plugin",
+      "name": "update-16-0-0-add-nx-packages"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.1",
+      "description": "Replace @nrwl/react with @nx/react",
+      "implementation": "./src/migrations/update-16-0-0-add-nx-packages/update-16-0-0-add-nx-packages",
+      "package": "@nrwl/react",
+      "name": "update-16-0-0-add-nx-packages"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.1",
+      "description": "Replace @nrwl/node with @nx/node",
+      "implementation": "./src/migrations/update-16-0-0-add-nx-packages/update-16-0-0-add-nx-packages",
+      "package": "@nrwl/node",
+      "name": "update-16-0-0-add-nx-packages"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.5",
+      "description": "Replace @nrwl/node:webpack with @nx/node:webpack",
+      "implementation": "./src/migrations/update-16-0-0/update-webpack-executor",
+      "package": "@nrwl/node",
+      "name": "update-16-0-0-update-executor"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.1",
+      "description": "Replace @nrwl/detox with @nx/detox",
+      "implementation": "./src/migrations/update-16-0-0-add-nx-packages/update-16-0-0-add-nx-packages",
+      "package": "@nrwl/detox",
+      "name": "update-16-0-0-add-nx-packages"
+    },
+    {
+      "cli": "nx",
+      "version": "16.0.0-beta.3",
+      "description": "Update .detoxrc.json and jest.config.json for detox 20",
+      "implementation": "./src/migrations/update-16-0-0/update-detoxrc-json",
+      "package": "@nrwl/detox",
+      "name": "update-16-0-0-update-detoxrc"
+    }
+  ]
+}
