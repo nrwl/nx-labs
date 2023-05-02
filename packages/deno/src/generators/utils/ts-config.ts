@@ -1,6 +1,6 @@
-import { Tree } from '@nrwl/devkit';
+import { Tree } from '@nx/devkit';
 
-// TODO(caleb): switch to @nrwl/js version once we update and make it a dep
+// TODO(caleb): switch to @nx/js version once we update and make it a dep
 export function getRootTsConfigPathInTree(tree: Tree): string | null {
   for (const path of ['tsconfig.base.json', 'tsconfig.json']) {
     if (tree.exists(path)) {

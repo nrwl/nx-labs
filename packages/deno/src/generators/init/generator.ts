@@ -5,7 +5,8 @@ import {
   Tree,
   updateJson,
   updateNxJson,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
+import {} from '@nx/js';
 import * as path from 'path';
 import { assertDenoInstalled } from '../../utils/run-deno';
 
@@ -46,7 +47,7 @@ function addDenoPluginToNxJson(tree: Tree) {
   const nxJson = readNxJson(tree);
 
   const plugins = new Set<string>(nxJson.plugins || []);
-  plugins.add('@nrwl/deno');
+  plugins.add('@nx/deno');
   nxJson.plugins = Array.from(plugins);
 
   updateNxJson(tree, nxJson);

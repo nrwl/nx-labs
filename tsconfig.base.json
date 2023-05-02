@@ -15,10 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nrwl/aws-lambda": ["packages/aws-lambda/src/index.ts"],
-      "@nrwl/deno": ["packages/deno/src/index.ts"],
-      "@nrwl/netlify": ["packages/netlify/index.ts"],
-      "@nrwl/rspack": ["packages/rspack/src/index.ts"],
+      "@nx/aws-lambda": ["packages/aws-lambda/src/index.ts"],
+      "@nx/deno": ["packages/deno/src/index.ts"],
+      "@nx/netlify": ["packages/netlify/index.ts"],
+      "@nx/rspack": ["packages/rspack/src/index.ts"],
       "nx-remix/nx-remix": ["packages/nx-remix/src/index.ts"]
     }
   },

@@ -1,3 +1,4 @@
+import { cypressInitGenerator } from '@nx/cypress';
 import {
   addDependenciesToPackageJson,
   convertNxGenerator,
@@ -5,11 +6,9 @@ import {
   GeneratorCallback,
   Tree,
   updateJson,
-} from '@nrwl/devkit';
-import { jestInitGenerator } from '@nrwl/jest';
-import { cypressInitGenerator } from '@nrwl/cypress';
-import { reactDomVersion, reactInitGenerator, reactVersion } from '@nrwl/react';
-import { setDefaultCollection } from '@nrwl/workspace/src/utilities/set-default-collection';
+} from '@nx/devkit';
+import { jestInitGenerator } from '@nx/jest';
+import { reactDomVersion, reactInitGenerator, reactVersion } from '@nx/react';
 
 import {
   babelPluginModuleResolverVersion,
@@ -31,13 +30,13 @@ import {
   testingLibraryReactVersion,
 } from '../../utils/versions';
 
+import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
 import { InitSchema } from './schema';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 
 function updateDependencies(host: Tree) {
   updateJson(host, 'package.json', (json) => {
-    if (json.dependencies && json.dependencies['@nrwl/gatsby']) {
-      delete json.dependencies['@nrwl/gatsby'];
+    if (json.dependencies && json.dependencies['@nx/gatsby']) {
+      delete json.dependencies['@nx/gatsby'];
     }
     return json;
   });
@@ -63,7 +62,7 @@ function updateDependencies(host: Tree) {
       ...(isPnpm ? { 'gatsby-plugin-pnpm': gatsbyPluginPnpm } : {}),
     },
     {
-      '@nrwl/gatsby': nxVersion,
+      '@nx/gatsby': nxVersion,
       '@testing-library/react': testingLibraryReactVersion,
       'babel-plugin-module-resolver': babelPluginModuleResolverVersion,
       'babel-preset-gatsby': babelPresetGatsbyVersion,
@@ -73,7 +72,6 @@ function updateDependencies(host: Tree) {
 
 export async function gatsbyInitGenerator(host: Tree, schema: InitSchema) {
   const tasks: GeneratorCallback[] = [];
-  setDefaultCollection(host, '@nrwl/gatsby');
 
   if (!schema.unitTestRunner || schema.unitTestRunner === 'jest') {
     const jestTask = await jestInitGenerator(host, {});

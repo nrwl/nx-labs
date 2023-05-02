@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "DenoPreset",
   "title": "Standalone Deno preset",
   "description": "Create a Deno project in a standalone Nx Workspace.",

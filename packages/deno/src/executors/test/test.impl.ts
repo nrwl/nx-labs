@@ -1,4 +1,4 @@
-import { ExecutorContext, logger } from '@nrwl/devkit';
+import { ExecutorContext, logger } from '@nx/devkit';
 import { emptyDirSync } from 'fs-extra';
 import { join, posix, resolve, sep } from 'path';
 import { processCommonArgs } from '../../utils/arg-utils';

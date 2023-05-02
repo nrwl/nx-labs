@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "NxDenoLibrary",
   "title": "Deno Library Generator",
   "description": "Generate a new Deno library",

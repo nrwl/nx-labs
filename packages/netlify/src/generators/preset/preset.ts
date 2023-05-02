@@ -1,9 +1,4 @@
-import {
-  generateFiles,
-  joinPathFragments,
-  Tree,
-  updateJson,
-} from '@nrwl/devkit';
+import { generateFiles, joinPathFragments, Tree, updateJson } from '@nx/devkit';
 import { serverlessGenerator } from '../serverless/serverless';
 import { PresetGeneratorSchema } from './schema';
 

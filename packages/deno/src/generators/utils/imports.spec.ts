@@ -4,8 +4,8 @@ import {
   readJson,
   Tree,
   updateJson,
-} from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+} from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import denoInit from '../init/generator';
 import { createDenoAppForTesting } from '../utils/testing/deno-app';
 import { addImports, getImportPathForProjectName } from './imports';
@@ -26,7 +26,7 @@ describe('import utils', () => {
       ).toThrowErrorMatchingInlineSnapshot(`
         "import_map.json does not exist in the root of the workspace.
         This means the workspace has not been initialized for Deno.
-        You can do this by running 'nx g @nrwl/deno:init'"
+        You can do this by running 'nx g @nx/deno:init'"
       `);
     });
 

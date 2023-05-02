@@ -6,7 +6,7 @@ import {
   readProjectConfiguration,
   Tree,
   updateProjectConfiguration,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { execSync } from 'child_process';
 import { prompt } from 'enquirer';
 import { DenoSetupServerlessSchema } from '../schema';

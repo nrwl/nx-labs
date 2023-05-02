@@ -6,17 +6,17 @@ import {
   runNxCommandAsync,
   uniq,
   updateFile,
-} from '@nrwl/nx-plugin/testing';
+} from '@nx/plugin/testing';
 // TODO: fix and enable this when gatsby plugin is updated
 describe.skip('Gatsby Applications', () => {
   it('should generate a valid gatsby application', async () => {
-    ensureNxProject('@nrwl/gatsby', 'dist/packages/gatsby');
+    ensureNxProject('@nx/gatsby', 'dist/packages/gatsby');
     const appName = uniq('app');
     runNxCommand(
-      `generate @nrwl/gatsby:app ${appName} --style css --no-interactive`
+      `generate @nx/gatsby:app ${appName} --style css --no-interactive`
     );
     runNxCommand(
-      `generate @nrwl/gatsby:component header --project ${appName} --style css --no-interactive`
+      `generate @nx/gatsby:component header --project ${appName} --style css --no-interactive`
     );
 
     checkFilesExist(

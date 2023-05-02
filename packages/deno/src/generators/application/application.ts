@@ -1,4 +1,4 @@
-import { formatFiles, installPackagesTask, Tree } from '@nrwl/devkit';
+import { formatFiles, installPackagesTask, Tree } from '@nx/devkit';
 import { initDeno } from '../init/generator';
 import { addPathToDenoSettings } from '../utils/add-path';
 import { addFiles, addProjectConfig, normalizeOptions } from './lib';

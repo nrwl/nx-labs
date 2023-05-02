@@ -1,8 +1,8 @@
 import {
-  Tree,
   readWorkspaceConfiguration,
+  Tree,
   updateWorkspaceConfiguration,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 
 import { NormalizedSchema } from './normalize-options';
 
@@ -14,13 +14,12 @@ export function setDefaults(host: Tree, options: NormalizedSchema) {
   }
 
   workspace.generators = workspace.generators || {};
-  workspace.generators['@nrwl/gatsby'] =
-    workspace.generators['@nrwl/gatsby'] || {};
-  const prev = workspace.generators['@nrwl/gatsby'];
+  workspace.generators['@nx/gatsby'] = workspace.generators['@nx/gatsby'] || {};
+  const prev = workspace.generators['@nx/gatsby'];
 
   workspace.generators = {
     ...workspace.generators,
-    '@nrwl/gatsby': {
+    '@nx/gatsby': {
       ...prev,
       application: {
         style: options.style,

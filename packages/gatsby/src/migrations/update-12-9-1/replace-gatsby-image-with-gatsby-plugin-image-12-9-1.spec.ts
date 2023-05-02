@@ -1,6 +1,6 @@
-import { addProjectConfiguration, readJson, Tree } from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
-import { jestConfigObject } from '@nrwl/jest/src/utils/config/functions';
+import { addProjectConfiguration, readJson, Tree } from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
+import { jestConfigObject } from '@nx/jest/src/utils/config/functions';
 
 import { gatsbyPluginImageVersion } from '../../utils/versions';
 
@@ -59,7 +59,7 @@ describe('Replace gatsby-image with gatsby-plugin-image to dependencies 12.9.1',
       name: 'app1',
       targets: {
         build: {
-          executor: '@nrwl/gatsby:build',
+          executor: '@nx/gatsby:build',
         },
       },
     });

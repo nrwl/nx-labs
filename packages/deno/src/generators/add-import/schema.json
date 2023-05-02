@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "cli": "nx",
   "$id": "DenoAddImport",
   "title": "Include existing project in Deno imports",
   "description": "Add an existing projects tsconfig paths alias to the Deno import_map.json file.",

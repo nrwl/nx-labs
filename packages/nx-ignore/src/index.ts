@@ -153,7 +153,7 @@ function installTempNx(root: string, plugins: string[]): string | null {
       }
     });
     if (devkitNeeded) {
-      json.dependencies['@nrwl/devkit'] = deps['nx'];
+      json.dependencies['@nx/devkit'] = deps['nx'];
     }
     writeFileSync(join(tmpPath, 'package.json'), JSON.stringify(json));
 

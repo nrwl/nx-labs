@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/schema",
   "name": "NxRemix",
   "version": "0.0.1",
-  "extends": ["@nrwl/react"],
+  "extends": ["@nx/react"],
   "generators": {
     "preset": {
       "implementation": "./src/generators/preset/preset.impl",

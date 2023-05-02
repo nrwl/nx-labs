@@ -1,4 +1,4 @@
-import { ExecutorContext, ProjectConfiguration } from '@nrwl/devkit';
+import { ExecutorContext, ProjectConfiguration } from '@nx/devkit';
 import { processCommonArgs } from '../../utils/arg-utils';
 import { assertDenoInstalled, runDeno } from '../../utils/run-deno';
 import { LintExecutorSchema } from './schema';

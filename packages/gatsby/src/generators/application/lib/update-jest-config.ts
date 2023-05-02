@@ -1,6 +1,6 @@
+import { Tree } from '@nx/devkit';
+import { updateJestConfigContent } from '@nx/react/src/utils/jest-utils';
 import { NormalizedSchema } from './normalize-options';
-import { Tree } from '@nrwl/devkit';
-import { updateJestConfigContent } from '@nrwl/react/src/utils/jest-utils';
 
 export function updateJestConfig(host: Tree, options: NormalizedSchema) {
   if (options.unitTestRunner !== 'jest') {

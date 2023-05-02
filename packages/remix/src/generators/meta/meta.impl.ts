@@ -1,4 +1,4 @@
-import { Tree } from '@nrwl/devkit';
+import { Tree } from '@nx/devkit';
 import { MetaSchema } from './schema';
 
 import { normalizeOptions } from './lib/normalize-options';

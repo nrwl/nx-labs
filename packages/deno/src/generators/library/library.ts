@@ -9,7 +9,7 @@ import {
   offsetFromRoot,
   ProjectConfiguration,
   Tree,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { join } from 'path';
 import { initDeno } from '../init/generator';
 import { addPathToDenoSettings } from '../utils/add-path';
@@ -81,7 +81,7 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
 function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
   const targets: ProjectConfiguration['targets'] = {
     test: {
-      executor: '@nrwl/deno:test',
+      executor: '@nx/deno:test',
       outputs: [`coverage/${opts.projectRoot}`],
       options: {
         coverageDirectory: `coverage/${opts.projectRoot}`,
@@ -90,7 +90,7 @@ function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
       },
     },
     lint: {
-      executor: '@nrwl/deno:lint',
+      executor: '@nx/deno:lint',
       options: {
         denoConfig: `${opts.projectRoot}/deno.json`,
       },

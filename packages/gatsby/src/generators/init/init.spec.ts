@@ -1,5 +1,5 @@
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
-import { NxJsonConfiguration, readJson, Tree } from '@nrwl/devkit';
+import { NxJsonConfiguration, readJson, Tree } from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 
 import { gatsbyInitGenerator } from './init';
 
@@ -13,8 +13,8 @@ xdescribe('init', () => {
   it('should add react dependencies', async () => {
     await gatsbyInitGenerator(tree, {});
     const packageJson = readJson(tree, 'package.json');
-    expect(packageJson.dependencies['@nrwl/gatsby']).toBeUndefined();
-    expect(packageJson.dependencies['@nrwl/react']).toBeUndefined();
+    expect(packageJson.dependencies['@nx/gatsby']).toBeUndefined();
+    expect(packageJson.dependencies['@nx/react']).toBeUndefined();
     expect(packageJson.dependencies['gatsby']).toBeDefined();
   });
 
@@ -22,7 +22,7 @@ xdescribe('init', () => {
     it('should be set if none was set before', async () => {
       await gatsbyInitGenerator(tree, {});
       const { cli } = readJson<NxJsonConfiguration>(tree, 'nx.json');
-      expect(cli.defaultCollection).toEqual('@nrwl/gatsby');
+      expect(cli.defaultCollection).toEqual('@nx/gatsby');
     });
   });
 

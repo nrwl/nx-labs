@@ -1,5 +1,4 @@
 {
-  "cli": "nx",
   "$schema": "http://json-schema.org/schema",
   "title": "GatsbyPlugin builder",
   "description": "",

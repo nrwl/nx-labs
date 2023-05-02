@@ -1,4 +1,4 @@
-import { addProjectConfiguration, joinPathFragments, Tree } from '@nrwl/devkit';
+import { addProjectConfiguration, joinPathFragments, Tree } from '@nx/devkit';
 import type { DenoAppNormalizedSchema } from '../../application/schema';
 
 export function createDenoAppForTesting(
@@ -10,7 +10,7 @@ export function createDenoAppForTesting(
     root: opts.projectRoot,
     targets: {
       build: {
-        executor: '@nrwl/deno:emit',
+        executor: '@nx/deno:emit',
         options: {
           main: joinPathFragments(opts.projectRoot, 'src/main.ts'),
           outputFile: joinPathFragments(
@@ -22,20 +22,20 @@ export function createDenoAppForTesting(
         },
       },
       serve: {
-        executor: '@nrwl/deno:run',
+        executor: '@nx/deno:run',
         options: {
           buildTarget: `${opts.projectName}:build`,
         },
       },
       test: {
-        executor: '@nrwl/deno:test',
+        executor: '@nx/deno:test',
         options: {
           coverageDirectory: joinPathFragments('coverage', opts.projectRoot),
           denoConfig: joinPathFragments(opts.projectRoot, 'deno.json'),
         },
       },
       lint: {
-        executor: '@nrwl/deno:lint',
+        executor: '@nx/deno:lint',
         options: {
           denoConfig: joinPathFragments(opts.projectRoot, 'deno.json'),
         },

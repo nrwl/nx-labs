@@ -1,4 +1,4 @@
-import { getProjects, Tree, updateJson } from '@nrwl/devkit';
+import { getProjects, Tree, updateJson } from '@nx/devkit';
 
 export async function addJsInclude(host: Tree) {
   const projects = getProjects(host);
@@ -6,7 +6,7 @@ export async function addJsInclude(host: Tree) {
   projects.forEach((project) => {
     const tsconfigPath = `${project.root}/tsconfig.app.json`;
 
-    if (project.targets?.build?.executor !== '@nrwl/gatsby:build') return;
+    if (project.targets?.build?.executor !== '@nx/gatsby:build') return;
 
     if (!host.exists(tsconfigPath)) return;
 

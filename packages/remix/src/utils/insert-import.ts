@@ -1,5 +1,4 @@
-import { insertStatementAfterImports } from './insert-statement-after-imports';
-import { applyChangesToString, ChangeType, Tree } from '@nrwl/devkit';
+import { applyChangesToString, ChangeType, Tree } from '@nx/devkit';
 import {
   createSourceFile,
   isImportDeclaration,
@@ -8,6 +7,7 @@ import {
   NamedImports,
   ScriptTarget,
 } from 'typescript';
+import { insertStatementAfterImports } from './insert-statement-after-imports';
 
 export function insertImport(
   tree: Tree,

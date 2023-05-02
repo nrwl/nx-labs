@@ -5,10 +5,10 @@ import {
   names,
   runTasksInSerial,
   Tree,
-} from '@nrwl/devkit';
-import { Linter } from '@nrwl/linter';
-import { applicationGenerator } from '@nrwl/node';
-import { setupServerlessGenerator  } from '../setup-serverless/setup-serverless';
+} from '@nx/devkit';
+import { Linter } from '@nx/linter';
+import { applicationGenerator } from '@nx/node';
+import { setupServerlessGenerator } from '../setup-serverless/setup-serverless';
 import { Schema } from './schema';
 
 function normalizeOptions(options: Schema): Schema {

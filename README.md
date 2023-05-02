@@ -5,7 +5,7 @@ This repo contains experimental Nx plugins that are maintained by the Nx core te
 ## Adding a plugin
 
 ```bash
-nx g @nrwl/nx-plugin:plugin [new plugin]
+nx g @nx/plugin:plugin [new plugin]
 ```
 
 ## Publishing a plugin

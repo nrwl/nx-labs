@@ -6,8 +6,8 @@ import {
   removeDependenciesFromPackageJson,
   Tree,
   visitNotIgnoredFiles,
-} from '@nrwl/devkit';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+} from '@nx/devkit';
+import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
 import { exec } from 'child_process';
 import { join } from 'path';
 
@@ -104,7 +104,7 @@ function updateAppPackageJson(tree: Tree) {
   const projects = getProjects(tree);
 
   projects.forEach((project) => {
-    if (project.targets?.build?.executor !== '@nrwl/gatsby:build') return;
+    if (project.targets?.build?.executor !== '@nx/gatsby:build') return;
 
     const appPackageJsonPath = `${project.root}/package.json`;
     if (tree.exists(appPackageJsonPath)) {

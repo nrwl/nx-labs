@@ -1,4 +1,4 @@
-import { getProjects, joinPathFragments, Tree } from '@nrwl/devkit';
+import { getProjects, joinPathFragments, Tree } from '@nx/devkit';
 
 export function getRemixProjects(tree: Tree) {
   const projects = getProjects(tree);
