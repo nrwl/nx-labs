@@ -5,6 +5,7 @@
   "projectType": "library",
   "targets": {
     "build": {
+      "outputs": ["dist/packages/deno"],
       "command": "node ./scripts/add-dependency-to-build.js deno @nrwl/deno"
     },
     "build-base": {
@@ -35,7 +36,8 @@
             "input": "./packages/deno",
             "glob": "executors.json",
             "output": "."
-          }
+          },
+          "LICENSE"
         ]
       }
     },

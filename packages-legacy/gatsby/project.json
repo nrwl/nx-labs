@@ -13,6 +13,8 @@
         "outputPath": "dist/packages/gatsby-legacy",
         "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
+          "packages-legacy/gatsby-legacy/*.md",
+
           {
             "input": "packages-legacy/gatsby",
             "glob": "**/*.json",
@@ -24,11 +26,7 @@
             "glob": "**/*.d.ts",
             "output": "/"
           },
-          {
-            "input": "",
-            "glob": "LICENSE",
-            "output": "/"
-          }
+          "LICENSE"
         ]
       }
     }

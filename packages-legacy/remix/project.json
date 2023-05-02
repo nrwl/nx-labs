@@ -13,6 +13,8 @@
         "outputPath": "dist/packages/remix-legacy",
         "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
+          "packages-legacy/remix/*.md",
+
           {
             "input": "packages-legacy/remix",
             "glob": "**/*.json",
@@ -24,11 +26,7 @@
             "glob": "**/*.d.ts",
             "output": "/"
           },
-          {
-            "input": "",
-            "glob": "LICENSE",
-            "output": "/"
-          }
+          "LICENSE"
         ]
       }
     }

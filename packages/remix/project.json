@@ -5,6 +5,7 @@
   "projectType": "library",
   "targets": {
     "build": {
+      "outputs": ["dist/packages/remix"],
       "command": "node ./scripts/add-dependency-to-build.js remix @nrwl/remix"
     },
     "lint": {
@@ -56,7 +57,8 @@
             "input": "./packages/remix",
             "glob": "migrations.json",
             "output": "."
-          }
+          },
+          "LICENSE"
         ]
       }
     },

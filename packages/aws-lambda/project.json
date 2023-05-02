@@ -5,6 +5,7 @@
   "projectType": "library",
   "targets": {
     "build": {
+      "outputs": ["dist/packages/aws-lambda"],
       "command": "node ./scripts/add-dependency-to-build.js aws-lambda @nrwl/aws-lambda"
     },
     "build-base": {
@@ -30,7 +31,8 @@
             "input": "./packages/aws-lambda",
             "glob": "generators.json",
             "output": "."
-          }
+          },
+          "LICENSE"
         ]
       }
     },

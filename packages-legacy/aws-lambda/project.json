@@ -13,6 +13,7 @@
         "outputPath": "dist/packages/aws-lambda-legacy",
         "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
+          "packages-legacy/aws-lambda/*.md",
           {
             "input": "packages-legacy/aws-lambda",
             "glob": "**/*.json",
@@ -24,11 +25,7 @@
             "glob": "**/*.d.ts",
             "output": "/"
           },
-          {
-            "input": "",
-            "glob": "LICENSE",
-            "output": "/"
-          }
+          "LICENSE"
         ]
       }
     }

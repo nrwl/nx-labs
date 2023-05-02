@@ -5,6 +5,7 @@
   "projectType": "library",
   "targets": {
     "build": {
+      "outputs": ["dist/packages/rspack"],
       "command": "node ./scripts/add-dependency-to-build.js rspack @nrwl/rspack"
     },
     "build-base": {
@@ -35,7 +36,9 @@
             "input": "./packages/rspack",
             "glob": "executors.json",
             "output": "."
-          }
+          },
+
+          "LICENSE"
         ]
       }
     },

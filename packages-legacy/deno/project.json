@@ -13,6 +13,7 @@
         "outputPath": "dist/packages/deno-legacy",
         "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
+          "packages-legacy/deno/*.md",
           {
             "input": "packages-legacy/deno",
             "glob": "**/*.json",
@@ -24,11 +25,7 @@
             "glob": "**/*.d.ts",
             "output": "/"
           },
-          {
-            "input": "",
-            "glob": "LICENSE",
-            "output": "/"
-          }
+          "LICENSE"
         ]
       }
     }
