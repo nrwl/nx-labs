@@ -14,7 +14,6 @@
         "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
           "packages-legacy/remix/*.md",
-
           {
             "input": "packages-legacy/remix",
             "glob": "**/*.json",
@@ -29,6 +28,9 @@
           "LICENSE"
         ]
       }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs remix-legacy {args.ver} {args.tag}"
     }
   },
   "tags": []

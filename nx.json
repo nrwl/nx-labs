@@ -33,6 +33,9 @@
     },
     "e2e": {
       "dependsOn": ["^build"]
+    },
+    "publish": {
+      "dependsOn": ["build"]
     }
   }
 }
