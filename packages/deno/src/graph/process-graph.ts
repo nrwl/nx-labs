@@ -5,7 +5,7 @@ import {
   ProjectGraphBuilder,
   ProjectGraphProcessorContext,
   workspaceRoot,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { existsSync } from 'fs';
 import {
   createProjectRootMappings,

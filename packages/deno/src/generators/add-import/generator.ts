@@ -4,7 +4,7 @@ import {
   getWorkspaceLayout,
   readProjectConfiguration,
   Tree,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { addImports, getImportPathForProjectName } from '../utils/imports';
 import { AddImportGeneratorSchema } from './schema';
 

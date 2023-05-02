@@ -4,8 +4,8 @@
   "main": "src/index.js",
   "generators": "./generators.json",
   "dependencies": {
-    "@nrwl/devkit": "*",
     "@nrwl/node": "*",
-    "@nrwl/linter": "*"
+    "@nrwl/linter": "*",
+    "@nx/devkit": "16.0.1"
   }
 }

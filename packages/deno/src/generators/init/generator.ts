@@ -5,7 +5,7 @@ import {
   Tree,
   updateJson,
   updateNxJson,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import * as path from 'path';
 import { assertDenoInstalled } from '../../utils/run-deno';
 

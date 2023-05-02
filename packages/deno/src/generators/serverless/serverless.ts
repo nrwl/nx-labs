@@ -11,7 +11,7 @@ import {
   Tree,
   updateProjectConfiguration,
   writeJson,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { join, relative } from 'path';
 import initDeno from '../init/generator';
 import denoSetupServerless from '../setup-serverless/setup-serverless';

@@ -5,7 +5,7 @@ import {
   stripIndents,
   Tree,
   updateJson,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { getRootTsConfigPathInTree, TsConfigPaths } from './ts-config';
 
 interface ImportOptions {

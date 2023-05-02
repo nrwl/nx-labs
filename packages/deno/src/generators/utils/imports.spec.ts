@@ -4,8 +4,8 @@ import {
   readJson,
   Tree,
   updateJson,
-} from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+} from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import denoInit from '../init/generator';
 import { createDenoAppForTesting } from '../utils/testing/deno-app';
 import { addImports, getImportPathForProjectName } from './imports';

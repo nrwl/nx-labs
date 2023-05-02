@@ -1,4 +1,4 @@
-import { formatFiles, GeneratorCallback, output, Tree } from '@nrwl/devkit';
+import { formatFiles, GeneratorCallback, output, Tree } from '@nx/devkit';
 import { addAgnosticConfig } from './lib/agnostic';
 import { addDenoDeployConfig } from './lib/deno-deploy';
 import { addNetlifyConfig } from './lib/netlify';

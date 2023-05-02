@@ -1,3 +1,5 @@
+import { Linter } from '@nrwl/linter';
+import { applicationGenerator } from '@nrwl/node';
 import {
   convertNxGenerator,
   extractLayoutDirectory,
@@ -5,10 +7,8 @@ import {
   names,
   runTasksInSerial,
   Tree,
-} from '@nrwl/devkit';
-import { Linter } from '@nrwl/linter';
-import { applicationGenerator } from '@nrwl/node';
-import { setupServerlessGenerator  } from '../setup-serverless/setup-serverless';
+} from '@nx/devkit';
+import { setupServerlessGenerator } from '../setup-serverless/setup-serverless';
 import { Schema } from './schema';
 
 function normalizeOptions(options: Schema): Schema {

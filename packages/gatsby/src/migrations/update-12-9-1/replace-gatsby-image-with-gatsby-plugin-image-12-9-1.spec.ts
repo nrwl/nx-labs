@@ -1,6 +1,6 @@
-import { addProjectConfiguration, readJson, Tree } from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 import { jestConfigObject } from '@nrwl/jest/src/utils/config/functions';
+import { addProjectConfiguration, readJson, Tree } from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 
 import { gatsbyPluginImageVersion } from '../../utils/versions';
 

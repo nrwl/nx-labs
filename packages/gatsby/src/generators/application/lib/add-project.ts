@@ -1,10 +1,10 @@
-import { NormalizedSchema } from './normalize-options';
 import {
   addProjectConfiguration,
   joinPathFragments,
   ProjectConfiguration,
   Tree,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
+import { NormalizedSchema } from './normalize-options';
 
 export function addProject(host: Tree, options: NormalizedSchema) {
   const targets: Record<string, any> = {};

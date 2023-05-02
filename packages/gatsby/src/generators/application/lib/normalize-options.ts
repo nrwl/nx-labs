@@ -1,11 +1,6 @@
-import {
-  getWorkspaceLayout,
-  joinPathFragments,
-  names,
-  Tree,
-} from '@nrwl/devkit';
-import { Schema } from '../schema';
 import { assertValidStyle } from '@nrwl/react';
+import { getWorkspaceLayout, joinPathFragments, names, Tree } from '@nx/devkit';
+import { Schema } from '../schema';
 
 export interface NormalizedSchema extends Schema {
   projectName: string;

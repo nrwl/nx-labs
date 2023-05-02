@@ -1,4 +1,4 @@
-import { Tree, workspaceRoot, writeJson } from '@nrwl/devkit';
+import { Tree, workspaceRoot, writeJson } from '@nx/devkit';
 import { relative } from 'path';
 import { Framework } from '../../init/schema';
 

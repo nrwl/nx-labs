@@ -11,7 +11,7 @@ import {
   runTasksInSerial,
   Tree,
   updateProjectConfiguration,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 
 import { awsLamdaTypesVersion, esbuildVersion } from '../../../utils/version';
 

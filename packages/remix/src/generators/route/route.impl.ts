@@ -4,7 +4,7 @@ import {
   readProjectConfiguration,
   stripIndents,
   Tree,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import {
   checkRoutePathForErrors,
   resolveRemixRouteFile,

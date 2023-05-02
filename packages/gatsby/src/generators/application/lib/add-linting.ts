@@ -1,12 +1,12 @@
+import { Linter, lintProjectGenerator } from '@nrwl/linter';
+import { createReactEslintJson, extraEslintDependencies } from '@nrwl/react';
 import { Tree } from '@nrwl/tao/src/shared/tree';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
-import { Linter, lintProjectGenerator } from '@nrwl/linter';
 import {
   addDependenciesToPackageJson,
   joinPathFragments,
   updateJson,
-} from '@nrwl/devkit';
-import { extraEslintDependencies, createReactEslintJson } from '@nrwl/react';
+} from '@nx/devkit';
 import type { Linter as ESLintLinter } from 'eslint';
 import { NormalizedSchema } from './normalize-options';
 

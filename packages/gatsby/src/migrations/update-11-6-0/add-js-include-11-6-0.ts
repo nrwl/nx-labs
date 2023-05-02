@@ -1,4 +1,4 @@
-import { getProjects, Tree, updateJson } from '@nrwl/devkit';
+import { getProjects, Tree, updateJson } from '@nx/devkit';
 
 export async function addJsInclude(host: Tree) {
   const projects = getProjects(host);

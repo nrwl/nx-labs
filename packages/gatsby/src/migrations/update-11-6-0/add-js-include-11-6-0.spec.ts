@@ -1,5 +1,5 @@
-import { readJson, Tree, writeJson } from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+import { readJson, Tree, writeJson } from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import addJsInclude from './add-js-include-11-6-0';
 
 // TODO: should remove this migration since it's more than 2 versions old

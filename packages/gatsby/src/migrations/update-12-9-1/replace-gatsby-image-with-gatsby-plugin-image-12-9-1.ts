@@ -1,3 +1,4 @@
+import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
 import {
   addDependenciesToPackageJson,
   formatFiles,
@@ -6,8 +7,7 @@ import {
   removeDependenciesFromPackageJson,
   Tree,
   visitNotIgnoredFiles,
-} from '@nrwl/devkit';
-import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+} from '@nx/devkit';
 import { exec } from 'child_process';
 import { join } from 'path';
 

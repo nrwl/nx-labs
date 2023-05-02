@@ -1,4 +1,4 @@
-import { stripIndents, workspaceRoot } from '@nrwl/devkit';
+import { stripIndents, workspaceRoot } from '@nx/devkit';
 import { execSync, spawn } from 'child_process';
 
 export interface DenoExecOptions {

@@ -7,7 +7,7 @@ import {
   offsetFromRoot,
   ProjectConfiguration,
   Tree,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { join } from 'path';
 import { DenoAppGeneratorSchema, DenoAppNormalizedSchema } from './schema';
 

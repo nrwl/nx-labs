@@ -35,11 +35,11 @@
   "dependencies": {
     "@nrwl/cypress": "*",
     "@nrwl/linter": "*",
-    "@nrwl/devkit": "*",
     "@nrwl/jest": "*",
     "@nrwl/react": "*",
     "@nrwl/workspace": "*",
     "gatsby-cli": "^4.2.0",
-    "gatsby-codemods": "^3.2.0"
+    "gatsby-codemods": "^3.2.0",
+    "@nx/devkit": "16.0.1"
   }
 }

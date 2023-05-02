@@ -7,7 +7,7 @@ import {
   readProjectConfiguration,
   Tree,
   updateProjectConfiguration,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { relative } from 'path';
 import { DenoSetupServerlessSchema } from '../schema';
 import { assertNoTarget } from './utils';

@@ -1,4 +1,4 @@
-import { ExecutorContext, logger, stripIndents } from '@nrwl/devkit';
+import { ExecutorContext, logger, stripIndents } from '@nx/devkit';
 import * as chalk from 'chalk';
 import { dirname, join, resolve } from 'path';
 import { BuildExecutorSchema } from './schema';

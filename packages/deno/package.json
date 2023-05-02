@@ -7,6 +7,6 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "fs-extra": "^11.0.0",
-    "@nrwl/devkit": "^15.7.0"
+    "@nx/devkit": "16.0.1"
   }
 }

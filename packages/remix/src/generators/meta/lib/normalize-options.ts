@@ -1,4 +1,4 @@
-import { Tree } from '@nrwl/devkit';
+import { Tree } from '@nx/devkit';
 import { getRemixFutureFlags } from '../../../utils/remix-config';
 import { MetaSchema } from '../schema';
 

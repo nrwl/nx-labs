@@ -4,7 +4,7 @@ import {
   offsetFromRoot,
   readProjectConfiguration,
   Tree,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import {
   addOrChangeBuildTarget,
   addOrChangeServeTarget,

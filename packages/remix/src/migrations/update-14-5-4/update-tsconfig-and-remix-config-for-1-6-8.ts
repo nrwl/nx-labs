@@ -8,7 +8,7 @@ import {
   readJson,
   Tree,
   writeJson,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 
 /**
  * Update tsconfig.json and remix.config.js to support importing workspaces libraries

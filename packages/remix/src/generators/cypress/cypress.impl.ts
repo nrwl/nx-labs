@@ -3,12 +3,15 @@ import {
   joinPathFragments,
   readProjectConfiguration,
   Tree,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 
 import { version as nxVersion } from 'nx/package.json';
 
 export default async function (tree: Tree, options: any) {
-  const { cypressInitGenerator, cypressProjectGenerator } = ensurePackage('@nrwl/cypress', nxVersion);
+  const { cypressInitGenerator, cypressProjectGenerator } = ensurePackage(
+    '@nrwl/cypress',
+    nxVersion
+  );
 
   const initSideEffects = await cypressInitGenerator(tree, {});
   const projSideEffects = await cypressProjectGenerator(tree, {

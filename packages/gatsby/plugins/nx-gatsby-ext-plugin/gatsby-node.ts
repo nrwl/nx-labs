@@ -1,5 +1,5 @@
+import { readJsonFile, workspaceRoot } from '@nx/devkit';
 import * as path from 'path';
-import { readJsonFile, workspaceRoot } from '@nrwl/devkit';
 
 function onCreateBabelConfig({ actions }, options) {
   const tsConfig = readJsonFile(path.join(workspaceRoot, 'tsconfig.base.json'));

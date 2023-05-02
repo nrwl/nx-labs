@@ -1,5 +1,3 @@
-import { join } from 'path';
-import { NormalizedSchema } from './normalize-options';
 import {
   generateFiles,
   names,
@@ -7,12 +5,14 @@ import {
   toJS,
   Tree,
   updateTsConfigsToJs,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
+import { join } from 'path';
 import {
   createAppJsx,
   createPageStyleContent,
   createPageWrapperStyle,
 } from './create-application-files.helpers';
+import { NormalizedSchema } from './normalize-options';
 
 export function createApplicationFiles(host: Tree, options: NormalizedSchema) {
   const isPnpm = host.exists('pnpm-lock.yaml');

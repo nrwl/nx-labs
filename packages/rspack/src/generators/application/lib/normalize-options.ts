@@ -4,7 +4,7 @@ import {
   names,
   normalizePath,
   Tree,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { ApplicationGeneratorSchema, NormalizedSchema } from '../schema';
 
 export function normalizeDirectory(options: ApplicationGeneratorSchema) {

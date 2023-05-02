@@ -1,5 +1,5 @@
-import { Tree } from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
+import { Tree } from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import applicationGenerator from '../../application/application.impl';
 import routeGenerator from '../../route/route.impl';
 import { v2MetaGenerator } from './v2.impl';

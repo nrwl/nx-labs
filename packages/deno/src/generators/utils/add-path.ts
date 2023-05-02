@@ -1,4 +1,4 @@
-import { joinPathFragments, Tree, updateJson } from '@nrwl/devkit';
+import { joinPathFragments, Tree, updateJson } from '@nx/devkit';
 
 export function addPathToDenoSettings(tree: Tree, path: string) {
   const vscodeSettingsPath = joinPathFragments('.vscode', 'settings.json');

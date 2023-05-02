@@ -1,3 +1,4 @@
+import { ensureTypescript } from '@nrwl/js/src/utils/typescript/ensure-typescript';
 import {
   joinPathFragments,
   logger,
@@ -5,8 +6,7 @@ import {
   TargetConfiguration,
   Tree,
   updateProjectConfiguration,
-} from '@nrwl/devkit';
-import { ensureTypescript } from '@nrwl/js/src/utils/typescript/ensure-typescript';
+} from '@nx/devkit';
 import { RspackExecutorSchema } from '../executors/rspack/schema';
 import { ConfigurationSchema } from '../generators/configuration/schema';
 import { Framework } from '../generators/init/schema';

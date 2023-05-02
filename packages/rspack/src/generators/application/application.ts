@@ -1,9 +1,4 @@
-import {
-  ensurePackage,
-  formatFiles,
-  runTasksInSerial,
-  Tree,
-} from '@nrwl/devkit';
+import { ensurePackage, formatFiles, runTasksInSerial, Tree } from '@nx/devkit';
 import { version as nxVersion } from 'nx/package.json';
 import configurationGenerator from '../configuration/configuration';
 import rspackInitGenerator from '../init/init';

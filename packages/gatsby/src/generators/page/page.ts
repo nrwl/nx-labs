@@ -2,10 +2,10 @@ import {
   componentGenerator as reactComponentGenerator,
   SupportedStyles,
 } from '@nrwl/react';
-import { convertNxGenerator, Tree } from '@nrwl/devkit';
+import { convertNxGenerator, Tree } from '@nx/devkit';
 
-import { addStyleDependencies } from '../../utils/styles';
 import { runTasksInSerial } from '@nrwl/workspace/src/utilities/run-tasks-in-serial';
+import { addStyleDependencies } from '../../utils/styles';
 
 interface Schema {
   name: string;

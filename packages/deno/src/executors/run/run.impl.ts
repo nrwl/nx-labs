@@ -2,14 +2,14 @@ import {
   ExecutorContext,
   parseTargetString,
   readTargetOptions,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { ChildProcess } from 'child_process';
 import { processCommonArgs } from '../../utils/arg-utils';
 import { assertDenoInstalled, runDeno } from '../../utils/run-deno';
 import { BuildExecutorSchema } from '../bundle/schema';
 import { ServeExecutorSchema } from './schema';
 
-import { createAsyncIterable } from '@nrwl/devkit/src/utils/async-iterable';
+import { createAsyncIterable } from '@nx/devkit/src/utils/async-iterable';
 
 export async function* denoServeExecutor(
   options: ServeExecutorSchema,

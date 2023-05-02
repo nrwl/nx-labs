@@ -1,8 +1,8 @@
 import {
-  Tree,
   readWorkspaceConfiguration,
+  Tree,
   updateWorkspaceConfiguration,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 
 import { NormalizedSchema } from './normalize-options';
 

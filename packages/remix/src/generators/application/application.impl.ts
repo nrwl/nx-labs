@@ -1,3 +1,4 @@
+import { extractTsConfigBase } from '@nrwl/js/src/utils/typescript/create-ts-config';
 import {
   addDependenciesToPackageJson,
   addProjectConfiguration,
@@ -10,8 +11,7 @@ import {
   runTasksInSerial,
   Tree,
   updateJson,
-} from '@nrwl/devkit';
-import { extractTsConfigBase } from '@nrwl/js/src/utils/typescript/create-ts-config';
+} from '@nx/devkit';
 import {
   eslintVersion,
   isbotVersion,

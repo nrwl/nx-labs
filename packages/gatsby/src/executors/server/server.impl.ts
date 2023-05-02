@@ -4,7 +4,7 @@ import {
   parseTargetString,
   readTargetOptions,
   stripIndents,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { ChildProcess, fork } from 'child_process';
 import { join } from 'path';
 import { runGatsbyBuild } from '../build/build.impl';

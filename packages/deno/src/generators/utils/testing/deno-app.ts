@@ -1,4 +1,4 @@
-import { addProjectConfiguration, joinPathFragments, Tree } from '@nrwl/devkit';
+import { addProjectConfiguration, joinPathFragments, Tree } from '@nx/devkit';
 import type { DenoAppNormalizedSchema } from '../../application/schema';
 
 export function createDenoAppForTesting(

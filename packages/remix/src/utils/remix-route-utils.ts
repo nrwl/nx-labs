@@ -3,7 +3,7 @@ import {
   names,
   readProjectConfiguration,
   Tree,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { getRemixConfigValues } from './remix-config';
 
 /**
