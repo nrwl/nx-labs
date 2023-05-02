@@ -28,6 +28,9 @@
           "LICENSE"
         ]
       }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs deno-legacy {args.ver} {args.tag}"
     }
   },
   "tags": []

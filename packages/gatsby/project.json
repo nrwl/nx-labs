@@ -89,7 +89,6 @@
       "options": {
         "parallel": false,
         "commands": [
-          "nx build gatsby",
           "node tools/scripts/publish.mjs gatsby {args.ver} {args.tag}"
         ]
       }

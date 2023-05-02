@@ -60,7 +60,6 @@
       "options": {
         "parallel": false,
         "commands": [
-          "nx build netlify",
           "node tools/scripts/publish.mjs netlify {args.ver} {args.tag}"
         ]
       }

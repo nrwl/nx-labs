@@ -67,7 +67,6 @@
       "options": {
         "parallel": false,
         "commands": [
-          "nx build remix",
           "node tools/scripts/publish.mjs remix {args.ver} {args.tag}"
         ]
       }

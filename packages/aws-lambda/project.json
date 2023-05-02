@@ -60,7 +60,6 @@
       "options": {
         "parallel": false,
         "commands": [
-          "nx build aws-lambda",
           "node tools/scripts/publish.mjs aws-lambda {args.ver} {args.tag}"
         ]
       }

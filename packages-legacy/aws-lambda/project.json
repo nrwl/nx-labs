@@ -28,6 +28,9 @@
           "LICENSE"
         ]
       }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs aws-lambda-legacy {args.ver} {args.tag}"
     }
   },
   "tags": []
