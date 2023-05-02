@@ -3,7 +3,7 @@ import {
   runNxCommand,
   runNxCommandAsync,
   updateFile,
-} from '@nrwl/nx-plugin/testing';
+} from '@nx/plugin/testing';
 
 describe('Deno Misc Tests', () => {
   // Setting up individual workspaces per

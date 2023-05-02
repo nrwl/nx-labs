@@ -6,7 +6,7 @@ import {
   runNxCommandAsync,
   uniq,
   updateFile,
-} from '@nrwl/nx-plugin/testing';
+} from '@nx/plugin/testing';
 
 describe('remix e2e', () => {
   beforeAll(() => {

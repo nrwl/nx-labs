@@ -6,7 +6,7 @@ import {
   runCommand,
   tmpProjPath,
   uniq,
-} from '@nrwl/nx-plugin/testing';
+} from '@nx/plugin/testing';
 
 describe('nx-ignore e2e', () => {
   let proj: string;

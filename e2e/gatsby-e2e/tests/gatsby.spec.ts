@@ -6,7 +6,7 @@ import {
   runNxCommandAsync,
   uniq,
   updateFile,
-} from '@nrwl/nx-plugin/testing';
+} from '@nx/plugin/testing';
 // TODO: fix and enable this when gatsby plugin is updated
 describe.skip('Gatsby Applications', () => {
   it('should generate a valid gatsby application', async () => {

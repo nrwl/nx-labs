@@ -1,9 +1,5 @@
-import {
-  directoryExists,
-  fileExists,
-  tmpProjPath,
-} from '@nrwl/nx-plugin/testing';
 import { detectPackageManager, PackageManager } from '@nx/devkit';
+import { directoryExists, fileExists, tmpProjPath } from '@nx/plugin/testing';
 import { ChildProcess, exec } from 'child_process';
 import * as treeKill from 'tree-kill';
 import { promisify } from 'util';

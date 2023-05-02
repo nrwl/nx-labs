@@ -1,3 +1,4 @@
+import { names } from '@nx/devkit';
 import {
   checkFilesExist,
   ensureNxProject,
@@ -7,8 +8,7 @@ import {
   tmpProjPath,
   uniq,
   updateFile,
-} from '@nrwl/nx-plugin/testing';
-import { names } from '@nx/devkit';
+} from '@nx/plugin/testing';
 import { unlinkSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import {

@@ -5,7 +5,7 @@ import {
   runNxCommandAsync,
   uniq,
   updateFile,
-} from '@nrwl/nx-plugin/testing';
+} from '@nx/plugin/testing';
 
 describe('rspack e2e', () => {
   // Setting up individual workspaces per
