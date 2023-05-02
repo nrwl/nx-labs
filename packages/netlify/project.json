@@ -29,8 +29,9 @@
           },
           {
             "input": "./packages/netlify",
-            "glob": "generators.json",
-            "output": "."
+            "glob": "**.json",
+            "output": ".",
+            "ignore": ["**/tsconfig*.json", "project.json", ".eslintrc.json"]
           },
           "LICENSE"
         ]

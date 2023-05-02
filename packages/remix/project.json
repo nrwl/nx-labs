@@ -45,18 +45,9 @@
           },
           {
             "input": "./packages/remix",
-            "glob": "generators.json",
-            "output": "."
-          },
-          {
-            "input": "./packages/remix",
-            "glob": "executors.json",
-            "output": "."
-          },
-          {
-            "input": "./packages/remix",
-            "glob": "migrations.json",
-            "output": "."
+            "glob": "**.json",
+            "output": ".",
+            "ignore": ["**/tsconfig*.json", "project.json", ".eslintrc.json"]
           },
           "LICENSE"
         ]
