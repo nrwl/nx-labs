@@ -19,7 +19,7 @@ describe('remix e2e', () => {
     runNxCommandAsync('reset');
   });
 
-  fit('should create a standalone remix app', async () => {
+  it('should create a standalone remix app', async () => {
     const appName = uniq('remix');
     await runNxCommandAsync(
       `generate @nx/remix:preset --name ${appName} --verbose`
