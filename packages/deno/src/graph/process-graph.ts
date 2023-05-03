@@ -37,7 +37,7 @@ export async function processProjectGraph(
 
   const addDepToGraph =
     (_sourceProject: string, _fileToProcess: FileData) =>
-    (_resolvedTargetFilePath: string) => {
+    (_resolvedTargetFilePath: string, _isDynamic: boolean) => {
       const targetProject = findProjectForPath(
         _resolvedTargetFilePath,
         projectRootMap
@@ -45,10 +45,17 @@ export async function processProjectGraph(
       if (!targetProject) {
         return;
       }
-      builder.addExplicitDependency(
+      if (_isDynamic) {
+        builder.addDynamicDependency(
+          _sourceProject,
+          targetProject,
+          _fileToProcess.file
+        );
+      }
+      builder.addStaticDependency(
         _sourceProject,
-        _fileToProcess.file,
-        targetProject
+        targetProject,
+        _fileToProcess.file
       );
     };
 
@@ -88,8 +95,11 @@ function isDenoProject(project: ProjectConfiguration) {
   }
 
   if (
-    Object.values(project.targets).some((target) =>
-      target.executor.startsWith('@nx/deno')
+    // TODO(caleb): remove when nrwl/deno is removed
+    Object.values(project.targets).some(
+      (target) =>
+        target.executor.startsWith('@nx/deno') ||
+        target.executor.startsWith('@nrwl/deno')
     )
   ) {
     return true;
@@ -100,7 +110,7 @@ function isDenoProject(project: ProjectConfiguration) {
 
 async function processFileInfo(
   fileToProcess: FileData,
-  handleTargetFile: (targetFilePath: string) => void
+  handleTargetFile: (targetFilePath: string, isDynamicImport: boolean) => void
 ) {
   const fileInfo: Partial<DenoInfoOutput> = await getDenoFileInfo(
     fileToProcess
@@ -122,7 +132,7 @@ async function processFileInfo(
         workspaceRoot,
         dep.code.specifier.replace('file://', '')
       );
-      handleTargetFile(targetFileFromWorkspaceRoot);
+      handleTargetFile(targetFileFromWorkspaceRoot, dep.isDynamic);
     } else {
       // TODO(Caleb & Chau) handle external nodes
     }
@@ -174,4 +184,5 @@ interface DenoDependency {
   code: {
     specifier: string;
   };
+  isDynamic?: boolean;
 }
