@@ -56,7 +56,9 @@
     "framework": {
       "type": "string",
       "description": "Generate an app with a framework already setup",
-      "enum": ["oak", "none"]
+      "x-prompt": "What framework would you like to use?",
+      "enum": ["oak", "none"],
+      "default": "none"
     }
   },
   "required": ["name"]
