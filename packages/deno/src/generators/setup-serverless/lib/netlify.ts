@@ -96,7 +96,7 @@ function addNetlifyToml(
   # https://docs.netlify.com/edge-functions/api/#import-maps
   deno_import_map = "${offset === './' ? '' : offset}import_map.json"
 
-# Read more about declaring edge functions: 
+# Read more about declaring edge functions:
 # https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml
 [[edge_functions]]
   # this is the name of the file in the edge_functions dir.
@@ -117,29 +117,13 @@ function addEdgeFunction(tree: Tree, fnDir: string) {
   tree.write(
     joinPathFragments(fnDir, 'hello-geo.ts'),
     `/**
-* Netlify Edge Function overview: 
+* Netlify Edge Function overview:
 * https://docs.netlify.com/edge-functions/overview/
 **/
 
 import { Context } from 'https://edge.netlify.com';
 
-export default async (request: Request, context: Context) => {
-  // Here's what's available on context.geo
-
-  // context: {
-  //   geo: {
-  //     city?: string;
-  //     country?: {
-  //       code?: string;
-  //       name?: string;
-  //     },
-  //     subdivision?: {
-  //       code?: string;
-  //       name?: string;
-  //     },
-  //   }
-  // }
-
+export default (request: Request, context: Context) => {
   return Response.json({
     geo: context.geo,
     header: request.headers.get('x-nf-geo'),
