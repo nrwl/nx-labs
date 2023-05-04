@@ -34,7 +34,7 @@
     "setup-serverless": {
       "factory": "./src/generators/setup-serverless/setup-serverless",
       "schema": "./src/generators/setup-serverless/schema.json",
-      "description": "Add a serverless setup to an exsiting Deno project"
+      "description": "Add a serverless setup to an existing Deno project"
     },
     "serverless": {
       "factory": "./src/generators/serverless/serverless",
