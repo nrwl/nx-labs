@@ -51,7 +51,7 @@ describe('setup-serverless --platform=netlify', () => {
         # https://docs.netlify.com/edge-functions/api/#import-maps
         deno_import_map = \\"import_map.json\\"
 
-      # Read more about declaring edge functions: 
+      # Read more about declaring edge functions:
       # https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml
       [[edge_functions]]
         # this is the name of the file in the edge_functions dir.
@@ -106,7 +106,7 @@ describe('setup-serverless --platform=netlify', () => {
         # https://docs.netlify.com/edge-functions/api/#import-maps
         deno_import_map = \\"../../import_map.json\\"
 
-      # Read more about declaring edge functions: 
+      # Read more about declaring edge functions:
       # https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml
       [[edge_functions]]
         # this is the name of the file in the edge_functions dir.
