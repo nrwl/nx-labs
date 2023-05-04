@@ -52,6 +52,11 @@
     "rootProject": {
       "type": "boolean",
       "x-priority": "internal"
+    },
+    "framework": {
+      "type": "string",
+      "description": "Generate an app with a framework already setup",
+      "enum": ["oak", "none"]
     }
   },
   "required": ["name"]
