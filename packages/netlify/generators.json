@@ -6,12 +6,14 @@
     "serverless": {
       "factory": "./src/generators/serverless/serverless",
       "schema": "./src/generators/serverless/schema.json",
-      "description": "Serverless project generator"
+      "description": "Creates a new project with Netlify serverless configuration",
+      "hidden": true
     },
     "setup-serverless": {
       "factory": "./src/generators/setup-serverless/setup-serverless",
       "schema": "./src/generators/setup-serverless/schema.json",
-      "description": "Setup serverless generator"
+      "description": "Adds Netlify serverless configuration to an existing project",
+      "hidden": true
     },
     "preset": {
       "factory": "./src/generators/preset/preset",

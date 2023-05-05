@@ -6,12 +6,14 @@
     "serverless": {
       "factory": "./src/generators/serverless/serverless",
       "schema": "./src/generators/serverless/schema.json",
-      "description": "Creates a new project with AWS Lambda configuration"
+      "description": "Creates a new project with AWS Lambda configuration",
+      "hidden": true
     },
     "setup-serverless": {
       "factory": "./src/generators/setup-serverless/setup-serverless",
       "schema": "./src/generators/setup-serverless/schema.json",
-      "description": "Adds AWS Lamda Serverless configuration to an existing project"
+      "description": "Adds AWS Lamda Serverless configuration to an existing project",
+      "hidden": true
     },
     "preset": {
       "factory": "./src/generators/preset/preset",
