@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/schema",
   "$id": "SchematicsNxSetupServerless",
-  "title": "Nx Node Setup Serverless Function Schema",
-  "description": "Nx Node Setup Serverless Function Schema.",
+  "title": "Schema for Netlify Edge Functions",
+  "description": "Creates a functions/ folder in the project, and configures serve and deploy targets for Netlify.",
   "type": "object",
   "properties": {
     "project": {
@@ -14,25 +14,15 @@
       "x-prompt": "What project would you like to add a serverless functions to?",
       "x-priority": "important"
     },
-    "buildTarget": {
-      "description": "The name of the build target",
-      "type": "string",
-      "default": "build"
-    },
     "deployTarget": {
       "description": "The name of the deploy target",
       "type": "string",
-      "default": "deploy"
+      "default": "deploy-functions"
     },
     "serveTarget": {
       "description": "The name of the serve target",
       "type": "string",
-      "default": "serve"
-    },
-    "lintTarget": {
-      "description": "The name of the lint target",
-      "type": "string",
-      "default": "lint"
+      "default": "serve-functions"
     },
     "skipFormat": {
       "description": "Skips formatting the workspace after the generator completes.",

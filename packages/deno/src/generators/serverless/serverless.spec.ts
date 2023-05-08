@@ -42,6 +42,20 @@ describe('serverless generator', () => {
         # this is the route that the edge function applies to.
         path = \\"/\\"
 
+
+
+      [functions]
+        # provide all import aliases to netlify
+        # https://docs.netlify.com/edge-functions/api/#import-maps
+        deno_import_map = \\"../import_map.json\\"
+
+      # Read more about declaring edge functions:
+      # https://docs.netlify.com/edge-functions/declarations/#declare-edge-functions-in-netlify-toml
+      [[edge_functions]]
+        # this is the name of the file in the edge_functions dir.
+        function = \\"hello-geo\\"
+        # this is the route that the edge function applies to.
+        path = \\"/api/geo\\"
       "
     `);
     expect(tree.exists('my-netlify-app/functions')).toBeFalsy();
@@ -66,51 +80,6 @@ describe('serverless generator', () => {
           headers: { 'Content-Type': 'text/html;charset=utf-8' },
         });
       }
-      "
-    `);
-  });
-
-  it('should setup deno-deploy project', async () => {
-    await denoServerlessGenerator(tree, {
-      platform: 'deno-deploy',
-      name: 'my-deno-deploy-app',
-    });
-
-    expect(
-      readProjectConfiguration(tree, 'my-deno-deploy-app')
-    ).toMatchSnapshot();
-    expect(readJson(tree, 'my-deno-deploy-app/deno.json')).toEqual({
-      importMap: '../import_map.json',
-    });
-
-    expect(tree.exists('my-deno-deploy-app/netlify.toml')).toBeFalsy();
-    expect(tree.exists('my-deno-deploy-app/functions')).toBeFalsy();
-    expect(tree.read('my-deno-deploy-app/src/main.ts', 'utf-8'))
-      .toMatchInlineSnapshot(`
-      "import { serve } from 'https://deno.land/std@0.181.0/http/server.ts';
-
-      const port = Number(Deno.env.get('PORT') || 4200);
-
-      const handler = (request: Request): Response => {
-        // https://deno.com/deploy/docs/projects#environment-variables
-        const region = Deno.env.get('DENO_REGION') || 'localhost';
-
-        const body = \`<html>
-        <body>
-          <h1>Viewing my-deno-deploy-app from \${region} 👋</h1>
-        </body>
-      </html>\`;
-
-        return new Response(body, {
-          status: 200,
-          headers: {
-            'Content-Type': 'text/html;charset=utf-8',
-          },
-        });
-      };
-
-      console.log(\`HTTP webserver running. Access it at: http://localhost:\${port}/\`);
-      await serve(handler, { port });
       "
     `);
   });

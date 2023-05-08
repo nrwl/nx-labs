@@ -5,9 +5,9 @@ import {
 } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { createDenoAppForTesting } from '../../utils/testing/deno-app';
-import { denoSetupServerless } from '../setup-serverless';
+import denoSetupFunctions from '../setup-functions';
 
-describe('setup-serverless --platform=none', () => {
+describe('setup-functions --platform=none', () => {
   let tree: Tree;
   beforeEach(() => {
     tree = createTreeWithEmptyWorkspace();
@@ -22,7 +22,7 @@ describe('setup-serverless --platform=none', () => {
       parsedTags: [],
       projectDirectory: 'src',
     });
-    await denoSetupServerless(tree, { project: 'my-app', platform: 'none' });
+    await denoSetupFunctions(tree, { project: 'my-app', platform: 'none' });
 
     expect(readProjectConfiguration(tree, 'my-app').targets.deploy)
       .toMatchInlineSnapshot(`
@@ -45,7 +45,7 @@ describe('setup-serverless --platform=none', () => {
       projectDirectory: 'apps/my-app',
       parsedTags: [],
     });
-    await denoSetupServerless(tree, { project: 'my-app', platform: 'none' });
+    await denoSetupFunctions(tree, { project: 'my-app', platform: 'none' });
 
     expect(readProjectConfiguration(tree, 'my-app').targets.deploy)
       .toMatchInlineSnapshot(`
@@ -74,7 +74,7 @@ describe('setup-serverless --platform=none', () => {
     };
     updateProjectConfiguration(tree, 'my-app', pc);
     await expect(async () => {
-      await denoSetupServerless(tree, {
+      await denoSetupFunctions(tree, {
         project: 'my-app',
         platform: 'none',
       });

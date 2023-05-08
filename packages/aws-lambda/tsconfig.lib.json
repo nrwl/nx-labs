@@ -7,7 +7,7 @@
   },
   "include": [
     "**/*.ts",
-    "src/generators/setup-serverless/files/src/hello-world/hello-world.ts__tmpl__"
+    "src/generators/setup-functions/files/src/hello-world/hello-world.ts__tmpl__"
   ],
   "exclude": ["jest.config.ts", "**/*.spec.ts", "**/*.test.ts"]
 }

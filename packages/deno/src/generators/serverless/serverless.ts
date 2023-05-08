@@ -14,7 +14,7 @@ import {
 } from '@nx/devkit';
 import { join, relative } from 'path';
 import initDeno from '../init/generator';
-import denoSetupServerless from '../setup-serverless/setup-serverless';
+import denoSetupFunctions from '../setup-functions/setup-functions';
 import { ServerlessGeneratorSchema } from './schema';
 
 type NormalizedSchema = ReturnType<typeof normalizeOptions>;
@@ -154,11 +154,11 @@ export function addProject(tree: Tree, opts: NormalizedSchema) {
 }
 
 async function setupDeployConfig(tree: Tree, opts: NormalizedSchema) {
-  const setupTask = await denoSetupServerless(tree, {
+  const setupTask = await denoSetupFunctions(tree, {
     project: opts.projectName,
     platform: opts.platform,
   });
-  // delete fn folder from setup-serverless
+  // delete fn folder from setup-functions
   tree.delete(joinPathFragments(opts.projectRoot, 'functions'));
 
   const projectConfig = readProjectConfiguration(tree, opts.projectName);

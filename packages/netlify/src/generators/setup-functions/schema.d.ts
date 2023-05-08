@@ -1,7 +1,5 @@
-export interface SetupServerlessFunctionOptions {
+export interface SetupFunctionsSchema {
   project?: string;
-  buildTarget?: string;
-  lintTarget?: string;
   deployTarget?: string;
   serveTarget?: string;
   skipFormat?: boolean;

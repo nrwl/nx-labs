@@ -1,14 +1,9 @@
-import {
-  readJson,
-  readProjectConfiguration,
-  Tree,
-  updateProjectConfiguration,
-} from '@nx/devkit';
+import { readJson, readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { createDenoAppForTesting } from '../../utils/testing/deno-app';
-import { denoSetupServerless } from '../setup-serverless';
+import denoSetupFunctions from '../setup-functions';
 
-describe('setup-serverless --platform=netlify', () => {
+describe('setup-functions --platform=netlify', () => {
   let tree: Tree;
   beforeEach(() => {
     tree = createTreeWithEmptyWorkspace();
@@ -23,28 +18,31 @@ describe('setup-serverless --platform=netlify', () => {
       projectDirectory: 'src',
       projectName: 'my-app',
     });
-    await denoSetupServerless(tree, { project: 'my-app', platform: 'netlify' });
-    expect(readProjectConfiguration(tree, 'my-app').targets.deploy)
+    await denoSetupFunctions(tree, { project: 'my-app', platform: 'netlify' });
+    expect(readProjectConfiguration(tree, 'my-app').targets['deploy-functions'])
       .toMatchInlineSnapshot(`
       Object {
         "configurations": Object {
           "production": Object {
-            "command": "yarn netlify deploy --site=<Your-Netlify-Site-Name>",
+            "command": "yarn netlify deploy --prod",
           },
         },
         "executor": "nx:run-commands",
         "options": Object {
-          "command": "yarn netlify deploy --site=<Your-Netlify-Site-Name>",
+          "command": "yarn netlify deploy",
         },
       }
     `);
     expect(tree.read('netlify.toml', 'utf-8')).toMatchInlineSnapshot(`
-      "# Netlify Configuration File: https://docs.netlify.com/configure-builds/file-based-configuration
+      "
+      # Netlify Configuration File: https://docs.netlify.com/configure-builds/file-based-configuration
       [build]
         # custom directory where edge functions are located.
         # each file in this directory will be considered a separate edge function.
         edge_functions = \\"functions\\"
-        publish = \\"functions\\"
+        publish = \\"public\\"
+
+
 
       [functions]
         # provide all import aliases to netlify
@@ -75,13 +73,13 @@ describe('setup-serverless --platform=netlify', () => {
       projectDirectory: 'apps/my-app/src',
       projectName: 'my-app',
     });
-    await denoSetupServerless(tree, { project: 'my-app', platform: 'netlify' });
-    expect(readProjectConfiguration(tree, 'my-app').targets.deploy)
+    await denoSetupFunctions(tree, { project: 'my-app', platform: 'netlify' });
+    expect(readProjectConfiguration(tree, 'my-app').targets['deploy-functions'])
       .toMatchInlineSnapshot(`
       Object {
         "configurations": Object {
           "production": Object {
-            "command": "yarn netlify deploy --site=<Your-Netlify-Site-Name>",
+            "command": "yarn netlify deploy --prod --site=<Your-Netlify-Site-Name>",
             "cwd": "apps/my-app",
           },
         },
@@ -94,12 +92,15 @@ describe('setup-serverless --platform=netlify', () => {
     `);
     expect(tree.read('apps/my-app/netlify.toml', 'utf-8'))
       .toMatchInlineSnapshot(`
-      "# Netlify Configuration File: https://docs.netlify.com/configure-builds/file-based-configuration
+      "
+      # Netlify Configuration File: https://docs.netlify.com/configure-builds/file-based-configuration
       [build]
         # custom directory where edge functions are located.
         # each file in this directory will be considered a separate edge function.
         edge_functions = \\"functions\\"
-        publish = \\"functions\\"
+        publish = \\"public\\"
+
+
 
       [functions]
         # provide all import aliases to netlify
@@ -120,30 +121,5 @@ describe('setup-serverless --platform=netlify', () => {
     expect(
       readJson(tree, 'package.json').devDependencies['netlify-cli']
     ).toBeDefined();
-  });
-
-  it('should not overwrite existing deploy target', async () => {
-    createDenoAppForTesting(tree, {
-      name: 'my-app',
-      parsedTags: [],
-      projectRoot: 'apps/my-app',
-      projectDirectory: 'apps/my-app/src',
-      projectName: 'my-app',
-    });
-    const pc = readProjectConfiguration(tree, 'my-app');
-    pc.targets.deploy = {
-      executor: 'custom:deploy',
-      options: {},
-    };
-    updateProjectConfiguration(tree, 'my-app', pc);
-    await expect(async () => {
-      await denoSetupServerless(tree, {
-        project: 'my-app',
-        platform: 'netlify',
-      });
-    }).rejects.toThrowErrorMatchingInlineSnapshot(`
-      "Project, my-app, already has a deploy target defined.
-      Either rename this target or remove it from the project configuration."
-    `);
   });
 });

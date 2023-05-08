@@ -15,16 +15,14 @@ describe('serverless', () => {
     expect(tree.exists('netlify.toml'));
     expect(tree.exists('src/main.ts'));
     expect(tree.exists('functions/hello/hello.ts'));
-    expect(project.targets).toEqual(
-      expect.objectContaining({
-        serve: {
-          command: 'npx netlify dev',
-        },
-        deploy: {
-          dependsOn: ['build', 'lint'],
-          command: 'npx netlify deploy',
-        },
-      })
-    );
+    expect(project.targets).toMatchObject({
+      'serve-functions': {
+        command: 'npx netlify dev',
+      },
+      'deploy-functions': {
+        dependsOn: ['lint'],
+        command: 'npx netlify deploy',
+      },
+    });
   });
 });

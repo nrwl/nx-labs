@@ -1,18 +1,17 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "$id": "SchematicsNxAwsLamdaApp",
-  "title": "Nx AWS Lambda Setup Serverless Application Options Schema",
-  "description": "Nx AWS Lambda Setup Serverless Application Options Schema.",
+  "$id": "SchematicsNxAwsLamdaFunctions",
+  "title": "Schema for AWS Lambda Edge Functions",
+  "description": "Creates a functions/ folder in the project, and configures serve and deploy targets for AWS Lambda.",
   "type": "object",
   "properties": {
     "name": {
-      "description": "The name of the application.",
-      "type": "string",
+      "description": "The name of the project",
       "$default": {
-        "$source": "argv",
-        "index": 0
+        "$source": "projectName"
       },
-      "x-prompt": "What name would you like to use for the AWS Lamda application?",
+      "type": "string",
+      "x-prompt": "What project would you like to add a serverless functions to?",
       "x-priority": "important"
     },
     "directory": {
@@ -47,12 +46,12 @@
     "serveTarget": {
       "description": "The name of the serve target",
       "type": "string",
-      "default": "serve"
+      "default": "serve-functions"
     },
     "deployTarget": {
       "description": "The name of the deploy target",
       "type": "string",
-      "default": "deploy"
+      "default": "deploy-functions"
     },
     "tags": {
       "type": "string",

@@ -8,7 +8,7 @@ import {
 } from '@nx/devkit';
 import { Linter } from '@nx/linter';
 import { applicationGenerator } from '@nx/node';
-import { setupServerlessGenerator } from '../setup-serverless/setup-serverless';
+import { setupFunctionsGenerator } from '../setup-functions/setup-functions';
 import { Schema } from './schema';
 
 function normalizeOptions(options: Schema): Schema {
@@ -40,7 +40,7 @@ export async function serverlessGenerator(tree: Tree, schema: Schema) {
 
   tasks.push(init);
 
-  const addAwsLamdaTask = await setupServerlessGenerator(tree, options);
+  const addAwsLamdaTask = await setupFunctionsGenerator(tree, options);
 
   tasks.push(addAwsLamdaTask);
 

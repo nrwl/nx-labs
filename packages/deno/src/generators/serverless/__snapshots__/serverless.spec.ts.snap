@@ -1,65 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`serverless generator should setup deno-deploy project 1`] = `
-Object {
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "name": "my-deno-deploy-app",
-  "projectType": "application",
-  "root": "my-deno-deploy-app",
-  "sourceRoot": "my-deno-deploy-app/src",
-  "tags": Array [],
-  "targets": Object {
-    "build": Object {
-      "executor": "@nx/deno:emit",
-      "options": Object {
-        "denoConfig": "my-deno-deploy-app/deno.json",
-        "main": "my-deno-deploy-app/src/main.ts",
-        "outputFile": "dist/my-deno-deploy-app/main.js",
-      },
-      "outputs": Array [
-        "dist/my-deno-deploy-app",
-      ],
-    },
-    "deploy": Object {
-      "configurations": Object {
-        "preview": Object {
-          "command": "deployctl deploy --project=<Your-Deno-Deploy-Project-Name> --import-map=import_map.json --exclude=node_modules my-deno-deploy-app/src/main.ts",
-        },
-        "production": Object {
-          "command": "deployctl deploy --project=<Your-Deno-Deploy-Project-Name> --import-map=import_map.json --exclude=node_modules --prod my-deno-deploy-app/src/main.ts",
-        },
-      },
-      "executor": "nx:run-commands",
-      "options": Object {
-        "command": "deployctl deploy --project=<Your-Deno-Deploy-Project-Name> --import-map=import_map.json --exclude=node_modules  my-deno-deploy-app/src/main.ts --dry-run",
-      },
-    },
-    "lint": Object {
-      "executor": "@nx/deno:lint",
-      "options": Object {
-        "denoConfig": "my-deno-deploy-app/deno.json",
-      },
-    },
-    "serve": Object {
-      "executor": "@nx/deno:run",
-      "options": Object {
-        "buildTarget": "my-deno-deploy-app:build",
-      },
-    },
-    "test": Object {
-      "executor": "@nx/deno:test",
-      "options": Object {
-        "coverageDirectory": "coverage/my-deno-deploy-app",
-        "denoConfig": "my-deno-deploy-app/deno.json",
-      },
-      "outputs": Array [
-        "coverage/my-deno-deploy-app",
-      ],
-    },
-  },
-}
-`;
-
 exports[`serverless generator should setup empty project 1`] = `
 Object {
   "$schema": "../node_modules/nx/schemas/project-schema.json",
@@ -173,10 +113,10 @@ Object {
   "sourceRoot": "my-netlify-app/src",
   "tags": Array [],
   "targets": Object {
-    "deploy": Object {
+    "deploy-functions": Object {
       "configurations": Object {
         "production": Object {
-          "command": "yarn netlify deploy --site=<Your-Netlify-Site-Name>",
+          "command": "yarn netlify deploy --prod --site=<Your-Netlify-Site-Name>",
           "cwd": "my-netlify-app",
         },
       },

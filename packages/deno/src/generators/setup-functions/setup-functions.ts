@@ -1,10 +1,9 @@
 import { formatFiles, GeneratorCallback, output, Tree } from '@nx/devkit';
 import { addAgnosticConfig } from './lib/agnostic';
-import { addDenoDeployConfig } from './lib/deno-deploy';
 import { addNetlifyConfig } from './lib/netlify';
 import { DenoSetupServerlessSchema } from './schema';
 
-export async function denoSetupServerless(
+export async function denoSetupFunctions(
   tree: Tree,
   options: DenoSetupServerlessSchema
 ) {
@@ -15,9 +14,10 @@ export async function denoSetupServerless(
     case 'netlify':
       task = addNetlifyConfig(tree, opts);
       break;
-    case 'deno-deploy':
-      task = await addDenoDeployConfig(tree, opts);
-      break;
+    // TODO: This should be a separate generator e.g. nx g @nx/deno:deploy
+    // case 'deno-deploy':
+    //   task = await addDenoDeployConfig(tree, opts);
+    //   break;
     case 'none':
     default:
       addAgnosticConfig(tree, opts);
@@ -35,13 +35,16 @@ function normalizeOptions(options: DenoSetupServerlessSchema) {
       bodyLines: [
         `A value for --site was not passed`,
         `Make sure to set the site name in the ${options.project} deploy configuration.`,
-        options.platform === 'deno-deploy'
-          ? `This value is from the Deno Deploy dashboard: https://dash.deno.com/`
-          : `This value is from the Netlify dashboard: https://app.netlify.com/`,
+        options.platform === 'netlify'
+          ? `This value is from the Netlify dashboard: https://app.netlify.com/`
+          : '',
       ],
     });
   }
 
+  options.deployTarget ??= 'deploy-functions';
+  options.serveTarget ??= 'serve-functions';
+
   return options;
 }
-export default denoSetupServerless;
+export default denoSetupFunctions;
