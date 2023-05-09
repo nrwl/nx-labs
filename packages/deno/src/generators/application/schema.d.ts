@@ -5,6 +5,7 @@ export interface DenoAppGeneratorSchema {
   unitTestRunner?: 'deno' | 'none';
   linter?: 'deno' | 'none';
   withWatch?: boolean;
+  denoDeploy?: boolean;
   monorepo?: boolean;
   rootProject?: boolean;
   framework?: 'oak' | 'none';

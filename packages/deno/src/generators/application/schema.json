@@ -40,8 +40,13 @@
     },
     "withWatch": {
       "type": "boolean",
-      "description": "Default the project to watch for file changes for the 'serve' target. For projects that do not need watch capability (eg: CLI projects), use --with-watch=false",
+      "description": "Default the project to watch for file changes for the 'serve' target. For projects that do not need watch capability (eg: CLI projects), use --with-watch=false.",
       "default": true
+    },
+    "denoDeploy": {
+      "type": "boolean",
+      "description": "Create a 'deploy' target for the project. This target uses Deno Deploy to host the serverless application. See: https://deno.com/deploy.",
+      "default": false
     },
     "monorepo": {
       "type": "boolean",
@@ -55,7 +60,7 @@
     },
     "framework": {
       "type": "string",
-      "description": "Generate an app with a framework already setup",
+      "description": "Generate an app with a framework already setup.",
       "x-prompt": "What framework would you like to use?",
       "enum": ["oak", "none"],
       "default": "none"

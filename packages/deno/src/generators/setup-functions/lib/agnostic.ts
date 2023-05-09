@@ -4,14 +4,14 @@ import {
   Tree,
   updateProjectConfiguration,
 } from '@nx/devkit';
+import { assertNoTarget } from '../../utils/assertion';
 import { DenoSetupServerlessSchema } from '../schema';
-import { assertNoTarget } from './utils';
 
 export function addAgnosticConfig(tree: Tree, opts: DenoSetupServerlessSchema) {
   const projectConfig = readProjectConfiguration(tree, opts.project);
   assertNoTarget(projectConfig, 'deploy');
 
-  projectConfig.targets.deploy = {
+  projectConfig.targets[opts.deployTarget] = {
     executor: 'nx:run-commands',
     options: {
       command: 'echo "TODO configure deploy target"',

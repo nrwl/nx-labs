@@ -2,31 +2,35 @@ import {
   GeneratorCallback,
   joinPathFragments,
   output,
-  ProjectConfiguration,
   readProjectConfiguration,
   Tree,
   updateProjectConfiguration,
 } from '@nx/devkit';
 import { execSync } from 'child_process';
 import { prompt } from 'enquirer';
-import { DenoSetupServerlessSchema } from '../schema';
-import { assertNoTarget } from './utils';
+import { assertNoTarget } from '../utils/assertion';
+import { DenoSetupDeploySchema } from './schema';
 
-export async function addDenoDeployConfig(
+export async function setupDeployGenerator(
   tree: Tree,
-  opts: DenoSetupServerlessSchema
+  opts: DenoSetupDeploySchema
 ): Promise<GeneratorCallback> {
+  opts.deployTarget ??= 'deploy';
+  if (!opts.site) {
+    output.note({
+      title: 'Next Step: Set Site Name',
+      bodyLines: [
+        `A value for --site was not passed`,
+        `Make sure to set the site name in the ${opts.project} deploy configuration.`,
+        `This value is from the Deno Deploy dashboard: https://dash.deno.com/`,
+      ],
+    });
+  }
+
   const projectConfig = readProjectConfiguration(tree, opts.project);
-  assertNoTarget(projectConfig, 'deploy');
 
-  return await addDeployTarget(tree, projectConfig, opts.site);
-}
+  assertNoTarget(projectConfig, opts.deployTarget);
 
-async function addDeployTarget(
-  tree: Tree,
-  projectConfig: ProjectConfiguration,
-  siteName?: string
-) {
   const main =
     projectConfig.targets?.build?.options?.main ||
     joinPathFragments(projectConfig.sourceRoot, 'main.ts');
@@ -43,11 +47,11 @@ async function addDeployTarget(
     });
   }
   let projectArg = '--project=<Your-Deno-Deploy-Project-Name>';
-  if (siteName) {
-    projectArg = `--project=${siteName}`;
+  if (opts.site) {
+    projectArg = `--project=${opts.site}`;
   }
 
-  projectConfig.targets.deploy = {
+  projectConfig.targets[opts.deployTarget] = {
     executor: 'nx:run-commands',
     options: {
       command: `deployctl deploy ${projectArg} --import-map=import_map.json --exclude=node_modules  ${entrypointArg} --dry-run`,
@@ -127,3 +131,5 @@ async function checkForDeployCtl(): Promise<
     return 'skipped';
   }
 }
+
+export default setupDeployGenerator;

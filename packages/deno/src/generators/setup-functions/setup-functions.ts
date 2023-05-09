@@ -14,10 +14,6 @@ export async function denoSetupFunctions(
     case 'netlify':
       task = addNetlifyConfig(tree, opts);
       break;
-    // TODO: This should be a separate generator e.g. nx g @nx/deno:deploy
-    // case 'deno-deploy':
-    //   task = await addDenoDeployConfig(tree, opts);
-    //   break;
     case 'none':
     default:
       addAgnosticConfig(tree, opts);

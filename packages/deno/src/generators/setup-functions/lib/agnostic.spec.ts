@@ -24,7 +24,7 @@ describe('setup-functions --platform=none', () => {
     });
     await denoSetupFunctions(tree, { project: 'my-app', platform: 'none' });
 
-    expect(readProjectConfiguration(tree, 'my-app').targets.deploy)
+    expect(readProjectConfiguration(tree, 'my-app').targets['deploy-functions'])
       .toMatchInlineSnapshot(`
       Object {
         "executor": "nx:run-commands",
@@ -47,7 +47,7 @@ describe('setup-functions --platform=none', () => {
     });
     await denoSetupFunctions(tree, { project: 'my-app', platform: 'none' });
 
-    expect(readProjectConfiguration(tree, 'my-app').targets.deploy)
+    expect(readProjectConfiguration(tree, 'my-app').targets['deploy-functions'])
       .toMatchInlineSnapshot(`
       Object {
         "executor": "nx:run-commands",

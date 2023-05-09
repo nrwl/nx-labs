@@ -18,7 +18,7 @@
     "init": {
       "factory": "./src/generators/init/generator",
       "schema": "./src/generators/init/schema.json",
-      "description": "Intialize configurations for Deno.",
+      "description": "Initialize configurations for Deno.",
       "hidden": true
     },
     "preset": {
@@ -37,6 +37,11 @@
       "factory": "./src/generators/setup-functions/setup-functions",
       "schema": "./src/generators/setup-functions/schema.json",
       "description": "Creates a functions/ folder in the project, and configures serve and deploy targets."
+    },
+    "setup-deploy": {
+      "factory": "./src/generators/setup-deploy/setup-deploy",
+      "schema": "./src/generators/setup-deploy/schema.json",
+      "description": "Configures Deno Deploy target for the application."
     },
     "serverless": {
       "factory": "./src/generators/serverless/serverless",
