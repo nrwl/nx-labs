@@ -20,7 +20,7 @@ Object {
         "dist/my-plain-app",
       ],
     },
-    "deploy": Object {
+    "deploy-functions": Object {
       "executor": "nx:run-commands",
       "options": Object {
         "command": "echo \\"TODO configure deploy target\\"",
@@ -72,7 +72,7 @@ Object {
         "dist/nested/my-plain-app",
       ],
     },
-    "deploy": Object {
+    "deploy-functions": Object {
       "executor": "nx:run-commands",
       "options": Object {
         "command": "echo \\"TODO configure deploy target\\"",

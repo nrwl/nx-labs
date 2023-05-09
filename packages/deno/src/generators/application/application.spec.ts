@@ -34,6 +34,17 @@ describe('Deno App Generator', () => {
       expect(readProjectConfiguration(tree, 'my-oak-api')).toMatchSnapshot();
       expect(tree.read('src/main.ts', 'utf-8')).toMatchSnapshot();
     });
+
+    it('should support --denoDeploy', async () => {
+      await denoApplicationGenerator(tree, {
+        name: 'my-app',
+        denoDeploy: true,
+      });
+
+      expect(
+        readProjectConfiguration(tree, 'my-app').targets['deploy']
+      ).toBeDefined();
+    });
   });
 
   describe('integrated', () => {

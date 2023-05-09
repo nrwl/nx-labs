@@ -10,8 +10,8 @@ import {
   updateProjectConfiguration,
 } from '@nx/devkit';
 import { relative } from 'path';
+import { assertNoTarget } from '../../utils/assertion';
 import { DenoSetupServerlessSchema } from '../schema';
-import { assertNoTarget } from './utils';
 
 export function addNetlifyConfig(tree: Tree, opts: DenoSetupServerlessSchema) {
   const projectConfig = readProjectConfiguration(tree, opts.project);
