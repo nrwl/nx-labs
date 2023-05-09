@@ -1,6 +1,6 @@
 import { Linter } from '@nx/linter';
 
-export interface Schema {
+export interface SetupFunctionsSchema {
   name: string;
   skipFormat?: boolean;
   skipPackageJson?: boolean;
@@ -11,4 +11,8 @@ export interface Schema {
   buildTarget?: string;
   serveTarget?: string;
   deployTarget?: string;
+}
+
+export interface NormalizedSchema extends SetupFunctionsSchema {
+  projectName: string;
 }

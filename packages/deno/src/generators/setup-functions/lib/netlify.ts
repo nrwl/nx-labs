@@ -5,6 +5,7 @@ import {
   offsetFromRoot,
   ProjectConfiguration,
   readProjectConfiguration,
+  stripIndents,
   Tree,
   updateProjectConfiguration,
 } from '@nx/devkit';
@@ -14,13 +15,14 @@ import { assertNoTarget } from './utils';
 
 export function addNetlifyConfig(tree: Tree, opts: DenoSetupServerlessSchema) {
   const projectConfig = readProjectConfiguration(tree, opts.project);
-  assertNoTarget(projectConfig, 'deploy');
-  assertNoTarget(projectConfig, 'serve-functions');
+  assertNoTarget(projectConfig, opts.serveTarget);
+  assertNoTarget(projectConfig, opts.deployTarget);
 
-  addTargets(tree, projectConfig, opts.site);
+  addTargets(tree, projectConfig, opts);
 
   const fnDir = joinPathFragments(projectConfig.root, 'functions');
   addEdgeFunction(tree, fnDir);
+  addIndexHtml(tree, opts);
   addNetlifyToml(tree, projectConfig, fnDir);
 
   return addDependenciesToPackageJson(
@@ -35,7 +37,7 @@ export function addNetlifyConfig(tree: Tree, opts: DenoSetupServerlessSchema) {
 function addTargets(
   tree: Tree,
   projectConfig: ProjectConfiguration,
-  siteName?: string
+  opts: DenoSetupServerlessSchema
 ) {
   const pm = getPackageManagerCommand();
   const cwd =
@@ -43,25 +45,29 @@ function addTargets(
       ? undefined
       : projectConfig.root;
 
-  let siteArg = '--site=<Your-Netlify-Site-Name>';
-  if (siteName) {
-    siteArg = `--site=${siteName}`;
+  let siteArg = ' --site=<Your-Netlify-Site-Name>';
+  if (opts.site) {
+    siteArg = ` --site=${opts.site}`;
   }
 
-  projectConfig.targets.deploy = {
+  projectConfig.targets[opts.deployTarget] = {
     executor: 'nx:run-commands',
     options: {
-      command: `${pm.exec} netlify deploy ${siteArg}`,
+      command: `${pm.exec} netlify deploy${
+        projectConfig.root === '.' ? '' : siteArg
+      }`,
       cwd,
     },
     configurations: {
       production: {
-        command: `${pm.exec} netlify deploy ${siteArg}`,
+        command: `${pm.exec} netlify deploy --prod${
+          projectConfig.root === '.' ? '' : siteArg
+        }`,
         cwd,
       },
     },
   };
-  projectConfig.targets['serve-functions'] = {
+  projectConfig.targets[opts.serveTarget] = {
     executor: 'nx:run-commands',
     options: {
       command: `${pm.exec} netlify dev`,
@@ -77,20 +83,23 @@ function addNetlifyToml(
   projectConfig: ProjectConfiguration,
   fnDir: string
 ) {
+  const publicDir = 'public';
   const fromProjectRootFnDir = relative(projectConfig.root, fnDir);
   const netlifyPath = joinPathFragments(projectConfig.root, 'netlify.toml');
   const offset = offsetFromRoot(projectConfig.root);
 
-  if (!tree.exists(netlifyPath)) {
-    tree.write(
-      netlifyPath,
-      `# Netlify Configuration File: https://docs.netlify.com/configure-builds/file-based-configuration
+  const buildContent = tree.exists(netlifyPath)
+    ? tree.read(netlifyPath, 'utf-8')
+    : `
+# Netlify Configuration File: https://docs.netlify.com/configure-builds/file-based-configuration
 [build]
   # custom directory where edge functions are located.
   # each file in this directory will be considered a separate edge function.
   edge_functions = "${fromProjectRootFnDir}"
-  publish = "${fromProjectRootFnDir}"
+  publish = "${publicDir}"
 
+`;
+  const fnsContent = `
 [functions]
   # provide all import aliases to netlify
   # https://docs.netlify.com/edge-functions/api/#import-maps
@@ -103,9 +112,9 @@ function addNetlifyToml(
   function = "hello-geo"
   # this is the route that the edge function applies to.
   path = "/api/geo"
-`
-    );
-  }
+`;
+
+  tree.write(netlifyPath, `${buildContent}\n${fnsContent}`);
 
   const gitignore = tree.read('.gitignore', 'utf-8');
   if (!gitignore?.includes('.netlify')) {
@@ -131,4 +140,18 @@ export default (request: Request, context: Context) => {
 };
 `
   );
+}
+
+function addIndexHtml(tree: Tree, opts: DenoSetupServerlessSchema) {
+  const project = readProjectConfiguration(tree, opts.project);
+  const indexHtml = joinPathFragments(project.root, 'public/index.html');
+  if (!tree.exists(indexHtml)) {
+    tree.write(
+      indexHtml,
+      stripIndents`
+        <h1>Netlify Functions</h1>
+        <p>The sample function is available at <a href="/api/geo"><code>/api/geo</code></a>.</p>
+      `
+    );
+  }
 }

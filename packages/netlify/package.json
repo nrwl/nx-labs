@@ -5,6 +5,7 @@
   "generators": "./generators.json",
   "dependencies": {
     "@nx/devkit": "^16.0.3",
+    "@nx/esbuild": "^16.0.3",
     "@nx/node": "^16.0.3",
     "@nx/linter": "^16.0.3"
   },

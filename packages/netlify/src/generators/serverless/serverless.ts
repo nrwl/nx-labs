@@ -7,7 +7,7 @@ import {
 } from '@nx/devkit';
 import { Linter } from '@nx/linter';
 import { applicationGenerator } from '@nx/node';
-import setupServerlessGenerator from '../setup-serverless/setup-serverless';
+import { setupFunctionsGenerator } from '../setup-functions/setup-functions';
 import { Schema } from './schema';
 
 function normalizeOptions(options: Schema): Schema {
@@ -39,7 +39,7 @@ export async function serverlessGenerator(tree: Tree, schema: Schema) {
 
   tasks.push(init);
 
-  const addServerlessTask = await setupServerlessGenerator(tree, {
+  const addServerlessTask = await setupFunctionsGenerator(tree, {
     ...options,
     project: options.name,
   });

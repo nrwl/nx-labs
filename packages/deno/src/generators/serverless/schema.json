@@ -41,7 +41,7 @@
     "platform": {
       "type": "string",
       "description": "Setup serverless support for a specific platform.",
-      "enum": ["netlify", "deno-deploy", "none"],
+      "enum": ["netlify", "none"],
       "x-prompt": "Which platform would you like to use?",
       "default": "netlify"
     },

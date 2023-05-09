@@ -1,2 +1,2 @@
 export { serverlessGenerator } from './src/generators/serverless/serverless';
-export { setupServerlessGenerator } from './src/generators/setup-serverless/setup-serverless';
+export { setupFunctionsGenerator } from './src/generators/setup-functions/setup-functions';

@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/schema",
   "$id": "DenoSetupServerless",
-  "title": "Setup Serverless Configuration",
-  "description": "Generates a serverless configuration for a project.",
+  "title": "Schema for Deno Edge Functions",
+  "description": "Creates a functions/ folder in the project, and configures serve and deploy targets.",
   "type": "object",
   "properties": {
     "project": {
@@ -18,7 +18,7 @@
     "platform": {
       "type": "string",
       "description": "Setup serverless support for a specific platform.",
-      "enum": ["netlify", "deno-deploy", "none"],
+      "enum": ["netlify", "none"],
       "x-prompt": "Which platform would you like to use?",
       "default": "netlify"
     },
@@ -26,6 +26,16 @@
       "description": "The site name to deploy to",
       "type": "string",
       "x-priority": "important"
+    },
+    "deployTarget": {
+      "description": "The name of the deploy target",
+      "type": "string",
+      "default": "deploy-functions"
+    },
+    "serveTarget": {
+      "description": "The name of the serve target",
+      "type": "string",
+      "default": "serve-functions"
     }
   },
   "required": ["project", "platform"]

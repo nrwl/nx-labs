@@ -6,40 +6,43 @@
     "application": {
       "factory": "./src/generators/application/application",
       "schema": "./src/generators/application/schema.json",
-      "description": "Create a new Deno application",
+      "description": "Create a new Deno application.",
       "aliases": ["app"]
     },
     "library": {
       "factory": "./src/generators/library/library",
       "schema": "./src/generators/library/schema.json",
-      "description": "Create a new Deno library",
+      "description": "Create a new Deno library.",
       "aliases": ["lib"]
     },
     "init": {
       "factory": "./src/generators/init/generator",
       "schema": "./src/generators/init/schema.json",
-      "description": "Intialize configurations for Deno"
+      "description": "Intialize configurations for Deno.",
+      "hidden": true
     },
     "preset": {
       "factory": "./src/generators/preset/generator",
       "schema": "./src/generators/preset/schema.json",
-      "description": "Create a new standalone Deno workspace with create-nx-workspace"
+      "description": "Create a new standalone Deno workspace with create-nx-workspace.",
+      "hidden": true
     },
     "add-import": {
       "aliases": ["import", "add"],
       "factory": "./src/generators/add-import/generator",
       "schema": "./src/generators/add-import/schema.json",
-      "description": "Add an existing library to Deno imports"
+      "description": "Add an existing library to Deno imports."
     },
-    "setup-serverless": {
-      "factory": "./src/generators/setup-serverless/setup-serverless",
-      "schema": "./src/generators/setup-serverless/schema.json",
-      "description": "Add a serverless setup to an existing Deno project"
+    "setup-functions": {
+      "factory": "./src/generators/setup-functions/setup-functions",
+      "schema": "./src/generators/setup-functions/schema.json",
+      "description": "Creates a functions/ folder in the project, and configures serve and deploy targets."
     },
     "serverless": {
       "factory": "./src/generators/serverless/serverless",
       "schema": "./src/generators/serverless/schema.json",
-      "description": "Create a new serverless Deno app"
+      "description": "Create a new serverless Deno app.",
+      "hidden": true
     }
   }
 }

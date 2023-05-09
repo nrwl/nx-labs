@@ -9,11 +9,10 @@
       "description": "Creates a new project with AWS Lambda configuration",
       "hidden": true
     },
-    "setup-serverless": {
-      "factory": "./src/generators/setup-serverless/setup-serverless",
-      "schema": "./src/generators/setup-serverless/schema.json",
-      "description": "Adds AWS Lamda Serverless configuration to an existing project",
-      "hidden": true
+    "setup-functions": {
+      "factory": "./src/generators/setup-functions/setup-functions",
+      "schema": "./src/generators/setup-functions/schema.json",
+      "description": "Creates Edge functions that can be deployed to AWS Lambda to an existing project."
     },
     "preset": {
       "factory": "./src/generators/preset/preset",
