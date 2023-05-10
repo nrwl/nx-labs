@@ -20,6 +20,12 @@
       "x-prompt": "What name would you like to use for the library?",
       "pattern": "^[a-zA-Z].*$"
     },
+    "directory": {
+      "type": "string",
+      "description": "A directory where the lib is placed.",
+      "alias": "dir",
+      "x-priority": "important"
+    },
     "tags": {
       "type": "string",
       "description": "Add tags to the library (used for linting)"
@@ -27,8 +33,16 @@
     "style": {
       "type": "string",
       "description": "Generate a stylesheet",
-      "enum": ["none", "css"],
+      "enum": [
+        "none",
+        "css"
+      ],
       "default": "css"
+    },
+    "buildable": {
+      "type": "boolean",
+      "description": "Should the library be buildable?",
+      "default": false
     },
     "importPath": {
       "type": "string",
@@ -38,7 +52,15 @@
       "type": "boolean",
       "description": "Generate JavaScript files rather than TypeScript files",
       "default": false
+    },
+    "skipFormat": {
+      "type": "boolean",
+      "description": "Skip formatting files after generator runs",
+      "default": false,
+      "x-priority": "internal"
     }
   },
-  "required": ["name"]
+  "required": [
+    "name"
+  ]
 }

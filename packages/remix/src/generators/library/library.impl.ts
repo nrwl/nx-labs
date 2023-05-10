@@ -1,70 +1,42 @@
-import {
-  detectPackageManager,
-  GeneratorCallback,
-  getWorkspaceLayout,
-  joinPathFragments,
-  names,
-  readProjectConfiguration,
-  runTasksInSerial,
-  Tree,
-  updateJson,
-  updateProjectConfiguration,
-} from '@nx/devkit';
+import type { Tree } from '@nx/devkit';
+import { formatFiles, GeneratorCallback, runTasksInSerial } from '@nx/devkit';
 import { Linter } from '@nx/linter';
 import { libraryGenerator } from '@nx/react/src/generators/library/library';
-import { execSync } from 'child_process';
-import { NxRemixGeneratorSchema } from './schema';
+import {
+  addTsconfigEntryPoints,
+  normalizeOptions,
+  updateBuildableConfig,
+} from './lib';
+import type { NxRemixGeneratorSchema } from './schema';
 
-export default async function (tree: Tree, options: NxRemixGeneratorSchema) {
+export default async function (tree: Tree, schema: NxRemixGeneratorSchema) {
   const tasks: GeneratorCallback[] = [];
-  const name = names(options.name).fileName;
-  const pm = detectPackageManager();
-  const { libsDir } = getWorkspaceLayout(tree);
-  const projectRoot = joinPathFragments(libsDir, name);
+  const options = normalizeOptions(tree, schema);
 
   const libGenTask = await libraryGenerator(tree, {
-    name,
+    name: options.name,
     style: options.style,
     unitTestRunner: 'jest',
     tags: options.tags,
     importPath: options.importPath,
-    skipFormat: false,
+    directory: options.directory,
+    skipFormat: true,
     skipTsConfig: false,
     linter: Linter.EsLint,
     component: true,
+    buildable: options.buildable,
   });
   tasks.push(libGenTask);
 
-  // Nest dist under project root to we can link it
-  const project = readProjectConfiguration(tree, name);
-  project.targets.build.options = {
-    ...project.targets.build.options,
-    format: ['cjs'],
-    outputPath: joinPathFragments(projectRoot, 'dist'),
-  };
-  updateProjectConfiguration(tree, name, project);
+  addTsconfigEntryPoints(tree, options);
 
-  // Point to nested dist for yarn/npm/pnpm workspaces
-  updateJson(tree, joinPathFragments(projectRoot, 'package.json'), (json) => {
-    json.main = './dist/index.cjs.js';
-    json.typings = './dist/index.d.ts';
-    return json;
-  });
+  if (options.buildable) {
+    updateBuildableConfig(tree, options.projectName);
+  }
 
-  // Link workspaces
-  tasks.push(() => {
-    let command: string;
-    if (pm === 'npm') {
-      command = `npm install -ws`;
-    } else if (pm === 'yarn') {
-      command = `yarn`;
-    } else if (pm === 'pnpm') {
-      command = `pnpm install`;
-    }
-    execSync(command, {
-      stdio: [0, 1, 2],
-    });
-  });
+  if (!options.skipFormat) {
+    await formatFiles(tree);
+  }
 
   return runTasksInSerial(...tasks);
 }
