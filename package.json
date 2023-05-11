@@ -8,7 +8,8 @@
     "nx-release": "./scripts/nx-release.mjs",
     "check-versions": "ts-node -P ./tools/tsconfig.tools.json ./tools/scripts/check-versions.ts",
     "start": "nx serve",
-    "test": "nx test"
+    "test": "nx test",
+    "e2e": "nx e2e"
   },
   "dependencies": {
     "@swc/cli": "0.1.62",
@@ -21,6 +22,7 @@
     "tslib": "^2.3.0",
     "yargs-parser": "^21.1.1"
   },
+  "packageManager": "yarn@1.22.19",
   "devDependencies": {
     "@nx/cypress": "16.0.3",
     "@nx/detox": "16.0.3",
@@ -68,4 +70,3 @@
     "typescript": "~4.9.5"
   }
 }
-
