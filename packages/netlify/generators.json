@@ -12,8 +12,7 @@
     "setup-functions": {
       "factory": "./src/generators/setup-functions/setup-functions",
       "schema": "./src/generators/setup-functions/schema.json",
-      "description": "Creates edge functions that can be deployed to Netlify to an existing project.",
-      "hidden": true
+      "description": "Creates edge functions that can be deployed to Netlify to an existing project."
     },
     "preset": {
       "factory": "./src/generators/preset/preset",
