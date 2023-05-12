@@ -1,12 +1,12 @@
 import {
   addDependenciesToPackageJson,
   joinPathFragments,
+  runTasksInSerial,
   Tree,
   updateJson,
 } from '@nx/devkit';
 import { Linter, lintProjectGenerator } from '@nx/linter';
-import { createReactEslintJson, extraEslintDependencies } from '@nx/react';
-import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
+import { extendReactEslintJson, extraEslintDependencies } from '@nx/react';
 import type { Linter as ESLintLinter } from 'eslint';
 import { NormalizedSchema } from './normalize-options';
 
@@ -21,16 +21,11 @@ export async function addLinting(host: Tree, options: NormalizedSchema) {
     skipFormat: true,
   });
 
-  const reactEslintJson = createReactEslintJson(
-    options.projectRoot,
-    options.setParserOptionsProject
-  );
-
   updateJson(
     host,
     joinPathFragments(options.projectRoot, '.eslintrc.json'),
     (json: ESLintLinter.Config) => {
-      json = reactEslintJson;
+      json = extendReactEslintJson(json);
       json.ignorePatterns = ['!**/*', 'public', '.cache'];
 
       for (const override of json.overrides) {
