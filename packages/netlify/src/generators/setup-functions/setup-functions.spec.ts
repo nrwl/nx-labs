@@ -26,7 +26,6 @@ describe('setupFunctionsGenerator', () => {
           command: 'npx netlify dev',
         },
         'deploy-functions': {
-          dependsOn: ['lint'],
           command: 'npx netlify deploy',
           options: {
             cwd: 'api',
@@ -62,7 +61,6 @@ describe('setupFunctionsGenerator', () => {
           command: 'npx netlify dev',
         },
         'deploy-functions': {
-          dependsOn: ['lint'],
           command: 'npx netlify deploy',
           configurations: {
             production: {

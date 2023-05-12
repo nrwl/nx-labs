@@ -20,7 +20,6 @@ describe('serverless', () => {
         command: 'npx netlify dev',
       },
       'deploy-functions': {
-        dependsOn: ['lint'],
         command: 'npx netlify deploy',
       },
     });

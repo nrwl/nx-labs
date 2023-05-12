@@ -58,7 +58,6 @@ async function addTargets(tree: Tree, options: SetupFunctionsSchema) {
     };
 
     projectConfig.targets[`${options.deployTarget}`] = {
-      dependsOn: projectConfig.targets?.['lint'] ? ['lint'] : [],
       command: options.site
         ? `npx netlify deploy --site ${options.site}`
         : 'npx netlify deploy',
