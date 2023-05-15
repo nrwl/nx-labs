@@ -3,6 +3,7 @@ import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import applicationGenerator from '../application/application.impl';
 import presetGenerator from '../preset/preset.impl';
 import routeGenerator from './route.impl';
+
 describe('route', () => {
   let tree: Tree;
 
@@ -23,9 +24,11 @@ describe('route', () => {
       skipChecks: false,
     });
 
-    const content = tree
-      .read('apps/demo/app/routes/path/to/example.tsx')
-      .toString();
+    const content = tree.read(
+      'apps/demo/app/routes/path/to/example.tsx',
+      'utf-8'
+    );
+    expect(content).toMatchSnapshot();
     expect(content).toMatch('LinksFunction');
     expect(content).toMatch('function PathToExample(');
     expect(
