@@ -34,6 +34,33 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
     sourceRoot: `${options.projectRoot}`,
     projectType: 'application',
     tags: options.parsedTags,
+    targets: {
+      build: {
+        command: `remix build`,
+        options: {
+          cwd: options.projectRoot,
+        },
+      },
+      serve: {
+        command: `remix dev`,
+        options: {
+          cwd: options.projectRoot,
+        },
+      },
+      start: {
+        dependsOn: ['build'],
+        command: `remix-serve build`,
+        options: {
+          cwd: options.projectRoot,
+        },
+      },
+      typecheck: {
+        command: `tsc`,
+        options: {
+          cwd: options.projectRoot,
+        },
+      },
+    },
   });
 
   const installTask = addDependenciesToPackageJson(
@@ -79,16 +106,6 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
   );
 
   if (options.rootProject) {
-    updateJson(tree, 'package.json', (json) => {
-      json['scripts'] = {
-        build: 'nx exec -- remix build',
-        dev: 'nx exec -- remix dev',
-        start: 'nx exec -- remix-serve build',
-        typecheck: 'nx exec -- tsc',
-      };
-
-      return json;
-    });
     const gitignore = tree.read('.gitignore', 'utf-8');
     tree.write(
       '.gitignore',
