@@ -1,10 +1,6 @@
 import type { Tree } from '@nx/devkit';
-import {
-  extractLayoutDirectory,
-  getImportPath,
-  getWorkspaceLayout,
-  names,
-} from '@nx/devkit';
+import { extractLayoutDirectory, getWorkspaceLayout, names } from '@nx/devkit';
+import { getImportPath } from '@nx/js/src/utils/get-import-path';
 import {
   normalizeDirectory,
   normalizeProjectName,
@@ -26,7 +22,7 @@ export function normalizeOptions(
   const { npmScope } = getWorkspaceLayout(tree);
 
   const importPath =
-    options.importPath ?? getImportPath(npmScope, fullProjectDirectory);
+    options.importPath ?? getImportPath(tree, fullProjectDirectory);
 
   const projectName = normalizeProjectName(name, projectDirectory);
 
