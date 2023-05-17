@@ -1,4 +1,5 @@
 # Nx Labs
+(test)
 
 This repo contains experimental Nx plugins that are maintained by the Nx core team.
 

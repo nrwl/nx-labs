@@ -1,11 +1,16 @@
 import {
   checkFilesExist,
-  ensureNxProject,
+  cleanup,
   listFiles,
+  patchPackageJsonForPlugin,
   runNxCommandAsync,
+  runPackageManagerInstall,
+  tmpProjPath,
   uniq,
   updateFile,
 } from '@nx/plugin/testing';
+import { execSync } from 'child_process';
+import { dirname } from 'path';
 
 describe('rspack e2e', () => {
   // Setting up individual workspaces per
@@ -15,7 +20,22 @@ describe('rspack e2e', () => {
   // on a unique project in the workspace, such that they
   // are not dependant on one another.
   beforeAll(() => {
-    ensureNxProject('@nx/rspack', 'dist/packages/rspack');
+    // Create a new workspace with both packages remapped
+    // TODO: remove this once we have a better local publish story
+    const localTmpDir = dirname(tmpProjPath());
+    cleanup();
+    execSync(
+      `node ${require.resolve(
+        'nx'
+      )} new proj --nx-workspace-root=${localTmpDir} --no-interactive --skip-install --collection=@nx/workspace --npmScope=proj --preset=empty`,
+      {
+        cwd: localTmpDir,
+        stdio: ['ignore', 'ignore', 'ignore'],
+      }
+    );
+    patchPackageJsonForPlugin('@nrwl/rspack', 'dist/packages/rspack-legacy');
+    patchPackageJsonForPlugin('@nx/rspack', 'dist/packages/rspack');
+    runPackageManagerInstall();
   });
 
   afterAll(() => {
