@@ -1,4 +1,5 @@
-import { readJson } from '@nx/devkit';
+import type { Tree } from '@nx/devkit';
+import { joinPathFragments, readJson } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import applicationGenerator from './application.impl';
 
@@ -15,23 +16,32 @@ describe('Remix Application', () => {
       });
 
       // ASSERT
-      const { targets } = readJson(tree, 'project.json');
-      expect(targets.build).toBeTruthy();
-      expect(targets.build.command).toEqual('remix build');
-      expect(targets.build.options.cwd).toEqual('.');
-      expect(targets.serve).toBeTruthy();
-      expect(targets.serve.command).toEqual('remix dev');
-      expect(targets.serve.options.cwd).toEqual('.');
-      expect(targets.start).toBeTruthy();
-      expect(targets.start.command).toEqual('remix-serve build');
-      expect(targets.start.options.cwd).toEqual('.');
-      expect(targets.typecheck).toBeTruthy();
-      expect(targets.typecheck.command).toEqual('tsc');
-      expect(targets.typecheck.options.cwd).toEqual('.');
+      expectTargetsToBeCorrect(tree, '.');
 
       expect(tree.read('remix.config.js', 'utf-8')).toMatchSnapshot();
       expect(tree.read('app/root.tsx', 'utf-8')).toMatchSnapshot();
       expect(tree.read('app/routes/index.tsx', 'utf-8')).toMatchSnapshot();
+    });
+
+    describe(`--js`, () => {
+      it('should create the application correctly', async () => {
+        // ARRANGE
+        const tree = createTreeWithEmptyWorkspace();
+
+        // ACT
+        await applicationGenerator(tree, {
+          name: 'test',
+          js: true,
+          rootProject: true,
+        });
+
+        // ASSERT
+        expectTargetsToBeCorrect(tree, '.');
+
+        expect(tree.read('remix.config.js', 'utf-8')).toMatchSnapshot();
+        expect(tree.read('app/root.js', 'utf-8')).toMatchSnapshot();
+        expect(tree.read('app/routes/index.js', 'utf-8')).toMatchSnapshot();
+      });
     });
   });
 
@@ -46,19 +56,7 @@ describe('Remix Application', () => {
       });
 
       // ASSERT
-      const { targets } = readJson(tree, 'apps/test/project.json');
-      expect(targets.build).toBeTruthy();
-      expect(targets.build.command).toEqual('remix build');
-      expect(targets.build.options.cwd).toEqual('apps/test');
-      expect(targets.serve).toBeTruthy();
-      expect(targets.serve.command).toEqual('remix dev');
-      expect(targets.serve.options.cwd).toEqual('apps/test');
-      expect(targets.start).toBeTruthy();
-      expect(targets.start.command).toEqual('remix-serve build');
-      expect(targets.start.options.cwd).toEqual('apps/test');
-      expect(targets.typecheck).toBeTruthy();
-      expect(targets.typecheck.command).toEqual('tsc');
-      expect(targets.typecheck.options.cwd).toEqual('apps/test');
+      expectTargetsToBeCorrect(tree, 'apps/test');
 
       expect(tree.read('apps/test/remix.config.js', 'utf-8')).toMatchSnapshot();
       expect(tree.read('apps/test/app/root.tsx', 'utf-8')).toMatchSnapshot();
@@ -67,6 +65,29 @@ describe('Remix Application', () => {
       ).toMatchSnapshot();
     });
 
+    describe('--js', () => {
+      it('should create the application correctly', async () => {
+        // ARRANGE
+        const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
+
+        // ACT
+        await applicationGenerator(tree, {
+          name: 'test',
+          js: true,
+        });
+
+        // ASSERT
+        expectTargetsToBeCorrect(tree, 'apps/test');
+
+        expect(
+          tree.read('apps/test/remix.config.js', 'utf-8')
+        ).toMatchSnapshot();
+        expect(tree.read('apps/test/app/root.js', 'utf-8')).toMatchSnapshot();
+        expect(
+          tree.read('apps/test/app/routes/index.js', 'utf-8')
+        ).toMatchSnapshot();
+      });
+    });
     describe('--directory', () => {
       it('should create the application correctly', async () => {
         // ARRANGE
@@ -79,19 +100,7 @@ describe('Remix Application', () => {
         });
 
         // ASSERT
-        const { targets } = readJson(tree, 'apps/demo/test/project.json');
-        expect(targets.build).toBeTruthy();
-        expect(targets.build.command).toEqual('remix build');
-        expect(targets.build.options.cwd).toEqual('apps/demo/test');
-        expect(targets.serve).toBeTruthy();
-        expect(targets.serve.command).toEqual('remix dev');
-        expect(targets.serve.options.cwd).toEqual('apps/demo/test');
-        expect(targets.start).toBeTruthy();
-        expect(targets.start.command).toEqual('remix-serve build');
-        expect(targets.start.options.cwd).toEqual('apps/demo/test');
-        expect(targets.typecheck).toBeTruthy();
-        expect(targets.typecheck.command).toEqual('tsc');
-        expect(targets.typecheck.options.cwd).toEqual('apps/demo/test');
+        expectTargetsToBeCorrect(tree, 'apps/demo/test');
 
         expect(
           tree.read('apps/demo/test/remix.config.js', 'utf-8')
@@ -115,11 +124,7 @@ describe('Remix Application', () => {
         });
 
         // ASSERT
-        const { targets } = readJson(tree, 'apps/demo/test/project.json');
-        expect(targets.build).toBeTruthy();
-        expect(targets.serve).toBeTruthy();
-        expect(targets.start).toBeTruthy();
-        expect(targets.typecheck).toBeTruthy();
+        expectTargetsToBeCorrect(tree, 'apps/demo/test');
 
         expect(
           tree.read('apps/demo/test/remix.config.js', 'utf-8')
@@ -134,3 +139,22 @@ describe('Remix Application', () => {
     });
   });
 });
+
+function expectTargetsToBeCorrect(tree: Tree, projectRoot: string) {
+  const { targets } = readJson(
+    tree,
+    joinPathFragments(projectRoot === '.' ? '/' : projectRoot, 'project.json')
+  );
+  expect(targets.build).toBeTruthy();
+  expect(targets.build.command).toEqual('remix build');
+  expect(targets.build.options.cwd).toEqual(projectRoot);
+  expect(targets.serve).toBeTruthy();
+  expect(targets.serve.command).toEqual('remix dev');
+  expect(targets.serve.options.cwd).toEqual(projectRoot);
+  expect(targets.start).toBeTruthy();
+  expect(targets.start.command).toEqual('remix-serve build');
+  expect(targets.start.options.cwd).toEqual(projectRoot);
+  expect(targets.typecheck).toBeTruthy();
+  expect(targets.typecheck.command).toEqual('tsc');
+  expect(targets.typecheck.options.cwd).toEqual(projectRoot);
+}
