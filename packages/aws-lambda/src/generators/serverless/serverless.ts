@@ -44,6 +44,9 @@ export async function serverlessGenerator(tree: Tree, schema: Schema) {
 
   tasks.push(addAwsLamdaTask);
 
+  tree.delete('tools');
+  tree.delete('src');
+
   return runTasksInSerial(...tasks);
 }
 

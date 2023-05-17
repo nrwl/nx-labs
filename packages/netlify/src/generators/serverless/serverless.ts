@@ -44,6 +44,9 @@ export async function serverlessGenerator(tree: Tree, schema: Schema) {
     project: options.name,
   });
 
+  tree.delete('tools');
+  tree.delete('src');
+
   tasks.push(addServerlessTask);
 
   return runTasksInSerial(...tasks);
