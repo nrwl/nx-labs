@@ -52,14 +52,16 @@ describe('remix e2e', () => {
   }, 120000);
 
   describe('--directory', () => {
-    // TODO(Coly010) - Application does not have a directory option
-    // This test should have been failing, but it is not actually testing that the code is created in a specific directory
-    xit('should create src in the specified directory', async () => {
+    it('should create src in the specified directory', async () => {
       const plugin = uniq('remix');
+      const appName = `subdir-${plugin}`;
       await runNxCommandAsync(
-        `generate @nx/remix:app ${plugin} --directory subdir`
+        `generate @nx/remix:app ${plugin} --directory subdir --rootProject=false`
       );
-      const result = await runNxCommandAsync(`build ${plugin}`);
+      const project = readJson(`subdir/${plugin}/project.json`);
+      expect(project.targets.build.options.cwd).toEqual(`subdir/${plugin}`);
+
+      const result = await runNxCommandAsync(`build ${appName}`);
       expect(result.stdout).toContain('Successfully ran target build');
     }, 120000);
   });
