@@ -2,7 +2,6 @@ import {
   addProjectConfiguration,
   formatFiles,
   generateFiles,
-  getImportPath,
   getWorkspaceLayout,
   joinPathFragments,
   names,
@@ -10,6 +9,7 @@ import {
   ProjectConfiguration,
   Tree,
 } from '@nx/devkit';
+import { getImportPath } from '@nx/js/src/utils/get-import-path';
 import { join } from 'path';
 import { initDeno } from '../init/generator';
 import { addPathToDenoSettings } from '../utils/add-path';
@@ -49,8 +49,7 @@ function normalizeOptions(
     projectDirectory,
     parsedTags,
     addNodeEntrypoint: options.addNodeEntrypoint ?? false,
-    importPath:
-      options.importPath || getImportPath(layout.npmScope, projectName),
+    importPath: options.importPath || getImportPath(tree, projectName),
   };
 }
 

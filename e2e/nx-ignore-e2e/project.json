@@ -5,11 +5,12 @@
   "sourceRoot": "e2e/nx-ignore-e2e/src",
   "targets": {
     "e2e": {
-      "executor": "@nx/plugin:e2e",
+      "executor": "@nx/jest:jest",
       "options": {
-        "target": "nx-ignore:build",
-        "jestConfig": "e2e/nx-ignore-e2e/jest.config.js"
-      }
+        "jestConfig": "e2e/nx-ignore-e2e/jest.config.js",
+        "runInBand": true
+      },
+      "dependsOn": ["nx-ignore:build"]
     }
   },
   "tags": [],

@@ -5,13 +5,14 @@
   "sourceRoot": "e2e/deno-e2e/src",
   "targets": {
     "e2e": {
-      "executor": "@nx/plugin:e2e",
+      "executor": "@nx/jest:jest",
       "options": {
-        "target": "deno:build",
         "jestConfig": "e2e/deno-e2e/jest.config.ts",
         "bail": true,
-        "maxWorkers": 1
-      }
+        "maxWorkers": 1,
+        "runInBand": true
+      },
+      "dependsOn": ["deno:build"]
     }
   },
   "tags": [],
