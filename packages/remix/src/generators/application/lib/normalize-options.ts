@@ -1,4 +1,13 @@
-import { getWorkspaceLayout, joinPathFragments, names, Tree } from '@nx/devkit';
+import {
+  extractLayoutDirectory,
+  getWorkspaceLayout,
+  joinPathFragments,
+  Tree,
+} from '@nx/devkit';
+import {
+  normalizeDirectory,
+  normalizeProjectName,
+} from '../../../utils/project';
 import { NxRemixGeneratorSchema } from '../schema';
 
 export interface NormalizedSchema extends NxRemixGeneratorSchema {
@@ -11,12 +20,17 @@ export function normalizeOptions(
   tree: Tree,
   options: NxRemixGeneratorSchema
 ): NormalizedSchema {
-  const { appsDir } = getWorkspaceLayout(tree);
-  const name = names(options.name).fileName;
-  const projectName = name;
+  const { layoutDirectory, projectDirectory } = extractLayoutDirectory(
+    options.directory
+  );
+  const appDirectory = normalizeDirectory(options.name, projectDirectory);
+  const appName = normalizeProjectName(options.name, projectDirectory);
+  const { appsDir: defaultAppsDir } = getWorkspaceLayout(tree);
+  const appsDir = layoutDirectory ?? defaultAppsDir;
+  const projectName = appName;
   const projectRoot = options.rootProject
     ? '.'
-    : joinPathFragments(appsDir, name);
+    : joinPathFragments(appsDir, appDirectory);
   const parsedTags = options.tags
     ? options.tags.split(',').map((s) => s.trim())
     : [];
