@@ -8,9 +8,9 @@ export default async function (tree: Tree, options: PresetGeneratorSchema) {
   updateJson(tree, 'package.json', (json) => {
     json.scripts ??= {};
     json.scripts.lint ??= 'npx nx lint';
-    json.scripts.serve ??= 'npx nx serve';
     json.scripts.test ??= 'npx nx test';
-    json.scripts.deploy ??= 'npx nx deploy';
+    json.scripts['serve-functions'] ??= 'npx nx serve-functions';
+    json.scripts['deploy-functions'] ??= 'npx nx deploy-functions';
 
     return json;
   });

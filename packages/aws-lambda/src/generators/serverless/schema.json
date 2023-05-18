@@ -47,7 +47,7 @@
     "deployTarget": {
       "description": "The name of the deploy target",
       "type": "string",
-      "default": "deploy"
+      "default": "deploy-functions"
     },
     "lintTarget": {
       "description": "The name of the lint target",

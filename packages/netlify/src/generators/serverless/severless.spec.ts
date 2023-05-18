@@ -13,7 +13,6 @@ describe('serverless', () => {
 
     const project = readProjectConfiguration(tree, 'api');
     expect(tree.exists('netlify.toml'));
-    expect(tree.exists('src/main.ts'));
     expect(tree.exists('functions/hello/hello.ts'));
     expect(project.targets).toMatchObject({
       'serve-functions': {
@@ -24,5 +23,7 @@ describe('serverless', () => {
         command: 'npx netlify deploy',
       },
     });
+    expect(tree.exists('src')).toBeFalsy();
+    expect(tree.exists('tools')).toBeFalsy();
   });
 });
