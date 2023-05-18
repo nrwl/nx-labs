@@ -8,3 +8,4 @@ export * from './generators/preset/preset.impl';
 export * from './generators/resource-route/resource-route.impl';
 export * from './generators/route/route.impl';
 export * from './generators/style/style.impl';
+export { createWatchPaths } from './utils/create-watch-paths';

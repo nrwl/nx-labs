@@ -184,7 +184,7 @@ module.exports = {
   // assetsBuildDirectory: \\"public/build\\",
   // serverBuildPath: \\"build/index.js\\",
   // publicPath: \\"/build/\\",
-  watchPaths: ['../../libs'],
+  watchPaths: () => require('@nx/remix').createWatchPaths(__dirname),
 };
 "
 `;
@@ -271,7 +271,7 @@ module.exports = {
   // assetsBuildDirectory: \\"public/build\\",
   // serverBuildPath: \\"build/index.js\\",
   // publicPath: \\"/build/\\",
-  watchPaths: ['./libs'],
+  watchPaths: () => require('@nx/remix').createWatchPaths(__dirname),
 };
 "
 `;
