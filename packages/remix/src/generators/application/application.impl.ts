@@ -8,6 +8,7 @@ import {
   offsetFromRoot,
   readJson,
   runTasksInSerial,
+  toJS,
   Tree,
   updateJson,
 } from '@nx/devkit';
@@ -22,7 +23,7 @@ import {
   typesReactDomVersion,
   typesReactVersion,
 } from '../../utils/versions';
-import { normalizeOptions } from './lib/normalize-options';
+import { normalizeOptions } from './lib';
 import { NxRemixGeneratorSchema } from './schema';
 
 export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
@@ -118,6 +119,10 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
       options.projectRoot,
       vars
     );
+  }
+
+  if (options.js) {
+    toJS(tree);
   }
 
   if (options.rootProject && tree.exists('tsconfig.base.json')) {

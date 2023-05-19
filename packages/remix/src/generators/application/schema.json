@@ -13,6 +13,11 @@
       },
       "x-prompt": "What is the name of the application?"
     },
+    "js": {
+      "type": "boolean",
+      "description": "Generate JavaScript files rather than TypeScript files.",
+      "default": false
+    },
     "directory": {
       "type": "string",
       "description": "A directory where the app is placed.",

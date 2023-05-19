@@ -77,6 +77,16 @@ describe('remix e2e', () => {
     }, 120000);
   });
 
+  describe('--js', () => {
+    it('should create js app and build correctly', async () => {
+      const plugin = uniq('remix');
+      await runNxCommandAsync(`generate @nx/remix:app ${plugin} --js=true`);
+
+      const result = await runNxCommandAsync(`build ${plugin}`);
+      expect(result.stdout).toContain('Successfully ran target build');
+    }, 120000);
+  });
+
   describe('error checking', () => {
     const plugin = uniq('remix');
 
