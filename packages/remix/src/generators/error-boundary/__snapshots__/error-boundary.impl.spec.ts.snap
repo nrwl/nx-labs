@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorBoundary --apiVersion=1 should correctly add the ErrorBoundary to the route file 1`] = `
+"export function ErrorBoundary({ error }) {
+  console.error(error);
+  return (
+    <div>
+      <h1>Uh oh ...</h1>
+      <p>Something went wrong</p>
+      <pre>{error.message || 'Unknown error'}</pre>
+    </div>
+  );
+}
+"
+`;
+
+exports[`ErrorBoundary --apiVersion=2 should correctly add the ErrorBoundary to the route file 1`] = `
+"import { isRouteErrorResponse, useRouteError } from '@remix-run/react';
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  // when true, this is what used to go to 'CatchBoundary'
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        <h1>Oops</h1>
+        <p>Status: {error.status}</p>
+        <p>{error.data.message}</p>
+      </div>
+    );
+  }
+
+  // Don't forget to typecheck with your own logic.
+  // Any value can be thrown, not just errors!
+  let errorMessage = 'Unknown error';
+  // if (isDefinitelyAnError(error)) {
+  //    errorMessage = error.message;
+  // }
+
+  return (
+    <div>
+      <h1>Uh oh ...</h1>
+      <p>Something went wrong.</p>
+      <pre>{errorMessage}</pre>
+    </div>
+  );
+}
+"
+`;
