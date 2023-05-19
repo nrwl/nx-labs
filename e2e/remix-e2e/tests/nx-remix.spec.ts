@@ -87,6 +87,18 @@ describe('remix e2e', () => {
     }, 120000);
   });
 
+  describe('--unitTestRunner', () => {
+    it('should generate a library with vitest and test correctly', async () => {
+      const plugin = uniq('remix');
+      await runNxCommandAsync(
+        `generate @nx/remix:library ${plugin} --unitTestRunner=vitest`
+      );
+
+      const result = await runNxCommandAsync(`test ${plugin}`);
+      expect(result.stdout).toContain(`Successfully ran target test`);
+    }, 120_000);
+  });
+
   describe('error checking', () => {
     const plugin = uniq('remix');
 

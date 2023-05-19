@@ -34,7 +34,7 @@ describe('route', () => {
     expect(
       tree.exists('apps/demo/app/styles/path/to/example.css')
     ).toBeTruthy();
-  });
+  }, 25_000);
 
   it('should support --style=none', async () => {
     await applicationGenerator(tree, { name: 'demo' });

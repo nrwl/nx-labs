@@ -7,6 +7,7 @@ export interface NxRemixGeneratorSchema {
   tags?: string;
   importPath?: string;
   buildable?: boolean;
+  unitTestRunner?: 'jest' | 'vitest' | 'none';
   js?: boolean;
   skipFormat?: boolean;
 }

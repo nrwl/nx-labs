@@ -28,6 +28,7 @@ export function normalizeOptions(
 
   return {
     ...options,
+    unitTestRunner: options.unitTestRunner ?? 'vitest',
     name,
     importPath,
     projectName,
