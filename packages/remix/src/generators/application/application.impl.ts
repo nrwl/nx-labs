@@ -1,6 +1,7 @@
 import {
   addDependenciesToPackageJson,
   addProjectConfiguration,
+  ensurePackage,
   formatFiles,
   generateFiles,
   GeneratorCallback,
@@ -15,6 +16,7 @@ import {
 import { extractTsConfigBase } from '@nx/js/src/utils/typescript/create-ts-config';
 import {
   eslintVersion,
+  getPackageVersion,
   isbotVersion,
   reactDomVersion,
   reactVersion,
@@ -23,7 +25,7 @@ import {
   typesReactDomVersion,
   typesReactVersion,
 } from '../../utils/versions';
-import { normalizeOptions } from './lib';
+import { normalizeOptions, updateViteTestIncludes } from './lib';
 import { NxRemixGeneratorSchema } from './schema';
 
 export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
@@ -118,6 +120,27 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
       joinPathFragments(__dirname, 'files/integrated'),
       options.projectRoot,
       vars
+    );
+  }
+
+  if (options.unitTestRunner === 'vitest') {
+    const { vitestGenerator } = ensurePackage<typeof import('@nx/vite')>(
+      '@nx/vite',
+      getPackageVersion(tree, 'nx')
+    );
+
+    const vitestTask = await vitestGenerator(tree, {
+      uiFramework: 'react',
+      project: options.projectName,
+      coverageProvider: 'c8',
+      inSourceTests: false,
+      skipFormat: true,
+    });
+    tasks.push(vitestTask);
+
+    updateViteTestIncludes(
+      tree,
+      joinPathFragments(options.projectRoot, 'vite.config.ts')
     );
   }
 

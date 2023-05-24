@@ -24,6 +24,13 @@
       "alias": "dir",
       "x-priority": "important"
     },
+    "unitTestRunner": {
+      "type": "string",
+      "enum": ["vitest", "none"],
+      "default": "vitest",
+      "description": "Test runner to use for unit tests.",
+      "x-prompt": "What unit test runner should be used?"
+    },
     "tags": {
       "type": "string",
       "description": "Add tags to the project (used for linting)",
