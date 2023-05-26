@@ -47,8 +47,11 @@ describe('remix e2e', () => {
     const plugin = uniq('remix');
     await runNxCommandAsync(`generate @nx/remix:app ${plugin}`);
 
-    const result = await runNxCommandAsync(`build ${plugin}`);
-    expect(result.stdout).toContain('Successfully ran target build');
+    const buildResult = await runNxCommandAsync(`build ${plugin}`);
+    expect(buildResult.stdout).toContain('Successfully ran target build');
+
+    const testResult = await runNxCommandAsync(`test ${plugin}`);
+    expect(testResult.stdout).toContain('Successfully ran target test');
   }, 120000);
 
   describe('--directory', () => {

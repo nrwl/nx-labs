@@ -43,6 +43,26 @@ describe('Remix Application', () => {
         expect(tree.read('app/routes/index.js', 'utf-8')).toMatchSnapshot();
       });
     });
+
+    describe('--unitTestRunner', () => {
+      it('should generate the correct files for testing', async () => {
+        // ARRANGE
+        const tree = createTreeWithEmptyWorkspace();
+
+        // ACT
+        await applicationGenerator(tree, {
+          name: 'test',
+          unitTestRunner: 'vitest',
+          rootProject: true,
+        });
+
+        // ASSERT
+        expectTargetsToBeCorrect(tree, '.');
+
+        expect(tree.read('remix.config.js', 'utf-8')).toMatchSnapshot();
+        expect(tree.read('vite.config.ts', 'utf-8')).toMatchSnapshot();
+      });
+    });
   });
 
   describe('Integrated Repo', () => {
@@ -134,6 +154,29 @@ describe('Remix Application', () => {
         ).toMatchSnapshot();
         expect(
           tree.read('apps/demo/test/app/routes/index.tsx', 'utf-8')
+        ).toMatchSnapshot();
+      });
+    });
+
+    describe('--unitTestRunner', () => {
+      it('should generate the correct files for testing', async () => {
+        // ARRANGE
+        const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
+
+        // ACT
+        await applicationGenerator(tree, {
+          name: 'test',
+          unitTestRunner: 'vitest',
+        });
+
+        // ASSERT
+        expectTargetsToBeCorrect(tree, 'apps/test');
+
+        expect(
+          tree.read('apps/test/remix.config.js', 'utf-8')
+        ).toMatchSnapshot();
+        expect(
+          tree.read('apps/test/vite.config.ts', 'utf-8')
         ).toMatchSnapshot();
       });
     });

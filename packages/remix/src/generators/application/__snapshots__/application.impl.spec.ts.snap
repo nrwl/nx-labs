@@ -258,6 +258,58 @@ exports[`Remix Application Integrated Repo --js should create the application co
 "
 `;
 
+exports[`Remix Application Integrated Repo --unitTestRunner should generate the correct files for testing 1`] = `
+"/**
+ * @type {import('@remix-run/dev').AppConfig}
+ */
+module.exports = {
+  ignoredRouteFiles: ['**/.*'],
+  // appDirectory: \\"app\\",
+  // assetsBuildDirectory: \\"public/build\\",
+  // serverBuildPath: \\"build/index.js\\",
+  // publicPath: \\"/build/\\",
+  watchPaths: () => require('@nx/remix').createWatchPaths(__dirname),
+};
+"
+`;
+
+exports[`Remix Application Integrated Repo --unitTestRunner should generate the correct files for testing 2`] = `
+"/// <reference types=\\"vitest\\" />
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+import viteTsConfigPaths from 'vite-tsconfig-paths';
+
+export default defineConfig({
+  cacheDir: '../../node_modules/.vite/test',
+
+  plugins: [
+    react(),
+    viteTsConfigPaths({
+      root: '../../',
+    }),
+  ],
+
+  // Uncomment this if you are using workers.
+  // worker: {
+  //  plugins: [
+  //    viteTsConfigPaths({
+  //      root: '../../',
+  //    }),
+  //  ],
+  // },
+
+  test: {
+    globals: true,
+    cache: {
+      dir: '../../node_modules/.vitest',
+    },
+    environment: 'jsdom',
+    include: ['./app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+  },
+});
+"
+`;
+
 exports[`Remix Application Integrated Repo should create the application correctly 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
@@ -426,6 +478,58 @@ exports[`Remix Application Standalone Project Repo --js should create the applic
     </div>
   );
 }
+"
+`;
+
+exports[`Remix Application Standalone Project Repo --unitTestRunner should generate the correct files for testing 1`] = `
+"/**
+ * @type {import('@remix-run/dev').AppConfig}
+ */
+module.exports = {
+  ignoredRouteFiles: ['**/.*'],
+  // appDirectory: \\"app\\",
+  // assetsBuildDirectory: \\"public/build\\",
+  // serverBuildPath: \\"build/index.js\\",
+  // publicPath: \\"/build/\\",
+  watchPaths: () => require('@nx/remix').createWatchPaths(__dirname),
+};
+"
+`;
+
+exports[`Remix Application Standalone Project Repo --unitTestRunner should generate the correct files for testing 2`] = `
+"/// <reference types=\\"vitest\\" />
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+import viteTsConfigPaths from 'vite-tsconfig-paths';
+
+export default defineConfig({
+  cacheDir: './node_modules/.vite/test',
+
+  plugins: [
+    react(),
+    viteTsConfigPaths({
+      root: './',
+    }),
+  ],
+
+  // Uncomment this if you are using workers.
+  // worker: {
+  //  plugins: [
+  //    viteTsConfigPaths({
+  //      root: './',
+  //    }),
+  //  ],
+  // },
+
+  test: {
+    globals: true,
+    cache: {
+      dir: './node_modules/.vitest',
+    },
+    environment: 'jsdom',
+    include: ['./app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+  },
+});
 "
 `;
 
