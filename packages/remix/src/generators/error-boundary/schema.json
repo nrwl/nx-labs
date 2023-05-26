@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "NxRemixErrorBoundary",
+  "title": "Create an ErrorBoundary for a Route",
+  "type": "object",
+  "examples": [
+    {
+      "command": "g error-boundary --project=myapp --routePath=app/routes/my-route.tsx",
+      "description": "Generate an ErrorBoundary for my-route.tsx"
+    }
+  ],
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      },
+      "x-prompt": "What project contains the route file that this ErrorBoundary is for?",
+      "pattern": "^[a-zA-Z].*$"
+    },
+    "path": {
+      "type": "string",
+      "description": "The path to route file relative to the project root."
+    },
+    "apiVersion": {
+      "type": "number",
+      "description": "Which version of the ErrorBoundary convention to use for the route.",
+      "default": 1
+    },
+    "skipFormat": {
+      "type": "boolean",
+      "description": "Skip formatting files after generation.",
+      "default": false,
+      "x-priority": "internal"
+    }
+  },
+  "required": ["project", "path"]
+}

@@ -60,6 +60,11 @@
       "schema": "./src/generators/meta/schema.json",
       "description": "Add a meta function to an existing route"
     },
+    "error-boundary": {
+      "implementation": "./src/generators/error-boundary/error-boundary.impl",
+      "schema": "./src/generators/error-boundary/schema.json",
+      "description": "Add an ErrorBoundary to an existing route"
+    },
     "cypress": {
       "implementation": "./src/generators/cypress/cypress.impl",
       "schema": "./src/generators/cypress/schema.json",
