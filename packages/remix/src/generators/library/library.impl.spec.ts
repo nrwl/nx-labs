@@ -1,5 +1,6 @@
 import { readJson, readProjectConfiguration } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
+import applicationGenerator from '../application/application.impl';
 import libraryGenerator from './library.impl';
 
 describe('Remix Library Generator', () => {
@@ -33,6 +34,30 @@ describe('Remix Library Generator', () => {
         ],
       }
     `);
+  });
+
+  describe('Standalone Project Repo', () => {
+    it('should update the tsconfig paths correctly', async () => {
+      // ARRANGE
+      const tree = createTreeWithEmptyWorkspace();
+      await applicationGenerator(tree, {
+        name: 'demo',
+        rootProject: true,
+      });
+      const originalBaseTsConfig = readJson(tree, 'tsconfig.json');
+
+      // ACT
+      await libraryGenerator(tree, { name: 'test', style: 'css' });
+
+      // ASSERT
+      const updatedBaseTsConfig = readJson(tree, 'tsconfig.base.json');
+      expect(Object.keys(originalBaseTsConfig.compilerOptions.paths)).toContain(
+        '~/*'
+      );
+      expect(Object.keys(updatedBaseTsConfig.compilerOptions.paths)).toContain(
+        '~/*'
+      );
+    });
   });
 
   // TODO(Colum): Unskip this when buildable is investigated correctly
