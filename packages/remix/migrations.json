@@ -120,6 +120,35 @@
         "version": "^1.15.0",
         "alwaysAddToPackageJson": true
       }
+    },
+    "16.3.0": {
+      "version": "16.3.0",
+      "packages": {
+        "@remix-run/node": {
+          "version": "^1.16.1",
+          "alwaysAddToPackageJson": true
+        },
+        "@remix-run/react": {
+          "version": "^1.16.1",
+          "alwaysAddToPackageJson": true
+        },
+        "@remix-run/serve": {
+          "version": "^1.16.1",
+          "alwaysAddToPackageJson": true
+        },
+        "@remix-run/dev": {
+          "version": "^1.16.1",
+          "alwaysAddToPackageJson": true
+        },
+        "@remix-run/eslint-config": {
+          "version": "^1.16.1",
+          "alwaysAddToPackageJson": true
+        },
+        "isbot": {
+          "version": "^3.6.8",
+          "alwaysAddToPackageJson": true
+        }
+      }
     }
   }
 }

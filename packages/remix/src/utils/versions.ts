@@ -1,7 +1,7 @@
 import { readJson, Tree } from '@nx/devkit';
 
-export const remixVersion = '^1.15.0';
-export const isbotVersion = '^3.6.5';
+export const remixVersion = '^1.16.1';
+export const isbotVersion = '^3.6.8';
 export const reactVersion = '^18.2.0';
 export const reactDomVersion = '^18.2.0';
 export const typesReactVersion = '^18.0.25';
