@@ -42,6 +42,25 @@ describe('setupFunctionsGenerator', () => {
     );
   });
 
+  it('should contain functions folder lint pattern', async () => {
+    await applicationGenerator(tree, {
+      name: 'api',
+      framework: 'express',
+      rootProject: true,
+      docker: false,
+    });
+
+    await setupFunctionsGenerator(tree, {
+      project: 'api',
+    });
+
+    const project = readProjectConfiguration(tree, 'api');
+
+    expect(project.targets.lint.options.lintFilePatterns).toContain(
+      './functions/**/*.ts'
+    );
+  });
+
   it('should support standalone projects', async () => {
     await applicationGenerator(tree, {
       name: 'api',
