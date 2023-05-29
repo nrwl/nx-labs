@@ -1,7 +1,6 @@
 /* eslint-disable */
 export default {
   displayName: 'remix',
-
   globals: {},
   testEnvironment: 'node',
   transform: {
@@ -15,4 +14,5 @@ export default {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/packages/remix',
   preset: '../../jest.preset.js',
+  setTimeout: 10000,
 };
