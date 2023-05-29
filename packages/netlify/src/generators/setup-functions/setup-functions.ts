@@ -53,6 +53,12 @@ async function addTargets(tree: Tree, options: SetupFunctionsSchema) {
   projectConfig.targets ??= {};
 
   if (projectConfig) {
+    if (projectConfig.targets?.lint) {
+      projectConfig.targets.lint.options.lintFilePatterns = [
+        ...(projectConfig.targets.lint.options.lintFilePatterns || []),
+        './functions/**/*.ts',
+      ];
+    }
     projectConfig.targets[`${options.serveTarget}`] = {
       command: 'npx netlify dev',
     };
