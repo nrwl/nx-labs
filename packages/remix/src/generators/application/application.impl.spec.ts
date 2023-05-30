@@ -61,6 +61,12 @@ describe('Remix Application', () => {
 
         expect(tree.read('remix.config.js', 'utf-8')).toMatchSnapshot();
         expect(tree.read('vite.config.ts', 'utf-8')).toMatchSnapshot();
+        expect(tree.read('test-setup.ts', 'utf-8')).toMatchInlineSnapshot(`
+          "import { installGlobals } from '@remix-run/node';
+          import '@testing-library/jest-dom/extend-expect';
+          installGlobals();
+          "
+        `);
       });
     });
   });
@@ -178,6 +184,13 @@ describe('Remix Application', () => {
         expect(
           tree.read('apps/test/vite.config.ts', 'utf-8')
         ).toMatchSnapshot();
+        expect(tree.read('apps/test/test-setup.ts', 'utf-8'))
+          .toMatchInlineSnapshot(`
+          "import { installGlobals } from '@remix-run/node';
+          import '@testing-library/jest-dom/extend-expect';
+          installGlobals();
+          "
+        `);
       });
     });
   });
