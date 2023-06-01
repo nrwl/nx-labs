@@ -25,7 +25,7 @@ import {
   typesReactDomVersion,
   typesReactVersion,
 } from '../../utils/versions';
-import { normalizeOptions, updateViteTestIncludes } from './lib';
+import { normalizeOptions, updateViteTestConfig } from './lib';
 import { NxRemixGeneratorSchema } from './schema';
 
 export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
@@ -136,12 +136,11 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
       inSourceTests: false,
       skipFormat: true,
     });
-    tasks.push(vitestTask);
 
-    updateViteTestIncludes(
-      tree,
-      joinPathFragments(options.projectRoot, 'vite.config.ts')
-    );
+    const pkgInstallTask = updateViteTestConfig(tree, options.projectRoot);
+
+    tasks.push(vitestTask);
+    tasks.push(pkgInstallTask);
   }
 
   if (options.js) {

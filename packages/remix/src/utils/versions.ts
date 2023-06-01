@@ -12,6 +12,10 @@ export const testingLibraryReactVersion = '^14.0.0';
 export const testingLibraryJestDomVersion = '^5.16.5';
 export const testingLibraryUserEventsVersion = '^14.4.3';
 
+export const testingLibraryReactVersion = '^14.0.0';
+export const testingLibraryJestDomVersion = '^5.16.5';
+export const testingLibraryUserEventsVersion = '^14.4.3';
+
 export function getRemixVersion(tree: Tree): string {
   return getPackageVersion(tree, '@remix-run/dev') ?? remixVersion;
 }
