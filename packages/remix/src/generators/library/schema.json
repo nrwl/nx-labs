@@ -33,16 +33,20 @@
     "style": {
       "type": "string",
       "description": "Generate a stylesheet",
-      "enum": [
-        "none",
-        "css"
-      ],
+      "enum": ["none", "css"],
       "default": "css"
     },
     "buildable": {
       "type": "boolean",
       "description": "Should the library be buildable?",
       "default": false
+    },
+    "unitTestRunner": {
+      "type": "string",
+      "enum": ["jest", "vitest", "none"],
+      "description": "Test Runner to use for Unit Tests",
+      "x-prompt": "What test runner should be used?",
+      "default": "vitest"
     },
     "importPath": {
       "type": "string",
@@ -60,7 +64,5 @@
       "x-priority": "internal"
     }
   },
-  "required": [
-    "name"
-  ]
+  "required": ["name"]
 }

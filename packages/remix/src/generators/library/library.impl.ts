@@ -1,9 +1,10 @@
 import type { Tree } from '@nx/devkit';
 import { formatFiles, GeneratorCallback, runTasksInSerial } from '@nx/devkit';
 import { Linter } from '@nx/linter';
-import { libraryGenerator } from '@nx/react/src/generators/library/library';
+import { libraryGenerator } from '@nx/react';
 import {
   addTsconfigEntryPoints,
+  addUnitTestingSetup,
   normalizeOptions,
   updateBuildableConfig,
 } from './lib';
@@ -16,7 +17,7 @@ export default async function (tree: Tree, schema: NxRemixGeneratorSchema) {
   const libGenTask = await libraryGenerator(tree, {
     name: options.name,
     style: options.style,
-    unitTestRunner: 'jest',
+    unitTestRunner: options.unitTestRunner,
     tags: options.tags,
     importPath: options.importPath,
     directory: options.directory,
@@ -27,6 +28,11 @@ export default async function (tree: Tree, schema: NxRemixGeneratorSchema) {
     buildable: options.buildable,
   });
   tasks.push(libGenTask);
+
+  if (options.unitTestRunner && options.unitTestRunner !== 'none') {
+    const pkgInstallTask = addUnitTestingSetup(tree, options);
+    tasks.push(pkgInstallTask);
+  }
 
   addTsconfigEntryPoints(tree, options);
 
