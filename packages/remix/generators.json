@@ -55,6 +55,11 @@
       "schema": "./src/generators/style/schema.json",
       "description": "Generates a new stylesheet and adds it to an existing route"
     },
+    "setup-tailwind": {
+      "implementation": "./src/generators/setup-tailwind/setup-tailwind.impl",
+      "schema": "./src/generators/setup-tailwind/schema.json",
+      "description": "Generates a TailwindCSS configuration for the Remix application"
+    },
     "meta": {
       "implementation": "./src/generators/meta/meta.impl",
       "schema": "./src/generators/meta/schema.json",
