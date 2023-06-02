@@ -5,14 +5,14 @@ import {
   type Tree,
 } from '@nx/devkit';
 import {
+  updateViteTestIncludes,
+  updateViteTestSetup,
+} from '../../../utils/testing-config-utils';
+import {
   testingLibraryJestDomVersion,
   testingLibraryReactVersion,
   testingLibraryUserEventsVersion,
 } from '../../../utils/versions';
-import {
-  updateViteTestIncludes,
-  updateViteTestSetup,
-} from '../../../utils/vitest-config-utils';
 
 export function updateViteTestConfig(tree: Tree, pathToRoot: string) {
   const pathToViteConfig = joinPathFragments(pathToRoot, 'vite.config.ts');
