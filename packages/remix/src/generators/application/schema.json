@@ -31,6 +31,12 @@
       "description": "Test runner to use for unit tests.",
       "x-prompt": "What unit test runner should be used?"
     },
+    "e2eTestRunner": {
+      "type": "string",
+      "enum": ["cypress", "none"],
+      "default": "cypress",
+      "description": "Test runner to use for e2e tests"
+    },
     "tags": {
       "type": "string",
       "description": "Add tags to the project (used for linting)",

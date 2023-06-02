@@ -69,6 +69,34 @@ describe('Remix Application', () => {
         `);
       });
     });
+
+    describe('--e2eTestRunner', () => {
+      it('should generate an e2e application for the app', async () => {
+        // ARRANGE
+        const tree = createTreeWithEmptyWorkspace();
+
+        // ACT
+        await applicationGenerator(tree, {
+          name: 'test',
+          e2eTestRunner: 'cypress',
+          rootProject: true,
+        });
+
+        // ASSERT
+        expectTargetsToBeCorrect(tree, '.');
+
+        expect(tree.read('e2e/cypress.config.ts', 'utf-8'))
+          .toMatchInlineSnapshot(`
+          "import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
+          import { defineConfig } from 'cypress';
+
+          export default defineConfig({
+            e2e: nxE2EPreset(__dirname),
+          });
+          "
+        `);
+      });
+    });
   });
 
   describe('Integrated Repo', () => {
@@ -189,6 +217,33 @@ describe('Remix Application', () => {
           "import { installGlobals } from '@remix-run/node';
           import '@testing-library/jest-dom/extend-expect';
           installGlobals();
+          "
+        `);
+      });
+    });
+
+    describe('--e2eTestRunner', () => {
+      it('should generate an e2e application for the app', async () => {
+        // ARRANGE
+        const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
+
+        // ACT
+        await applicationGenerator(tree, {
+          name: 'test',
+          e2eTestRunner: 'cypress',
+        });
+
+        // ASSERT
+        expectTargetsToBeCorrect(tree, 'apps/test');
+
+        expect(tree.read('apps/test-e2e/cypress.config.ts', 'utf-8'))
+          .toMatchInlineSnapshot(`
+          "import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
+          import { defineConfig } from 'cypress';
+
+          export default defineConfig({
+            e2e: nxE2EPreset(__dirname),
+          });
           "
         `);
       });

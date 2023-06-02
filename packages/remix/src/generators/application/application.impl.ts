@@ -25,6 +25,7 @@ import {
   typesReactDomVersion,
   typesReactVersion,
 } from '../../utils/versions';
+import cypressGenerator from '../cypress/cypress.impl';
 import { normalizeOptions, updateViteTestConfig } from './lib';
 import { NxRemixGeneratorSchema } from './schema';
 
@@ -175,6 +176,14 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
   } else {
     // Otherwise, extract the tsconfig.base.json from tsconfig.json so we can share settings.
     extractTsConfigBase(tree);
+  }
+
+  if (options.e2eTestRunner === 'cypress') {
+    const cypressTasks = await cypressGenerator(tree, {
+      project: options.projectName,
+      name: options.rootProject ? `e2e` : `${options.projectName}-e2e`,
+    });
+    tasks.push(cypressTasks);
   }
 
   if (!options.skipFormat) {
