@@ -46,6 +46,49 @@ export function updateViteTestSetup(
   }
 }
 
+export function updateJestTestSetup(
+  tree: Tree,
+  pathToJestConfig: string,
+  pathToTestSetup: string
+) {
+  const fileContents = tree.read(pathToJestConfig, 'utf-8');
+
+  const ast = tsquery.ast(fileContents);
+
+  const TEST_SETUPFILES_SELECTOR =
+    'PropertyAssignment:has(Identifier[name=setupFilesAfterEnv])';
+  const nodes = tsquery(ast, TEST_SETUPFILES_SELECTOR, {
+    visitAllChildren: true,
+  });
+
+  if (nodes.length === 0) {
+    const CONFIG_SELECTOR = 'ObjectLiteralExpression';
+    const nodes = tsquery(ast, CONFIG_SELECTOR, { visitAllChildren: true });
+
+    const updatedFileContents = stripIndents`${fileContents.slice(
+      0,
+      nodes[0].getStart() + 1
+    )}setupFilesAfterEnv: ['${pathToTestSetup}'],${fileContents.slice(
+      nodes[0].getStart() + 1
+    )}`;
+    tree.write(pathToJestConfig, updatedFileContents);
+  } else {
+    const arrayNodes = tsquery(nodes[0], 'ArrayLiteralExpression', {
+      visitAllChildren: true,
+    });
+    if (arrayNodes.length !== 0) {
+      const updatedFileContents = stripIndents`${fileContents.slice(
+        0,
+        arrayNodes[0].getStart() + 1
+      )}'${pathToTestSetup}',${fileContents.slice(
+        arrayNodes[0].getStart() + 1
+      )}`;
+
+      tree.write(pathToJestConfig, updatedFileContents);
+    }
+  }
+}
+
 export function updateViteTestIncludes(
   tree: Tree,
   pathToViteConfig: string,
