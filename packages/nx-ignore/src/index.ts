@@ -19,7 +19,12 @@ const customBase = args.find(
 const customRoot = args.find(
   (s) => s.startsWith('--root=') || s.startsWith('--root ')
 ) as string;
-const vercelBase = process.env['VERCEL_GIT_PREVIOUS_SHA'];
+// Platform specific environment variables.
+// See:
+// - https://vercel.com/docs/concepts/projects/environment-variables#system-environment-variables
+// - https://docs.netlify.com/configure-builds/environment-variables/#git-metadata
+const defaultBase =
+  process.env['CACHED_COMMIT_REF'] || process.env['VERCEL_GIT_PREVIOUS_SHA'];
 const userDefinedPluginsArg = args.find(
   (s) => s.startsWith('--plugins=') || s.startsWith('--plugins ')
 ) as string;
@@ -29,7 +34,7 @@ const userDefinedPlugins = userDefinedPluginsArg
 const isVerbose = args.some((s) => s === '--verbose');
 const headSha = 'HEAD';
 const userDefinedRoot = customRoot ? customRoot.slice(7) : null;
-let baseSha = customBase ? customBase.slice(7) : vercelBase || 'HEAD^';
+let baseSha = customBase ? customBase.slice(7) : defaultBase || 'HEAD^';
 
 if (!project) {
   console.log('≫ No project passed to nx-ignore script');
