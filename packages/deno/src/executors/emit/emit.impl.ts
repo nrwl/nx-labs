@@ -1,4 +1,9 @@
-import { ExecutorContext, logger, stripIndents } from '@nx/devkit';
+import {
+  ExecutorContext,
+  joinPathFragments,
+  logger,
+  stripIndents,
+} from '@nx/devkit';
 import * as chalk from 'chalk';
 import { dirname, join, resolve } from 'path';
 import { BuildExecutorSchema } from './schema';
@@ -76,26 +81,32 @@ function createTempEmitFile(
     project.data.root,
     'deno-emit.ts'
   );
-  const mainFilePath = join(context.root, options.main);
-  const outputFilePath = join(context.root, options.outputFile);
+  // on windows paths get mistranslated to single slash, C:\blah, which causes issues in deno.
+  // use unix style path with file:/// protocol instead to avoid this.
+  const mainFilePath = joinPathFragments(context.root, options.main);
+  const outputFilePath = joinPathFragments(context.root, options.outputFile);
 
   const content = options.bundle
     ? stripIndents`
-      import { bundle } from "https://deno.land/x/emit/mod.ts";
+      import { bundle } from "https://deno.land/x/emit@0.24.0/mod.ts";
+      await Deno.mkdir("${dirname(outputFilePath)}", { recursive: true });
+
       const result = await bundle(
-        new URL('${mainFilePath}', import.meta.url),
+        new URL("file:///${mainFilePath}", import.meta.url),
       );
 
       const { code } = result;
-      Deno.writeTextFile('${outputFilePath}', code);
+      await Deno.writeTextFile("${outputFilePath}", code);
     `
     : stripIndents`
-      import { emit } from "https://deno.land/x/emit/mod.ts";
-      const url = new URL('${join(mainFilePath)}', import.meta.url);
-      const result = await emit(url);
+      import { transpile } from "https://deno.land/x/emit@0.24.0/mod.ts";
+      await Deno.mkdir("${dirname(outputFilePath)}", { recursive: true });
 
-      const code = result[url.href];
-      Deno.writeTextFile('${outputFilePath}', code);
+      const url = new URL("file:///${mainFilePath}", import.meta.url);
+      const result = await transpile(url.href);
+
+      const code = result.get(url.href);
+      await Deno.writeTextFile("${outputFilePath}", code);
     `;
 
   process.on('exit', () => cleanupTmpBundleFile(tmpBundleFile));
