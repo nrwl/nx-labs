@@ -3,7 +3,7 @@ export interface NxRemixGeneratorSchema {
   tags?: string;
   js?: boolean;
   directory?: string;
-  unitTestRunner?: 'vitest' | 'none';
+  unitTestRunner?: 'vitest' | 'jest' | 'none';
   e2eTestRunner?: 'cypress' | 'none';
   skipFormat?: boolean;
   rootProject?: boolean;

@@ -26,7 +26,7 @@ import {
   typesReactVersion,
 } from '../../utils/versions';
 import cypressGenerator from '../cypress/cypress.impl';
-import { normalizeOptions, updateViteTestConfig } from './lib';
+import { normalizeOptions, updateUnitTestConfig } from './lib';
 import { NxRemixGeneratorSchema } from './schema';
 
 export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
@@ -124,23 +124,42 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
     );
   }
 
-  if (options.unitTestRunner === 'vitest') {
-    const { vitestGenerator } = ensurePackage<typeof import('@nx/vite')>(
-      '@nx/vite',
-      getPackageVersion(tree, 'nx')
+  if (options.unitTestRunner !== 'none') {
+    if (options.unitTestRunner === 'vitest') {
+      const { vitestGenerator } = ensurePackage<typeof import('@nx/vite')>(
+        '@nx/vite',
+        getPackageVersion(tree, 'nx')
+      );
+
+      const vitestTask = await vitestGenerator(tree, {
+        uiFramework: 'react',
+        project: options.projectName,
+        coverageProvider: 'c8',
+        inSourceTests: false,
+        skipFormat: true,
+      });
+      tasks.push(vitestTask);
+    } else {
+      const { jestProjectGenerator } = ensurePackage<typeof import('@nx/jest')>(
+        '@nx/jest',
+        getPackageVersion(tree, 'nx')
+      );
+
+      const jestTask = await jestProjectGenerator(tree, {
+        project: options.projectName,
+        skipFormat: true,
+        setupFile: 'none',
+        supportTsx: true,
+      });
+
+      tasks.push(jestTask);
+    }
+
+    const pkgInstallTask = updateUnitTestConfig(
+      tree,
+      options.projectRoot,
+      options.unitTestRunner
     );
-
-    const vitestTask = await vitestGenerator(tree, {
-      uiFramework: 'react',
-      project: options.projectName,
-      coverageProvider: 'c8',
-      inSourceTests: false,
-      skipFormat: true,
-    });
-
-    const pkgInstallTask = updateViteTestConfig(tree, options.projectRoot);
-
-    tasks.push(vitestTask);
     tasks.push(pkgInstallTask);
   }
 

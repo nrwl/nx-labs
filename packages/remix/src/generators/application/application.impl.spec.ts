@@ -45,7 +45,7 @@ describe('Remix Application', () => {
     });
 
     describe('--unitTestRunner', () => {
-      it('should generate the correct files for testing', async () => {
+      it('should generate the correct files for testing using vitest', async () => {
         // ARRANGE
         const tree = createTreeWithEmptyWorkspace();
 
@@ -61,6 +61,30 @@ describe('Remix Application', () => {
 
         expect(tree.read('remix.config.js', 'utf-8')).toMatchSnapshot();
         expect(tree.read('vite.config.ts', 'utf-8')).toMatchSnapshot();
+        expect(tree.read('test-setup.ts', 'utf-8')).toMatchInlineSnapshot(`
+          "import { installGlobals } from '@remix-run/node';
+          import '@testing-library/jest-dom/extend-expect';
+          installGlobals();
+          "
+        `);
+      });
+
+      it('should generate the correct files for testing using jest', async () => {
+        // ARRANGE
+        const tree = createTreeWithEmptyWorkspace();
+
+        // ACT
+        await applicationGenerator(tree, {
+          name: 'test',
+          unitTestRunner: 'jest',
+          rootProject: true,
+        });
+
+        // ASSERT
+        expectTargetsToBeCorrect(tree, '.');
+
+        expect(tree.read('remix.config.js', 'utf-8')).toMatchSnapshot();
+        expect(tree.read('jest.config.ts', 'utf-8')).toMatchSnapshot();
         expect(tree.read('test-setup.ts', 'utf-8')).toMatchInlineSnapshot(`
           "import { installGlobals } from '@remix-run/node';
           import '@testing-library/jest-dom/extend-expect';
@@ -193,7 +217,7 @@ describe('Remix Application', () => {
     });
 
     describe('--unitTestRunner', () => {
-      it('should generate the correct files for testing', async () => {
+      it('should generate the correct files for testing using vitest', async () => {
         // ARRANGE
         const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
 
@@ -211,6 +235,34 @@ describe('Remix Application', () => {
         ).toMatchSnapshot();
         expect(
           tree.read('apps/test/vite.config.ts', 'utf-8')
+        ).toMatchSnapshot();
+        expect(tree.read('apps/test/test-setup.ts', 'utf-8'))
+          .toMatchInlineSnapshot(`
+          "import { installGlobals } from '@remix-run/node';
+          import '@testing-library/jest-dom/extend-expect';
+          installGlobals();
+          "
+        `);
+      });
+
+      it('should generate the correct files for testing using jest', async () => {
+        // ARRANGE
+        const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
+
+        // ACT
+        await applicationGenerator(tree, {
+          name: 'test',
+          unitTestRunner: 'jest',
+        });
+
+        // ASSERT
+        expectTargetsToBeCorrect(tree, 'apps/test');
+
+        expect(
+          tree.read('apps/test/remix.config.js', 'utf-8')
+        ).toMatchSnapshot();
+        expect(
+          tree.read('apps/test/jest.config.ts', 'utf-8')
         ).toMatchSnapshot();
         expect(tree.read('apps/test/test-setup.ts', 'utf-8'))
           .toMatchInlineSnapshot(`

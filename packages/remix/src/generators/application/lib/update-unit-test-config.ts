@@ -5,6 +5,7 @@ import {
   type Tree,
 } from '@nx/devkit';
 import {
+  updateJestTestSetup,
   updateViteTestIncludes,
   updateViteTestSetup,
 } from '../../../utils/testing-config-utils';
@@ -14,8 +15,11 @@ import {
   testingLibraryUserEventsVersion,
 } from '../../../utils/versions';
 
-export function updateViteTestConfig(tree: Tree, pathToRoot: string) {
-  const pathToViteConfig = joinPathFragments(pathToRoot, 'vite.config.ts');
+export function updateUnitTestConfig(
+  tree: Tree,
+  pathToRoot: string,
+  unitTestRunner: 'vitest' | 'jest'
+) {
   const pathToTestSetup = joinPathFragments(pathToRoot, `test-setup.ts`);
   tree.write(
     pathToTestSetup,
@@ -25,12 +29,18 @@ export function updateViteTestConfig(tree: Tree, pathToRoot: string) {
   installGlobals();`
   );
 
-  updateViteTestIncludes(
-    tree,
-    pathToViteConfig,
-    './app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'
-  );
-  updateViteTestSetup(tree, pathToViteConfig, './test-setup.ts');
+  if (unitTestRunner === 'vitest') {
+    const pathToViteConfig = joinPathFragments(pathToRoot, 'vite.config.ts');
+    updateViteTestIncludes(
+      tree,
+      pathToViteConfig,
+      './app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'
+    );
+    updateViteTestSetup(tree, pathToViteConfig, './test-setup.ts');
+  } else if (unitTestRunner === 'jest') {
+    const pathToJestConfig = joinPathFragments(pathToRoot, 'jest.config.ts');
+    updateJestTestSetup(tree, pathToJestConfig, `<rootDir>/test-setup.ts`);
+  }
 
   return addDependenciesToPackageJson(
     tree,

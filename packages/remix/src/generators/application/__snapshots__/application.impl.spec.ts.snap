@@ -258,7 +258,7 @@ exports[`Remix Application Integrated Repo --js should create the application co
 "
 `;
 
-exports[`Remix Application Integrated Repo --unitTestRunner should generate the correct files for testing 1`] = `
+exports[`Remix Application Integrated Repo --unitTestRunner should generate the correct files for testing using jest 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
  */
@@ -273,7 +273,37 @@ module.exports = {
 "
 `;
 
-exports[`Remix Application Integrated Repo --unitTestRunner should generate the correct files for testing 2`] = `
+exports[`Remix Application Integrated Repo --unitTestRunner should generate the correct files for testing using jest 2`] = `
+"/* eslint-disable */
+export default {
+  setupFilesAfterEnv: ['<rootDir>/test-setup.ts'],
+  displayName: 'test',
+  preset: '../../jest.preset.js',
+  transform: {
+    '^.+\\\\\\\\.[tj]sx?$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  coverageDirectory: '../../coverage/apps/test',
+};
+"
+`;
+
+exports[`Remix Application Integrated Repo --unitTestRunner should generate the correct files for testing using vitest 1`] = `
+"/**
+ * @type {import('@remix-run/dev').AppConfig}
+ */
+module.exports = {
+  ignoredRouteFiles: ['**/.*'],
+  // appDirectory: \\"app\\",
+  // assetsBuildDirectory: \\"public/build\\",
+  // serverBuildPath: \\"build/index.js\\",
+  // publicPath: \\"/build/\\",
+  watchPaths: () => require('@nx/remix').createWatchPaths(__dirname),
+};
+"
+`;
+
+exports[`Remix Application Integrated Repo --unitTestRunner should generate the correct files for testing using vitest 2`] = `
 "/// <reference types=\\"vitest\\" />
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
@@ -482,7 +512,7 @@ exports[`Remix Application Standalone Project Repo --js should create the applic
 "
 `;
 
-exports[`Remix Application Standalone Project Repo --unitTestRunner should generate the correct files for testing 1`] = `
+exports[`Remix Application Standalone Project Repo --unitTestRunner should generate the correct files for testing using jest 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
  */
@@ -497,7 +527,41 @@ module.exports = {
 "
 `;
 
-exports[`Remix Application Standalone Project Repo --unitTestRunner should generate the correct files for testing 2`] = `
+exports[`Remix Application Standalone Project Repo --unitTestRunner should generate the correct files for testing using jest 2`] = `
+"/* eslint-disable */
+export default {
+  setupFilesAfterEnv: ['<rootDir>/test-setup.ts'],
+  displayName: 'test',
+  preset: './jest.preset.js',
+  transform: {
+    '^.+\\\\\\\\.[tj]sx?$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  coverageDirectory: './coverage/test',
+  testMatch: [
+    '<rootDir>/src/**/__tests__/**/*.[jt]s?(x)',
+    '<rootDir>/src/**/*(*.)@(spec|test).[jt]s?(x)',
+  ],
+};
+"
+`;
+
+exports[`Remix Application Standalone Project Repo --unitTestRunner should generate the correct files for testing using vitest 1`] = `
+"/**
+ * @type {import('@remix-run/dev').AppConfig}
+ */
+module.exports = {
+  ignoredRouteFiles: ['**/.*'],
+  // appDirectory: \\"app\\",
+  // assetsBuildDirectory: \\"public/build\\",
+  // serverBuildPath: \\"build/index.js\\",
+  // publicPath: \\"/build/\\",
+  watchPaths: () => require('@nx/remix').createWatchPaths(__dirname),
+};
+"
+`;
+
+exports[`Remix Application Standalone Project Repo --unitTestRunner should generate the correct files for testing using vitest 2`] = `
 "/// <reference types=\\"vitest\\" />
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
