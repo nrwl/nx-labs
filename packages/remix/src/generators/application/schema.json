@@ -26,14 +26,21 @@
     },
     "unitTestRunner": {
       "type": "string",
-      "enum": ["vitest", "none"],
+      "enum": [
+        "vitest",
+        "jest",
+        "none"
+      ],
       "default": "vitest",
       "description": "Test runner to use for unit tests.",
       "x-prompt": "What unit test runner should be used?"
     },
     "e2eTestRunner": {
       "type": "string",
-      "enum": ["cypress", "none"],
+      "enum": [
+        "cypress",
+        "none"
+      ],
       "default": "cypress",
       "description": "Test runner to use for e2e tests"
     },
