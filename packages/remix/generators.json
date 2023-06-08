@@ -2,7 +2,9 @@
   "$schema": "http://json-schema.org/schema",
   "name": "NxRemix",
   "version": "0.0.1",
-  "extends": ["@nx/react"],
+  "extends": [
+    "@nx/react"
+  ],
   "generators": {
     "preset": {
       "implementation": "./src/generators/preset/preset.impl",
@@ -20,7 +22,9 @@
       "implementation": "./src/generators/application/application.impl",
       "schema": "./src/generators/application/schema.json",
       "description": "Generate a new Remix application",
-      "aliases": ["app"],
+      "aliases": [
+        "app"
+      ],
       "x-type": "application"
     },
     "cypress-component-configuration": {
@@ -32,7 +36,9 @@
       "implementation": "./src/generators/library/library.impl",
       "schema": "./src/generators/library/schema.json",
       "description": "Generate a new library",
-      "aliases": ["lib"],
+      "aliases": [
+        "lib"
+      ],
       "x-type": "library"
     },
     "route": {
@@ -64,6 +70,11 @@
       "implementation": "./src/generators/setup-tailwind/setup-tailwind.impl",
       "schema": "./src/generators/setup-tailwind/schema.json",
       "description": "Generates a TailwindCSS configuration for the Remix application"
+    },
+    "storybook-configuration": {
+      "implementation": "./src/generators/storybook-configuration/storybook-configuration.impl",
+      "schema": "./src/generators/storybook-configuration/schema.json",
+      "description": "Generates a Storybook configuration for a Remix application"
     },
     "meta": {
       "implementation": "./src/generators/meta/meta.impl",

@@ -1901,6 +1901,13 @@
   dependencies:
     "@nx/react" "16.4.0-beta.10"
 
+"@nrwl/storybook@16.4.0-beta.10":
+  version "16.4.0-beta.10"
+  resolved "https://registry.yarnpkg.com/@nrwl/storybook/-/storybook-16.4.0-beta.10.tgz#01ae1379a2693325fcc06b07e2107240c6ae475a"
+  integrity sha512-YyMLNmCJCzNKG/DnnLK2TEIG76W04o78Tmst+J43pk8nIHcBS2vLBqjFWXqC9N6PYi/V0XgxYjHoDJAMeQ+HRg==
+  dependencies:
+    "@nx/storybook" "16.4.0-beta.10"
+
 "@nrwl/tao@16.4.0-beta.10":
   version "16.4.0-beta.10"
   resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-16.4.0-beta.10.tgz#02330aa179eedfebb0231d444494fe66b5f02756"
@@ -2136,6 +2143,21 @@
     chalk "^4.1.0"
     file-loader "^6.2.0"
     minimatch "3.0.5"
+
+"@nx/storybook@16.4.0-beta.10":
+  version "16.4.0-beta.10"
+  resolved "https://registry.yarnpkg.com/@nx/storybook/-/storybook-16.4.0-beta.10.tgz#8e4c27b415eac240442640dc9b9dc9f2eaf5d426"
+  integrity sha512-ee4Iv1+UTINQyP2Tf01ERgKhA5ncvwyJrqpIxnDdJt3BY6LxGGw6K6bNsJtTENrMGiqsUqPNhnMREuI+IAdOTg==
+  dependencies:
+    "@nrwl/storybook" "16.4.0-beta.10"
+    "@nx/cypress" "16.4.0-beta.10"
+    "@nx/devkit" "16.4.0-beta.10"
+    "@nx/js" "16.4.0-beta.10"
+    "@nx/linter" "16.4.0-beta.10"
+    "@nx/workspace" "16.4.0-beta.10"
+    "@phenomnomnominal/tsquery" "~5.0.1"
+    dotenv "~10.0.0"
+    semver "7.3.4"
 
 "@nx/vite@16.4.0-beta.10":
   version "16.4.0-beta.10"
