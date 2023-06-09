@@ -3,7 +3,7 @@ import {
   GeneratorCallback,
   Tree,
 } from '@nx/devkit';
-import { CSS_IN_JS_DEPENDENCIES } from '@nx/react';
+import { cssInJsDependenciesBabel } from '@nx/react';
 import {
   gatsbyPluginEmotionVersion,
   gatsbyPluginLessVersion,
@@ -16,13 +16,13 @@ import {
 
 export const GATSBY_SPECIFIC_STYLE_DEPENDENCIES = {
   'styled-components': {
-    dependencies: CSS_IN_JS_DEPENDENCIES['styled-components'].dependencies,
+    dependencies: cssInJsDependenciesBabel['styled-components'].dependencies,
     devDependencies: {
       'gatsby-plugin-styled-components': gatsbyPluginStyledComponentsVersion,
     },
   },
   '@emotion/styled': {
-    dependencies: CSS_IN_JS_DEPENDENCIES['@emotion/styled'].dependencies,
+    dependencies: cssInJsDependenciesBabel['@emotion/styled'].dependencies,
     devDependencies: {
       'gatsby-plugin-emotion': gatsbyPluginEmotionVersion,
     },
@@ -47,10 +47,10 @@ export const GATSBY_SPECIFIC_STYLE_DEPENDENCIES = {
     },
   },
   'styled-jsx': {
-    dependencies: CSS_IN_JS_DEPENDENCIES['styled-jsx'].dependencies,
+    dependencies: cssInJsDependenciesBabel['styled-jsx'].dependencies,
     devDependencies: {
       'gatsby-plugin-styled-jsx': gatsbyPluginStyledJsx,
-      ...CSS_IN_JS_DEPENDENCIES['styled-jsx'].devDependencies,
+      ...cssInJsDependenciesBabel['styled-jsx'].devDependencies,
     },
   },
 };

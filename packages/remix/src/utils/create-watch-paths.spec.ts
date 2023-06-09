@@ -29,17 +29,17 @@ describe('getRelativeDependencyPaths', () => {
           'lib-1': {
             type: 'lib',
             name: 'lib-1',
-            data: { root: 'lib-1', files: [] },
+            data: { root: 'lib-1'},
           },
           'lib-2': {
             type: 'lib',
             name: 'lib-2',
-            data: { root: 'lib-2', files: [] },
+            data: { root: 'lib-2' },
           },
           'lib-3': {
             type: 'lib',
             name: 'lib-3',
-            data: { root: 'lib-3', files: [] },
+            data: { root: 'lib-3' },
           },
         },
         dependencies: {},
@@ -64,17 +64,17 @@ describe('getRelativeDependencyPaths', () => {
           'lib-1': {
             type: 'lib',
             name: 'lib-1',
-            data: { root: 'libs/lib-1', files: [] },
+            data: { root: 'libs/lib-1' },
           },
           'lib-2': {
             type: 'lib',
             name: 'lib-2',
-            data: { root: 'libs/lib-2', files: [] },
+            data: { root: 'libs/lib-2' },
           },
           'lib-3': {
             type: 'lib',
             name: 'lib-3',
-            data: { root: 'libs/lib-3', files: [] },
+            data: { root: 'libs/lib-3'},
           },
         },
         dependencies: {},
@@ -99,17 +99,17 @@ describe('getRelativeDependencyPaths', () => {
           'lib-1': {
             type: 'lib',
             name: 'lib-1',
-            data: { root: 'packages/lib-1', files: [] },
+            data: { root: 'packages/lib-1'},
           },
           'lib-2': {
             type: 'lib',
             name: 'lib-2',
-            data: { root: 'packages/lib-2', files: [] },
+            data: { root: 'packages/lib-2' },
           },
           'lib-3': {
             type: 'lib',
             name: 'lib-3',
-            data: { root: 'packages/lib-3', files: [] },
+            data: { root: 'packages/lib-3'},
           },
         },
         dependencies: {},
@@ -134,17 +134,17 @@ describe('getRelativeDependencyPaths', () => {
           'lib-1': {
             type: 'lib',
             name: 'lib-1',
-            data: { root: 'packages/lib-1', files: [] },
+            data: { root: 'packages/lib-1' },
           },
           'lib-2': {
             type: 'lib',
             name: 'lib-2',
-            data: { root: 'packages/lib-2', files: [] },
+            data: { root: 'packages/lib-2'},
           },
           'lib-3': {
             type: 'lib',
             name: 'lib-3',
-            data: { root: 'packages/lib-3', files: [] },
+            data: { root: 'packages/lib-3' },
           },
         },
         dependencies: {},
