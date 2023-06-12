@@ -7,7 +7,10 @@
     "build": "nx run-many -t=build --exclude=nx-labs",
     "nx-release": "./scripts/nx-release.mjs",
     "check-versions": "ts-node -P ./tools/tsconfig.tools.json ./tools/scripts/check-versions.ts",
-    "test": "nx run-many -t=test --exclude=nx-labs"
+    "test": "nx run-many -t=test --exclude=nx-labs",
+    "build-ci": "nx build",
+    "test-ci": "nx test",
+    "e2e-ci": "nx e2e"
   },
   "dependencies": {
     "@swc/cli": "0.1.62",
@@ -70,4 +73,3 @@
     "verdaccio": "^5.0.4"
   }
 }
-
