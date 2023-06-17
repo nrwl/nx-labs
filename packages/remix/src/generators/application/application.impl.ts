@@ -137,6 +137,7 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
         coverageProvider: 'c8',
         inSourceTests: false,
         skipFormat: true,
+        testEnvironment: 'jsdom',
       });
       tasks.push(vitestTask);
     } else {

@@ -10,6 +10,7 @@ import {
   updateViteTestSetup,
 } from '../../../utils/testing-config-utils';
 import {
+  getRemixVersion,
   testingLibraryJestDomVersion,
   testingLibraryReactVersion,
   testingLibraryUserEventsVersion,
@@ -51,6 +52,7 @@ export function addUnitTestingSetup(tree: Tree, options: RemixLibraryOptions) {
       '@testing-library/jest-dom': testingLibraryJestDomVersion,
       '@testing-library/react': testingLibraryReactVersion,
       '@testing-library/user-event': testingLibraryUserEventsVersion,
+      '@remix-run/node': getRemixVersion(tree),
     }
   );
 }
