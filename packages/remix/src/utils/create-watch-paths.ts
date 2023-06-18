@@ -21,8 +21,10 @@ import { normalize, relative, sep } from 'path';
 export async function createWatchPaths(dirname: string): Promise<string[]> {
   const graph = await createProjectGraphAsync();
   const projectRootMappings = createProjectRootMappings(graph.nodes);
+  const relativePosix = relative(workspaceRoot, dirname)
+    .split(path_1.sep).join(path_1.posix.sep);
   const projectName = findProjectForPath(
-    relative(workspaceRoot, dirname),
+    relativePosix,
     projectRootMappings
   );
   const deps = findAllProjectNodeDependencies(projectName, graph);
