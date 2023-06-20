@@ -1,11 +1,17 @@
 import { stripIndents, type Tree } from '@nx/devkit';
+import { ensureTypescript } from '@nx/js/src/utils/typescript/ensure-typescript';
 import { tsquery } from '@phenomnomnominal/tsquery';
+
+let tsModule: typeof import('typescript');
 
 export function updateViteTestSetup(
   tree: Tree,
   pathToViteConfig: string,
   pathToTestSetup: string
 ) {
+  if (!tsModule) {
+    tsModule = ensureTypescript();
+  }
   const fileContents = tree.read(pathToViteConfig, 'utf-8');
 
   const ast = tsquery.ast(fileContents);
@@ -52,6 +58,9 @@ export function updateJestTestSetup(
   pathToJestConfig: string,
   pathToTestSetup: string
 ) {
+  if (!tsModule) {
+    tsModule = ensureTypescript();
+  }
   const fileContents = tree.read(pathToJestConfig, 'utf-8');
 
   const ast = tsquery.ast(fileContents);
@@ -95,6 +104,9 @@ export function updateViteTestIncludes(
   pathToViteConfig: string,
   includesString: string
 ) {
+  if (!tsModule) {
+    tsModule = ensureTypescript();
+  }
   const fileContents = tree.read(pathToViteConfig, 'utf-8');
 
   const ast = tsquery.ast(fileContents);
