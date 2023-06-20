@@ -1,5 +1,6 @@
 export * from './generators/action/action.impl';
 export * from './generators/application/application.impl';
+export * from './generators/cypress-component-configuration/cypress-component-configuration.impl';
 export * from './generators/cypress/cypress.impl';
 export * from './generators/error-boundary/error-boundary.impl';
 export * from './generators/library/library.impl';
