@@ -37,6 +37,7 @@
     "@nx/react": "16.4.0-beta.10",
     "@nx/vite": "16.4.0-beta.10",
     "@nx/workspace": "16.4.0-beta.10",
+    "@nx/storybook": "16.4.0-beta.10",
     "@phenomnomnominal/tsquery": "^5.0.1",
     "@remix-run/dev": "1.15.0",
     "@remix-run/node": "1.15.0",
