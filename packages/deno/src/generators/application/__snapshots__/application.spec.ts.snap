@@ -35,6 +35,7 @@ Object {
     "test": Object {
       "executor": "@nx/deno:test",
       "options": Object {
+        "allowNone": true,
         "coverageDirectory": "coverage/apps/my-app",
         "denoConfig": "apps/my-app/deno.json",
       },
@@ -81,6 +82,7 @@ Object {
     "test": Object {
       "executor": "@nx/deno:test",
       "options": Object {
+        "allowNone": true,
         "coverageDirectory": "coverage/apps/my-oak-api",
         "denoConfig": "apps/my-oak-api/deno.json",
       },
@@ -162,6 +164,7 @@ Object {
     "test": Object {
       "executor": "@nx/deno:test",
       "options": Object {
+        "allowNone": true,
         "coverageDirectory": "coverage/my-app",
         "denoConfig": "deno.json",
       },
@@ -208,6 +211,7 @@ Object {
     "test": Object {
       "executor": "@nx/deno:test",
       "options": Object {
+        "allowNone": true,
         "coverageDirectory": "coverage/my-oak-api",
         "denoConfig": "deno.json",
       },

@@ -85,6 +85,7 @@ function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
       options: {
         coverageDirectory: `coverage/${opts.projectRoot}`,
         denoConfig: `${opts.projectRoot}/deno.json`,
+        allowNone: true,
         check: 'local',
       },
     },

@@ -106,6 +106,7 @@ export function addProjectConfig(tree: Tree, opts: DenoAppNormalizedSchema) {
       options: {
         coverageDirectory,
         denoConfig: joinPathFragments(opts.projectRoot, 'deno.json'),
+        allowNone: true,
       },
     },
     lint: {

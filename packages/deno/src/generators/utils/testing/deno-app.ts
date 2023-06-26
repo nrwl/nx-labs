@@ -32,6 +32,7 @@ export function createDenoAppForTesting(
         options: {
           coverageDirectory: joinPathFragments('coverage', opts.projectRoot),
           denoConfig: joinPathFragments(opts.projectRoot, 'deno.json'),
+          allowNone: true,
         },
       },
       lint: {

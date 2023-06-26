@@ -120,6 +120,7 @@ export function addProject(tree: Tree, opts: NormalizedSchema) {
       options: {
         coverageDirectory,
         denoConfig: joinPathFragments(opts.projectRoot, 'deno.json'),
+        allowNone: true,
       },
     },
     lint: {
