@@ -6,4 +6,5 @@ export interface ServerlessGeneratorSchema {
   linter?: 'deno' | 'none';
   unitTestRunner?: 'deno' | 'none';
   site?: string;
+  bundler?: 'esbuild' | 'deno_emit';
 }

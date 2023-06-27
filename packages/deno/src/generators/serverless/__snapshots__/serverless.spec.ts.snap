@@ -10,7 +10,7 @@ Object {
   "tags": Array [],
   "targets": Object {
     "build": Object {
-      "executor": "@nx/deno:emit",
+      "executor": "@nx/deno:esbuild",
       "options": Object {
         "denoConfig": "my-plain-app/deno.json",
         "main": "my-plain-app/src/main.ts",
@@ -62,7 +62,7 @@ Object {
   "tags": Array [],
   "targets": Object {
     "build": Object {
-      "executor": "@nx/deno:emit",
+      "executor": "@nx/deno:esbuild",
       "options": Object {
         "denoConfig": "nested/my-plain-app/deno.json",
         "main": "nested/my-plain-app/src/main.ts",
