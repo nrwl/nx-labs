@@ -157,6 +157,7 @@ export class CopyAssetsHandler {
     for (const event of events) {
       const pathFromRoot = path.relative(this.rootDir, event.path);
       for (const ag of this.assetGlobs) {
+        console.log(pathFromRoot, this.ignore.ignores(pathFromRoot));
         if (
           minimatch(pathFromRoot, ag.pattern) &&
           !ag.ignore?.some((ig) => minimatch(pathFromRoot, ig)) &&

@@ -12,6 +12,5 @@ export default {
     ],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/packages/deno',
-  testEnvironment: 'node'
+  coverageDirectory: '../../coverage/packages/deno'
 };
