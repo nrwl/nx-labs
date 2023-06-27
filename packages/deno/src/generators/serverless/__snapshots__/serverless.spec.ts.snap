@@ -41,7 +41,6 @@ Object {
     "test": Object {
       "executor": "@nx/deno:test",
       "options": Object {
-        "allowNone": true,
         "coverageDirectory": "coverage/my-plain-app",
         "denoConfig": "my-plain-app/deno.json",
       },
@@ -94,7 +93,6 @@ Object {
     "test": Object {
       "executor": "@nx/deno:test",
       "options": Object {
-        "allowNone": true,
         "coverageDirectory": "coverage/nested/my-plain-app",
         "denoConfig": "nested/my-plain-app/deno.json",
       },
@@ -144,7 +142,6 @@ Object {
     "test": Object {
       "executor": "@nx/deno:test",
       "options": Object {
-        "allowNone": true,
         "coverageDirectory": "coverage/my-netlify-app",
         "denoConfig": "my-netlify-app/deno.json",
       },
