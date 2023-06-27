@@ -22,7 +22,7 @@ export function assetGlobsToFiles(
     pattern: string,
     input = '',
     ignore: string[] = [],
-    dot: boolean = false
+    dot = false
   ) => {
     return fastGlob.sync(pattern, {
       cwd: input,
