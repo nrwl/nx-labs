@@ -9,7 +9,7 @@ import { dirname, join, resolve } from 'path';
 import { BuildExecutorSchema } from './schema';
 
 import { ensureDirSync, unlinkSync, writeFileSync } from 'fs-extra';
-import { CopyAssetsHandler } from '../../utils/assets/copy-assets-handler';
+import { CopyAssetsHandler } from '@nx/js/src/utils/assets/copy-assets-handler'
 import { processCommonArgs } from '../../utils/arg-utils';
 import { assertDenoInstalled, runDeno } from '../../utils/run-deno';
 

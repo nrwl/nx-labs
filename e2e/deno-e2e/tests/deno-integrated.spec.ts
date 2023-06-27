@@ -107,11 +107,13 @@ describe('Deno integrated monorepo', () => {
       expect(result.stdout).toContain(
         `Successfully ran target build for project ${appName}`
       );
-      expect(workspaceFileExists(`dist/apps/${appName}/main.js`)).toBeTruthy();
-      expect(workspaceFileExists(`dist/apps/${appName}/LICENSE`)).toBeTruthy();
-      expect(workspaceFileExists(`dist/apps/${appName}/README.md`)).toBeTruthy();
-      expect(workspaceFileExists(`dist/apps/${appName}/assets/test1.hbs`)).toBeTruthy();
-      expect(workspaceFileExists(`dist/apps/${appName}/assets/test2.hbs`)).toBeTruthy();
+      expect(() => checkFilesExist(
+        `dist/apps/${appName}/main.js`,
+        `dist/apps/${appName}/LICENSE`,
+        `dist/apps/${appName}/README.md`,
+        `dist/apps/${appName}/assets/test1.hbs`,
+        `dist/apps/${appName}/assets/test2.hbs`
+      )).not.toThrow();
       expect(workspaceFileExists(`dist/apps/${appName}/assets/ignore.hbs`)).toBeFalsy();
       expect(workspaceFileExists(`dist/apps/${appName}/assets/git-ignore.hbs`)).toBeFalsy();
       expect(workspaceFileExists(`dist/apps/${appName}/assets/nx-ignore.hbs`)).toBeFalsy();

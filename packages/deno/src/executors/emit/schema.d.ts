@@ -1,4 +1,4 @@
-import type { AssetGlob, FileInputOutput } from '../../assets/assets';
+import type { AssetGlob } from '@nx/js/src/assets/assets';
 
 export interface BuildExecutorSchema {
   denoConfig: string;

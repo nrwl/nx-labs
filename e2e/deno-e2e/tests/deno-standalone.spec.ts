@@ -100,11 +100,13 @@ describe('Deno standalone app', () => {
       expect(result.stdout).toContain(
         `Successfully ran target build for project ${appName}`
       );
-      expect(workspaceFileExists(`dist/${appName}/main.js`)).toBeTruthy();
-      expect(workspaceFileExists(`dist/${appName}/LICENSE`)).toBeTruthy();
-      expect(workspaceFileExists(`dist/${appName}/README.md`)).toBeTruthy();
-      expect(workspaceFileExists(`dist/${appName}/assets/test1.hbs`)).toBeTruthy();
-      expect(workspaceFileExists(`dist/${appName}/assets/test2.hbs`)).toBeTruthy();
+      expect(() => checkFilesExist(
+        `dist/${appName}/main.js`,
+        `dist/${appName}/LICENSE`,
+        `dist/${appName}/README.md`,
+        `dist/${appName}/assets/test1.hbs`,
+        `dist/${appName}/assets/test2.hbs`
+      )).not.toThrow();
       expect(workspaceFileExists(`dist/${appName}/assets/ignore.hbs`)).toBeFalsy();
       expect(workspaceFileExists(`dist/${appName}/assets/git-ignore.hbs`)).toBeFalsy();
       expect(workspaceFileExists(`dist/${appName}/assets/nx-ignore.hbs`)).toBeFalsy();
