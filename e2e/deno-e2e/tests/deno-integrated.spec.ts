@@ -66,14 +66,6 @@ describe('Deno integrated monorepo', () => {
       expect(workspaceFileExists(`dist/apps/${appName}/main.js`)).toBeTruthy();
     }, 120_000);
 
-    it('should build deno app', async () => {
-      const result = await runNxCommandAsync(`build ${appName}`);
-      expect(result.stdout).toContain(
-        `Successfully ran target build for project ${appName}`
-      );
-      expect(workspaceFileExists(`dist/apps/${appName}/main.js`)).toBeTruthy();
-    }, 120_000);
-
     it('should build deno app w/assets', async () => {
       // Workspace ignore files
       writeFileSync(join(tmpProjPath(), '.gitignore'), `git-ignore.hbs`);
