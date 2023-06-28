@@ -78,6 +78,8 @@ function normalizeOptions(
 
   options.bundle ??= true;
 
+  options.sourceMap ??= 'inline';
+
   return options;
 }
 
@@ -123,6 +125,7 @@ function createTempEsbuildFile(
         entryPoints: ["${mainFilePath}"],
         outfile: "${outputFilePath}",
         bundle: ${options.bundle},
+        sourcemap: ${options.sourceMap === false ? false : `"${options.sourceMap}"`},
         format: "esm",
       });
       

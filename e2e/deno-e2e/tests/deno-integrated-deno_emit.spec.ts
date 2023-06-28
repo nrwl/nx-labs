@@ -439,7 +439,7 @@ console.log(${fnName}())`
       await promisifiedTreeKill(p.pid, 'SIGKILL');
     }, 120_000);
 
-// It dont work
+// TODO: https://github.com/nrwl/nx-labs/pull/311
 //     it('should be able to use import alias of lib in app for build', async () => {
 //       const fnName = names(libName).propertyName;
 //       updateFile(

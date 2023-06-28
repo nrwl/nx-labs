@@ -29,6 +29,14 @@
       "items": {
         "$ref": "#/definitions/assetPattern"
       }
+    },
+    "sourceMap": {
+      "oneOf": [
+        { "type": "string", "enum": ["linked", "inline"] },
+        { "type": "boolean", "enum": [false] }
+      ],
+      "description": "Generate sourceMap.",
+      "default": "inline"
     }
   },
   "required": ["main", "outputFile", "denoConfig"],
