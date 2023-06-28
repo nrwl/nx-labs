@@ -137,6 +137,10 @@ function createArgs(options: DenoTestExecutorNormalizedSchema) {
     args.push(`--shuffle=${options.shuffle}`);
   }
 
+  if (options.allowNone) {
+    args.push('--allow-none');
+  }
+
   args.push(options.testDir);
   return args;
 }
