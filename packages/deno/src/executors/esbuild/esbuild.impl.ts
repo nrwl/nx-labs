@@ -9,6 +9,7 @@ import { dirname, join, resolve } from 'path';
 import { BuildExecutorSchema } from './schema';
 
 import { ensureDirSync, unlinkSync, writeFileSync } from 'fs-extra';
+import { CopyAssetsHandler } from '@nx/js/src/utils/assets/copy-assets-handler'
 import { processCommonArgs } from '../../utils/arg-utils';
 import { assertDenoInstalled, runDeno } from '../../utils/run-deno';
 
@@ -26,13 +27,36 @@ export async function denoEsbuildExecutor(
     )} (https://deno.land/x/esbuild)`
   );
 
-  return new Promise((resolve) => {
+  const projectRoot = context.projectGraph.nodes[context.projectName].data.root;
+  const outputPath = dirname(opts.outputFile);
+
+  const assetHandler = new CopyAssetsHandler({
+    projectDir: projectRoot,
+    rootDir: context.root,
+    outputDir: outputPath,
+    assets: opts.assets,
+  });
+
+  const esbuildResult = await new Promise<boolean>((resolve) => {
     const runningDenoProcess = runDeno(args);
 
     runningDenoProcess.on('exit', (code) => {
-      resolve({ success: code === 0 });
+      resolve(code === 0);
     });
   });
+
+  if (esbuildResult !== true) {
+    return { success: false };
+  }
+
+  let copyAssetsResult = true;
+  try {
+    await assetHandler.processAllAssetsOnce();
+  } catch {
+    copyAssetsResult = false;
+  }
+
+  return { success: copyAssetsResult };
 }
 
 function normalizeOptions(
