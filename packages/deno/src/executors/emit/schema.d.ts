@@ -3,5 +3,5 @@ export interface BuildExecutorSchema {
   main: string;
   outputFile: string;
   bundle?: boolean;
-  sourceMap?: false | 'linked' | 'inline'
+  sourceMap?: false | 'linked' | 'inline';
 }
