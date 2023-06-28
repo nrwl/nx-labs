@@ -21,6 +21,14 @@
       "type": "boolean",
       "description": "Bundle all imports into a single JavaScript file.",
       "default": true
+    },
+    "sourceMap": {
+      "oneOf": [
+        { "type": "string", "enum": ["linked", "inline"] },
+        { "type": "boolean", "enum": [false] }
+      ],
+      "description": "Generate sourceMap.",
+      "default": "inline"
     }
   },
   "required": ["main", "outputFile", "denoConfig"]

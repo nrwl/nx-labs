@@ -438,5 +438,21 @@ console.log(${fnName}())`
       });
       await promisifiedTreeKill(p.pid, 'SIGKILL');
     }, 120_000);
+
+    it('should be able to use import alias of lib in app for build', async () => {
+      const fnName = names(libName).propertyName;
+      updateFile(
+        `apps/${appName}/src/main.ts`,
+        `import { ${fnName} } from '@proj/${libName}'
+
+console.log(${fnName}())`
+      );
+
+      const result = await runNxCommandAsync(`build ${appName}`);
+      expect(result.stdout).toContain(
+        `Successfully ran target build for project ${appName}`
+      );
+      expect(workspaceFileExists(`dist/apps/${appName}/main.js`)).toBeTruthy();
+    }, 120_000);
   });
 });
