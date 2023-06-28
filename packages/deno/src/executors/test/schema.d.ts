@@ -18,4 +18,5 @@ export interface DenoTestExecutorSchema {
   seed?: number;
   shuffle?: number;
   unstable?: boolean;
+  allowNone?: boolean;
 }

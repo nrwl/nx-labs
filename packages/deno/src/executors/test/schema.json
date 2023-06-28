@@ -118,6 +118,11 @@
     "unstable": {
       "type": "boolean",
       "description": "Enable unstable APIs and features"
+    },
+    "allowNone": {
+      "type": "boolean",
+      "description": "Don't return error code if no test files are found",
+      "default": true
     }
   },
   "required": ["denoConfig"]
