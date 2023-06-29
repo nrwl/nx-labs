@@ -1,13 +1,20 @@
 import {
   ensurePackage,
+  GeneratorCallback,
   joinPathFragments,
   readProjectConfiguration,
   Tree,
+  updateProjectConfiguration,
 } from '@nx/devkit';
 
 import { version as nxVersion } from 'nx/package.json';
+import { CypressGeneratorSchema } from './schema';
 
-export default async function (tree: Tree, options: any) {
+export default async function (
+  tree: Tree,
+  options: CypressGeneratorSchema
+): Promise<GeneratorCallback> {
+  options.baseUrl ??= 'http://localhost:3000';
   const { cypressInitGenerator, cypressProjectGenerator } = ensurePackage(
     '@nx/cypress',
     nxVersion
@@ -19,10 +26,12 @@ export default async function (tree: Tree, options: any) {
     standaloneConfig: true,
   });
 
-  const config = readProjectConfiguration(tree, options.name);
-  tree.delete(joinPathFragments(config.sourceRoot, 'support', 'app.po.ts'));
+  const projectConfig = readProjectConfiguration(tree, options.name);
+  tree.delete(
+    joinPathFragments(projectConfig.sourceRoot, 'support', 'app.po.ts')
+  );
   tree.write(
-    joinPathFragments(config.sourceRoot, 'e2e', 'app.cy.ts'),
+    joinPathFragments(projectConfig.sourceRoot, 'e2e', 'app.cy.ts'),
     `describe('webapp', () => {
   beforeEach(() => cy.visit('/'));
 
@@ -33,7 +42,7 @@ export default async function (tree: Tree, options: any) {
   );
 
   const supportFilePath = joinPathFragments(
-    config.sourceRoot,
+    projectConfig.sourceRoot,
     'support',
     'e2e.ts'
   );
@@ -57,6 +66,27 @@ Cypress.on("uncaught:exception", (err) => {
   }
 });`
   );
+
+  // run-commands won't emit { success: true, baseUrl: '...' } to Cypress executor.
+  // We'll wire it up manually and skip serve from Cypress.
+  projectConfig.targets.e2e.options.skipServe = true;
+  projectConfig.targets.e2e.options.baseUrl =
+    options.baseUrl ?? 'http://localhost:3000';
+  projectConfig.targets.e2e.dependsOn = ['dev-server'];
+  delete projectConfig.targets.e2e.options.devServerTarget;
+  delete projectConfig.targets.e2e?.configurations?.production.devServerTarget;
+  projectConfig.targets['dev-server'] = {
+    command: `nx serve ${options.project}`,
+    options: {
+      readyWhen: 'Server started',
+    },
+    configurations: {
+      production: {
+        command: `nx serve ${options.project} --configuration=production`,
+      },
+    },
+  };
+  updateProjectConfiguration(tree, options.name, projectConfig);
 
   // returning this in case the cypress generator has any side effects
   return async () => {
