@@ -5,6 +5,9 @@ export interface NormalizedSchema extends RemixGeneratorSchema {
   appName: string;
   projectRoot: string;
   parsedTags: string[];
+  unitTestRunner?: 'jest' | 'none' | 'vitest';
+  e2eTestRunner?: 'cypress' | 'none';
+  js?: boolean;
 }
 
 export function normalizeOptions(
