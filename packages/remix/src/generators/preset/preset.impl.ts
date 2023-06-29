@@ -18,6 +18,9 @@ export default async function (tree: Tree, _options: RemixGeneratorSchema) {
     tags: options.tags,
     skipFormat: true,
     rootProject: true,
+    unitTestRunner: options.unitTestRunner ?? 'vitest',
+    e2eTestRunner: options.e2eTestRunner ?? 'cypress',
+    js: options.js ?? false,
   });
   tasks.push(appGenTask);
 
