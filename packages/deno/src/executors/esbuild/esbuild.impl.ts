@@ -21,12 +21,6 @@ export async function denoEsbuildExecutor(
   const opts = normalizeOptions(options, context);
   const args = createArgs(opts, context);
 
-  logger.info(
-    `Using ${chalk.bold('esbuild')} to build ${chalk.bold(
-      opts.main
-    )} (https://deno.land/x/esbuild)`
-  );
-
   const projectRoot = context.projectGraph.nodes[context.projectName].data.root;
   const outputPath = dirname(opts.outputFile);
 
@@ -79,6 +73,9 @@ function normalizeOptions(
   options.bundle ??= true;
 
   options.sourceMap ??= 'inline';
+  if (options.sourceMap === true) {
+    options.sourceMap = 'inline';
+  }
 
   return options;
 }
@@ -112,7 +109,7 @@ function createTempEsbuildFile(
   const outputFilePath = joinPathFragments(context.root, options.outputFile);
 
   const content = stripIndents`
-      import * as esbuild from "https://deno.land/x/esbuild@v0.18.10/mod.js";
+      import * as esbuild from "https://deno.land/x/esbuild@v0.18.13/mod.js";
       import { denoPlugins } from "https://deno.land/x/esbuild_deno_loader@0.8.1/mod.ts";
 
       const result = await esbuild.build({

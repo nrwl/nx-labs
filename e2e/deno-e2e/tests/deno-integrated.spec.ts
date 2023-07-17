@@ -21,6 +21,7 @@ import {
 
 describe('Deno integrated monorepo', () => {
   const appName = uniq('deno-app');
+  const denoEmitAppName = uniq('deno-app');
   const libName = uniq('deno-lib');
   // Setting up individual workspaces per
   // test can cause e2e runs to take a long time.
@@ -272,6 +273,117 @@ console.log('123');
     }, 120_000);
   });
 
+  describe('application --bundler deno_emit', () => {
+    it('should create deno app', async () => {
+      await runNxCommandAsync(`generate @nx/deno:app ${denoEmitAppName}`);
+      expect(readJson(`import_map.json`)).toEqual({ imports: {} });
+      expect(readJson(`apps/${denoEmitAppName}/deno.json`)).toEqual({
+        importMap: '../../import_map.json',
+      });
+      expect(workspaceFileExists(`apps/${denoEmitAppName}/src/main.ts`)).toBeTruthy();
+      expect(
+        workspaceFileExists(`apps/${denoEmitAppName}/src/handler.test.ts`)
+      ).toBeTruthy();
+      expect(
+        workspaceFileExists(`apps/${denoEmitAppName}/src/handler.ts`)
+      ).toBeTruthy();
+    }, 120_000);
+
+    it('should build deno app', async () => {
+      const result = await runNxCommandAsync(`build ${denoEmitAppName}`);
+      expect(result.stdout).toContain(
+        `Successfully ran target build for project ${denoEmitAppName}`
+      );
+      expect(workspaceFileExists(`dist/apps/${denoEmitAppName}/main.js`)).toBeTruthy();
+    }, 120_000);
+
+    it('should build deno app w/assets', async () => {
+      // Workspace ignore files
+      writeFileSync(join(tmpProjPath(), '.gitignore'), `git-ignore.hbs`);
+      writeFileSync(join(tmpProjPath(), '.nxignore'), `nx-ignore.hbs`);
+
+      // Assets
+      mkdirSync(join(tmpProjPath(), 'apps', denoEmitAppName, 'assets/a/b'), { recursive: true });
+      writeFileSync(join(tmpProjPath(), 'LICENSE'), 'license');
+      writeFileSync(join(tmpProjPath(), 'apps', denoEmitAppName, 'README.md'), 'readme');
+      writeFileSync(join(tmpProjPath(), 'apps', denoEmitAppName, 'assets/test1.hbs'), 'test');
+      writeFileSync(join(tmpProjPath(), 'apps', denoEmitAppName, 'assets/test2.hbs'), 'test');
+      writeFileSync(join(tmpProjPath(), 'apps', denoEmitAppName, 'assets/ignore.hbs'), 'IGNORE ME');
+      writeFileSync(join(tmpProjPath(), 'apps', denoEmitAppName, 'assets/git-ignore.hbs'), 'IGNORE ME');
+      writeFileSync(join(tmpProjPath(), 'apps', denoEmitAppName, 'assets/nx-ignore.hbs'), 'IGNORE ME');
+      writeFileSync(join(tmpProjPath(), 'apps', denoEmitAppName, 'assets/a/b/nested-ignore.hbs'), 'IGNORE ME');
+
+      const project = readJson(`apps/${denoEmitAppName}/project.json`);
+      project.targets.build.options.assets = [
+        `apps/${denoEmitAppName}/*.md`,
+        {
+          input: `apps/${denoEmitAppName}/assets`,
+          glob: '**/*.hbs',
+          output: 'assets',
+          ignore: ['ignore.hbs', '**/nested-ignore.hbs'],
+        },
+        'LICENSE',
+      ];
+      updateFile(`apps/${denoEmitAppName}/project.json`, JSON.stringify(project));
+
+      const result = await runNxCommandAsync(`build ${denoEmitAppName}`);
+      expect(result.stdout).toContain(
+        `Successfully ran target build for project ${denoEmitAppName}`
+      );
+      expect(() => checkFilesExist(
+        `dist/apps/${denoEmitAppName}/main.js`,
+        `dist/apps/${denoEmitAppName}/LICENSE`,
+        `dist/apps/${denoEmitAppName}/README.md`,
+        `dist/apps/${denoEmitAppName}/assets/test1.hbs`,
+        `dist/apps/${denoEmitAppName}/assets/test2.hbs`
+      )).not.toThrow();
+      expect(workspaceFileExists(`dist/apps/${denoEmitAppName}/assets/ignore.hbs`)).toBeFalsy();
+      expect(workspaceFileExists(`dist/apps/${denoEmitAppName}/assets/git-ignore.hbs`)).toBeFalsy();
+      expect(workspaceFileExists(`dist/apps/${denoEmitAppName}/assets/nx-ignore.hbs`)).toBeFalsy();
+      expect(workspaceFileExists(`dist/apps/${denoEmitAppName}/assets/a/b/nested-ignore.hbs`)).toBeFalsy();
+    }, 120_000);
+
+    it('should serve deno app', async () => {
+      const p = await runCommandUntil(`serve ${denoEmitAppName}`, (output) => {
+        return output.includes(`Listening on`);
+      });
+      await promisifiedTreeKill(p.pid, 'SIGKILL');
+      await killPort(8000);
+    }, 120_000);
+
+    describe('--directory', () => {
+      const nestedAppName = uniq('deno-app');
+      it('should create app in the specified directory', async () => {
+        await runNxCommandAsync(
+          `generate @nx/deno:app ${nestedAppName} --directory nested`
+        );
+        expect(
+          workspaceFileExists(`apps/nested/${nestedAppName}/src/main.ts`)
+        ).toBeTruthy();
+      }, 120_000);
+      it('should build deno app', async () => {
+        const result = await runNxCommandAsync(`build nested-${nestedAppName}`);
+        expect(result.stdout).toContain(
+          `Successfully ran target build for project nested-${nestedAppName}`
+        );
+        expect(
+          workspaceFileExists(`dist/apps/nested/${nestedAppName}/main.js`)
+        ).toBeTruthy();
+      }, 120_000);
+
+      it('should serve deno app', async () => {
+        const p = await runCommandUntil(
+          `serve nested-${nestedAppName}`,
+          (output) => {
+            return output.includes(`Listening on`);
+          }
+        );
+        await promisifiedTreeKill(p.pid, 'SIGKILL');
+        await killPort(8000);
+      }, 120_000);
+    });
+  });                                         
+
   describe('library', () => {
     it('should create deno lib', async () => {
       await runNxCommandAsync(`generate @nx/deno:lib ${libName}`);
@@ -499,6 +611,22 @@ console.log(${fnName}())`
         `Successfully ran target build for project ${appName}`
       );
       expect(workspaceFileExists(`dist/apps/${appName}/main.js`)).toBeTruthy();
+    }, 120_000);
+
+    it('should be able to use import alias of lib in app for build with --bundler deno_emit', async () => {
+      const fnName = names(libName).propertyName;
+      updateFile(
+        `apps/${denoEmitAppName}/src/main.ts`,
+        `import { ${fnName} } from '@proj/${libName}'
+
+console.log(${fnName}())`
+      );
+
+      const result = await runNxCommandAsync(`build ${denoEmitAppName}`);
+      expect(result.stdout).toContain(
+        `Successfully ran target build for project ${denoEmitAppName}`
+      );
+      expect(workspaceFileExists(`dist/apps/${denoEmitAppName}/main.js`)).toBeTruthy();
     }, 120_000);
   });
 });

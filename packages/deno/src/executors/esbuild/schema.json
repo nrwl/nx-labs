@@ -33,7 +33,7 @@
     "sourceMap": {
       "oneOf": [
         { "type": "string", "enum": ["linked", "inline"] },
-        { "type": "boolean", "enum": [false] }
+        { "type": "boolean" }
       ],
       "description": "Generate sourceMap.",
       "default": "inline"
