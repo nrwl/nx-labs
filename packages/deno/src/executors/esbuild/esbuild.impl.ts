@@ -1,10 +1,8 @@
 import {
   ExecutorContext,
   joinPathFragments,
-  logger,
   stripIndents,
 } from '@nx/devkit';
-import * as chalk from 'chalk';
 import { dirname, join, resolve } from 'path';
 import { BuildExecutorSchema } from './schema';
 
@@ -46,7 +44,10 @@ export async function denoEsbuildExecutor(
   let copyAssetsResult = true;
   try {
     await assetHandler.processAllAssetsOnce();
-  } catch {
+  } catch (e) {
+    if (process.env.NX_VERBOSE_LOGGING === 'true') {
+      console.error(e)
+    }
     copyAssetsResult = false;
   }
 
