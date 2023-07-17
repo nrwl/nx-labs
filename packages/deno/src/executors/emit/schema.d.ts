@@ -6,5 +6,5 @@ export interface BuildExecutorSchema {
   outputFile: string;
   bundle?: boolean;
   assets?: Array<AssetGlob | string>;
-  sourceMap?: false | 'linked' | 'inline';
+  sourceMap?: boolean | 'linked' | 'inline';
 }

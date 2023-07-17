@@ -81,6 +81,9 @@ function normalizeOptions(
   options.assets ??= [];
 
   options.sourceMap ??= 'inline';
+  if (options.sourceMap === true) {
+    options.sourceMap = 'inline';
+  }
 
   return options;
 }
