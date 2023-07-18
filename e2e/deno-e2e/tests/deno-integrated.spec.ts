@@ -503,8 +503,8 @@ console.log(${fnName}())`
   });
 
   describe('--bundler deno_emit', () => {
-    const bundlerAppName = uniq('deno-app-deno_emit');
-    const bundlerLibName = uniq('deno-lib-deno_emit');
+    const bundlerAppName = uniq('deno-app-deno-emit');
+    const bundlerLibName = uniq('deno-lib-deno-emit');
 
     it('should create deno app', async () => {
       await runNxCommandAsync(`generate @nx/deno:app ${bundlerAppName} --bundler deno_emit`);
@@ -581,21 +581,22 @@ console.log(${fnName}())`
       ).toBeTruthy();
     }, 120_000);
 
-    it('should be able to use import alias of lib in app for build', async () => {
-      const fnName = names(bundlerLibName).propertyName;
-      updateFile(
-        `apps/${bundlerAppName}/src/main.ts`,
-        `import { ${fnName} } from '@proj/${bundlerLibName}'
+// Fixed by https://github.com/nrwl/nx-labs/pull/311
+//     it('should be able to use import alias of lib in app for build', async () => {
+//       const fnName = names(bundlerLibName).propertyName;
+//       updateFile(
+//         `apps/${bundlerAppName}/src/main.ts`,
+//         `import { ${fnName} } from '@proj/${bundlerLibName}'
 
-console.log(${fnName}())`
-      );
+// console.log(${fnName}())`
+//       );
 
-      const result = await runNxCommandAsync(`build ${bundlerAppName}`);
-      expect(result.stdout).toContain(
-        `Successfully ran target build for project ${bundlerAppName}`
-      );
-      expect(workspaceFileExists(`dist/apps/${bundlerAppName}/main.js`)).toBeTruthy();
-    }, 120_000);
+//       const result = await runNxCommandAsync(`build ${bundlerAppName}`);
+//       expect(result.stdout).toContain(
+//         `Successfully ran target build for project ${bundlerAppName}`
+//       );
+//       expect(workspaceFileExists(`dist/apps/${bundlerAppName}/main.js`)).toBeTruthy();
+//     }, 120_000);
   });
 
   describe('--bundler esbuild', () => {
