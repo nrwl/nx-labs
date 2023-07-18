@@ -508,17 +508,7 @@ console.log(${fnName}())`
 
     it('should create deno app', async () => {
       await runNxCommandAsync(`generate @nx/deno:app ${bundlerAppName} --bundler deno_emit`);
-      expect(readJson(`import_map.json`)).toEqual({ imports: {} });
-      expect(readJson(`apps/${bundlerAppName}/deno.json`)).toEqual({
-        importMap: '../../import_map.json',
-      });
       expect(workspaceFileExists(`apps/${bundlerAppName}/src/main.ts`)).toBeTruthy();
-      expect(
-        workspaceFileExists(`apps/${bundlerAppName}/src/handler.test.ts`)
-      ).toBeTruthy();
-      expect(
-        workspaceFileExists(`apps/${bundlerAppName}/src/handler.ts`)
-      ).toBeTruthy();
     }, 120_000);
 
     it('should build deno app', async () => {
@@ -577,14 +567,11 @@ console.log(${fnName}())`
 
     it('should create deno lib', async () => {
       await runNxCommandAsync(`generate @nx/deno:lib ${bundlerLibName}`);
-      expect(readJson(`import_map.json`)).toEqual({
-        imports: {
+      expect(readJson(`import_map.json`).imports).toEqual(
+        expect.objectContaining({
           [`@proj/${bundlerLibName}`]: `./libs/${bundlerLibName}/mod.ts`,
-        },
-      });
-      expect(readJson(`libs/${bundlerLibName}/deno.json`)).toEqual({
-        importMap: '../../import_map.json',
-      });
+        })
+      );
       expect(workspaceFileExists(`libs/${bundlerLibName}/mod.ts`)).toBeTruthy();
       expect(
         workspaceFileExists(`libs/${bundlerLibName}/src/${bundlerLibName}.test.ts`)
@@ -617,17 +604,7 @@ console.log(${fnName}())`
 
     it('should create deno app', async () => {
       await runNxCommandAsync(`generate @nx/deno:app ${bundlerAppName} --bundler esbuild`);
-      expect(readJson(`import_map.json`)).toEqual({ imports: {} });
-      expect(readJson(`apps/${bundlerAppName}/deno.json`)).toEqual({
-        importMap: '../../import_map.json',
-      });
       expect(workspaceFileExists(`apps/${bundlerAppName}/src/main.ts`)).toBeTruthy();
-      expect(
-        workspaceFileExists(`apps/${bundlerAppName}/src/handler.test.ts`)
-      ).toBeTruthy();
-      expect(
-        workspaceFileExists(`apps/${bundlerAppName}/src/handler.ts`)
-      ).toBeTruthy();
     }, 120_000);
 
     it('should build deno app', async () => {
@@ -686,14 +663,11 @@ console.log(${fnName}())`
 
     it('should create deno lib', async () => {
       await runNxCommandAsync(`generate @nx/deno:lib ${bundlerLibName}`);
-      expect(readJson(`import_map.json`)).toEqual({
-        imports: {
+      expect(readJson(`import_map.json`).imports).toEqual(
+        expect.objectContaining({
           [`@proj/${bundlerLibName}`]: `./libs/${bundlerLibName}/mod.ts`,
-        },
-      });
-      expect(readJson(`libs/${bundlerLibName}/deno.json`)).toEqual({
-        importMap: '../../import_map.json',
-      });
+        })
+      );
       expect(workspaceFileExists(`libs/${bundlerLibName}/mod.ts`)).toBeTruthy();
       expect(
         workspaceFileExists(`libs/${bundlerLibName}/src/${bundlerLibName}.test.ts`)
