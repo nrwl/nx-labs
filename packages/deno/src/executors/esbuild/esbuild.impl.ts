@@ -1,13 +1,9 @@
-import {
-  ExecutorContext,
-  joinPathFragments,
-  stripIndents,
-} from '@nx/devkit';
+import { ExecutorContext, joinPathFragments, stripIndents } from '@nx/devkit';
 import { dirname, join, resolve } from 'path';
 import { BuildExecutorSchema } from './schema';
 
+import { CopyAssetsHandler } from '@nx/js/src/utils/assets/copy-assets-handler';
 import { ensureDirSync, unlinkSync, writeFileSync } from 'fs-extra';
-import { CopyAssetsHandler } from '@nx/js/src/utils/assets/copy-assets-handler'
 import { processCommonArgs } from '../../utils/arg-utils';
 import { assertDenoInstalled, runDeno } from '../../utils/run-deno';
 
@@ -46,7 +42,7 @@ export async function denoEsbuildExecutor(
     await assetHandler.processAllAssetsOnce();
   } catch (e) {
     if (process.env.NX_VERBOSE_LOGGING === 'true') {
-      console.error(e)
+      console.error(e);
     }
     copyAssetsResult = false;
   }
@@ -123,7 +119,9 @@ function createTempEsbuildFile(
         entryPoints: ["${mainFilePath}"],
         outfile: "${outputFilePath}",
         bundle: ${options.bundle},
-        sourcemap: ${options.sourceMap === false ? false : `"${options.sourceMap}"`},
+        sourcemap: ${
+          options.sourceMap === false ? false : `"${options.sourceMap}"`
+        },
         format: "esm",
       });
       

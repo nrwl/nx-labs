@@ -81,7 +81,10 @@ describe('Deno standalone app', () => {
       writeFileSync(join(tmpProjPath(), 'assets/ignore.hbs'), 'IGNORE ME');
       writeFileSync(join(tmpProjPath(), 'assets/git-ignore.hbs'), 'IGNORE ME');
       writeFileSync(join(tmpProjPath(), 'assets/nx-ignore.hbs'), 'IGNORE ME');
-      writeFileSync(join(tmpProjPath(), 'assets/a/b/nested-ignore.hbs'), 'IGNORE ME');
+      writeFileSync(
+        join(tmpProjPath(), 'assets/a/b/nested-ignore.hbs'),
+        'IGNORE ME'
+      );
 
       const project = readJson(`project.json`);
       project.targets.build.options.assets = [
@@ -100,17 +103,27 @@ describe('Deno standalone app', () => {
       expect(result.stdout).toContain(
         `Successfully ran target build for project ${appName}`
       );
-      expect(() => checkFilesExist(
-        `dist/${appName}/main.js`,
-        `dist/${appName}/LICENSE`,
-        `dist/${appName}/README.md`,
-        `dist/${appName}/assets/test1.hbs`,
-        `dist/${appName}/assets/test2.hbs`
-      )).not.toThrow();
-      expect(workspaceFileExists(`dist/${appName}/assets/ignore.hbs`)).toBeFalsy();
-      expect(workspaceFileExists(`dist/${appName}/assets/git-ignore.hbs`)).toBeFalsy();
-      expect(workspaceFileExists(`dist/${appName}/assets/nx-ignore.hbs`)).toBeFalsy();
-      expect(workspaceFileExists(`dist/${appName}/assets/a/b/nested-ignore.hbs`)).toBeFalsy();
+      expect(() =>
+        checkFilesExist(
+          `dist/${appName}/main.js`,
+          `dist/${appName}/LICENSE`,
+          `dist/${appName}/README.md`,
+          `dist/${appName}/assets/test1.hbs`,
+          `dist/${appName}/assets/test2.hbs`
+        )
+      ).not.toThrow();
+      expect(
+        workspaceFileExists(`dist/${appName}/assets/ignore.hbs`)
+      ).toBeFalsy();
+      expect(
+        workspaceFileExists(`dist/${appName}/assets/git-ignore.hbs`)
+      ).toBeFalsy();
+      expect(
+        workspaceFileExists(`dist/${appName}/assets/nx-ignore.hbs`)
+      ).toBeFalsy();
+      expect(
+        workspaceFileExists(`dist/${appName}/assets/a/b/nested-ignore.hbs`)
+      ).toBeFalsy();
     }, 120_000);
 
     it('should serve deno app', async () => {

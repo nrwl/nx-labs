@@ -72,15 +72,38 @@ describe('Deno integrated monorepo', () => {
       writeFileSync(join(tmpProjPath(), '.nxignore'), `nx-ignore.hbs`);
 
       // Assets
-      mkdirSync(join(tmpProjPath(), 'apps', appName, 'assets/a/b'), { recursive: true });
+      mkdirSync(join(tmpProjPath(), 'apps', appName, 'assets/a/b'), {
+        recursive: true,
+      });
       writeFileSync(join(tmpProjPath(), 'LICENSE'), 'license');
-      writeFileSync(join(tmpProjPath(), 'apps', appName, 'README.md'), 'readme');
-      writeFileSync(join(tmpProjPath(), 'apps', appName, 'assets/test1.hbs'), 'test');
-      writeFileSync(join(tmpProjPath(), 'apps', appName, 'assets/test2.hbs'), 'test');
-      writeFileSync(join(tmpProjPath(), 'apps', appName, 'assets/ignore.hbs'), 'IGNORE ME');
-      writeFileSync(join(tmpProjPath(), 'apps', appName, 'assets/git-ignore.hbs'), 'IGNORE ME');
-      writeFileSync(join(tmpProjPath(), 'apps', appName, 'assets/nx-ignore.hbs'), 'IGNORE ME');
-      writeFileSync(join(tmpProjPath(), 'apps', appName, 'assets/a/b/nested-ignore.hbs'), 'IGNORE ME');
+      writeFileSync(
+        join(tmpProjPath(), 'apps', appName, 'README.md'),
+        'readme'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', appName, 'assets/test1.hbs'),
+        'test'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', appName, 'assets/test2.hbs'),
+        'test'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', appName, 'assets/ignore.hbs'),
+        'IGNORE ME'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', appName, 'assets/git-ignore.hbs'),
+        'IGNORE ME'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', appName, 'assets/nx-ignore.hbs'),
+        'IGNORE ME'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', appName, 'assets/a/b/nested-ignore.hbs'),
+        'IGNORE ME'
+      );
 
       const project = readJson(`apps/${appName}/project.json`);
       project.targets.build.options.assets = [
@@ -99,17 +122,27 @@ describe('Deno integrated monorepo', () => {
       expect(result.stdout).toContain(
         `Successfully ran target build for project ${appName}`
       );
-      expect(() => checkFilesExist(
-        `dist/apps/${appName}/main.js`,
-        `dist/apps/${appName}/LICENSE`,
-        `dist/apps/${appName}/README.md`,
-        `dist/apps/${appName}/assets/test1.hbs`,
-        `dist/apps/${appName}/assets/test2.hbs`
-      )).not.toThrow();
-      expect(workspaceFileExists(`dist/apps/${appName}/assets/ignore.hbs`)).toBeFalsy();
-      expect(workspaceFileExists(`dist/apps/${appName}/assets/git-ignore.hbs`)).toBeFalsy();
-      expect(workspaceFileExists(`dist/apps/${appName}/assets/nx-ignore.hbs`)).toBeFalsy();
-      expect(workspaceFileExists(`dist/apps/${appName}/assets/a/b/nested-ignore.hbs`)).toBeFalsy();
+      expect(() =>
+        checkFilesExist(
+          `dist/apps/${appName}/main.js`,
+          `dist/apps/${appName}/LICENSE`,
+          `dist/apps/${appName}/README.md`,
+          `dist/apps/${appName}/assets/test1.hbs`,
+          `dist/apps/${appName}/assets/test2.hbs`
+        )
+      ).not.toThrow();
+      expect(
+        workspaceFileExists(`dist/apps/${appName}/assets/ignore.hbs`)
+      ).toBeFalsy();
+      expect(
+        workspaceFileExists(`dist/apps/${appName}/assets/git-ignore.hbs`)
+      ).toBeFalsy();
+      expect(
+        workspaceFileExists(`dist/apps/${appName}/assets/nx-ignore.hbs`)
+      ).toBeFalsy();
+      expect(
+        workspaceFileExists(`dist/apps/${appName}/assets/a/b/nested-ignore.hbs`)
+      ).toBeFalsy();
     }, 120_000);
 
     it('should serve deno app', async () => {
@@ -270,7 +303,7 @@ console.log('123');
       const project = readJson(`apps/${appName}-tagged/project.json`);
       expect(project.tags).toEqual(['scope:deno', 'type:app']);
     }, 120_000);
-  });                                         
+  });
 
   describe('library', () => {
     it('should create deno lib', async () => {
@@ -507,8 +540,12 @@ console.log(${fnName}())`
     const bundlerLibName = uniq('deno-lib-deno-emit');
 
     it('should create deno app', async () => {
-      await runNxCommandAsync(`generate @nx/deno:app ${bundlerAppName} --bundler deno_emit`);
-      expect(workspaceFileExists(`apps/${bundlerAppName}/src/main.ts`)).toBeTruthy();
+      await runNxCommandAsync(
+        `generate @nx/deno:app ${bundlerAppName} --bundler deno_emit`
+      );
+      expect(
+        workspaceFileExists(`apps/${bundlerAppName}/src/main.ts`)
+      ).toBeTruthy();
     }, 120_000);
 
     it('should build deno app', async () => {
@@ -516,7 +553,9 @@ console.log(${fnName}())`
       expect(result.stdout).toContain(
         `Successfully ran target build for project ${bundlerAppName}`
       );
-      expect(workspaceFileExists(`dist/apps/${bundlerAppName}/main.js`)).toBeTruthy();
+      expect(
+        workspaceFileExists(`dist/apps/${bundlerAppName}/main.js`)
+      ).toBeTruthy();
     }, 120_000);
 
     it('should build deno app w/assets', async () => {
@@ -525,15 +564,43 @@ console.log(${fnName}())`
       writeFileSync(join(tmpProjPath(), '.nxignore'), `nx-ignore.hbs`);
 
       // Assets
-      mkdirSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/a/b'), { recursive: true });
+      mkdirSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/a/b'), {
+        recursive: true,
+      });
       writeFileSync(join(tmpProjPath(), 'LICENSE'), 'license');
-      writeFileSync(join(tmpProjPath(), 'apps', bundlerAppName, 'README.md'), 'readme');
-      writeFileSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/test1.hbs'), 'test');
-      writeFileSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/test2.hbs'), 'test');
-      writeFileSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/ignore.hbs'), 'IGNORE ME');
-      writeFileSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/git-ignore.hbs'), 'IGNORE ME');
-      writeFileSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/nx-ignore.hbs'), 'IGNORE ME');
-      writeFileSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/a/b/nested-ignore.hbs'), 'IGNORE ME');
+      writeFileSync(
+        join(tmpProjPath(), 'apps', bundlerAppName, 'README.md'),
+        'readme'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', bundlerAppName, 'assets/test1.hbs'),
+        'test'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', bundlerAppName, 'assets/test2.hbs'),
+        'test'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', bundlerAppName, 'assets/ignore.hbs'),
+        'IGNORE ME'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', bundlerAppName, 'assets/git-ignore.hbs'),
+        'IGNORE ME'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', bundlerAppName, 'assets/nx-ignore.hbs'),
+        'IGNORE ME'
+      );
+      writeFileSync(
+        join(
+          tmpProjPath(),
+          'apps',
+          bundlerAppName,
+          'assets/a/b/nested-ignore.hbs'
+        ),
+        'IGNORE ME'
+      );
 
       const project = readJson(`apps/${bundlerAppName}/project.json`);
       project.targets.build.options.assets = [
@@ -546,23 +613,38 @@ console.log(${fnName}())`
         },
         'LICENSE',
       ];
-      updateFile(`apps/${bundlerAppName}/project.json`, JSON.stringify(project));
+      updateFile(
+        `apps/${bundlerAppName}/project.json`,
+        JSON.stringify(project)
+      );
 
       const result = await runNxCommandAsync(`build ${bundlerAppName}`);
       expect(result.stdout).toContain(
         `Successfully ran target build for project ${bundlerAppName}`
       );
-      expect(() => checkFilesExist(
-        `dist/apps/${bundlerAppName}/main.js`,
-        `dist/apps/${bundlerAppName}/LICENSE`,
-        `dist/apps/${bundlerAppName}/README.md`,
-        `dist/apps/${bundlerAppName}/assets/test1.hbs`,
-        `dist/apps/${bundlerAppName}/assets/test2.hbs`
-      )).not.toThrow();
-      expect(workspaceFileExists(`dist/apps/${bundlerAppName}/assets/ignore.hbs`)).toBeFalsy();
-      expect(workspaceFileExists(`dist/apps/${bundlerAppName}/assets/git-ignore.hbs`)).toBeFalsy();
-      expect(workspaceFileExists(`dist/apps/${bundlerAppName}/assets/nx-ignore.hbs`)).toBeFalsy();
-      expect(workspaceFileExists(`dist/apps/${bundlerAppName}/assets/a/b/nested-ignore.hbs`)).toBeFalsy();
+      expect(() =>
+        checkFilesExist(
+          `dist/apps/${bundlerAppName}/main.js`,
+          `dist/apps/${bundlerAppName}/LICENSE`,
+          `dist/apps/${bundlerAppName}/README.md`,
+          `dist/apps/${bundlerAppName}/assets/test1.hbs`,
+          `dist/apps/${bundlerAppName}/assets/test2.hbs`
+        )
+      ).not.toThrow();
+      expect(
+        workspaceFileExists(`dist/apps/${bundlerAppName}/assets/ignore.hbs`)
+      ).toBeFalsy();
+      expect(
+        workspaceFileExists(`dist/apps/${bundlerAppName}/assets/git-ignore.hbs`)
+      ).toBeFalsy();
+      expect(
+        workspaceFileExists(`dist/apps/${bundlerAppName}/assets/nx-ignore.hbs`)
+      ).toBeFalsy();
+      expect(
+        workspaceFileExists(
+          `dist/apps/${bundlerAppName}/assets/a/b/nested-ignore.hbs`
+        )
+      ).toBeFalsy();
     }, 120_000);
 
     it('should create deno lib', async () => {
@@ -574,29 +656,31 @@ console.log(${fnName}())`
       );
       expect(workspaceFileExists(`libs/${bundlerLibName}/mod.ts`)).toBeTruthy();
       expect(
-        workspaceFileExists(`libs/${bundlerLibName}/src/${bundlerLibName}.test.ts`)
+        workspaceFileExists(
+          `libs/${bundlerLibName}/src/${bundlerLibName}.test.ts`
+        )
       ).toBeTruthy();
       expect(
         workspaceFileExists(`libs/${bundlerLibName}/src/${bundlerLibName}.ts`)
       ).toBeTruthy();
     }, 120_000);
 
-// Fixed by https://github.com/nrwl/nx-labs/pull/311
-//     it('should be able to use import alias of lib in app for build', async () => {
-//       const fnName = names(bundlerLibName).propertyName;
-//       updateFile(
-//         `apps/${bundlerAppName}/src/main.ts`,
-//         `import { ${fnName} } from '@proj/${bundlerLibName}'
+    // Fixed by https://github.com/nrwl/nx-labs/pull/311
+    //     it('should be able to use import alias of lib in app for build', async () => {
+    //       const fnName = names(bundlerLibName).propertyName;
+    //       updateFile(
+    //         `apps/${bundlerAppName}/src/main.ts`,
+    //         `import { ${fnName} } from '@proj/${bundlerLibName}'
 
-// console.log(${fnName}())`
-//       );
+    // console.log(${fnName}())`
+    //       );
 
-//       const result = await runNxCommandAsync(`build ${bundlerAppName}`);
-//       expect(result.stdout).toContain(
-//         `Successfully ran target build for project ${bundlerAppName}`
-//       );
-//       expect(workspaceFileExists(`dist/apps/${bundlerAppName}/main.js`)).toBeTruthy();
-//     }, 120_000);
+    //       const result = await runNxCommandAsync(`build ${bundlerAppName}`);
+    //       expect(result.stdout).toContain(
+    //         `Successfully ran target build for project ${bundlerAppName}`
+    //       );
+    //       expect(workspaceFileExists(`dist/apps/${bundlerAppName}/main.js`)).toBeTruthy();
+    //     }, 120_000);
   });
 
   describe('--bundler esbuild', () => {
@@ -604,8 +688,12 @@ console.log(${fnName}())`
     const bundlerLibName = uniq('deno-lib-esbuild');
 
     it('should create deno app', async () => {
-      await runNxCommandAsync(`generate @nx/deno:app ${bundlerAppName} --bundler esbuild`);
-      expect(workspaceFileExists(`apps/${bundlerAppName}/src/main.ts`)).toBeTruthy();
+      await runNxCommandAsync(
+        `generate @nx/deno:app ${bundlerAppName} --bundler esbuild`
+      );
+      expect(
+        workspaceFileExists(`apps/${bundlerAppName}/src/main.ts`)
+      ).toBeTruthy();
     }, 120_000);
 
     it('should build deno app', async () => {
@@ -613,7 +701,9 @@ console.log(${fnName}())`
       expect(result.stdout).toContain(
         `Successfully ran target build for project ${bundlerAppName}`
       );
-      expect(workspaceFileExists(`dist/apps/${bundlerAppName}/main.js`)).toBeTruthy();
+      expect(
+        workspaceFileExists(`dist/apps/${bundlerAppName}/main.js`)
+      ).toBeTruthy();
     }, 120_000);
 
     it('should build deno app w/assets', async () => {
@@ -622,15 +712,43 @@ console.log(${fnName}())`
       writeFileSync(join(tmpProjPath(), '.nxignore'), `nx-ignore.hbs`);
 
       // Assets
-      mkdirSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/a/b'), { recursive: true });
+      mkdirSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/a/b'), {
+        recursive: true,
+      });
       writeFileSync(join(tmpProjPath(), 'LICENSE'), 'license');
-      writeFileSync(join(tmpProjPath(), 'apps', bundlerAppName, 'README.md'), 'readme');
-      writeFileSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/test1.hbs'), 'test');
-      writeFileSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/test2.hbs'), 'test');
-      writeFileSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/ignore.hbs'), 'IGNORE ME');
-      writeFileSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/git-ignore.hbs'), 'IGNORE ME');
-      writeFileSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/nx-ignore.hbs'), 'IGNORE ME');
-      writeFileSync(join(tmpProjPath(), 'apps', bundlerAppName, 'assets/a/b/nested-ignore.hbs'), 'IGNORE ME');
+      writeFileSync(
+        join(tmpProjPath(), 'apps', bundlerAppName, 'README.md'),
+        'readme'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', bundlerAppName, 'assets/test1.hbs'),
+        'test'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', bundlerAppName, 'assets/test2.hbs'),
+        'test'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', bundlerAppName, 'assets/ignore.hbs'),
+        'IGNORE ME'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', bundlerAppName, 'assets/git-ignore.hbs'),
+        'IGNORE ME'
+      );
+      writeFileSync(
+        join(tmpProjPath(), 'apps', bundlerAppName, 'assets/nx-ignore.hbs'),
+        'IGNORE ME'
+      );
+      writeFileSync(
+        join(
+          tmpProjPath(),
+          'apps',
+          bundlerAppName,
+          'assets/a/b/nested-ignore.hbs'
+        ),
+        'IGNORE ME'
+      );
 
       const project = readJson(`apps/${bundlerAppName}/project.json`);
       project.targets.build.options.assets = [
@@ -643,23 +761,38 @@ console.log(${fnName}())`
         },
         'LICENSE',
       ];
-      updateFile(`apps/${bundlerAppName}/project.json`, JSON.stringify(project));
+      updateFile(
+        `apps/${bundlerAppName}/project.json`,
+        JSON.stringify(project)
+      );
 
       const result = await runNxCommandAsync(`build ${bundlerAppName}`);
       expect(result.stdout).toContain(
         `Successfully ran target build for project ${bundlerAppName}`
       );
-      expect(() => checkFilesExist(
-        `dist/apps/${bundlerAppName}/main.js`,
-        `dist/apps/${bundlerAppName}/LICENSE`,
-        `dist/apps/${bundlerAppName}/README.md`,
-        `dist/apps/${bundlerAppName}/assets/test1.hbs`,
-        `dist/apps/${bundlerAppName}/assets/test2.hbs`
-      )).not.toThrow();
-      expect(workspaceFileExists(`dist/apps/${bundlerAppName}/assets/ignore.hbs`)).toBeFalsy();
-      expect(workspaceFileExists(`dist/apps/${bundlerAppName}/assets/git-ignore.hbs`)).toBeFalsy();
-      expect(workspaceFileExists(`dist/apps/${bundlerAppName}/assets/nx-ignore.hbs`)).toBeFalsy();
-      expect(workspaceFileExists(`dist/apps/${bundlerAppName}/assets/a/b/nested-ignore.hbs`)).toBeFalsy();
+      expect(() =>
+        checkFilesExist(
+          `dist/apps/${bundlerAppName}/main.js`,
+          `dist/apps/${bundlerAppName}/LICENSE`,
+          `dist/apps/${bundlerAppName}/README.md`,
+          `dist/apps/${bundlerAppName}/assets/test1.hbs`,
+          `dist/apps/${bundlerAppName}/assets/test2.hbs`
+        )
+      ).not.toThrow();
+      expect(
+        workspaceFileExists(`dist/apps/${bundlerAppName}/assets/ignore.hbs`)
+      ).toBeFalsy();
+      expect(
+        workspaceFileExists(`dist/apps/${bundlerAppName}/assets/git-ignore.hbs`)
+      ).toBeFalsy();
+      expect(
+        workspaceFileExists(`dist/apps/${bundlerAppName}/assets/nx-ignore.hbs`)
+      ).toBeFalsy();
+      expect(
+        workspaceFileExists(
+          `dist/apps/${bundlerAppName}/assets/a/b/nested-ignore.hbs`
+        )
+      ).toBeFalsy();
     }, 120_000);
 
     it('should create deno lib', async () => {
@@ -671,7 +804,9 @@ console.log(${fnName}())`
       );
       expect(workspaceFileExists(`libs/${bundlerLibName}/mod.ts`)).toBeTruthy();
       expect(
-        workspaceFileExists(`libs/${bundlerLibName}/src/${bundlerLibName}.test.ts`)
+        workspaceFileExists(
+          `libs/${bundlerLibName}/src/${bundlerLibName}.test.ts`
+        )
       ).toBeTruthy();
       expect(
         workspaceFileExists(`libs/${bundlerLibName}/src/${bundlerLibName}.ts`)
@@ -691,7 +826,9 @@ console.log(${fnName}())`
       expect(result.stdout).toContain(
         `Successfully ran target build for project ${bundlerAppName}`
       );
-      expect(workspaceFileExists(`dist/apps/${bundlerAppName}/main.js`)).toBeTruthy();
+      expect(
+        workspaceFileExists(`dist/apps/${bundlerAppName}/main.js`)
+      ).toBeTruthy();
     }, 120_000);
   });
 });

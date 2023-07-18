@@ -77,7 +77,8 @@ export function addProjectConfig(tree: Tree, opts: DenoAppNormalizedSchema) {
   );
   const targets: ProjectConfiguration['targets'] = {
     build: {
-      executor: opts.bundler === 'deno_emit' ? '@nx/deno:emit' : '@nx/deno:esbuild',
+      executor:
+        opts.bundler === 'deno_emit' ? '@nx/deno:emit' : '@nx/deno:esbuild',
       outputs: [
         joinPathFragments(
           'dist',
