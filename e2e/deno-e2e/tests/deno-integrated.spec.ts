@@ -666,21 +666,23 @@ console.log(${fnName}())`
     }, 120_000);
 
     // Fixed by https://github.com/nrwl/nx-labs/pull/311
-    //     it('should be able to use import alias of lib in app for build', async () => {
-    //       const fnName = names(bundlerLibName).propertyName;
-    //       updateFile(
-    //         `apps/${bundlerAppName}/src/main.ts`,
-    //         `import { ${fnName} } from '@proj/${bundlerLibName}'
+    it.skip('should be able to use import alias of lib in app for build', async () => {
+      const fnName = names(bundlerLibName).propertyName;
+      updateFile(
+        `apps/${bundlerAppName}/src/main.ts`,
+        `import { ${fnName} } from '@proj/${bundlerLibName}'
 
-    // console.log(${fnName}())`
-    //       );
+console.log(${fnName}())`
+      );
 
-    //       const result = await runNxCommandAsync(`build ${bundlerAppName}`);
-    //       expect(result.stdout).toContain(
-    //         `Successfully ran target build for project ${bundlerAppName}`
-    //       );
-    //       expect(workspaceFileExists(`dist/apps/${bundlerAppName}/main.js`)).toBeTruthy();
-    //     }, 120_000);
+      const result = await runNxCommandAsync(`build ${bundlerAppName}`);
+      expect(result.stdout).toContain(
+        `Successfully ran target build for project ${bundlerAppName}`
+      );
+      expect(
+        workspaceFileExists(`dist/apps/${bundlerAppName}/main.js`)
+      ).toBeTruthy();
+    }, 120_000);
   });
 
   describe('--bundler esbuild', () => {
