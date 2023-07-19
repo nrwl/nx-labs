@@ -1,10 +1,4 @@
-import {
-  ExecutorContext,
-  joinPathFragments,
-  logger,
-  stripIndents,
-} from '@nx/devkit';
-import * as chalk from 'chalk';
+import { ExecutorContext, joinPathFragments, stripIndents } from '@nx/devkit';
 import { dirname, join, resolve } from 'path';
 import { BuildExecutorSchema } from './schema';
 
@@ -13,19 +7,13 @@ import { ensureDirSync, unlinkSync, writeFileSync } from 'fs-extra';
 import { processCommonArgs } from '../../utils/arg-utils';
 import { assertDenoInstalled, runDeno } from '../../utils/run-deno';
 
-export async function denoEmitExecutor(
+export async function denoEsbuildExecutor(
   options: BuildExecutorSchema,
   context: ExecutorContext
 ) {
   assertDenoInstalled();
   const opts = normalizeOptions(options, context);
   const args = createArgs(opts, context);
-
-  logger.info(
-    `Using ${chalk.bold('deno_emit')} to build ${chalk.bold(
-      opts.main
-    )} (https://deno.land/x/emit)`
-  );
 
   const projectRoot = context.projectGraph.nodes[context.projectName].data.root;
   const outputPath = dirname(opts.outputFile);
@@ -37,7 +25,7 @@ export async function denoEmitExecutor(
     assets: opts.assets,
   });
 
-  const denoEmitResult = await new Promise<boolean>((resolve) => {
+  const esbuildResult = await new Promise<boolean>((resolve) => {
     const runningDenoProcess = runDeno(args);
 
     runningDenoProcess.on('exit', (code) => {
@@ -45,14 +33,17 @@ export async function denoEmitExecutor(
     });
   });
 
-  if (denoEmitResult !== true) {
+  if (esbuildResult !== true) {
     return { success: false };
   }
 
   let copyAssetsResult = true;
   try {
     await assetHandler.processAllAssetsOnce();
-  } catch {
+  } catch (e) {
+    if (process.env.NX_VERBOSE_LOGGING === 'true') {
+      console.error(e);
+    }
     copyAssetsResult = false;
   }
 
@@ -77,16 +68,18 @@ function normalizeOptions(
   ensureDirSync(resolve(context.root, dirname(options.outputFile)));
 
   options.bundle ??= true;
-  options.assets ??= [];
+
+  options.sourceMap ??= 'inline';
+  if (options.sourceMap === true) {
+    options.sourceMap = 'inline';
+  }
 
   return options;
 }
 
 function createArgs(options: BuildExecutorSchema, context: ExecutorContext) {
-  const tmpBundleFile = createTempEmitFile(options, context);
+  const tmpBundleFile = createTempEsbuildFile(options, context);
   const args = ['run', '--allow-all'];
-
-  args.push(`--config=${options.denoConfig}`);
 
   args.push(...processCommonArgs(options));
 
@@ -95,7 +88,7 @@ function createArgs(options: BuildExecutorSchema, context: ExecutorContext) {
   return args;
 }
 
-function createTempEmitFile(
+function createTempEsbuildFile(
   options: BuildExecutorSchema,
   context: ExecutorContext
 ) {
@@ -104,34 +97,37 @@ function createTempEmitFile(
     context.root,
     'tmp',
     project.data.root,
-    'deno-emit.ts'
+    'deno-esbuild.ts'
   );
   // on windows paths get mistranslated to single slash, C:\blah, which causes issues in deno.
   // use unix style path with file:/// protocol instead to avoid this.
+  const configFilePath = joinPathFragments(context.root, options.denoConfig);
   const mainFilePath = joinPathFragments(context.root, options.main);
   const outputFilePath = joinPathFragments(context.root, options.outputFile);
 
-  const content = options.bundle
-    ? stripIndents`
-      import { bundle } from "https://deno.land/x/emit@0.24.0/mod.ts";
-      await Deno.mkdir("${dirname(outputFilePath)}", { recursive: true });
+  const content = stripIndents`
+      import * as esbuild from "https://deno.land/x/esbuild@v0.18.13/mod.js";
+      import { denoPlugins } from "https://deno.land/x/esbuild_deno_loader@0.8.1/mod.ts";
 
-      const result = await bundle(
-        new URL("file:///${mainFilePath}", import.meta.url),
-      );
-
-      const { code } = result;
-      await Deno.writeTextFile("${outputFilePath}", code);
-    `
-    : stripIndents`
-      import { transpile } from "https://deno.land/x/emit@0.24.0/mod.ts";
-      await Deno.mkdir("${dirname(outputFilePath)}", { recursive: true });
-
-      const url = new URL("file:///${mainFilePath}", import.meta.url);
-      const result = await transpile(url.href);
-
-      const code = result.get(url.href);
-      await Deno.writeTextFile("${outputFilePath}", code);
+      const result = await esbuild.build({
+        plugins: [
+          ...denoPlugins({
+            loader: "native",
+            configPath: "${configFilePath}"
+          })
+        ],
+        entryPoints: ["${mainFilePath}"],
+        outfile: "${outputFilePath}",
+        bundle: ${options.bundle},
+        sourcemap: ${
+          options.sourceMap === false ? false : `"${options.sourceMap}"`
+        },
+        format: "esm",
+      });
+      
+      console.log(result.outputFiles);
+      
+      esbuild.stop();
     `;
 
   process.on('exit', () => cleanupTmpBundleFile(tmpBundleFile));
@@ -151,4 +147,4 @@ function cleanupTmpBundleFile(tmpFile: string) {
   }
 }
 
-export default denoEmitExecutor;
+export default denoEsbuildExecutor;

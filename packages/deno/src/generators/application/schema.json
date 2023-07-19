@@ -64,6 +64,13 @@
       "x-prompt": "What framework would you like to use?",
       "enum": ["oak", "none"],
       "default": "none"
+    },
+    "bundler": {
+      "description": "Bundler which is used to package the application",
+      "type": "string",
+      "enum": ["esbuild", "deno_emit"],
+      "default": "esbuild",
+      "x-priority": "important"
     }
   },
   "required": ["name"]

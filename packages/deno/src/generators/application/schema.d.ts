@@ -9,6 +9,7 @@ export interface DenoAppGeneratorSchema {
   monorepo?: boolean;
   rootProject?: boolean;
   framework?: 'oak' | 'none';
+  bundler?: 'esbuild' | 'deno_emit';
 }
 
 export interface DenoAppNormalizedSchema extends DenoAppGeneratorSchema {
