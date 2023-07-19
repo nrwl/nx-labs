@@ -118,7 +118,11 @@ function createTempEmitFile(
   // Read the config
   const denoConfigPath = join(context.root, options.denoConfig);
   const denoConfig = readJsonFile(denoConfigPath);
-  const importMapPath = joinPathFragments(context.root, project.data.root, denoConfig.importMap);
+  const importMapPath = joinPathFragments(
+    context.root,
+    project.data.root,
+    denoConfig.importMap
+  );
 
   const content = options.bundle
     ? stripIndents`
@@ -131,7 +135,9 @@ function createTempEmitFile(
         entryUrl,
         {
           compilerOptions: {
-            inlineSources: ${options.sourceMap === 'inline' || options.sourceMap === 'linked'},
+            inlineSources: ${
+              options.sourceMap === 'inline' || options.sourceMap === 'linked'
+            },
             inlineSourceMap: ${options.sourceMap === 'inline'},
             sourceMap: ${options.sourceMap === 'linked'},
           },
@@ -155,7 +161,9 @@ function createTempEmitFile(
         entryUrl,
         {
           compilerOptions: {
-            inlineSources: ${options.sourceMap === 'inline' || options.sourceMap === 'linked'},
+            inlineSources: ${
+              options.sourceMap === 'inline' || options.sourceMap === 'linked'
+            },
             inlineSourceMap: ${options.sourceMap === 'inline'},
             sourceMap: ${options.sourceMap === 'linked'},
           },
