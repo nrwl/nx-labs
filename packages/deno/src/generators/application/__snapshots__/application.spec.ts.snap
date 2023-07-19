@@ -10,7 +10,7 @@ Object {
   "tags": Array [],
   "targets": Object {
     "build": Object {
-      "executor": "@nx/deno:emit",
+      "executor": "@nx/deno:esbuild",
       "options": Object {
         "denoConfig": "apps/my-app/deno.json",
         "main": "apps/my-app/src/main.ts",
@@ -56,7 +56,7 @@ Object {
   "tags": Array [],
   "targets": Object {
     "build": Object {
-      "executor": "@nx/deno:emit",
+      "executor": "@nx/deno:esbuild",
       "options": Object {
         "denoConfig": "apps/my-oak-api/deno.json",
         "main": "apps/my-oak-api/src/main.ts",
@@ -137,7 +137,7 @@ Object {
   "tags": Array [],
   "targets": Object {
     "build": Object {
-      "executor": "@nx/deno:emit",
+      "executor": "@nx/deno:esbuild",
       "options": Object {
         "denoConfig": "deno.json",
         "main": "src/main.ts",
@@ -183,7 +183,7 @@ Object {
   "tags": Array [],
   "targets": Object {
     "build": Object {
-      "executor": "@nx/deno:emit",
+      "executor": "@nx/deno:esbuild",
       "options": Object {
         "denoConfig": "deno.json",
         "main": "src/main.ts",
