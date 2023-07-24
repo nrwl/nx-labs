@@ -118,11 +118,10 @@ function createTempEmitFile(
   // Read the config
   const denoConfigPath = join(context.root, options.denoConfig);
   const denoConfig = readJsonFile(denoConfigPath);
-  const importMapPath = joinPathFragments(
-    context.root,
-    project.data.root,
-    denoConfig.importMap
-  );
+  const importMapPath =
+    denoConfig.importMap != null
+      ? joinPathFragments(context.root, project.data.root, denoConfig.importMap)
+      : null;
 
   const content = options.bundle
     ? stripIndents`
@@ -130,7 +129,11 @@ function createTempEmitFile(
       await Deno.mkdir("${dirname(outputFilePath)}", { recursive: true });
 
       const entryUrl = new URL("file:///${mainFilePath}", import.meta.url);
-      const importMapUrl = new URL("file:///${importMapPath}", import.meta.url);
+      const importMapUrl = ${
+        importMapPath != null
+          ? `new URL("file:///${importMapPath}", import.meta.url)`
+          : 'null'
+      };
       const result = await bundle(
         entryUrl,
         {
@@ -147,7 +150,7 @@ function createTempEmitFile(
 
       const { code, map } = result;
       await Deno.writeTextFile("${outputFilePath}", code);
-      if (map != null) {
+      if (map) {
         await Deno.writeTextFile("${outputFilePath}.map", map);
       }
     `
@@ -156,7 +159,11 @@ function createTempEmitFile(
       await Deno.mkdir("${dirname(outputFilePath)}", { recursive: true });
 
       const entryUrl = new URL("file:///${mainFilePath}", import.meta.url);
-      const importMapUrl = new URL("file:///${importMapPath}", import.meta.url);
+      const importMapUrl = ${
+        importMapPath != null
+          ? `new URL("file:///${importMapPath}", import.meta.url)`
+          : 'null'
+      };
       const result = await transpile(
         entryUrl,
         {
@@ -174,7 +181,7 @@ function createTempEmitFile(
       const code = result.get(url.href);
       const map = result.get("\${url.href}.map");
       await Deno.writeTextFile("${outputFilePath}", code);
-      if (map != null) {
+      if (map) {
         await Deno.writeTextFile("${outputFilePath}.map", code);
       }
     `;
