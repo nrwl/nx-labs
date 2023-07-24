@@ -665,8 +665,7 @@ console.log(${fnName}())`
       ).toBeTruthy();
     }, 120_000);
 
-    // Fixed by https://github.com/nrwl/nx-labs/pull/311
-    it.skip('should be able to use import alias of lib in app for build', async () => {
+    it('should be able to use import alias of lib in app for build', async () => {
       const fnName = names(bundlerLibName).propertyName;
       updateFile(
         `apps/${bundlerAppName}/src/main.ts`,

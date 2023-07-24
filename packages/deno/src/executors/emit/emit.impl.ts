@@ -2,6 +2,7 @@ import {
   ExecutorContext,
   joinPathFragments,
   logger,
+  readJsonFile,
   stripIndents,
 } from '@nx/devkit';
 import * as chalk from 'chalk';
@@ -79,14 +80,17 @@ function normalizeOptions(
   options.bundle ??= true;
   options.assets ??= [];
 
+  options.sourceMap ??= 'inline';
+  if (options.sourceMap === true) {
+    options.sourceMap = 'inline';
+  }
+
   return options;
 }
 
 function createArgs(options: BuildExecutorSchema, context: ExecutorContext) {
   const tmpBundleFile = createTempEmitFile(options, context);
   const args = ['run', '--allow-all'];
-
-  args.push(`--config=${options.denoConfig}`);
 
   args.push(...processCommonArgs(options));
 
@@ -111,27 +115,75 @@ function createTempEmitFile(
   const mainFilePath = joinPathFragments(context.root, options.main);
   const outputFilePath = joinPathFragments(context.root, options.outputFile);
 
+  // Read the config
+  const denoConfigPath = join(context.root, options.denoConfig);
+  const denoConfig = readJsonFile(denoConfigPath);
+  const importMapPath =
+    denoConfig.importMap != null
+      ? joinPathFragments(context.root, project.data.root, denoConfig.importMap)
+      : null;
+
   const content = options.bundle
     ? stripIndents`
       import { bundle } from "https://deno.land/x/emit@0.24.0/mod.ts";
       await Deno.mkdir("${dirname(outputFilePath)}", { recursive: true });
 
+      const entryUrl = new URL("file:///${mainFilePath}", import.meta.url);
+      const importMapUrl = ${
+        importMapPath != null
+          ? `new URL("file:///${importMapPath}", import.meta.url)`
+          : 'null'
+      };
       const result = await bundle(
-        new URL("file:///${mainFilePath}", import.meta.url),
+        entryUrl,
+        {
+          compilerOptions: {
+            inlineSources: ${
+              options.sourceMap === 'inline' || options.sourceMap === 'linked'
+            },
+            inlineSourceMap: ${options.sourceMap === 'inline'},
+            sourceMap: ${options.sourceMap === 'linked'},
+          },
+          importMap: importMapUrl,
+        },
       );
 
-      const { code } = result;
+      const { code, map } = result;
       await Deno.writeTextFile("${outputFilePath}", code);
+      if (map) {
+        await Deno.writeTextFile("${outputFilePath}.map", map);
+      }
     `
     : stripIndents`
       import { transpile } from "https://deno.land/x/emit@0.24.0/mod.ts";
       await Deno.mkdir("${dirname(outputFilePath)}", { recursive: true });
 
-      const url = new URL("file:///${mainFilePath}", import.meta.url);
-      const result = await transpile(url.href);
+      const entryUrl = new URL("file:///${mainFilePath}", import.meta.url);
+      const importMapUrl = ${
+        importMapPath != null
+          ? `new URL("file:///${importMapPath}", import.meta.url)`
+          : 'null'
+      };
+      const result = await transpile(
+        entryUrl,
+        {
+          compilerOptions: {
+            inlineSources: ${
+              options.sourceMap === 'inline' || options.sourceMap === 'linked'
+            },
+            inlineSourceMap: ${options.sourceMap === 'inline'},
+            sourceMap: ${options.sourceMap === 'linked'},
+          },
+          importMap: importMapUrl,
+        },
+      );
 
       const code = result.get(url.href);
+      const map = result.get("\${url.href}.map");
       await Deno.writeTextFile("${outputFilePath}", code);
+      if (map) {
+        await Deno.writeTextFile("${outputFilePath}.map", code);
+      }
     `;
 
   process.on('exit', () => cleanupTmpBundleFile(tmpBundleFile));
