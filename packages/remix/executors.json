@@ -1,0 +1,16 @@
+{
+  "executors": {
+    "build": {
+      "implementation": "./src/executors/build/build.impl",
+      "schema": "./src/executors/build/schema.json",
+      "description": "Build a Remix application."
+    }
+  },
+  "builders": {
+    "build": {
+      "implementation": "./src/executors/build/compat",
+      "schema": "./src/executors/build/schema.json",
+      "description": "Build a Remix application."
+    }
+  }
+}

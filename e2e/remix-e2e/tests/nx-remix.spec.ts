@@ -62,7 +62,9 @@ describe('remix e2e', () => {
         `generate @nx/remix:app ${plugin} --directory subdir --rootProject=false`
       );
       const project = readJson(`subdir/${plugin}/project.json`);
-      expect(project.targets.build.options.cwd).toEqual(`subdir/${plugin}`);
+      expect(project.targets.build.options.outputPath).toEqual(
+        `dist/subdir/${plugin}`
+      );
 
       const result = await runNxCommandAsync(`build ${appName}`);
       expect(result.stdout).toContain('Successfully ran target build');

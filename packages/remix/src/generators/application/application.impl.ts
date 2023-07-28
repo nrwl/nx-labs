@@ -40,9 +40,10 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
     tags: options.parsedTags,
     targets: {
       build: {
-        command: `remix build`,
+        executor: '@nx/remix:build',
+        outputs: ['{options.outputPath}'],
         options: {
-          cwd: options.projectRoot,
+          outputPath: joinPathFragments('dist', options.projectRoot),
         },
       },
       serve: {
