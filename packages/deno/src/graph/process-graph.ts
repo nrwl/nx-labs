@@ -151,7 +151,7 @@ async function getDenoFileInfo(fileToProcess: FileData) {
     ],
     { stdio: 'pipe' }
   );
-  return await new Promise((res) => {
+  return await new Promise((resolve, reject) => {
     let buffer = '';
 
     denoInfo.stdout.on('data', (chunk) => {
@@ -159,7 +159,11 @@ async function getDenoFileInfo(fileToProcess: FileData) {
     });
 
     denoInfo.on('close', () => {
-      res(JSON.parse(buffer));
+      try {
+        resolve(JSON.parse(buffer));
+      } catch (err) {
+        reject(err)
+      }
     });
   });
 }
