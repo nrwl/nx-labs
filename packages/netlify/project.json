@@ -5,7 +5,7 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "outputs": ["dist/packages/netlify"],
+      "outputs": ["{workspaceRoot}/dist/packages/netlify"],
       "command": "node ./scripts/add-dependency-to-build.js netlify @nrwl/netlify"
     },
     "build-base": {
@@ -34,7 +34,8 @@
             "ignore": ["**/tsconfig*.json", "project.json", ".eslintrc.json"]
           },
           "LICENSE"
-        ]
+        ],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "lint": {

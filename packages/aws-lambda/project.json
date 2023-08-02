@@ -5,7 +5,7 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "outputs": ["dist/packages/aws-lambda"],
+      "outputs": ["{workspaceRoot}/dist/packages/aws-lambda"],
       "command": "node ./scripts/add-dependency-to-build.js aws-lambda @nrwl/aws-lambda"
     },
     "build-base": {
@@ -15,7 +15,6 @@
         "outputPath": "dist/packages/aws-lambda",
         "main": "packages/aws-lambda/src/index.ts",
         "tsConfig": "packages/aws-lambda/tsconfig.lib.json",
-
         "assets": [
           "packages/aws-lambda/*.md",
           {
@@ -35,7 +34,8 @@
             "ignore": ["**/tsconfig*.json", "project.json", ".eslintrc.json"]
           },
           "LICENSE"
-        ]
+        ],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "lint": {

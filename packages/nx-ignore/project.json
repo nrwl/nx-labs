@@ -11,7 +11,8 @@
         "outputPath": "dist/packages/nx-ignore",
         "main": "packages/nx-ignore/src/index.ts",
         "tsConfig": "packages/nx-ignore/tsconfig.lib.json",
-        "assets": ["packages/nx-ignore/*.md", "LICENSE"]
+        "assets": ["packages/nx-ignore/*.md", "LICENSE"],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "lint": {
