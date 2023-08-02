@@ -5,7 +5,7 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "outputs": ["dist/packages/remix"],
+      "outputs": ["{workspaceRoot}/dist/packages/remix"],
       "command": "node ./scripts/add-dependency-to-build.js remix @nrwl/remix"
     },
     "lint": {
@@ -17,7 +17,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/packages/remix"],
+      "outputs": ["{workspaceRoot}/coverage/packages/remix"],
       "options": {
         "jestConfig": "packages/remix/jest.config.ts",
         "passWithNoTests": true
@@ -50,7 +50,8 @@
             "ignore": ["**/tsconfig*.json", "project.json", ".eslintrc.json"]
           },
           "LICENSE"
-        ]
+        ],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "publish": {

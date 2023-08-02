@@ -10,7 +10,7 @@
         "jestConfig": "packages/gatsby/jest.config.ts",
         "passWithNoTests": true
       },
-      "outputs": ["coverage/packages/gatsby"]
+      "outputs": ["{workspaceRoot}/coverage/packages/gatsby"]
     },
     "build-base": {
       "executor": "@nx/js:tsc",
@@ -52,13 +52,14 @@
             "output": "/"
           },
           "LICENSE"
-        ]
+        ],
+        "updateBuildableProjectDepsInPackageJson": true
       },
       "outputs": ["{options.outputPath}"]
     },
     "build": {
       "executor": "nx:run-commands",
-      "outputs": ["dist/packages/gatsby"],
+      "outputs": ["{workspaceRoot}/dist/packages/gatsby"],
       "options": {
         "commands": [
           {
