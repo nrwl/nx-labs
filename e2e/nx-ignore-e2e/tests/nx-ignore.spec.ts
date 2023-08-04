@@ -32,6 +32,8 @@ describe('nx-ignore e2e', () => {
       )
     );
     runCommand(`git init`, {});
+    runCommand(`git config user.email "you@example.com"`, {});
+    runCommand(`git config user.name "Your Name"`, {});
     runCommand(`git add .`, {});
     runCommand(`git commit -m 'init'`, {});
   });
