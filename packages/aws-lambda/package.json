@@ -4,9 +4,9 @@
   "main": "src/index.js",
   "generators": "./generators.json",
   "dependencies": {
-    "@nx/devkit": "^16.0.3",
-    "@nx/node": "^16.0.3",
-    "@nx/linter": "^16.0.3"
+    "@nx/devkit": "^16.7.0-rc.1",
+    "@nx/node": "^16.7.0-rc.1",
+    "@nx/linter": "^16.7.0-rc.1"
   },
   "nx-migrations": {
     "migrations": "./migrations.json"
