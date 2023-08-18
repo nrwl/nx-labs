@@ -7,8 +7,8 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "fs-extra": "^11.0.0",
-    "@nx/js": "^16.0.3",
-    "@nx/devkit": "^16.0.3"
+    "@nx/js": "^16.7.0-rc.1",
+    "@nx/devkit": "^16.7.0-rc.1"
   },
   "nx-migrations": {
     "migrations": "./migrations.json"
