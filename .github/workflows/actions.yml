@@ -31,11 +31,11 @@ jobs:
           node-version: '16'
       - run: yarn --immutable
       - run: deno info && deno --version
-      - run: npx nx affected --target=lint --parallel --max-parallel=3
-      - run: npx nx affected --target=build --parallel --max-parallel=3
-      - run: npx nx affected --target=test --parallel --max-parallel=2
-      - run: npx nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e,gatsby-e2e
-      - run: npx nx-cloud stop-all-agents
+      - run: yarn nx affected --target=lint --parallel --max-parallel=3
+      - run: yarn nx affected --target=build --parallel --max-parallel=3
+      - run: yarn nx affected --target=test --parallel --max-parallel=2
+      - run: yarn nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e,gatsby-e2e
+      - run: yarn nx-cloud stop-all-agents
   nightly:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'schedule' }}
@@ -56,9 +56,9 @@ jobs:
           node-version: '16'
       - run: yarn --immutable
       - run: deno info && deno --version
-      - run: npx nx run-many -t=build,test,lint --parallel --max-parallel=3
-      - run: npx nx affected -t=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e,gatsby-e2e
-      - run: npx nx-cloud stop-all-agents
+      - run: yarn nx run-many -t=build,test,lint --parallel --max-parallel=3
+      - run: yarn nx affected -t=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e,gatsby-e2e
+      - run: yarn nx-cloud stop-all-agents
   pr:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
@@ -78,11 +78,11 @@ jobs:
           node-version: '16'
       - run: yarn --immutable
       - run: deno info && deno --version
-      - run: npx nx affected --target=lint --parallel --max-parallel=3
-      - run: npx nx affected --target=build --parallel --max-parallel=3
-      - run: npx nx affected --target=test --parallel --max-parallel=2
-      - run: npx nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e,gatsby-e2e
-      - run: npx nx-cloud stop-all-agents
+      - run: yarn nx affected --target=lint --parallel --max-parallel=3
+      - run: yarn nx affected --target=build --parallel --max-parallel=3
+      - run: yarn nx affected --target=test --parallel --max-parallel=2
+      - run: yarn nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e,gatsby-e2e
+      - run: yarn nx-cloud stop-all-agents
   agents:
     runs-on: ubuntu-latest
     name: Agent 1
@@ -103,4 +103,4 @@ jobs:
           node-version: '16'
       - run: yarn --immutable
       - name: Start Nx Agent ${{ matrix.agent }}
-        run: npx nx-cloud start-agent
+        run: yarn nx-cloud start-agent
