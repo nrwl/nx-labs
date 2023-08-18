@@ -29,7 +29,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '16'
-      - run: yarn
+      - run: yarn --immutable
       - run: deno info && deno --version
       - run: npx nx affected --target=lint --parallel --max-parallel=3
       - run: npx nx affected --target=build --parallel --max-parallel=3
@@ -54,7 +54,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '16'
-      - run: yarn
+      - run: yarn --immutable
       - run: deno info && deno --version
       - run: npx nx run-many -t=build,test,lint --parallel --max-parallel=3
       - run: npx nx affected -t=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e,gatsby-e2e
@@ -76,7 +76,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '16'
-      - run: yarn
+      - run: yarn --immutable
       - run: deno info && deno --version
       - run: npx nx affected --target=lint --parallel --max-parallel=3
       - run: npx nx affected --target=build --parallel --max-parallel=3
@@ -101,6 +101,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '16'
-      - run: yarn
+      - run: yarn --immutable
       - name: Start Nx Agent ${{ matrix.agent }}
         run: npx nx-cloud start-agent

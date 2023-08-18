@@ -1,0 +1,19 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.yargsViewLogsCommand = exports.yargsConnectCommand = void 0;
+const documentation_1 = require("../yargs-utils/documentation");
+exports.yargsConnectCommand = {
+    command: 'connect',
+    aliases: ['connect-to-nx-cloud'],
+    describe: `Connect workspace to Nx Cloud`,
+    builder: (yargs) => (0, documentation_1.linkToNxDevAndExamples)(yargs, 'connect-to-nx-cloud'),
+    handler: async () => {
+        await (await Promise.resolve().then(() => require('./connect-to-nx-cloud'))).connectToNxCloudCommand();
+        process.exit(0);
+    },
+};
+exports.yargsViewLogsCommand = {
+    command: 'view-logs',
+    describe: 'Enables you to view and interact with the logs via the advanced analytic UI from Nx Cloud to help you debug your issue. To do this, Nx needs to connect your workspace to Nx Cloud and upload the most recent run details. Only the metrics are uploaded, not the artefacts.',
+    handler: async () => process.exit(await (await Promise.resolve().then(() => require('./view-logs'))).viewLogs()),
+};
