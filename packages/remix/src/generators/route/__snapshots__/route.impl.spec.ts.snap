@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`route should add route component 1`] = `
-"import type {
-  ActionArgs,
-  LinksFunction,
+"import { useLoaderData, useActionData } from '@remix-run/react';
+import { json } from '@remix-run/node';
+import type {
   LoaderArgs,
   MetaFunction,
+  ActionArgs,
+  LinksFunction,
 } from '@remix-run/node';
-import { json } from '@remix-run/node';
-import { useActionData, useLoaderData } from '@remix-run/react';
 
 import stylesUrl from '../../../styles/path/to/example.css';
 

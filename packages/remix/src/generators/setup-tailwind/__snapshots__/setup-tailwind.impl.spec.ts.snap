@@ -98,7 +98,7 @@ exports[`setup-tailwind generator should add a tailwind config to an application
 `;
 
 exports[`setup-tailwind generator should add a tailwind config to an application correctly 3`] = `
-"import type { LinksFunction, MetaFunction } from '@remix-run/node';
+"import type { MetaFunction, LinksFunction } from '@remix-run/node';
 import {
   Links,
   LiveReload,

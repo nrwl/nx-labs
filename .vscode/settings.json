@@ -1,3 +1,4 @@
 {
-  "eslint.validate": ["json"]
+  "eslint.validate": ["json"],
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.js"
 }

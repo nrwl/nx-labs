@@ -15,7 +15,7 @@ exports[`ErrorBoundary --apiVersion=1 should correctly add the ErrorBoundary to 
 `;
 
 exports[`ErrorBoundary --apiVersion=2 should correctly add the ErrorBoundary to the route file 1`] = `
-"import { isRouteErrorResponse, useRouteError } from '@remix-run/react';
+"import { useRouteError, isRouteErrorResponse } from '@remix-run/react';
 export function ErrorBoundary() {
   const error = useRouteError();
 

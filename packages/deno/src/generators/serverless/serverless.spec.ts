@@ -66,7 +66,7 @@ describe('serverless generator', () => {
        * https://docs.netlify.com/edge-functions/overview/
        **/
 
-      import type { Context } from 'https://edge.netlify.com/';
+      import type { Config, Context } from 'https://edge.netlify.com/';
 
       export default async function handler(req: Request, context: Context) {
         const content = \`<html>
