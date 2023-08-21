@@ -309,8 +309,10 @@ function expectTargetsToBeCorrect(tree: Tree, projectRoot: string) {
     joinPathFragments(projectRoot === '.' ? '/' : projectRoot, 'project.json')
   );
   expect(targets.build).toBeTruthy();
-  expect(targets.build.command).toEqual('remix build');
-  expect(targets.build.options.cwd).toEqual(projectRoot);
+  expect(targets.build.executor).toEqual('@nx/remix:build');
+  expect(targets.build.options.outputPath).toEqual(
+    joinPathFragments('dist', projectRoot)
+  );
   expect(targets.serve).toBeTruthy();
   expect(targets.serve.command).toEqual('remix dev');
   expect(targets.serve.options.cwd).toEqual(projectRoot);
