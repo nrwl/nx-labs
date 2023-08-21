@@ -314,8 +314,8 @@ function expectTargetsToBeCorrect(tree: Tree, projectRoot: string) {
     joinPathFragments('dist', projectRoot)
   );
   expect(targets.serve).toBeTruthy();
-  expect(targets.serve.command).toEqual('remix dev');
-  expect(targets.serve.options.cwd).toEqual(projectRoot);
+  expect(targets.serve.executor).toEqual('@nx/remix:serve');
+  expect(targets.serve.options.port).toEqual(4200);
   expect(targets.start).toBeTruthy();
   expect(targets.start.command).toEqual('remix-serve build');
   expect(targets.start.options.cwd).toEqual(projectRoot);

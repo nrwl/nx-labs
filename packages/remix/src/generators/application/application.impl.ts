@@ -47,9 +47,9 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
         },
       },
       serve: {
-        command: `remix dev`,
+        executor: `@nx/remix:serve`,
         options: {
-          cwd: options.projectRoot,
+          port: 4200,
         },
       },
       start: {
