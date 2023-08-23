@@ -25,7 +25,6 @@ describe('nx-ignore e2e', () => {
       JSON.stringify(
         {
           name: proj,
-          root: projRoot,
         },
         null,
         2
