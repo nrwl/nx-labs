@@ -3,6 +3,7 @@
 const { execSync } = require('child_process');
 const { tmpdir } = require('os');
 const {
+  existsSync,
   rmSync,
   readFileSync,
   writeFileSync,
@@ -138,9 +139,12 @@ function installTempNx(root: string, plugins: string[]): string | null {
     logDebug(`≫ Creating temp folder to install Nx: ${tmpPath}`);
 
     // create temp package.json to avoid install other packages
-    const json = JSON.parse(readFileSync(join(root, 'package.json')));
-    delete json['scripts'];
-    delete json.devDependencies;
+    const originalPackageJson = JSON.parse(
+      readFileSync(join(root, 'package.json'))
+    );
+    const json: any = {
+      name: originalPackageJson.name,
+    };
     json.dependencies = {
       nx: deps['nx'],
       typescript: deps['typescript'],
@@ -162,7 +166,13 @@ function installTempNx(root: string, plugins: string[]): string | null {
     }
     writeFileSync(join(tmpPath, 'package.json'), JSON.stringify(json));
 
-    execSync(`npm install --force`, { cwd: tmpPath });
+    if (existsSync(join(root, 'yarn.lock'))) {
+      execSync(`yarn install`, { cwd: tmpPath });
+    } else if (existsSync(join(root, 'pnpm-lock.yaml'))) {
+      execSync(`pnpm install --force`, { cwd: tmpPath });
+    } else {
+      execSync(`npm install --force`, { cwd: tmpPath });
+    }
     moveSync(join(tmpPath, 'node_modules'), join(root, 'node_modules'));
 
     return deps['nx'];
