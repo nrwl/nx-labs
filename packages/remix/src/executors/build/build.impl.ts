@@ -1,11 +1,45 @@
-import { logger, writeJsonFile, type ExecutorContext } from '@nx/devkit';
+import {
+  logger,
+  readJsonFile,
+  writeJsonFile,
+  type ExecutorContext,
+} from '@nx/devkit';
 import { createLockFile, createPackageJson, getLockFileName } from '@nx/js';
 import { directoryExists } from '@nx/workspace/src/utilities/fileutils';
-import { cli as remixCli } from '@remix-run/dev';
+import { fork } from 'child_process';
 import { copySync, mkdir, writeFileSync } from 'fs-extra';
 import { type PackageJson } from 'nx/src/utils/package-json';
 import { join } from 'path';
 import { type RemixBuildSchema } from './schema';
+
+function buildRemixBuildArgs(options: RemixBuildSchema) {
+  const args = ['build'];
+
+  if (options.sourcemap) {
+    args.push(`--sourcemap`);
+  }
+
+  return args;
+}
+
+async function runBuild(
+  options: RemixBuildSchema,
+  context: ExecutorContext
+): Promise<void> {
+  const projectRoot = context.projectGraph.nodes[context.projectName].data.root;
+  return new Promise<void>((resolve, reject) => {
+    const remixBin = require.resolve('@remix-run/dev/dist/cli');
+    const args = buildRemixBuildArgs(options);
+    const p = fork(remixBin, args, {
+      cwd: join(context.root, projectRoot),
+      stdio: 'inherit',
+    });
+    p.on('exit', (code) => {
+      if (code === 0) resolve();
+      else reject();
+    });
+  });
+}
 
 export default async function buildExecutor(
   options: RemixBuildSchema,
@@ -14,37 +48,40 @@ export default async function buildExecutor(
   const projectRoot = context.projectGraph.nodes[context.projectName].data.root;
 
   try {
-    await remixCli.run(['build', projectRoot]);
+    await runBuild(options, context);
   } catch (error) {
-    logger.error(`Error occurred while trying to build application.`);
-    logger.error(error.toString());
+    logger.error(
+      `Error occurred while trying to build application. See above for more details.`
+    );
     return { success: false };
   }
 
   if (!directoryExists(options.outputPath)) {
     mkdir(options.outputPath);
   }
-
-  const builtPackageJson = createPackageJson(
-    context.projectName,
-    context.projectGraph,
-    {
+  let packageJson: PackageJson;
+  if (options.generatePackageJson) {
+    packageJson = createPackageJson(context.projectName, context.projectGraph, {
       target: context.targetName,
       root: context.root,
       isProduction: !options.includeDevDependenciesInPackageJson, // By default we remove devDependencies since this is a production build.
+    });
+
+    // Update `package.json` to reflect how users should run the build artifacts
+    packageJson.scripts ??= {};
+    // Don't override existing custom script since project may have its own server.
+    if (!packageJson.scripts.start) {
+      packageJson.scripts['start'] = 'remix-serve ./build';
     }
-  );
 
-  // Update `package.json` to reflect how users should run the build artifacts
-  builtPackageJson.scripts = {
-    start: 'remix-serve build',
-  };
-
-  updatePackageJson(builtPackageJson, context);
-  writeJsonFile(`${options.outputPath}/package.json`, builtPackageJson);
+    updatePackageJson(packageJson, context);
+    writeJsonFile(`${options.outputPath}/package.json`, packageJson);
+  } else {
+    packageJson = readJsonFile(join(projectRoot, 'package.json'));
+  }
 
   if (options.generateLockfile) {
-    const lockFile = createLockFile(builtPackageJson);
+    const lockFile = createLockFile(packageJson);
     writeFileSync(`${options.outputPath}/${getLockFileName()}`, lockFile, {
       encoding: 'utf-8',
     });
