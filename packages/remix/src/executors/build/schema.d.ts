@@ -1,5 +1,7 @@
 export interface RemixBuildSchema {
   outputPath: string;
-  includeDevDependenciesInPackageJson: boolean;
-  generateLockfile: boolean;
+  includeDevDependenciesInPackageJson?: boolean;
+  generatePackageJson?: boolean;
+  generateLockfile?: boolean;
+  sourcemap?: boolean;
 }

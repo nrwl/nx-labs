@@ -18,14 +18,21 @@
       "description": "Include `devDependencies` in the generated package.json file. By default only production `dependencies` are included.",
       "default": false
     },
+    "generatePackageJson": {
+      "type": "boolean",
+      "description": "Generate package.json file in the output folder.",
+      "default": false
+    },
     "generateLockfile": {
       "type": "boolean",
       "description": "Generate a lockfile (e.g. package-lock.json) that matches the workspace lockfile to ensure package versions match.",
-      "default": false,
-      "x-priority": "internal"
+      "default": false
+    },
+    "sourcemap": {
+      "type": "boolean",
+      "description": "Generate source maps for production.",
+      "default": false
     }
   },
-  "required": [
-    "outputPath"
-  ]
+  "required": ["outputPath"]
 }
