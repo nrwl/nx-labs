@@ -35,11 +35,11 @@
   "dependencies": {
     "gatsby-cli": "^4.2.0",
     "gatsby-codemods": "^3.2.0",
-    "@nx/devkit": "^16.7.0-rc.1",
-    "@nx/workspace": "^16.7.0-rc.1",
-    "@nx/linter": "^16.7.0-rc.1",
-    "@nx/cypress": "^16.7.0-rc.1",
-    "@nx/react": "^16.7.0-rc.1",
-    "@nx/jest": "^16.7.0-rc.1"
+    "@nx/devkit": "^16.8.0",
+    "@nx/workspace": "^16.8.0",
+    "@nx/linter": "^16.8.0",
+    "@nx/cypress": "^16.8.0",
+    "@nx/react": "^16.8.0",
+    "@nx/jest": "^16.8.0"
   }
 }

@@ -1,4 +1,5 @@
 import {
+  detectPackageManager,
   logger,
   readJsonFile,
   writeJsonFile,
@@ -81,10 +82,15 @@ export default async function buildExecutor(
   }
 
   if (options.generateLockfile) {
-    const lockFile = createLockFile(packageJson);
-    writeFileSync(`${options.outputPath}/${getLockFileName()}`, lockFile, {
-      encoding: 'utf-8',
-    });
+    const packageManager = detectPackageManager(context.root);
+    const lockFile = createLockFile(packageJson, context.projectGraph, packageManager);
+    writeFileSync(
+      `${options.outputPath}/${getLockFileName(packageManager)}`,
+      lockFile,
+      {
+        encoding: 'utf-8',
+      }
+    );
   }
 
   // If output path is different from source path, then copy over the config and public files.

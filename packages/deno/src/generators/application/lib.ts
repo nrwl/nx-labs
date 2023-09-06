@@ -81,7 +81,7 @@ export function addProjectConfig(tree: Tree, opts: DenoAppNormalizedSchema) {
         opts.bundler === 'deno_emit' ? '@nx/deno:emit' : '@nx/deno:esbuild',
       outputs: [
         joinPathFragments(
-          'dist',
+          '{workspaceRoot}/dist',
           opts.rootProject ? opts.name : opts.projectRoot
         ),
       ],
@@ -103,7 +103,7 @@ export function addProjectConfig(tree: Tree, opts: DenoAppNormalizedSchema) {
     },
     test: {
       executor: '@nx/deno:test',
-      outputs: [coverageDirectory],
+      outputs: [`{options.coverageDirectory}`],
       options: {
         coverageDirectory,
         denoConfig: joinPathFragments(opts.projectRoot, 'deno.json'),
