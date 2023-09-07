@@ -12,7 +12,7 @@ The following guides show you how to create a new Deno project and deploy to eit
 Create a new Nx workspace if you don't already have one.
 
 ```shell
-npx create-nx-workspace@latest deno-demo --preset=@nx/deno:preset
+npx create-nx-workspace@latest deno-demo --preset=@nx/deno
 ```
 
 Now, you can go into the `deno-demo` folder and start development.
