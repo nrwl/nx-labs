@@ -27,12 +27,12 @@ describe('Deno Misc Tests', () => {
     await runNxCommandAsync('generate @nx/deno:app api');
     // change my-types index.ts file to be deno compatible
     updateFile(
-      'libs/my-types/src/index.ts',
+      'my-types/src/index.ts',
       `export const myType = () => 'myType';`
     );
     await runNxCommandAsync('generate @nx/deno:add-import my-types');
     updateFile(
-      'apps/api/src/main.ts',
+      'api/src/main.ts',
       `import { myType } from '@proj/my-types';
 console.log(myType());`
     );

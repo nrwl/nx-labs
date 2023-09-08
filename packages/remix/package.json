@@ -5,9 +5,9 @@
   "generators": "./generators.json",
   "executors": "./executors.json",
   "dependencies": {
-    "@nx/devkit": "^16.7.0-rc.1",
-    "@nx/js": "^16.7.0-rc.1",
-    "@nx/react": "^16.7.0-rc.1",
+    "@nx/devkit": "^16.8.0",
+    "@nx/js": "^16.8.0",
+    "@nx/react": "^16.8.0",
     "tslib": "^2.3.1",
     "@phenomnomnominal/tsquery": "^5.0.1"
   },

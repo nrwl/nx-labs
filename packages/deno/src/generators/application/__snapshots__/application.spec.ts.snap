@@ -17,7 +17,7 @@ Object {
         "outputFile": "dist/apps/my-app/main.js",
       },
       "outputs": Array [
-        "dist/apps/my-app",
+        "{workspaceRoot}/dist/apps/my-app",
       ],
     },
     "lint": Object {
@@ -39,7 +39,7 @@ Object {
         "denoConfig": "apps/my-app/deno.json",
       },
       "outputs": Array [
-        "coverage/apps/my-app",
+        "{options.coverageDirectory}",
       ],
     },
   },
@@ -63,7 +63,7 @@ Object {
         "outputFile": "dist/apps/my-oak-api/main.js",
       },
       "outputs": Array [
-        "dist/apps/my-oak-api",
+        "{workspaceRoot}/dist/apps/my-oak-api",
       ],
     },
     "lint": Object {
@@ -85,7 +85,7 @@ Object {
         "denoConfig": "apps/my-oak-api/deno.json",
       },
       "outputs": Array [
-        "coverage/apps/my-oak-api",
+        "{options.coverageDirectory}",
       ],
     },
   },
@@ -144,7 +144,7 @@ Object {
         "outputFile": "dist/my-app/main.js",
       },
       "outputs": Array [
-        "dist/my-app",
+        "{workspaceRoot}/dist/my-app",
       ],
     },
     "lint": Object {
@@ -166,7 +166,7 @@ Object {
         "denoConfig": "deno.json",
       },
       "outputs": Array [
-        "coverage/my-app",
+        "{options.coverageDirectory}",
       ],
     },
   },
@@ -190,7 +190,7 @@ Object {
         "outputFile": "dist/my-oak-api/main.js",
       },
       "outputs": Array [
-        "dist/my-oak-api",
+        "{workspaceRoot}/dist/my-oak-api",
       ],
     },
     "lint": Object {
@@ -212,7 +212,7 @@ Object {
         "denoConfig": "deno.json",
       },
       "outputs": Array [
-        "coverage/my-oak-api",
+        "{options.coverageDirectory}",
       ],
     },
   },
