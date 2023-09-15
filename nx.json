@@ -8,7 +8,8 @@
       "runner": "nx-cloud",
       "options": {
         "cacheableOperations": ["build-base", "build", "lint", "test", "e2e"],
-        "accessToken": "MDRmYzUxMmYtNTQwZi00MjZkLTg0ZTYtMzc5Y2RhOTE4YTc2fHJlYWQtd3JpdGU="
+        "accessToken": "MDRmYzUxMmYtNTQwZi00MjZkLTg0ZTYtMzc5Y2RhOTE4YTc2fHJlYWQtd3JpdGU=",
+        "useLightClient": true
       }
     }
   },
