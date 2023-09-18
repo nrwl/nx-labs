@@ -1,0 +1,16 @@
+import { PackageManagerCommands } from '../../../utils/package-manager';
+export declare function askAboutNxCloud(): Promise<boolean>;
+export declare function createNxJsonFile(repoRoot: string, targetDefaults: string[], cacheableOperations: string[], scriptOutputs: {
+    [name: string]: string;
+}): void;
+export declare function addDepsToPackageJson(repoRoot: string, useCloud: boolean): void;
+export declare function runInstall(repoRoot: string, pmc?: PackageManagerCommands): void;
+export declare function initCloud(repoRoot: string, installationSource: 'nx-init-angular' | 'nx-init-cra' | 'nx-init-monorepo' | 'nx-init-nest' | 'nx-init-npm-repo'): void;
+export declare function addVsCodeRecommendedExtensions(repoRoot: string, extensions: string[]): void;
+export declare function markRootPackageJsonAsNxProject(repoRoot: string, cacheableScripts: string[], scriptOutputs: {
+    [script: string]: string;
+}, pmc: PackageManagerCommands): void;
+export declare function printFinalMessage({ learnMoreLink, bodyLines, }: {
+    learnMoreLink?: string;
+    bodyLines?: string[];
+}): void;

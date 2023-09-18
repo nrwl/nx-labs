@@ -111,8 +111,8 @@ describe('Remix Application', () => {
 
         expect(tree.read('e2e/cypress.config.ts', 'utf-8'))
           .toMatchInlineSnapshot(`
-          "import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
-          import { defineConfig } from 'cypress';
+          "import { defineConfig } from 'cypress';
+          import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
 
           export default defineConfig({
             e2e: nxE2EPreset(__dirname),
@@ -290,8 +290,8 @@ describe('Remix Application', () => {
 
         expect(tree.read('apps/test-e2e/cypress.config.ts', 'utf-8'))
           .toMatchInlineSnapshot(`
-          "import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
-          import { defineConfig } from 'cypress';
+          "import { defineConfig } from 'cypress';
+          import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
 
           export default defineConfig({
             e2e: nxE2EPreset(__dirname),
