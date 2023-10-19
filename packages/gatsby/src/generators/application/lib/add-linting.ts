@@ -5,7 +5,7 @@ import {
   Tree,
   updateJson,
 } from '@nx/devkit';
-import { Linter, lintProjectGenerator } from '@nx/linter';
+import { Linter, lintProjectGenerator } from '@nx/eslint';
 import { extendReactEslintJson, extraEslintDependencies } from '@nx/react';
 import type { Linter as ESLintLinter } from 'eslint';
 import { NormalizedSchema } from './normalize-options';

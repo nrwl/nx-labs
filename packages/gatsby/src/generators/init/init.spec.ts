@@ -18,14 +18,6 @@ xdescribe('init', () => {
     expect(packageJson.dependencies['gatsby']).toBeDefined();
   });
 
-  describe('defaultCollection', () => {
-    it('should be set if none was set before', async () => {
-      await gatsbyInitGenerator(tree, {});
-      const { cli } = readJson<NxJsonConfiguration>(tree, 'nx.json');
-      expect(cli.defaultCollection).toEqual('@nx/gatsby');
-    });
-  });
-
   it('should not add jest config if unitTestRunner is none', async () => {
     await gatsbyInitGenerator(tree, { unitTestRunner: 'none' });
     expect(tree.exists('jest.config.js')).toEqual(false);

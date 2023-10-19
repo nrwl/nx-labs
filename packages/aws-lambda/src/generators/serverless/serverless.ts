@@ -6,7 +6,7 @@ import {
   runTasksInSerial,
   Tree,
 } from '@nx/devkit';
-import { Linter } from '@nx/linter';
+import { Linter } from '@nx/eslint';
 import { applicationGenerator } from '@nx/node';
 import { setupFunctionsGenerator } from '../setup-functions/setup-functions';
 import { Schema } from './schema';

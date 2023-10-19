@@ -128,8 +128,7 @@ describe('Remix Library Generator', () => {
       // ASSERT
       expect(tree.read('libs/test/vite.config.ts', 'utf-8'))
         .toMatchInlineSnapshot(`
-        "/// <reference types=\\"vitest\\" />
-        import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+        "import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
         import react from '@vitejs/plugin-react';
         import { defineConfig } from 'vite';
 
@@ -146,9 +145,7 @@ describe('Remix Library Generator', () => {
           test: {
             setupFiles: ['./src/test-setup.ts'],
             globals: true,
-            cache: {
-              dir: '../../node_modules/.vitest',
-            },
+            cache: { dir: '../../node_modules/.vitest' },
             environment: 'jsdom',
             include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
           },

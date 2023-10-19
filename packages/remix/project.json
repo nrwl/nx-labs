@@ -9,7 +9,7 @@
       "command": "node ./scripts/add-dependency-to-build.js remix @nrwl/remix"
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/remix/**/*.ts"]

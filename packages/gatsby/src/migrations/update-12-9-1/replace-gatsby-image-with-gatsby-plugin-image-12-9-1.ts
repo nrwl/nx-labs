@@ -4,10 +4,10 @@ import {
   getProjects,
   readJson,
   removeDependenciesFromPackageJson,
+  runTasksInSerial,
   Tree,
   visitNotIgnoredFiles,
 } from '@nx/devkit';
-import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
 import { exec } from 'child_process';
 import { join } from 'path';
 

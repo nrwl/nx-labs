@@ -1,9 +1,9 @@
 import {
   addProjectConfiguration,
   joinPathFragments,
-  readWorkspaceConfiguration,
+  readNxJson,
   Tree,
-  updateWorkspaceConfiguration,
+  updateNxJson,
 } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 
@@ -25,9 +25,9 @@ describe('Update remix.config', () => {
     const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
     createLegacyRemixApp(tree, 'remix', 'apps/remix');
 
-    const workspaceConfig = readWorkspaceConfiguration(tree);
-    updateWorkspaceConfiguration(tree, {
-      ...workspaceConfig,
+    const nxJson = readNxJson(tree);
+    updateNxJson(tree, {
+      ...nxJson,
       workspaceLayout: { appsDir: 'apps', libsDir: 'some-libs' },
     });
 
