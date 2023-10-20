@@ -3,9 +3,9 @@ import {
   formatFiles,
   readJson,
   removeDependenciesFromPackageJson,
+  runTasksInSerial,
   Tree,
 } from '@nx/devkit';
-import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
 import { sassVersion } from '../../utils/versions';
 
 /**

@@ -25,7 +25,7 @@ describe('Cypress generator', () => {
         },
       },
       lint: {
-        executor: '@nx/linter:eslint',
+        executor: '@nx/eslint:lint',
         options: {
           lintFilePatterns: ['demo-e2e/**/*.{js,ts}'],
         },

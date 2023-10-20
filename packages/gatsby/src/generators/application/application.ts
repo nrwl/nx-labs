@@ -1,5 +1,9 @@
-import { convertNxGenerator, formatFiles, Tree } from '@nx/devkit';
-import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
+import {
+  convertNxGenerator,
+  formatFiles,
+  runTasksInSerial,
+  Tree,
+} from '@nx/devkit';
 
 import { addStyleDependencies } from '../../utils/styles';
 import { gatsbyInitGenerator } from '../init/init';

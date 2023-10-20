@@ -81,7 +81,7 @@ function addProjectConfig(tree: Tree, opts: NormalizedSchema) {
   const targets: ProjectConfiguration['targets'] = {
     test: {
       executor: '@nx/deno:test',
-      outputs: [`coverage/${opts.projectRoot}`],
+      outputs: [`{workspaceRoot}/coverage/${opts.projectRoot}`],
       options: {
         coverageDirectory: `coverage/${opts.projectRoot}`,
         denoConfig: `${opts.projectRoot}/deno.json`,

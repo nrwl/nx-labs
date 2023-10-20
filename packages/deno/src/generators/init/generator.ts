@@ -46,7 +46,13 @@ function addFiles(tree: Tree) {
 function addDenoPluginToNxJson(tree: Tree) {
   const nxJson = readNxJson(tree);
 
-  const plugins = new Set<string>(nxJson.plugins || []);
+  const pluginNames = nxJson.plugins
+    ? nxJson.plugins.map((p) => {
+        return typeof p === 'string' ? p : p.plugin;
+      })
+    : [];
+
+  const plugins = new Set<string>(pluginNames);
   plugins.add('@nx/deno');
   nxJson.plugins = Array.from(plugins);
 

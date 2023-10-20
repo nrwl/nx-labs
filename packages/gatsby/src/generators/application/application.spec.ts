@@ -117,29 +117,6 @@ xdescribe('app', () => {
     });
   });
 
-  describe('--style styl', () => {
-    it('should generate stylus styles', async () => {
-      await applicationGenerator(tree, {
-        name: 'myApp',
-        style: 'styl',
-        standaloneConfig: false,
-      });
-      expect(
-        tree.exists('apps/my-app/src/pages/index.module.styl')
-      ).toBeTruthy();
-
-      const indexContent = tree
-        .read('apps/my-app/src/pages/index.tsx')
-        .toString();
-      expect(indexContent).toContain(
-        `import * as styles from './index.module.styl'`
-      );
-
-      const nxJson = readJson<NxJsonConfiguration>(tree, 'nx.json');
-      expect(nxJson.generators['@nx/gatsby'].application.style).toEqual('styl');
-    });
-  });
-
   describe('--style styled-components', () => {
     it('should generate scss styles', async () => {
       await applicationGenerator(tree, {

@@ -1,6 +1,6 @@
 import { cypressProjectGenerator } from '@nx/cypress';
 import { Tree } from '@nx/devkit';
-import { Linter } from '@nx/linter';
+import { Linter } from '@nx/eslint';
 import { NormalizedSchema } from './normalize-options';
 
 export async function addCypress(host: Tree, options: NormalizedSchema) {

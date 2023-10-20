@@ -4,6 +4,7 @@ import {
   convertNxGenerator,
   detectPackageManager,
   GeneratorCallback,
+  runTasksInSerial,
   Tree,
   updateJson,
 } from '@nx/devkit';
@@ -30,7 +31,6 @@ import {
   testingLibraryReactVersion,
 } from '../../utils/versions';
 
-import { runTasksInSerial } from '@nx/workspace/src/utilities/run-tasks-in-serial';
 import { InitSchema } from './schema';
 
 function updateDependencies(host: Tree) {
