@@ -1,6 +1,8 @@
 import {
   Configuration,
+  CopyRspackPlugin,
   ExternalItem,
+  ProgressPlugin,
   ResolveAlias,
   RspackPluginInstance,
 } from '@rspack/core';
@@ -31,6 +33,14 @@ export function withNx(_opts = {}) {
     }, {});
 
     const plugins = config.plugins ?? [];
+    plugins.push(new CopyRspackPlugin({
+      patterns: getCopyPatterns(
+        normalizeAssets(options.assets, context.root, sourceRoot)
+      ),
+    }));
+
+    plugins.push(new ProgressPlugin({}));
+
     if (options.extractLicenses) {
       plugins.push(
         new LicenseWebpackPlugin({
@@ -132,14 +142,6 @@ export function withNx(_opts = {}) {
       },
       infrastructureLogging: {
         debug: false,
-      },
-      builtins: {
-        copy: {
-          patterns: getCopyPatterns(
-            normalizeAssets(options.assets, context.root, sourceRoot)
-          ),
-        },
-        progress: {},
       },
       externals,
       externalsType,
