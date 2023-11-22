@@ -2,11 +2,11 @@ import { joinPathFragments, type Tree } from '@nx/devkit';
 import { tsquery } from '@phenomnomnominal/tsquery';
 
 export function updateRemixConfig(tree: Tree, projectRoot: string) {
-  const pathToRemixConfig = joinPathFragments(projectRoot, 'remix.config.js');
+  const pathToRemixConfig = joinPathFragments(projectRoot, 'remix.config.cjs');
 
   if (!tree.exists(pathToRemixConfig)) {
     throw new Error(
-      `Could not find "${pathToRemixConfig}". Please ensure a "remix.config.js" exists at the root of your project.`
+      `Could not find "${pathToRemixConfig}". Please ensure a "remix.config.cjs" exists at the root of your project.`
     );
   }
 

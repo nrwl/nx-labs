@@ -2,7 +2,7 @@
 
 exports[`route --nameAndDirectoryFormat=as-provided should add route component 1`] = `
 "import type {
-  ActionArgs,
+  ActionFunctionArgs,
   LinksFunction,
   LoaderArgs,
   MetaFunction,
@@ -16,14 +16,14 @@ export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: stylesUrl }];
 };
 
-export const action = async ({ request }: ActionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   let formData = await request.formData();
 
   return json({ message: formData.toString() }, { status: 200 });
 };
 
 export const meta: MetaFunction = () => {
-  return { title: 'Example Route' };
+  return [{ title: 'Example Route' }];
 };
 
 export const loader = async ({ request }: LoaderArgs) => {
@@ -49,7 +49,7 @@ exports[`route --nameAndDirectoryFormat=as-provided should error if it detects a
 
 exports[`route --nameAndDirectoryFormat=derived should add route component 1`] = `
 "import type {
-  ActionArgs,
+  ActionFunctionArgs,
   LinksFunction,
   LoaderArgs,
   MetaFunction,
@@ -63,14 +63,14 @@ export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: stylesUrl }];
 };
 
-export const action = async ({ request }: ActionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   let formData = await request.formData();
 
   return json({ message: formData.toString() }, { status: 200 });
 };
 
 export const meta: MetaFunction = () => {
-  return { title: 'PathToExample Route' };
+  return [{ title: 'PathToExample Route' }];
 };
 
 export const loader = async ({ request }: LoaderArgs) => {

@@ -1,33 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ErrorBoundary --nameAndDirectoryFormat=as-provided --apiVersion=1 should correctly add the ErrorBoundary to the route file 1`] = `
-"export function ErrorBoundary({ error }) {
-  console.error(error);
-  return (
-    <div>
-      <h1>Uh oh ...</h1>
-      <p>Something went wrong</p>
-      <pre>{error.message || 'Unknown error'}</pre>
-    </div>
-  );
-}
-"
-`;
-
-exports[`ErrorBoundary --nameAndDirectoryFormat=as-provided --apiVersion=1 should correctly add the ErrorBoundary to the route file 2`] = `
-"export function ErrorBoundary({ error }) {
-  console.error(error);
-  return (
-    <div>
-      <h1>Uh oh ...</h1>
-      <p>Something went wrong</p>
-      <pre>{error.message || 'Unknown error'}</pre>
-    </div>
-  );
-}
-"
-`;
-
 exports[`ErrorBoundary --nameAndDirectoryFormat=as-provided --apiVersion=2 should correctly add the ErrorBoundary to the route file 1`] = `
 "import { isRouteErrorResponse, useRouteError } from '@remix-run/react';
 export function ErrorBoundary() {
@@ -42,22 +14,18 @@ export function ErrorBoundary() {
         <p>{error.data.message}</p>
       </div>
     );
+  } else if (error instanceof Error) {
+    return (
+      <div>
+        <h1>Error</h1>
+        <p>{error.message}</p>
+        <p>The stack trace is:</p>
+        <pre>{error.stack}</pre>
+      </div>
+    );
+  } else {
+    return <h1>Unknown Error</h1>;
   }
-
-  // Don't forget to typecheck with your own logic.
-  // Any value can be thrown, not just errors!
-  let errorMessage = 'Unknown error';
-  // if (isDefinitelyAnError(error)) {
-  //    errorMessage = error.message;
-  // }
-
-  return (
-    <div>
-      <h1>Uh oh ...</h1>
-      <p>Something went wrong.</p>
-      <pre>{errorMessage}</pre>
-    </div>
-  );
 }
 "
 `;
@@ -76,22 +44,18 @@ export function ErrorBoundary() {
         <p>{error.data.message}</p>
       </div>
     );
+  } else if (error instanceof Error) {
+    return (
+      <div>
+        <h1>Error</h1>
+        <p>{error.message}</p>
+        <p>The stack trace is:</p>
+        <pre>{error.stack}</pre>
+      </div>
+    );
+  } else {
+    return <h1>Unknown Error</h1>;
   }
-
-  // Don't forget to typecheck with your own logic.
-  // Any value can be thrown, not just errors!
-  let errorMessage = 'Unknown error';
-  // if (isDefinitelyAnError(error)) {
-  //    errorMessage = error.message;
-  // }
-
-  return (
-    <div>
-      <h1>Uh oh ...</h1>
-      <p>Something went wrong.</p>
-      <pre>{errorMessage}</pre>
-    </div>
-  );
 }
 "
 `;

@@ -29,7 +29,7 @@ export default async function (tree: Tree, options: RemixStyleSchema) {
   const project = readProjectConfiguration(tree, projectName);
   if (!project) throw new Error(`Project does not exist: ${projectName}`);
 
-  const appDir = resolveRemixAppDirectory(tree, project.name);
+  const appDir = await resolveRemixAppDirectory(tree, project.name);
   const normalizedRoutePath = `${normalizeRoutePath(options.path)
     .replace(/^\//, '')
     .replace('.tsx', '')}.css`;
@@ -55,7 +55,7 @@ export default async function (tree: Tree, options: RemixStyleSchema) {
 
   const routeFilePath = options.nameAndDirectoryFormat
     ? options.path
-    : resolveRemixRouteFile(tree, options.path, options.project, '.tsx');
+    : await resolveRemixRouteFile(tree, options.path, options.project, '.tsx');
 
   insertImport(tree, routeFilePath, 'LinksFunction', '@remix-run/node', {
     typeOnly: true,

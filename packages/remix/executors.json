@@ -10,17 +10,5 @@
       "schema": "./src/executors/build/schema.json",
       "description": "Build a Remix application."
     }
-  },
-  "builders": {
-    "serve": {
-      "implementation": "./src/executors/serve/compat",
-      "schema": "./src/executors/serve/schema.json",
-      "description": "Serve a Remix application."
-    },
-    "build": {
-      "implementation": "./src/executors/build/build.impl",
-      "schema": "./src/executors/build/schema.json",
-      "description": "Build a Remix application."
-    }
   }
 }

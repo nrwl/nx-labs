@@ -16,6 +16,13 @@ export default {
 "
 `;
 
+exports[`Remix Library Generator -projectNameAndRootFormat=as-provided --unitTestRunner should create the correct config files for testing with jest 2`] = `
+"import { installGlobals } from '@remix-run/node';
+import '@testing-library/jest-dom/matchers';
+installGlobals();
+"
+`;
+
 exports[`Remix Library Generator -projectNameAndRootFormat=as-provided --unitTestRunner should create the correct config files for testing with vitest 1`] = `
 "import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import react from '@vitejs/plugin-react';
@@ -39,6 +46,13 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },
 });
+"
+`;
+
+exports[`Remix Library Generator -projectNameAndRootFormat=as-provided --unitTestRunner should create the correct config files for testing with vitest 2`] = `
+"import { installGlobals } from '@remix-run/node';
+import '@testing-library/jest-dom/matchers';
+installGlobals();
 "
 `;
 
@@ -77,6 +91,13 @@ export default {
 "
 `;
 
+exports[`Remix Library Generator -projectNameAndRootFormat=derived --unitTestRunner should create the correct config files for testing with jest 2`] = `
+"import { installGlobals } from '@remix-run/node';
+import '@testing-library/jest-dom/matchers';
+installGlobals();
+"
+`;
+
 exports[`Remix Library Generator -projectNameAndRootFormat=derived --unitTestRunner should create the correct config files for testing with vitest 1`] = `
 "import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import react from '@vitejs/plugin-react';
@@ -100,6 +121,13 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },
 });
+"
+`;
+
+exports[`Remix Library Generator -projectNameAndRootFormat=derived --unitTestRunner should create the correct config files for testing with vitest 2`] = `
+"import { installGlobals } from '@remix-run/node';
+import '@testing-library/jest-dom/matchers';
+installGlobals();
 "
 `;
 

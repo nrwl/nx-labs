@@ -2,7 +2,6 @@ import { NameAndDirectoryFormat } from '@nx/devkit/src/generators/artifact-name-
 
 export interface ErrorBoundarySchema {
   path: string;
-  apiVersion: number;
   skipFormat?: false;
   nameAndDirectoryFormat?: NameAndDirectoryFormat;
   /**

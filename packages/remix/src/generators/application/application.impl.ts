@@ -6,6 +6,7 @@ import {
   formatFiles,
   generateFiles,
   GeneratorCallback,
+  getPackageManagerCommand,
   joinPathFragments,
   offsetFromRoot,
   readJson,
@@ -55,12 +56,16 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
       serve: {
         executor: `@nx/remix:serve`,
         options: {
+          command: `${
+            getPackageManagerCommand().exec
+          } remix-serve build/index.js`,
+          manual: true,
           port: 4200,
         },
       },
       start: {
         dependsOn: ['build'],
-        command: `remix-serve build`,
+        command: `remix-serve build/index.js`,
         options: {
           cwd: options.projectRoot,
         },
