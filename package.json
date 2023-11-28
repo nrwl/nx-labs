@@ -27,15 +27,16 @@
     "@nx/cypress": "17.0.1",
     "@nx/detox": "17.0.1",
     "@nx/devkit": "17.0.1",
+    "@nx/eslint": "17.0.1",
     "@nx/eslint-plugin": "17.0.1",
     "@nx/jest": "17.0.1",
     "@nx/js": "17.0.1",
     "@nx/node": "17.0.1",
     "@nx/plugin": "17.0.1",
     "@nx/react": "17.0.1",
+    "@nx/storybook": "17.0.1",
     "@nx/vite": "17.0.1",
     "@nx/workspace": "17.0.1",
-    "@nx/storybook": "17.0.1",
     "@phenomnomnominal/tsquery": "^5.0.1",
     "@remix-run/dev": "2.3.0",
     "@remix-run/node": "2.3.0",
@@ -70,7 +71,6 @@
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",
     "typescript": "5.1.3",
-    "verdaccio": "^5.0.4",
-    "@nx/eslint": "17.0.1"
+    "verdaccio": "^5.0.4"
   }
 }

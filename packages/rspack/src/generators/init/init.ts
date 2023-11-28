@@ -9,8 +9,8 @@ import { initGenerator } from '@nx/js';
 import {
   rspackCoreVersion,
   rspackDevServerVersion,
-  rspackLessLoaderVersion,
   rspackPluginMinifyVersion,
+  lessLoaderVersion,
 } from '../../utils/versions';
 import { InitGeneratorSchema } from './schema';
 
@@ -40,7 +40,7 @@ export async function rspackInitGenerator(
   }
 
   if (schema.style === 'less') {
-    devDependencies['@rspack/less-loader'] = rspackLessLoaderVersion;
+    devDependencies['less-loader'] = lessLoaderVersion;
   }
 
   if (schema.framework !== 'none' || schema.devServer) {
