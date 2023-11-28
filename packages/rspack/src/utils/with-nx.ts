@@ -147,6 +147,11 @@ export function withNx(_opts = {}) {
         colors: true,
         preset: 'normal',
       },
+      experiments: {
+        rspackFuture: {
+          disableTransformByDefault: false
+        }
+      }
     };
 
     if (options.optimization) {
