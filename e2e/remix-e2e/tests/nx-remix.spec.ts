@@ -55,18 +55,30 @@ describe('remix e2e', () => {
   }, 120000);
 
   describe('--directory', () => {
-    it('should create src in the specified directory', async () => {
+    it('should create src in the specified directory --projectNameAndRootFormat=derived', async () => {
       const plugin = uniq('remix');
-      const appName = `subdir-${plugin}`;
+      const appName = `sub-${plugin}`;
       await runNxCommandAsync(
-        `generate @nx/remix:app ${plugin} --directory subdir --rootProject=false`
+        `generate @nx/remix:app ${plugin} --directory=sub --projectNameAndRootFormat=derived --rootProject=false`
       );
-      const project = readJson(`subdir/${plugin}/project.json`);
+      const project = readJson(`sub/${plugin}/project.json`);
       expect(project.targets.build.options.outputPath).toEqual(
-        `dist/subdir/${plugin}`
+        `dist/sub/${plugin}`
       );
 
       const result = await runNxCommandAsync(`build ${appName}`);
+      expect(result.stdout).toContain('Successfully ran target build');
+    }, 120000);
+
+    it('should create src in the specified directory --projectNameAndRootFormat=as-provided', async () => {
+      const plugin = uniq('remix');
+      await runNxCommandAsync(
+        `generate @nx/remix:app ${plugin} --directory=subdir --projectNameAndRootFormat=as-provided --rootProject=false`
+      );
+      const project = readJson(`subdir/project.json`);
+      expect(project.targets.build.options.outputPath).toEqual(`dist/subdir`);
+
+      const result = await runNxCommandAsync(`build ${plugin}`);
       expect(result.stdout).toContain('Successfully ran target build');
     }, 120000);
   });

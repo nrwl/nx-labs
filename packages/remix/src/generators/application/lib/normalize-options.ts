@@ -1,36 +1,33 @@
-import {
-  extractLayoutDirectory,
-  getWorkspaceLayout,
-  joinPathFragments,
-  Tree,
-} from '@nx/devkit';
-import {
-  normalizeDirectory,
-  normalizeProjectName,
-} from '../../../utils/project';
-import { NxRemixGeneratorSchema } from '../schema';
+import { type Tree } from '@nx/devkit';
+import { determineProjectNameAndRootOptions } from '@nx/devkit/src/generators/project-name-and-root-utils';
+import { type NxRemixGeneratorSchema } from '../schema';
 
 export interface NormalizedSchema extends NxRemixGeneratorSchema {
   projectName: string;
   projectRoot: string;
+  e2eProjectName: string;
+  e2eProjectRoot: string;
   parsedTags: string[];
 }
 
-export function normalizeOptions(
+export async function normalizeOptions(
   tree: Tree,
   options: NxRemixGeneratorSchema
-): NormalizedSchema {
-  const { layoutDirectory, projectDirectory } = extractLayoutDirectory(
-    options.directory
-  );
-  const appDirectory = normalizeDirectory(options.name, projectDirectory);
-  const appName = normalizeProjectName(options.name, projectDirectory);
-  const { appsDir: defaultAppsDir } = getWorkspaceLayout(tree);
-  const appsDir = layoutDirectory ?? defaultAppsDir;
-  const projectName = appName;
-  const projectRoot = options.rootProject
-    ? '.'
-    : joinPathFragments(appsDir, appDirectory);
+): Promise<NormalizedSchema> {
+  const { projectName, projectRoot, projectNameAndRootFormat } =
+    await determineProjectNameAndRootOptions(tree, {
+      name: options.name,
+      projectType: 'application',
+      directory: options.directory,
+      projectNameAndRootFormat: options.projectNameAndRootFormat,
+      rootProject: options.rootProject,
+      callingGenerator: '@nx/remix:application',
+    });
+  options.rootProject = projectRoot === '.';
+  options.projectNameAndRootFormat = projectNameAndRootFormat;
+  const e2eProjectName = options.rootProject ? 'e2e' : `${projectName}-e2e`;
+  const e2eProjectRoot = options.rootProject ? 'e2e' : `${projectRoot}-e2e`;
+
   const parsedTags = options.tags
     ? options.tags.split(',').map((s) => s.trim())
     : [];
@@ -39,6 +36,8 @@ export function normalizeOptions(
     ...options,
     projectName,
     projectRoot,
+    e2eProjectName,
+    e2eProjectRoot,
     parsedTags,
   };
 }
