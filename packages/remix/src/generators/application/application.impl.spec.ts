@@ -1,5 +1,6 @@
 import type { Tree } from '@nx/devkit';
 import { joinPathFragments, readJson } from '@nx/devkit';
+import { ProjectNameAndRootFormat } from '@nx/devkit/src/generators/project-name-and-root-utils';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import applicationGenerator from './application.impl';
 
@@ -115,7 +116,7 @@ describe('Remix Application', () => {
           import { defineConfig } from 'cypress';
 
           export default defineConfig({
-            e2e: nxE2EPreset(__dirname),
+            e2e: nxE2EPreset(__filename, { cypressDir: 'src' }),
           });
           "
         `);
@@ -123,27 +124,12 @@ describe('Remix Application', () => {
     });
   });
 
-  describe('Integrated Repo', () => {
-    it('should create the application correctly', async () => {
-      // ARRANGE
-      const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
-
-      // ACT
-      await applicationGenerator(tree, {
-        name: 'test',
-      });
-
-      // ASSERT
-      expectTargetsToBeCorrect(tree, 'apps/test');
-
-      expect(tree.read('apps/test/remix.config.js', 'utf-8')).toMatchSnapshot();
-      expect(tree.read('apps/test/app/root.tsx', 'utf-8')).toMatchSnapshot();
-      expect(
-        tree.read('apps/test/app/routes/index.tsx', 'utf-8')
-      ).toMatchSnapshot();
-    });
-
-    describe('--js', () => {
+  describe.each([
+    ['derived', 'apps/test', 'apps/test-e2e'],
+    ['as-provided', 'test', 'test-e2e'],
+  ])(
+    'Integrated Repo --projectNameAndRootFormat=%s',
+    (projectNameAndRootFormat: ProjectNameAndRootFormat, appDir, e2eDir) => {
       it('should create the application correctly', async () => {
         // ARRANGE
         const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
@@ -151,156 +137,194 @@ describe('Remix Application', () => {
         // ACT
         await applicationGenerator(tree, {
           name: 'test',
-          js: true,
+          projectNameAndRootFormat,
         });
 
         // ASSERT
-        expectTargetsToBeCorrect(tree, 'apps/test');
+        expectTargetsToBeCorrect(tree, appDir);
 
         expect(
-          tree.read('apps/test/remix.config.js', 'utf-8')
+          tree.read(`${appDir}/remix.config.js`, 'utf-8')
         ).toMatchSnapshot();
-        expect(tree.read('apps/test/app/root.js', 'utf-8')).toMatchSnapshot();
+        expect(tree.read(`${appDir}/app/root.tsx`, 'utf-8')).toMatchSnapshot();
         expect(
-          tree.read('apps/test/app/routes/index.js', 'utf-8')
-        ).toMatchSnapshot();
-      });
-    });
-    describe('--directory', () => {
-      it('should create the application correctly', async () => {
-        // ARRANGE
-        const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
-
-        // ACT
-        await applicationGenerator(tree, {
-          name: 'test',
-          directory: 'demo',
-        });
-
-        // ASSERT
-        expectTargetsToBeCorrect(tree, 'apps/demo/test');
-
-        expect(
-          tree.read('apps/demo/test/remix.config.js', 'utf-8')
-        ).toMatchSnapshot();
-        expect(
-          tree.read('apps/demo/test/app/root.tsx', 'utf-8')
-        ).toMatchSnapshot();
-        expect(
-          tree.read('apps/demo/test/app/routes/index.tsx', 'utf-8')
+          tree.read(`${appDir}/app/routes/index.tsx`, 'utf-8')
         ).toMatchSnapshot();
       });
 
-      it('should extract the layout directory from the directory options if it exists', async () => {
-        // ARRANGE
-        const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
+      describe('--js', () => {
+        it('should create the application correctly', async () => {
+          // ARRANGE
+          const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
 
-        // ACT
-        await applicationGenerator(tree, {
-          name: 'test',
-          directory: 'apps/demo',
+          // ACT
+          await applicationGenerator(tree, {
+            name: 'test',
+            js: true,
+            projectNameAndRootFormat,
+          });
+
+          // ASSERT
+          expectTargetsToBeCorrect(tree, appDir);
+
+          expect(
+            tree.read(`${appDir}/remix.config.js`, 'utf-8')
+          ).toMatchSnapshot();
+          expect(tree.read(`${appDir}/app/root.js`, 'utf-8')).toMatchSnapshot();
+          expect(
+            tree.read(`${appDir}/app/routes/index.js`, 'utf-8')
+          ).toMatchSnapshot();
         });
-
-        // ASSERT
-        expectTargetsToBeCorrect(tree, 'apps/demo/test');
-
-        expect(
-          tree.read('apps/demo/test/remix.config.js', 'utf-8')
-        ).toMatchSnapshot();
-        expect(
-          tree.read('apps/demo/test/app/root.tsx', 'utf-8')
-        ).toMatchSnapshot();
-        expect(
-          tree.read('apps/demo/test/app/routes/index.tsx', 'utf-8')
-        ).toMatchSnapshot();
       });
-    });
+      describe('--directory', () => {
+        it('should create the application correctly', async () => {
+          // ARRANGE
+          const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
+          const newAppDir =
+            projectNameAndRootFormat === 'as-provided'
+              ? 'demo'
+              : 'apps/demo/test';
 
-    describe('--unitTestRunner', () => {
-      it('should generate the correct files for testing using vitest', async () => {
-        // ARRANGE
-        const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
+          // ACT
+          await applicationGenerator(tree, {
+            name: 'test',
+            directory: 'demo',
+            projectNameAndRootFormat,
+          });
 
-        // ACT
-        await applicationGenerator(tree, {
-          name: 'test',
-          unitTestRunner: 'vitest',
+          // ASSERT
+          expectTargetsToBeCorrect(tree, newAppDir);
+
+          expect(
+            tree.read(`${newAppDir}/remix.config.js`, 'utf-8')
+          ).toMatchSnapshot();
+          expect(
+            tree.read(`${newAppDir}/app/root.tsx`, 'utf-8')
+          ).toMatchSnapshot();
+          expect(
+            tree.read(`${newAppDir}/app/routes/index.tsx`, 'utf-8')
+          ).toMatchSnapshot();
         });
 
-        // ASSERT
-        expectTargetsToBeCorrect(tree, 'apps/test');
+        it('should extract the layout directory from the directory options if it exists', async () => {
+          // ARRANGE
+          const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
+          const newAppDir =
+            projectNameAndRootFormat === 'as-provided'
+              ? 'apps/demo'
+              : 'apps/demo/test';
 
-        expect(
-          tree.read('apps/test/remix.config.js', 'utf-8')
-        ).toMatchSnapshot();
-        expect(
-          tree.read('apps/test/vite.config.ts', 'utf-8')
-        ).toMatchSnapshot();
-        expect(tree.read('apps/test/test-setup.ts', 'utf-8'))
-          .toMatchInlineSnapshot(`
+          // ACT
+          await applicationGenerator(tree, {
+            name: 'test',
+            directory: 'apps/demo',
+            projectNameAndRootFormat,
+          });
+
+          // ASSERT
+          expectTargetsToBeCorrect(tree, newAppDir);
+
+          expect(
+            tree.read(`${newAppDir}/remix.config.js`, 'utf-8')
+          ).toMatchSnapshot();
+          expect(
+            tree.read(`${newAppDir}/app/root.tsx`, 'utf-8')
+          ).toMatchSnapshot();
+          expect(
+            tree.read(`${newAppDir}/app/routes/index.tsx`, 'utf-8')
+          ).toMatchSnapshot();
+        });
+      });
+
+      describe('--unitTestRunner', () => {
+        it('should generate the correct files for testing using vitest', async () => {
+          // ARRANGE
+          const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
+
+          // ACT
+          await applicationGenerator(tree, {
+            name: 'test',
+            unitTestRunner: 'vitest',
+            projectNameAndRootFormat,
+          });
+
+          // ASSERT
+          expectTargetsToBeCorrect(tree, appDir);
+
+          expect(
+            tree.read(`${appDir}/remix.config.js`, 'utf-8')
+          ).toMatchSnapshot();
+          expect(
+            tree.read(`${appDir}/vite.config.ts`, 'utf-8')
+          ).toMatchSnapshot();
+          expect(tree.read(`${appDir}/test-setup.ts`, 'utf-8'))
+            .toMatchInlineSnapshot(`
           "import { installGlobals } from '@remix-run/node';
           import '@testing-library/jest-dom/extend-expect';
           installGlobals();
           "
         `);
-      });
-
-      it('should generate the correct files for testing using jest', async () => {
-        // ARRANGE
-        const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
-
-        // ACT
-        await applicationGenerator(tree, {
-          name: 'test',
-          unitTestRunner: 'jest',
         });
 
-        // ASSERT
-        expectTargetsToBeCorrect(tree, 'apps/test');
+        it('should generate the correct files for testing using jest', async () => {
+          // ARRANGE
+          const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
 
-        expect(
-          tree.read('apps/test/remix.config.js', 'utf-8')
-        ).toMatchSnapshot();
-        expect(
-          tree.read('apps/test/jest.config.ts', 'utf-8')
-        ).toMatchSnapshot();
-        expect(tree.read('apps/test/test-setup.ts', 'utf-8'))
-          .toMatchInlineSnapshot(`
+          // ACT
+          await applicationGenerator(tree, {
+            name: 'test',
+            unitTestRunner: 'jest',
+            projectNameAndRootFormat,
+          });
+
+          // ASSERT
+          expectTargetsToBeCorrect(tree, appDir);
+
+          expect(
+            tree.read(`${appDir}/remix.config.js`, 'utf-8')
+          ).toMatchSnapshot();
+          expect(
+            tree.read(`${appDir}/jest.config.ts`, 'utf-8')
+          ).toMatchSnapshot();
+          expect(tree.read(`${appDir}/test-setup.ts`, 'utf-8'))
+            .toMatchInlineSnapshot(`
           "import { installGlobals } from '@remix-run/node';
           import '@testing-library/jest-dom/extend-expect';
           installGlobals();
           "
         `);
-      });
-    });
-
-    describe('--e2eTestRunner', () => {
-      it('should generate an e2e application for the app', async () => {
-        // ARRANGE
-        const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
-
-        // ACT
-        await applicationGenerator(tree, {
-          name: 'test',
-          e2eTestRunner: 'cypress',
         });
+      });
 
-        // ASSERT
-        expectTargetsToBeCorrect(tree, 'apps/test');
+      describe('--e2eTestRunner', () => {
+        it('should generate an e2e application for the app', async () => {
+          // ARRANGE
+          const tree = createTreeWithEmptyWorkspace({ layout: 'apps-libs' });
 
-        expect(tree.read('apps/test-e2e/cypress.config.ts', 'utf-8'))
-          .toMatchInlineSnapshot(`
+          // ACT
+          await applicationGenerator(tree, {
+            name: 'test',
+            e2eTestRunner: 'cypress',
+            projectNameAndRootFormat,
+          });
+
+          // ASSERT
+          expectTargetsToBeCorrect(tree, appDir);
+
+          expect(tree.read(`${appDir}-e2e/cypress.config.ts`, 'utf-8'))
+            .toMatchInlineSnapshot(`
           "import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
           import { defineConfig } from 'cypress';
 
           export default defineConfig({
-            e2e: nxE2EPreset(__dirname),
+            e2e: nxE2EPreset(__filename, { cypressDir: 'src' }),
           });
           "
         `);
+        });
       });
-    });
-  });
+    }
+  );
 });
 
 function expectTargetsToBeCorrect(tree: Tree, projectRoot: string) {

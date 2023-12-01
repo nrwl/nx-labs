@@ -1,3 +1,4 @@
+import { configurationGenerator } from '@nx/cypress';
 import {
   addDependenciesToPackageJson,
   addProjectConfiguration,
@@ -8,10 +9,12 @@ import {
   joinPathFragments,
   offsetFromRoot,
   readJson,
+  readProjectConfiguration,
   runTasksInSerial,
   toJS,
   Tree,
   updateJson,
+  updateProjectConfiguration,
 } from '@nx/devkit';
 import { extractTsConfigBase } from '@nx/js/src/utils/typescript/create-ts-config';
 import {
@@ -25,12 +28,15 @@ import {
   typesReactDomVersion,
   typesReactVersion,
 } from '../../utils/versions';
-import cypressGenerator from '../cypress/cypress.impl';
-import { normalizeOptions, updateUnitTestConfig } from './lib';
+import {
+  NormalizedSchema,
+  normalizeOptions,
+  updateUnitTestConfig,
+} from './lib';
 import { NxRemixGeneratorSchema } from './schema';
 
 export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
-  const options = normalizeOptions(tree, _options);
+  const options = await normalizeOptions(tree, _options);
   const tasks: GeneratorCallback[] = [];
 
   addProjectConfiguration(tree, options.projectName, {
@@ -200,11 +206,24 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
   }
 
   if (options.e2eTestRunner === 'cypress') {
-    const cypressTasks = await cypressGenerator(tree, {
-      project: options.projectName,
-      name: options.rootProject ? `e2e` : `${options.projectName}-e2e`,
+    addFileServerTarget(tree, options, 'serve-static');
+    addProjectConfiguration(tree, options.e2eProjectName, {
+      projectType: 'application',
+      root: options.e2eProjectRoot,
+      sourceRoot: joinPathFragments(options.e2eProjectRoot, 'src'),
+      targets: {},
+      tags: [],
+      implicitDependencies: [options.projectName],
     });
-    tasks.push(cypressTasks);
+    tasks.push(
+      await configurationGenerator(tree, {
+        project: options.e2eProjectName,
+        directory: 'src',
+        skipFormat: true,
+        devServerTarget: `${options.name}:serve:development`,
+        baseUrl: 'http://localhost:4200',
+      })
+    );
   }
 
   if (!options.skipFormat) {
@@ -212,4 +231,26 @@ export default async function (tree: Tree, _options: NxRemixGeneratorSchema) {
   }
 
   return runTasksInSerial(...tasks);
+}
+
+function addFileServerTarget(
+  tree: Tree,
+  options: NormalizedSchema,
+  targetName: string
+) {
+  addDependenciesToPackageJson(
+    tree,
+    {},
+    { '@nx/web': getPackageVersion(tree, 'nx') }
+  );
+
+  const projectConfig = readProjectConfiguration(tree, options.projectName);
+  projectConfig.targets[targetName] = {
+    executor: '@nx/web:file-server',
+    options: {
+      buildTarget: `${options.projectName}:build`,
+      port: 4200,
+    },
+  };
+  updateProjectConfiguration(tree, options.projectName, projectConfig);
 }

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Remix Application Integrated Repo --directory should create the application correctly 1`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --directory should create the application correctly 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
  */
@@ -15,7 +15,7 @@ module.exports = {
 "
 `;
 
-exports[`Remix Application Integrated Repo --directory should create the application correctly 2`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --directory should create the application correctly 2`] = `
 "import type { MetaFunction } from '@remix-run/node';
 import {
   Links,
@@ -51,7 +51,7 @@ export default function App() {
 "
 `;
 
-exports[`Remix Application Integrated Repo --directory should create the application correctly 3`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --directory should create the application correctly 3`] = `
 "export default function Index() {
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
@@ -87,7 +87,7 @@ exports[`Remix Application Integrated Repo --directory should create the applica
 "
 `;
 
-exports[`Remix Application Integrated Repo --directory should extract the layout directory from the directory options if it exists 1`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --directory should extract the layout directory from the directory options if it exists 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
  */
@@ -102,7 +102,7 @@ module.exports = {
 "
 `;
 
-exports[`Remix Application Integrated Repo --directory should extract the layout directory from the directory options if it exists 2`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --directory should extract the layout directory from the directory options if it exists 2`] = `
 "import type { MetaFunction } from '@remix-run/node';
 import {
   Links,
@@ -138,7 +138,7 @@ export default function App() {
 "
 `;
 
-exports[`Remix Application Integrated Repo --directory should extract the layout directory from the directory options if it exists 3`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --directory should extract the layout directory from the directory options if it exists 3`] = `
 "export default function Index() {
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
@@ -174,7 +174,7 @@ exports[`Remix Application Integrated Repo --directory should extract the layout
 "
 `;
 
-exports[`Remix Application Integrated Repo --js should create the application correctly 1`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --js should create the application correctly 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
  */
@@ -189,7 +189,7 @@ module.exports = {
 "
 `;
 
-exports[`Remix Application Integrated Repo --js should create the application correctly 2`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --js should create the application correctly 2`] = `
 "import {
   Links,
   LiveReload,
@@ -222,7 +222,7 @@ export default function App() {
 "
 `;
 
-exports[`Remix Application Integrated Repo --js should create the application correctly 3`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --js should create the application correctly 3`] = `
 "export default function Index() {
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
@@ -258,7 +258,7 @@ exports[`Remix Application Integrated Repo --js should create the application co
 "
 `;
 
-exports[`Remix Application Integrated Repo --unitTestRunner should generate the correct files for testing using jest 1`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --unitTestRunner should generate the correct files for testing using jest 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
  */
@@ -273,22 +273,22 @@ module.exports = {
 "
 `;
 
-exports[`Remix Application Integrated Repo --unitTestRunner should generate the correct files for testing using jest 2`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --unitTestRunner should generate the correct files for testing using jest 2`] = `
 "/* eslint-disable */
 export default {
   setupFilesAfterEnv: ['<rootDir>/test-setup.ts'],
   displayName: 'test',
-  preset: '../../jest.preset.js',
+  preset: '../jest.preset.js',
   transform: {
     '^.+\\\\\\\\.[tj]sx?$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/apps/test',
+  coverageDirectory: '../coverage/test',
 };
 "
 `;
 
-exports[`Remix Application Integrated Repo --unitTestRunner should generate the correct files for testing using vitest 1`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --unitTestRunner should generate the correct files for testing using vitest 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
  */
@@ -303,14 +303,14 @@ module.exports = {
 "
 `;
 
-exports[`Remix Application Integrated Repo --unitTestRunner should generate the correct files for testing using vitest 2`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --unitTestRunner should generate the correct files for testing using vitest 2`] = `
 "/// <reference types='vitest' />
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  cacheDir: '../../node_modules/.vite/test',
+  cacheDir: '../node_modules/.vite/test',
 
   plugins: [react(), nxViteTsPaths()],
 
@@ -323,7 +323,7 @@ export default defineConfig({
     setupFiles: ['./test-setup.ts'],
     globals: true,
     cache: {
-      dir: '../../node_modules/.vitest',
+      dir: '../node_modules/.vitest',
     },
     environment: 'jsdom',
     include: ['./app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
@@ -332,7 +332,7 @@ export default defineConfig({
 "
 `;
 
-exports[`Remix Application Integrated Repo should create the application correctly 1`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided should create the application correctly 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
  */
@@ -347,7 +347,7 @@ module.exports = {
 "
 `;
 
-exports[`Remix Application Integrated Repo should create the application correctly 2`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided should create the application correctly 2`] = `
 "import type { MetaFunction } from '@remix-run/node';
 import {
   Links,
@@ -383,7 +383,426 @@ export default function App() {
 "
 `;
 
-exports[`Remix Application Integrated Repo should create the application correctly 3`] = `
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided should create the application correctly 3`] = `
+"export default function Index() {
+  return (
+    <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
+      <h1>Welcome to Remix</h1>
+      <ul>
+        <li>
+          <a
+            target=\\"_blank\\"
+            href=\\"https://remix.run/tutorials/blog\\"
+            rel=\\"noreferrer\\"
+          >
+            15m Quickstart Blog Tutorial
+          </a>
+        </li>
+        <li>
+          <a
+            target=\\"_blank\\"
+            href=\\"https://remix.run/tutorials/jokes\\"
+            rel=\\"noreferrer\\"
+          >
+            Deep Dive Jokes App Tutorial
+          </a>
+        </li>
+        <li>
+          <a target=\\"_blank\\" href=\\"https://remix.run/docs\\" rel=\\"noreferrer\\">
+            Remix Docs
+          </a>
+        </li>
+      </ul>
+    </div>
+  );
+}
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --directory should create the application correctly 1`] = `
+"/**
+ * @type {import('@remix-run/dev').AppConfig}
+ */
+module.exports = {
+  ignoredRouteFiles: ['**/.*'],
+  // appDirectory: \\"app\\",
+  // assetsBuildDirectory: \\"public/build\\",
+  // serverBuildPath: \\"build/index.js\\",
+  // publicPath: \\"/build/\\",
+  watchPaths: () => require('@nx/remix').createWatchPaths(__dirname),
+};
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --directory should create the application correctly 2`] = `
+"import type { MetaFunction } from '@remix-run/node';
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from '@remix-run/react';
+
+export const meta: MetaFunction = () => ({
+  charset: 'utf-8',
+  title: 'New Remix App',
+  viewport: 'width=device-width,initial-scale=1',
+});
+
+export default function App() {
+  return (
+    <html lang=\\"en\\">
+      <head>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <Outlet />
+        <ScrollRestoration />
+        <Scripts />
+        <LiveReload />
+      </body>
+    </html>
+  );
+}
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --directory should create the application correctly 3`] = `
+"export default function Index() {
+  return (
+    <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
+      <h1>Welcome to Remix</h1>
+      <ul>
+        <li>
+          <a
+            target=\\"_blank\\"
+            href=\\"https://remix.run/tutorials/blog\\"
+            rel=\\"noreferrer\\"
+          >
+            15m Quickstart Blog Tutorial
+          </a>
+        </li>
+        <li>
+          <a
+            target=\\"_blank\\"
+            href=\\"https://remix.run/tutorials/jokes\\"
+            rel=\\"noreferrer\\"
+          >
+            Deep Dive Jokes App Tutorial
+          </a>
+        </li>
+        <li>
+          <a target=\\"_blank\\" href=\\"https://remix.run/docs\\" rel=\\"noreferrer\\">
+            Remix Docs
+          </a>
+        </li>
+      </ul>
+    </div>
+  );
+}
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --directory should extract the layout directory from the directory options if it exists 1`] = `
+"/**
+ * @type {import('@remix-run/dev').AppConfig}
+ */
+module.exports = {
+  ignoredRouteFiles: ['**/.*'],
+  // appDirectory: \\"app\\",
+  // assetsBuildDirectory: \\"public/build\\",
+  // serverBuildPath: \\"build/index.js\\",
+  // publicPath: \\"/build/\\",
+  watchPaths: () => require('@nx/remix').createWatchPaths(__dirname),
+};
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --directory should extract the layout directory from the directory options if it exists 2`] = `
+"import type { MetaFunction } from '@remix-run/node';
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from '@remix-run/react';
+
+export const meta: MetaFunction = () => ({
+  charset: 'utf-8',
+  title: 'New Remix App',
+  viewport: 'width=device-width,initial-scale=1',
+});
+
+export default function App() {
+  return (
+    <html lang=\\"en\\">
+      <head>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <Outlet />
+        <ScrollRestoration />
+        <Scripts />
+        <LiveReload />
+      </body>
+    </html>
+  );
+}
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --directory should extract the layout directory from the directory options if it exists 3`] = `
+"export default function Index() {
+  return (
+    <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
+      <h1>Welcome to Remix</h1>
+      <ul>
+        <li>
+          <a
+            target=\\"_blank\\"
+            href=\\"https://remix.run/tutorials/blog\\"
+            rel=\\"noreferrer\\"
+          >
+            15m Quickstart Blog Tutorial
+          </a>
+        </li>
+        <li>
+          <a
+            target=\\"_blank\\"
+            href=\\"https://remix.run/tutorials/jokes\\"
+            rel=\\"noreferrer\\"
+          >
+            Deep Dive Jokes App Tutorial
+          </a>
+        </li>
+        <li>
+          <a target=\\"_blank\\" href=\\"https://remix.run/docs\\" rel=\\"noreferrer\\">
+            Remix Docs
+          </a>
+        </li>
+      </ul>
+    </div>
+  );
+}
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --js should create the application correctly 1`] = `
+"/**
+ * @type {import('@remix-run/dev').AppConfig}
+ */
+module.exports = {
+  ignoredRouteFiles: ['**/.*'],
+  // appDirectory: \\"app\\",
+  // assetsBuildDirectory: \\"public/build\\",
+  // serverBuildPath: \\"build/index.js\\",
+  // publicPath: \\"/build/\\",
+  watchPaths: () => require('@nx/remix').createWatchPaths(__dirname),
+};
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --js should create the application correctly 2`] = `
+"import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from '@remix-run/react';
+export const meta = () => ({
+  charset: 'utf-8',
+  title: 'New Remix App',
+  viewport: 'width=device-width,initial-scale=1',
+});
+export default function App() {
+  return (
+    <html lang=\\"en\\">
+      <head>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <Outlet />
+        <ScrollRestoration />
+        <Scripts />
+        <LiveReload />
+      </body>
+    </html>
+  );
+}
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --js should create the application correctly 3`] = `
+"export default function Index() {
+  return (
+    <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
+      <h1>Welcome to Remix</h1>
+      <ul>
+        <li>
+          <a
+            target=\\"_blank\\"
+            href=\\"https://remix.run/tutorials/blog\\"
+            rel=\\"noreferrer\\"
+          >
+            15m Quickstart Blog Tutorial
+          </a>
+        </li>
+        <li>
+          <a
+            target=\\"_blank\\"
+            href=\\"https://remix.run/tutorials/jokes\\"
+            rel=\\"noreferrer\\"
+          >
+            Deep Dive Jokes App Tutorial
+          </a>
+        </li>
+        <li>
+          <a target=\\"_blank\\" href=\\"https://remix.run/docs\\" rel=\\"noreferrer\\">
+            Remix Docs
+          </a>
+        </li>
+      </ul>
+    </div>
+  );
+}
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --unitTestRunner should generate the correct files for testing using jest 1`] = `
+"/**
+ * @type {import('@remix-run/dev').AppConfig}
+ */
+module.exports = {
+  ignoredRouteFiles: ['**/.*'],
+  // appDirectory: \\"app\\",
+  // assetsBuildDirectory: \\"public/build\\",
+  // serverBuildPath: \\"build/index.js\\",
+  // publicPath: \\"/build/\\",
+  watchPaths: () => require('@nx/remix').createWatchPaths(__dirname),
+};
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --unitTestRunner should generate the correct files for testing using jest 2`] = `
+"/* eslint-disable */
+export default {
+  setupFilesAfterEnv: ['<rootDir>/test-setup.ts'],
+  displayName: 'test',
+  preset: '../../jest.preset.js',
+  transform: {
+    '^.+\\\\\\\\.[tj]sx?$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  coverageDirectory: '../../coverage/apps/test',
+};
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --unitTestRunner should generate the correct files for testing using vitest 1`] = `
+"/**
+ * @type {import('@remix-run/dev').AppConfig}
+ */
+module.exports = {
+  ignoredRouteFiles: ['**/.*'],
+  // appDirectory: \\"app\\",
+  // assetsBuildDirectory: \\"public/build\\",
+  // serverBuildPath: \\"build/index.js\\",
+  // publicPath: \\"/build/\\",
+  watchPaths: () => require('@nx/remix').createWatchPaths(__dirname),
+};
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --unitTestRunner should generate the correct files for testing using vitest 2`] = `
+"/// <reference types='vitest' />
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  cacheDir: '../../node_modules/.vite/test',
+
+  plugins: [react(), nxViteTsPaths()],
+
+  // Uncomment this if you are using workers.
+  // worker: {
+  //  plugins: [ nxViteTsPaths() ],
+  // },
+
+  test: {
+    setupFiles: ['./test-setup.ts'],
+    globals: true,
+    cache: {
+      dir: '../../node_modules/.vitest',
+    },
+    environment: 'jsdom',
+    include: ['./app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+  },
+});
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived should create the application correctly 1`] = `
+"/**
+ * @type {import('@remix-run/dev').AppConfig}
+ */
+module.exports = {
+  ignoredRouteFiles: ['**/.*'],
+  // appDirectory: \\"app\\",
+  // assetsBuildDirectory: \\"public/build\\",
+  // serverBuildPath: \\"build/index.js\\",
+  // publicPath: \\"/build/\\",
+  watchPaths: () => require('@nx/remix').createWatchPaths(__dirname),
+};
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived should create the application correctly 2`] = `
+"import type { MetaFunction } from '@remix-run/node';
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from '@remix-run/react';
+
+export const meta: MetaFunction = () => ({
+  charset: 'utf-8',
+  title: 'New Remix App',
+  viewport: 'width=device-width,initial-scale=1',
+});
+
+export default function App() {
+  return (
+    <html lang=\\"en\\">
+      <head>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <Outlet />
+        <ScrollRestoration />
+        <Scripts />
+        <LiveReload />
+      </body>
+    </html>
+  );
+}
+"
+`;
+
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived should create the application correctly 3`] = `
 "export default function Index() {
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
