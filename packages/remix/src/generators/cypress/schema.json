@@ -11,6 +11,14 @@
         "$source": "projectName"
       }
     },
+    "projectNameAndRootFormat": {
+      "description": "Whether to generate the project name and root directory as provided (`as-provided`) or generate them composing their values and taking the configured layout into account (`derived`).",
+      "type": "string",
+      "enum": [
+        "as-provided",
+        "derived"
+      ]
+    },
     "baseUrl": {
       "type": "string",
       "description": "URL to access the application on",
@@ -32,7 +40,10 @@
     "linter": {
       "description": "The tool to use for running lint checks.",
       "type": "string",
-      "enum": ["eslint", "none"],
+      "enum": [
+        "eslint",
+        "none"
+      ],
       "default": "eslint"
     },
     "js": {
@@ -51,5 +62,7 @@
       "default": false
     }
   },
-  "required": ["name"]
+  "required": [
+    "name"
+  ]
 }
