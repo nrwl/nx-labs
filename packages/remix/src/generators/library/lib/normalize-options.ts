@@ -1,35 +1,33 @@
 import type { Tree } from '@nx/devkit';
-import { extractLayoutDirectory, names } from '@nx/devkit';
+import { determineProjectNameAndRootOptions } from '@nx/devkit/src/generators/project-name-and-root-utils';
 import { getImportPath } from '@nx/js/src/utils/get-import-path';
-import {
-  normalizeDirectory,
-  normalizeProjectName,
-} from '../../../utils/project';
 import type { NxRemixGeneratorSchema } from '../schema';
 
 export interface RemixLibraryOptions extends NxRemixGeneratorSchema {
   projectName: string;
+  projectRoot: string;
 }
 
-export function normalizeOptions(
+export async function normalizeOptions(
   tree: Tree,
   options: NxRemixGeneratorSchema
-): RemixLibraryOptions {
-  const name = names(options.name).fileName;
+): Promise<RemixLibraryOptions> {
+  const { projectName, projectRoot, projectNameAndRootFormat } =
+    await determineProjectNameAndRootOptions(tree, {
+      name: options.name,
+      projectType: 'library',
+      directory: options.directory,
+      projectNameAndRootFormat: options.projectNameAndRootFormat,
+      callingGenerator: '@nx/remix:library',
+    });
 
-  const { projectDirectory } = extractLayoutDirectory(options.directory);
-  const fullProjectDirectory = normalizeDirectory(name, projectDirectory);
-
-  const importPath =
-    options.importPath ?? getImportPath(tree, fullProjectDirectory);
-
-  const projectName = normalizeProjectName(name, projectDirectory);
+  const importPath = options.importPath ?? getImportPath(tree, projectRoot);
 
   return {
     ...options,
     unitTestRunner: options.unitTestRunner ?? 'vitest',
-    name,
     importPath,
     projectName,
+    projectRoot,
   };
 }
