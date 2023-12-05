@@ -1,7 +1,6 @@
 import {
   addDependenciesToPackageJson,
   joinPathFragments,
-  readProjectConfiguration,
   stripIndents,
   type Tree,
 } from '@nx/devkit';
@@ -18,11 +17,10 @@ import {
 import type { RemixLibraryOptions } from './normalize-options';
 
 export function addUnitTestingSetup(tree: Tree, options: RemixLibraryOptions) {
-  const { root: projectRoot } = readProjectConfiguration(
-    tree,
-    options.projectName
+  const pathToTestSetup = joinPathFragments(
+    options.projectRoot,
+    'src/test-setup.ts'
   );
-  const pathToTestSetup = joinPathFragments(projectRoot, 'src/test-setup.ts');
   let testSetupFileContents = '';
 
   if (tree.exists(pathToTestSetup)) {
@@ -38,10 +36,16 @@ export function addUnitTestingSetup(tree: Tree, options: RemixLibraryOptions) {
   );
 
   if (options.unitTestRunner === 'vitest') {
-    const pathToVitestConfig = joinPathFragments(projectRoot, `vite.config.ts`);
+    const pathToVitestConfig = joinPathFragments(
+      options.projectRoot,
+      `vite.config.ts`
+    );
     updateViteTestSetup(tree, pathToVitestConfig, './src/test-setup.ts');
   } else if (options.unitTestRunner === 'jest') {
-    const pathToJestConfig = joinPathFragments(projectRoot, `jest.config.ts`);
+    const pathToJestConfig = joinPathFragments(
+      options.projectRoot,
+      `jest.config.ts`
+    );
     updateJestTestSetup(tree, pathToJestConfig, './src/test-setup.ts');
   }
 

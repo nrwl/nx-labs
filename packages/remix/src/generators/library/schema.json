@@ -26,6 +26,14 @@
       "alias": "dir",
       "x-priority": "important"
     },
+    "projectNameAndRootFormat": {
+      "description": "Whether to generate the project name and root directory as provided (`as-provided`) or generate them composing their values and taking the configured layout into account (`derived`).",
+      "type": "string",
+      "enum": [
+        "as-provided",
+        "derived"
+      ]
+    },
     "tags": {
       "type": "string",
       "description": "Add tags to the library (used for linting)"
@@ -33,7 +41,10 @@
     "style": {
       "type": "string",
       "description": "Generate a stylesheet",
-      "enum": ["none", "css"],
+      "enum": [
+        "none",
+        "css"
+      ],
       "default": "css"
     },
     "buildable": {
@@ -43,7 +54,11 @@
     },
     "unitTestRunner": {
       "type": "string",
-      "enum": ["jest", "vitest", "none"],
+      "enum": [
+        "jest",
+        "vitest",
+        "none"
+      ],
       "description": "Test Runner to use for Unit Tests",
       "x-prompt": "What test runner should be used?",
       "default": "vitest"
@@ -64,5 +79,7 @@
       "x-priority": "internal"
     }
   },
-  "required": ["name"]
+  "required": [
+    "name"
+  ]
 }

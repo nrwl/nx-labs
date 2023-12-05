@@ -12,15 +12,16 @@ import type { NxRemixGeneratorSchema } from './schema';
 
 export default async function (tree: Tree, schema: NxRemixGeneratorSchema) {
   const tasks: GeneratorCallback[] = [];
-  const options = normalizeOptions(tree, schema);
+  const options = await normalizeOptions(tree, schema);
 
   const libGenTask = await libraryGenerator(tree, {
-    name: options.name,
+    name: options.projectName,
     style: options.style,
     unitTestRunner: options.unitTestRunner,
     tags: options.tags,
     importPath: options.importPath,
-    directory: options.directory,
+    directory: options.projectRoot,
+    projectNameAndRootFormat: 'as-provided',
     skipFormat: true,
     skipTsConfig: false,
     linter: Linter.EsLint,
