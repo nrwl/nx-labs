@@ -3,6 +3,7 @@ import {
   ExternalItem,
   ResolveAlias,
   RspackPluginInstance,
+  rspack,
 } from '@rspack/core';
 import { LicenseWebpackPlugin } from 'license-webpack-plugin';
 import * as path from 'path';
@@ -57,6 +58,13 @@ export function withNx(_opts = {}) {
         )
       );
     }
+
+    plugins.push(new rspack.CopyRspackPlugin({
+      patterns: getCopyPatterns(
+        normalizeAssets(options.assets, context.root, sourceRoot)
+      ),
+    }));
+    plugins.push(new rspack.ProgressPlugin())
 
     options.fileReplacements.forEach((item) => {
       alias[item.replace] = item.with;
@@ -133,25 +141,12 @@ export function withNx(_opts = {}) {
       infrastructureLogging: {
         debug: false,
       },
-      builtins: {
-        copy: {
-          patterns: getCopyPatterns(
-            normalizeAssets(options.assets, context.root, sourceRoot)
-          ),
-        },
-        progress: {},
-      },
       externals,
       externalsType,
       stats: {
         colors: true,
         preset: 'normal',
       },
-      experiments: {
-        rspackFuture: {
-          disableTransformByDefault: false
-        }
-      }
     };
 
     if (options.optimization) {

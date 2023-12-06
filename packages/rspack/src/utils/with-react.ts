@@ -15,15 +15,51 @@ export function withReact(opts = {}) {
       context,
     });
 
+    const react = {
+      runtime: 'automatic',
+      development: isDev,
+      refresh: isDev,
+    };
+
     return {
       ...config,
-      builtins: {
-        ...config.builtins,
-        react: {
-          runtime: 'automatic',
-          development: isDev,
-          refresh: isDev,
-        },
+      module: {
+        ...config.module,
+        rules: [
+          ...(config.module.rules || []),
+          {
+            test: /\.jsx$/,
+            loader: 'builtin:swc-loader',
+            options: {
+              jsc: {
+                parser: {
+                  syntax: 'ecmascript',
+                  jsx: true,
+                },
+              },
+              transform: {
+                react,
+              },
+            },
+            type: 'javascript/auto',
+          },
+          {
+            test: /\.tsx$/,
+            loader: 'builtin:swc-loader',
+            options: {
+              jsc: {
+                parser: {
+                  syntax: 'typescript',
+                  jsx: true,
+                },
+              },
+              transform: {
+                react,
+              },
+            },
+            type: 'javascript/auto',
+          },
+        ],
       },
     };
   };
