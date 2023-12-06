@@ -86,7 +86,7 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
 
   if (options.loader) {
     await LoaderGenerator(tree, {
-      project: projectName,
+      nameAndDirectoryFormat: 'as-provided',
       path: routeFilePath,
     });
   }
