@@ -3771,7 +3771,7 @@
     terser "5.16.1"
     webpack-sources "3.2.3"
 
-"@rspack/plugin-react-refresh@0.4.2":
+"@rspack/plugin-react-refresh@0.4.2", "@rspack/plugin-react-refresh@^0.4.2":
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/@rspack/plugin-react-refresh/-/plugin-react-refresh-0.4.2.tgz#82ee063ad1a5fe40c0459cec135783eea733e9ab"
   integrity sha512-NMEyODrRZKDjMsoj8H0g7IMUjBBWB9CtTc0LWRbAMTEPf1pat+aAlhbRxYys7TE1VyREg4cWH7ON0FAGbfh5MA==

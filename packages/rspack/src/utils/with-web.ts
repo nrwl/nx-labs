@@ -51,7 +51,6 @@ export function withWeb(opts: WithWebOptions = {}) {
               jsc: {
                 parser: {
                   syntax: 'typescript',
-                  jsx: true,
                 },
               },
             },

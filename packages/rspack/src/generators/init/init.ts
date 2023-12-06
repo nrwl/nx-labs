@@ -11,6 +11,7 @@ import {
   rspackDevServerVersion,
   rspackPluginMinifyVersion,
   lessLoaderVersion,
+  rspackPluginReactRefreshVersion,
 } from '../../utils/versions';
 import { InitGeneratorSchema } from './schema';
 
@@ -30,6 +31,7 @@ export async function rspackInitGenerator(
   const devDependencies = {
     '@rspack/core': rspackCoreVersion,
     '@rspack/plugin-minify': rspackPluginMinifyVersion,
+    '@rspack/plugin-react-refresh': rspackPluginReactRefreshVersion,
   };
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires

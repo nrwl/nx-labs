@@ -1,6 +1,7 @@
 import { Configuration } from '@rspack/core';
 import { SharedConfigContext } from './model';
 import { withWeb } from './with-web';
+import ReactRefreshPlugin from "@rspack/plugin-react-refresh";
 
 export function withReact(opts = {}) {
   return function makeConfig(
@@ -23,6 +24,10 @@ export function withReact(opts = {}) {
 
     return {
       ...config,
+      plugins: [
+        ...(config.plugins || []),
+        new ReactRefreshPlugin(),
+      ],
       module: {
         ...config.module,
         rules: [
@@ -36,9 +41,9 @@ export function withReact(opts = {}) {
                   syntax: 'ecmascript',
                   jsx: true,
                 },
-              },
-              transform: {
-                react,
+                transform: {
+                  react,
+                },
               },
             },
             type: 'javascript/auto',
@@ -50,11 +55,11 @@ export function withReact(opts = {}) {
               jsc: {
                 parser: {
                   syntax: 'typescript',
-                  jsx: true,
+                  tsx: true,
                 },
-              },
-              transform: {
-                react,
+                transform: {
+                  react,
+                },
               },
             },
             type: 'javascript/auto',
