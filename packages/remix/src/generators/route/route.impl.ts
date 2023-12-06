@@ -40,7 +40,7 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
     );
   }
 
-  const routeFilePath = resolveRemixRouteFile(
+  const routeFilePath = await resolveRemixRouteFile(
     tree,
     options.nameAndDirectoryFormat === 'as-provided'
       ? joinPathFragments(directory, name)

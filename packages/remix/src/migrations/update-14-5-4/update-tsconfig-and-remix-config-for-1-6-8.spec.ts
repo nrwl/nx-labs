@@ -16,7 +16,7 @@ describe('Update remix.config', () => {
 
     await update(tree);
 
-    expect(tree.read('apps/remix/remix.config.js', 'utf-8')).toContain(
+    expect(tree.read('apps/remix/remix.config.cjs', 'utf-8')).toContain(
       `watchPaths: ['../../libs']`
     );
   });
@@ -33,7 +33,7 @@ describe('Update remix.config', () => {
 
     await update(tree);
 
-    expect(tree.read('apps/remix/remix.config.js', 'utf-8')).toContain(
+    expect(tree.read('apps/remix/remix.config.cjs', 'utf-8')).toContain(
       `watchPaths: ['../../some-libs']`
     );
   });
@@ -45,7 +45,7 @@ describe('Update remix.config', () => {
     await update(tree);
 
     expect(
-      tree.read('apps/very/very/nested/remix/remix.config.js', 'utf-8')
+      tree.read('apps/very/very/nested/remix/remix.config.cjs', 'utf-8')
     ).toContain(`watchPaths: ['../../../../../libs']`);
   });
 
@@ -56,10 +56,10 @@ describe('Update remix.config', () => {
 
     await update(tree);
 
-    expect(tree.read('apps/remix/remix.config.js', 'utf-8')).toContain(
+    expect(tree.read('apps/remix/remix.config.cjs', 'utf-8')).toContain(
       `watchPaths: ['../../libs']`
     );
-    expect(tree.read('apps/another-remix/remix.config.js', 'utf-8')).toContain(
+    expect(tree.read('apps/another-remix/remix.config.cjs', 'utf-8')).toContain(
       `watchPaths: ['../../libs']`
     );
   });
@@ -74,10 +74,10 @@ describe('Update remix.config', () => {
 
     await update(tree);
 
-    expect(tree.read('apps/remix/remix.config.js', 'utf-8')).toContain(
+    expect(tree.read('apps/remix/remix.config.cjs', 'utf-8')).toContain(
       `watchPaths: ['../../libs']`
     );
-    expect(tree.exists('apps/not-remix/remix.config.js')).toBe(false);
+    expect(tree.exists('apps/not-remix/remix.config.cjs')).toBe(false);
   });
 });
 
@@ -167,7 +167,7 @@ function createLegacyRemixApp(tree: Tree, name: string, root: string) {
   });
 
   tree.write(
-    joinPathFragments(root, 'remix.config.js'),
+    joinPathFragments(root, 'remix.config.cjs'),
     `
        /**
        * @type {import('@remix-run/dev').AppConfig}

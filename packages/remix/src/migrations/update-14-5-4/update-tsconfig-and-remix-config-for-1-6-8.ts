@@ -11,22 +11,22 @@ import {
 } from '@nx/devkit';
 
 /**
- * Update tsconfig.json and remix.config.js to support importing workspaces libraries
+ * Update tsconfig.json and remix.config.cjs to support importing workspaces libraries
  * @param tree
  */
 export default async function update(tree: Tree) {
   const projects = getProjects(tree);
 
   const remixProjects = Array.from(projects.values()).filter((project) => {
-    const remixConfigPath = joinPathFragments(project.root, 'remix.config.js');
-    // if the project doesn't have a remix.config.js, it's not a Remix project so we can skip it
+    const remixConfigPath = joinPathFragments(project.root, 'remix.config.cjs');
+    // if the project doesn't have a remix.config.cjs, it's not a Remix project so we can skip it
     return tree.exists(remixConfigPath);
   });
 
   if (remixProjects.length === 0) return;
 
   remixProjects.forEach((project) => {
-    const remixConfigPath = joinPathFragments(project.root, 'remix.config.js');
+    const remixConfigPath = joinPathFragments(project.root, 'remix.config.cjs');
 
     try {
       const remixConfigContent = tree.read(remixConfigPath, 'utf-8');

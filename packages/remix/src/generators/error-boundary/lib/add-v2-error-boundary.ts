@@ -23,22 +23,18 @@ export function addV2ErrorBoundary(tree: Tree, options: ErrorBoundarySchema) {
                     <p>{error.data.message}</p>
                 </div>
             );
+        } else if (error instanceof Error) {
+            return (
+                <div>
+                    <h1>Error</h1>
+                    <p>{error.message}</p>
+                    <p>The stack trace is:</p>
+                    <pre>{error.stack}</pre>
+                </div>
+            );
+        } else {
+            return <h1>Unknown Error</h1>;
         }
-
-        // Don't forget to typecheck with your own logic.
-        // Any value can be thrown, not just errors!
-        let errorMessage = "Unknown error";
-        // if (isDefinitelyAnError(error)) {
-        //    errorMessage = error.message;
-        // }
-
-        return (
-            <div>
-                <h1>Uh oh ...</h1>
-                <p>Something went wrong.</p>
-                <pre>{errorMessage}</pre>
-            </div>
-        );
     }
   `
   );

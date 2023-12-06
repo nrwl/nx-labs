@@ -9,7 +9,7 @@ export default async function (tree: Tree, schema: LoaderSchema) {
   const routeFilePath =
     schema.nameAndDirectoryFormat === 'as-provided'
       ? schema.path
-      : resolveRemixRouteFile(tree, schema.path, schema.project);
+      : await resolveRemixRouteFile(tree, schema.path, schema.project);
 
   if (!tree.exists(routeFilePath)) {
     throw new Error(
@@ -17,7 +17,7 @@ export default async function (tree: Tree, schema: LoaderSchema) {
     );
   }
 
-  insertImport(tree, routeFilePath, 'ActionArgs', '@remix-run/node', {
+  insertImport(tree, routeFilePath, 'ActionFunctionArgs', '@remix-run/node', {
     typeOnly: true,
   });
   insertImport(tree, routeFilePath, 'json', '@remix-run/node');
@@ -27,7 +27,7 @@ export default async function (tree: Tree, schema: LoaderSchema) {
     tree,
     routeFilePath,
     `
-    export const action = async ({ request }: ActionArgs) => {
+    export const action = async ({ request }: ActionFunctionArgs) => {
       let formData = await request.formData();
 
       return json({message: formData.toString()}, { status: 200 });

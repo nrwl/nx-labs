@@ -46,7 +46,7 @@ describe('action', () => {
         const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
         expect(content).toMatch(`import { json } from '@remix-run/node';`);
         expect(content).toMatch(
-          `import type { ActionArgs } from '@remix-run/node';`
+          `import type { ActionFunctionArgs } from '@remix-run/node';`
         );
         expect(content).toMatch(
           `import { useActionData } from '@remix-run/react';`
@@ -54,7 +54,7 @@ describe('action', () => {
       });
 
       it('should add action function', () => {
-        const actionFunction = `export const action = async ({ request }: ActionArgs)`;
+        const actionFunction = `export const action = async ({ request }: ActionFunctionArgs)`;
         const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
         expect(content).toMatch(actionFunction);
       });
@@ -76,10 +76,10 @@ describe('action', () => {
     // ASSERT
     const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
     const useActionData = `const actionMessage = useActionData<typeof action>();`;
-    const actionFunction = `export const action = async ({ request }: ActionArgs)`;
+    const actionFunction = `export const action = async ({ request }: ActionFunctionArgs)`;
     expect(content).toMatch(`import { json } from '@remix-run/node';`);
     expect(content).toMatch(
-      `import type { ActionArgs } from '@remix-run/node';`
+      `import type { ActionFunctionArgs } from '@remix-run/node';`
     );
     expect(content).toMatch(
       `import { useActionData } from '@remix-run/react';`

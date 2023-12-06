@@ -3,6 +3,7 @@ import {
   GeneratorCallback,
   runTasksInSerial,
   Tree,
+  updateJson,
 } from '@nx/devkit';
 import { initGenerator as jsInitGenerator } from '@nx/js';
 
@@ -30,6 +31,11 @@ apps/**/.cache
   `;
   }
   tree.write('.gitignore', ignoreFile);
+
+  updateJson(tree, `package.json`, (json) => {
+    json.type = 'module';
+    return json;
+  });
 
   await formatFiles(tree);
 

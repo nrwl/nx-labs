@@ -9,7 +9,7 @@ export default async function (tree: Tree, schema: LoaderSchema) {
   const routeFilePath =
     schema.nameAndDirectoryFormat === 'as-provided'
       ? schema.path
-      : resolveRemixRouteFile(tree, schema.path, schema.project);
+      : await resolveRemixRouteFile(tree, schema.path, schema.project);
 
   if (!tree.exists(routeFilePath)) {
     throw new Error(

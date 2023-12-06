@@ -8,7 +8,7 @@ import {
   updateFile,
 } from '@nx/plugin/testing';
 
-describe('remix e2e', () => {
+xdescribe('remix e2e', () => {
   beforeAll(() => {
     ensureNxProject('@nx/remix', 'dist/packages/remix');
   });

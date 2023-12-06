@@ -31,10 +31,10 @@ describe('meta v2', () => {
 
       const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
       expect(content).toMatch(
-        `import type { V2_MetaFunction } from '@remix-run/node';`
+        `import type { MetaFunction } from '@remix-run/node';`
       );
 
-      expect(content).toMatch(`export const meta: V2_MetaFunction`);
+      expect(content).toMatch(`export const meta: MetaFunction`);
       expect(content).toMatch(`return [`);
     }
   );

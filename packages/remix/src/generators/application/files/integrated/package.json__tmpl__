@@ -4,6 +4,7 @@
   "description": "",
   "license": "",
   "scripts": {},
+  "type": "module",
   "dependencies": {
     "@remix-run/node": "<%= remixVersion %>",
     "@remix-run/react": "<%= remixVersion %>",

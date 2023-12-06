@@ -229,9 +229,9 @@ describe('route', () => {
         it('should place routes correctly when app dir is changed', async () => {
           await applicationGenerator(tree, { name: 'demo' });
 
-          tree.write(
-            'apps/demo/remix.config.js',
-            `
+    tree.write(
+      'apps/demo/remix.config.cjs',
+      `
     /**
      * @type {import('@remix-run/dev').AppConfig}
      */

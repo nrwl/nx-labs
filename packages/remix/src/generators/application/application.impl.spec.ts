@@ -19,9 +19,9 @@ describe('Remix Application', () => {
       // ASSERT
       expectTargetsToBeCorrect(tree, '.');
 
-      expect(tree.read('remix.config.js', 'utf-8')).toMatchSnapshot();
+      expect(tree.read('remix.config.cjs', 'utf-8')).toMatchSnapshot();
       expect(tree.read('app/root.tsx', 'utf-8')).toMatchSnapshot();
-      expect(tree.read('app/routes/index.tsx', 'utf-8')).toMatchSnapshot();
+      expect(tree.read('app/routes/_index.tsx', 'utf-8')).toMatchSnapshot();
     });
 
     describe(`--js`, () => {
@@ -39,9 +39,9 @@ describe('Remix Application', () => {
         // ASSERT
         expectTargetsToBeCorrect(tree, '.');
 
-        expect(tree.read('remix.config.js', 'utf-8')).toMatchSnapshot();
+        expect(tree.read('remix.config.cjs', 'utf-8')).toMatchSnapshot();
         expect(tree.read('app/root.js', 'utf-8')).toMatchSnapshot();
-        expect(tree.read('app/routes/index.js', 'utf-8')).toMatchSnapshot();
+        expect(tree.read('app/routes/_index.js', 'utf-8')).toMatchSnapshot();
       });
     });
 
@@ -60,14 +60,9 @@ describe('Remix Application', () => {
         // ASSERT
         expectTargetsToBeCorrect(tree, '.');
 
-        expect(tree.read('remix.config.js', 'utf-8')).toMatchSnapshot();
+        expect(tree.read('remix.config.cjs', 'utf-8')).toMatchSnapshot();
         expect(tree.read('vite.config.ts', 'utf-8')).toMatchSnapshot();
-        expect(tree.read('test-setup.ts', 'utf-8')).toMatchInlineSnapshot(`
-          "import { installGlobals } from '@remix-run/node';
-          import '@testing-library/jest-dom/extend-expect';
-          installGlobals();
-          "
-        `);
+        expect(tree.read('test-setup.ts', 'utf-8')).toMatchSnapshot();
       });
 
       it('should generate the correct files for testing using jest', async () => {
@@ -84,14 +79,9 @@ describe('Remix Application', () => {
         // ASSERT
         expectTargetsToBeCorrect(tree, '.');
 
-        expect(tree.read('remix.config.js', 'utf-8')).toMatchSnapshot();
+        expect(tree.read('remix.config.cjs', 'utf-8')).toMatchSnapshot();
         expect(tree.read('jest.config.ts', 'utf-8')).toMatchSnapshot();
-        expect(tree.read('test-setup.ts', 'utf-8')).toMatchInlineSnapshot(`
-          "import { installGlobals } from '@remix-run/node';
-          import '@testing-library/jest-dom/extend-expect';
-          installGlobals();
-          "
-        `);
+        expect(tree.read('test-setup.ts', 'utf-8')).toMatchSnapshot();
       });
     });
 
@@ -110,16 +100,7 @@ describe('Remix Application', () => {
         // ASSERT
         expectTargetsToBeCorrect(tree, '.');
 
-        expect(tree.read('e2e/cypress.config.ts', 'utf-8'))
-          .toMatchInlineSnapshot(`
-          "import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
-          import { defineConfig } from 'cypress';
-
-          export default defineConfig({
-            e2e: nxE2EPreset(__filename, { cypressDir: 'src' }),
-          });
-          "
-        `);
+        expect(tree.read('e2e/cypress.config.ts', 'utf-8')).toMatchSnapshot();
       });
     });
   });
@@ -144,11 +125,11 @@ describe('Remix Application', () => {
         expectTargetsToBeCorrect(tree, appDir);
 
         expect(
-          tree.read(`${appDir}/remix.config.js`, 'utf-8')
+          tree.read(`${appDir}/remix.config.cjs`, 'utf-8')
         ).toMatchSnapshot();
         expect(tree.read(`${appDir}/app/root.tsx`, 'utf-8')).toMatchSnapshot();
         expect(
-          tree.read(`${appDir}/app/routes/index.tsx`, 'utf-8')
+          tree.read(`${appDir}/app/routes/_index.tsx`, 'utf-8')
         ).toMatchSnapshot();
       });
 
@@ -168,11 +149,11 @@ describe('Remix Application', () => {
           expectTargetsToBeCorrect(tree, appDir);
 
           expect(
-            tree.read(`${appDir}/remix.config.js`, 'utf-8')
+            tree.read(`${appDir}/remix.config.cjs`, 'utf-8')
           ).toMatchSnapshot();
           expect(tree.read(`${appDir}/app/root.js`, 'utf-8')).toMatchSnapshot();
           expect(
-            tree.read(`${appDir}/app/routes/index.js`, 'utf-8')
+            tree.read(`${appDir}/app/routes/_index.js`, 'utf-8')
           ).toMatchSnapshot();
         });
       });
@@ -196,13 +177,13 @@ describe('Remix Application', () => {
           expectTargetsToBeCorrect(tree, newAppDir);
 
           expect(
-            tree.read(`${newAppDir}/remix.config.js`, 'utf-8')
+            tree.read(`${newAppDir}/remix.config.cjs`, 'utf-8')
           ).toMatchSnapshot();
           expect(
             tree.read(`${newAppDir}/app/root.tsx`, 'utf-8')
           ).toMatchSnapshot();
           expect(
-            tree.read(`${newAppDir}/app/routes/index.tsx`, 'utf-8')
+            tree.read(`${newAppDir}/app/routes/_index.tsx`, 'utf-8')
           ).toMatchSnapshot();
         });
 
@@ -225,13 +206,13 @@ describe('Remix Application', () => {
           expectTargetsToBeCorrect(tree, newAppDir);
 
           expect(
-            tree.read(`${newAppDir}/remix.config.js`, 'utf-8')
+            tree.read(`${newAppDir}/remix.config.cjs`, 'utf-8')
           ).toMatchSnapshot();
           expect(
             tree.read(`${newAppDir}/app/root.tsx`, 'utf-8')
           ).toMatchSnapshot();
           expect(
-            tree.read(`${newAppDir}/app/routes/index.tsx`, 'utf-8')
+            tree.read(`${newAppDir}/app/routes/_index.tsx`, 'utf-8')
           ).toMatchSnapshot();
         });
       });
@@ -252,18 +233,14 @@ describe('Remix Application', () => {
           expectTargetsToBeCorrect(tree, appDir);
 
           expect(
-            tree.read(`${appDir}/remix.config.js`, 'utf-8')
+            tree.read(`${appDir}/remix.config.cjs`, 'utf-8')
           ).toMatchSnapshot();
           expect(
             tree.read(`${appDir}/vite.config.ts`, 'utf-8')
           ).toMatchSnapshot();
-          expect(tree.read(`${appDir}/test-setup.ts`, 'utf-8'))
-            .toMatchInlineSnapshot(`
-          "import { installGlobals } from '@remix-run/node';
-          import '@testing-library/jest-dom/extend-expect';
-          installGlobals();
-          "
-        `);
+          expect(
+            tree.read(`${appDir}/test-setup.ts`, 'utf-8')
+          ).toMatchSnapshot();
         });
 
         it('should generate the correct files for testing using jest', async () => {
@@ -281,18 +258,14 @@ describe('Remix Application', () => {
           expectTargetsToBeCorrect(tree, appDir);
 
           expect(
-            tree.read(`${appDir}/remix.config.js`, 'utf-8')
+            tree.read(`${appDir}/remix.config.cjs`, 'utf-8')
           ).toMatchSnapshot();
           expect(
             tree.read(`${appDir}/jest.config.ts`, 'utf-8')
           ).toMatchSnapshot();
-          expect(tree.read(`${appDir}/test-setup.ts`, 'utf-8'))
-            .toMatchInlineSnapshot(`
-          "import { installGlobals } from '@remix-run/node';
-          import '@testing-library/jest-dom/extend-expect';
-          installGlobals();
-          "
-        `);
+          expect(
+            tree.read(`${appDir}/test-setup.ts`, 'utf-8')
+          ).toMatchSnapshot();
         });
       });
 
@@ -311,16 +284,9 @@ describe('Remix Application', () => {
           // ASSERT
           expectTargetsToBeCorrect(tree, appDir);
 
-          expect(tree.read(`${appDir}-e2e/cypress.config.ts`, 'utf-8'))
-            .toMatchInlineSnapshot(`
-          "import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
-          import { defineConfig } from 'cypress';
-
-          export default defineConfig({
-            e2e: nxE2EPreset(__filename, { cypressDir: 'src' }),
-          });
-          "
-        `);
+          expect(
+            tree.read(`${appDir}-e2e/cypress.config.ts`, 'utf-8')
+          ).toMatchSnapshot();
         });
       });
     }
@@ -341,7 +307,7 @@ function expectTargetsToBeCorrect(tree: Tree, projectRoot: string) {
   expect(targets.serve.executor).toEqual('@nx/remix:serve');
   expect(targets.serve.options.port).toEqual(4200);
   expect(targets.start).toBeTruthy();
-  expect(targets.start.command).toEqual('remix-serve build');
+  expect(targets.start.command).toEqual('remix-serve build/index.js');
   expect(targets.start.options.cwd).toEqual(projectRoot);
   expect(targets.typecheck).toBeTruthy();
   expect(targets.typecheck.command).toEqual('tsc');

@@ -9,7 +9,7 @@ export async function v2MetaGenerator(tree: Tree, schema: MetaSchema) {
   const routeFilePath =
     schema.nameAndDirectoryFormat === 'as-provided'
       ? schema.path
-      : resolveRemixRouteFile(tree, schema.path, schema.project);
+      : await resolveRemixRouteFile(tree, schema.path, schema.project);
 
   if (!tree.exists(routeFilePath)) {
     throw new Error(
@@ -17,7 +17,7 @@ export async function v2MetaGenerator(tree: Tree, schema: MetaSchema) {
     );
   }
 
-  insertImport(tree, routeFilePath, 'V2_MetaFunction', '@remix-run/node', {
+  insertImport(tree, routeFilePath, 'MetaFunction', '@remix-run/node', {
     typeOnly: true,
   });
 
@@ -26,7 +26,7 @@ export async function v2MetaGenerator(tree: Tree, schema: MetaSchema) {
     tree,
     routeFilePath,
     `
-    export const meta: V2_MetaFunction = () =>{
+    export const meta: MetaFunction = () => {
       return [{ title: '${defaultExportName} Route' }];
     };
 

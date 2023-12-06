@@ -91,13 +91,9 @@ describe('Remix Library Generator', () => {
           expect(
             tree.read(`${libDir}/jest.config.ts`, 'utf-8')
           ).toMatchSnapshot();
-          expect(tree.read(`${libDir}/src/test-setup.ts`, 'utf-8'))
-            .toMatchInlineSnapshot(`
-                    "import { installGlobals } from '@remix-run/node';
-                    import '@testing-library/jest-dom/extend-expect';
-                    installGlobals();
-                    "
-                `);
+          expect(
+            tree.read(`${libDir}/src/test-setup.ts`, 'utf-8')
+          ).toMatchSnapshot();
         });
 
         it('should create the correct config files for testing with vitest', async () => {
@@ -117,13 +113,9 @@ describe('Remix Library Generator', () => {
             tree.read(`${libDir}/vite.config.ts`, 'utf-8')
           ).toMatchSnapshot();
 
-          expect(tree.read(`${libDir}/src/test-setup.ts`, 'utf-8'))
-            .toMatchInlineSnapshot(`
-                    "import { installGlobals } from '@remix-run/node';
-                    import '@testing-library/jest-dom/extend-expect';
-                    installGlobals();
-                    "
-                `);
+          expect(
+            tree.read(`${libDir}/src/test-setup.ts`, 'utf-8')
+          ).toMatchSnapshot();
         }, 25_000);
       });
 

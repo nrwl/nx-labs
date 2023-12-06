@@ -14,12 +14,12 @@ import { getRemixConfigValues } from './remix-config';
  * @param fileExtension the file extension to add to resolved route file
  * @returns file path to the route
  */
-export function resolveRemixRouteFile(
+export async function resolveRemixRouteFile(
   tree: Tree,
   path: string,
   projectName?: string,
   fileExtension?: string
-): string {
+): Promise<string> {
   const { name: routePath } = names(path.replace(/^\//, '').replace(/\/$/, ''));
 
   if (!projectName) {
@@ -35,7 +35,7 @@ export function resolveRemixRouteFile(
     );
 
     return joinPathFragments(
-      resolveRemixAppDirectory(tree, projectName),
+      await resolveRemixAppDirectory(tree, projectName),
       'routes',
       fileName
     );
@@ -84,9 +84,12 @@ export function checkRoutePathForErrors(path: string) {
   );
 }
 
-export function resolveRemixAppDirectory(tree: Tree, projectName: string) {
+export async function resolveRemixAppDirectory(
+  tree: Tree,
+  projectName: string
+) {
   const project = readProjectConfiguration(tree, projectName);
-  const remixConfig = getRemixConfigValues(tree, projectName);
+  const remixConfig = await getRemixConfigValues(tree, projectName);
 
   return joinPathFragments(project.root, remixConfig.appDirectory ?? 'app');
 }

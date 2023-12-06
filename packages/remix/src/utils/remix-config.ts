@@ -5,20 +5,24 @@ export function getRemixConfigPath(tree: Tree, projectName: string) {
   const project = readProjectConfiguration(tree, projectName);
   if (!project) throw new Error(`Project does not exist: ${projectName}`);
 
-  return joinPathFragments(project.root, 'remix.config.js');
+  for (const ext of ['.cjs', '.js']) {
+    const configPath = joinPathFragments(project.root, `remix.config${ext}`);
+    if (tree.exists(configPath)) {
+      return configPath;
+    }
+  }
 }
 
-export function getRemixConfigValues(tree: Tree, projectName: string) {
+export async function getRemixConfigValues(tree: Tree, projectName: string) {
   const remixConfigPath = getRemixConfigPath(tree, projectName);
-
   return eval(tree.read(remixConfigPath, 'utf-8')) as AppConfig;
 }
 
-export function getRemixFutureFlags(
+export async function getRemixFutureFlags(
   tree: Tree,
   projectName: string
-): AppConfig['future'] {
-  const configValues = getRemixConfigValues(tree, projectName);
+): Promise<AppConfig['future']> {
+  const configValues = await getRemixConfigValues(tree, projectName);
 
   return configValues?.future;
 }

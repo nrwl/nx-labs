@@ -26,11 +26,13 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 
-export const meta: MetaFunction = () => ({
-  charset: 'utf-8',
-  title: 'New Remix App',
-  viewport: 'width=device-width,initial-scale=1',
-});
+export const meta: MetaFunction = () => [
+  {
+    charset: 'utf-8',
+    title: 'New Remix App',
+    viewport: 'width=device-width,initial-scale=1',
+  },
+];
 
 export default function App() {
   return (
@@ -113,11 +115,13 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 
-export const meta: MetaFunction = () => ({
-  charset: 'utf-8',
-  title: 'New Remix App',
-  viewport: 'width=device-width,initial-scale=1',
-});
+export const meta: MetaFunction = () => [
+  {
+    charset: 'utf-8',
+    title: 'New Remix App',
+    viewport: 'width=device-width,initial-scale=1',
+  },
+];
 
 export default function App() {
   return (
@@ -174,6 +178,16 @@ exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provide
 "
 `;
 
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --e2eTestRunner should generate an e2e application for the app 1`] = `
+"import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
+import { defineConfig } from 'cypress';
+
+export default defineConfig({
+  e2e: nxE2EPreset(__filename, { cypressDir: 'src' }),
+});
+"
+`;
+
 exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --js should create the application correctly 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
@@ -198,11 +212,13 @@ exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provide
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react';
-export const meta = () => ({
-  charset: 'utf-8',
-  title: 'New Remix App',
-  viewport: 'width=device-width,initial-scale=1',
-});
+export const meta = () => [
+  {
+    charset: 'utf-8',
+    title: 'New Remix App',
+    viewport: 'width=device-width,initial-scale=1',
+  },
+];
 export default function App() {
   return (
     <html lang=\\"en\\">
@@ -288,6 +304,13 @@ export default {
 "
 `;
 
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --unitTestRunner should generate the correct files for testing using jest 3`] = `
+"import { installGlobals } from '@remix-run/node';
+import '@testing-library/jest-dom/matchers';
+installGlobals();
+"
+`;
+
 exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --unitTestRunner should generate the correct files for testing using vitest 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
@@ -332,6 +355,13 @@ export default defineConfig({
 "
 `;
 
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided --unitTestRunner should generate the correct files for testing using vitest 3`] = `
+"import { installGlobals } from '@remix-run/node';
+import '@testing-library/jest-dom/matchers';
+installGlobals();
+"
+`;
+
 exports[`Remix Application Integrated Repo --projectNameAndRootFormat=as-provided should create the application correctly 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
@@ -358,11 +388,13 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 
-export const meta: MetaFunction = () => ({
-  charset: 'utf-8',
-  title: 'New Remix App',
-  viewport: 'width=device-width,initial-scale=1',
-});
+export const meta: MetaFunction = () => [
+  {
+    charset: 'utf-8',
+    title: 'New Remix App',
+    viewport: 'width=device-width,initial-scale=1',
+  },
+];
 
 export default function App() {
   return (
@@ -445,11 +477,13 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 
-export const meta: MetaFunction = () => ({
-  charset: 'utf-8',
-  title: 'New Remix App',
-  viewport: 'width=device-width,initial-scale=1',
-});
+export const meta: MetaFunction = () => [
+  {
+    charset: 'utf-8',
+    title: 'New Remix App',
+    viewport: 'width=device-width,initial-scale=1',
+  },
+];
 
 export default function App() {
   return (
@@ -532,11 +566,13 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 
-export const meta: MetaFunction = () => ({
-  charset: 'utf-8',
-  title: 'New Remix App',
-  viewport: 'width=device-width,initial-scale=1',
-});
+export const meta: MetaFunction = () => [
+  {
+    charset: 'utf-8',
+    title: 'New Remix App',
+    viewport: 'width=device-width,initial-scale=1',
+  },
+];
 
 export default function App() {
   return (
@@ -593,6 +629,16 @@ exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --
 "
 `;
 
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --e2eTestRunner should generate an e2e application for the app 1`] = `
+"import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
+import { defineConfig } from 'cypress';
+
+export default defineConfig({
+  e2e: nxE2EPreset(__filename, { cypressDir: 'src' }),
+});
+"
+`;
+
 exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --js should create the application correctly 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
@@ -617,11 +663,13 @@ exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react';
-export const meta = () => ({
-  charset: 'utf-8',
-  title: 'New Remix App',
-  viewport: 'width=device-width,initial-scale=1',
-});
+export const meta = () => [
+  {
+    charset: 'utf-8',
+    title: 'New Remix App',
+    viewport: 'width=device-width,initial-scale=1',
+  },
+];
 export default function App() {
   return (
     <html lang=\\"en\\">
@@ -707,6 +755,13 @@ export default {
 "
 `;
 
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --unitTestRunner should generate the correct files for testing using jest 3`] = `
+"import { installGlobals } from '@remix-run/node';
+import '@testing-library/jest-dom/matchers';
+installGlobals();
+"
+`;
+
 exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --unitTestRunner should generate the correct files for testing using vitest 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
@@ -751,6 +806,13 @@ export default defineConfig({
 "
 `;
 
+exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived --unitTestRunner should generate the correct files for testing using vitest 3`] = `
+"import { installGlobals } from '@remix-run/node';
+import '@testing-library/jest-dom/matchers';
+installGlobals();
+"
+`;
+
 exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived should create the application correctly 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
@@ -777,11 +839,13 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 
-export const meta: MetaFunction = () => ({
-  charset: 'utf-8',
-  title: 'New Remix App',
-  viewport: 'width=device-width,initial-scale=1',
-});
+export const meta: MetaFunction = () => [
+  {
+    charset: 'utf-8',
+    title: 'New Remix App',
+    viewport: 'width=device-width,initial-scale=1',
+  },
+];
 
 export default function App() {
   return (
@@ -838,6 +902,16 @@ exports[`Remix Application Integrated Repo --projectNameAndRootFormat=derived sh
 "
 `;
 
+exports[`Remix Application Standalone Project Repo --e2eTestRunner should generate an e2e application for the app 1`] = `
+"import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
+import { defineConfig } from 'cypress';
+
+export default defineConfig({
+  e2e: nxE2EPreset(__filename, { cypressDir: 'src' }),
+});
+"
+`;
+
 exports[`Remix Application Standalone Project Repo --js should create the application correctly 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
@@ -862,11 +936,13 @@ exports[`Remix Application Standalone Project Repo --js should create the applic
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react';
-export const meta = () => ({
-  charset: 'utf-8',
-  title: 'New Remix App',
-  viewport: 'width=device-width,initial-scale=1',
-});
+export const meta = () => [
+  {
+    charset: 'utf-8',
+    title: 'New Remix App',
+    viewport: 'width=device-width,initial-scale=1',
+  },
+];
 export default function App() {
   return (
     <html lang=\\"en\\">
@@ -956,6 +1032,13 @@ export default {
 "
 `;
 
+exports[`Remix Application Standalone Project Repo --unitTestRunner should generate the correct files for testing using jest 3`] = `
+"import { installGlobals } from '@remix-run/node';
+import '@testing-library/jest-dom/matchers';
+installGlobals();
+"
+`;
+
 exports[`Remix Application Standalone Project Repo --unitTestRunner should generate the correct files for testing using vitest 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
@@ -1000,6 +1083,13 @@ export default defineConfig({
 "
 `;
 
+exports[`Remix Application Standalone Project Repo --unitTestRunner should generate the correct files for testing using vitest 3`] = `
+"import { installGlobals } from '@remix-run/node';
+import '@testing-library/jest-dom/matchers';
+installGlobals();
+"
+`;
+
 exports[`Remix Application Standalone Project Repo should create the application correctly 1`] = `
 "/**
  * @type {import('@remix-run/dev').AppConfig}
@@ -1026,11 +1116,13 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 
-export const meta: MetaFunction = () => ({
-  charset: 'utf-8',
-  title: 'New Remix App',
-  viewport: 'width=device-width,initial-scale=1',
-});
+export const meta: MetaFunction = () => [
+  {
+    charset: 'utf-8',
+    title: 'New Remix App',
+    viewport: 'width=device-width,initial-scale=1',
+  },
+];
 
 export default function App() {
   return (
