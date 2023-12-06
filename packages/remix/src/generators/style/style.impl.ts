@@ -1,13 +1,13 @@
 import {
   formatFiles,
   joinPathFragments,
-  names,
   readProjectConfiguration,
   stripIndents,
   Tree,
 } from '@nx/devkit';
 import { RemixStyleSchema } from './schema';
 
+import { determineArtifactNameAndDirectoryOptions } from '@nx/devkit/src/generators/artifact-name-and-directory-utils';
 import { dirname, relative } from 'path';
 import { insertImport } from '../../utils/insert-import';
 import { insertStatementAfterImports } from '../../utils/insert-statement-after-imports';
@@ -18,19 +18,25 @@ import {
 } from '../../utils/remix-route-utils';
 
 export default async function (tree: Tree, options: RemixStyleSchema) {
-  const { name: routePath } = names(
-    options.path.replace(/^\//, '').replace(/\/$/, '').replace('.tsx', '')
-  );
+  const { project: projectName, artifactName: name } =
+    await determineArtifactNameAndDirectoryOptions(tree, {
+      artifactType: 'style',
+      callingGenerator: '@nx/remix:style',
+      name: options.path,
+      nameAndDirectoryFormat: options.nameAndDirectoryFormat,
+      project: options.project,
+    });
+  const project = readProjectConfiguration(tree, projectName);
+  if (!project) throw new Error(`Project does not exist: ${projectName}`);
 
-  const project = readProjectConfiguration(tree, options.project);
-  if (!project) throw new Error(`Project does not exist: ${options.project}`);
-
-  const normalizedRoutePath = normalizeRoutePath(routePath);
-
+  const appDir = resolveRemixAppDirectory(tree, project.name);
+  const normalizedRoutePath = `${normalizeRoutePath(options.path)
+    .replace(/^\//, '')
+    .replace('.tsx', '')}.css`;
   const stylesheetPath = joinPathFragments(
-    resolveRemixAppDirectory(tree, project.name),
+    appDir,
     'styles',
-    `${normalizedRoutePath}.css`
+    normalizedRoutePath
   );
 
   tree.write(
@@ -47,12 +53,9 @@ export default async function (tree: Tree, options: RemixStyleSchema) {
     `
   );
 
-  const routeFilePath = resolveRemixRouteFile(
-    tree,
-    options.path,
-    options.project,
-    '.tsx'
-  );
+  const routeFilePath = options.nameAndDirectoryFormat
+    ? options.path
+    : resolveRemixRouteFile(tree, options.path, options.project, '.tsx');
 
   insertImport(tree, routeFilePath, 'LinksFunction', '@remix-run/node', {
     typeOnly: true,
@@ -63,7 +66,7 @@ export default async function (tree: Tree, options: RemixStyleSchema) {
       tree,
       routeFilePath,
       `
-    import stylesUrl from '~/styles/${normalizedRoutePath}.css'
+    import stylesUrl from '~/styles/${normalizedRoutePath}'
 
     export const links: LinksFunction = () => {
       return [{ rel: 'stylesheet', href: stylesUrl }];

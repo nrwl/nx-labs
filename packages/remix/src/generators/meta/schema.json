@@ -10,7 +10,7 @@
         "$source": "argv",
         "index": 0
       },
-      "x-prompt": "What is the path of the route? (e.g. 'foo/bar')"
+      "x-prompt": "What is the path of the route? (e.g. 'apps/demo/app/routes/foo/bar.tsx')"
     },
     "nameAndDirectoryFormat": {
       "description": "Whether to generate the meta function in the path as provided, relative to the current working directory and ignoring the project (`as-provided`) or generate it using the project and directory relative to the workspace root (`derived`).",
