@@ -86,15 +86,15 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
 
   if (options.loader) {
     await LoaderGenerator(tree, {
-      nameAndDirectoryFormat: 'as-provided',
       path: routeFilePath,
+      nameAndDirectoryFormat: 'as-provided',
     });
   }
 
   if (options.meta) {
     await MetaGenerator(tree, {
       path: routeFilePath,
-      project: projectName,
+      nameAndDirectoryFormat: 'as-provided',
     });
   }
 

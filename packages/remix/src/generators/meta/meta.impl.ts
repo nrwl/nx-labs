@@ -6,7 +6,7 @@ import { v1MetaGenerator } from './lib/v1.impl';
 import { v2MetaGenerator } from './lib/v2.impl';
 
 export default async function (tree: Tree, schema: MetaSchema) {
-  const options = normalizeOptions(tree, schema);
+  const options = await normalizeOptions(tree, schema);
 
   if (options.version === '1') {
     await v1MetaGenerator(tree, options);
