@@ -17,24 +17,46 @@ import { getRemixConfigValues } from './remix-config';
 export function resolveRemixRouteFile(
   tree: Tree,
   path: string,
-  projectName: string,
+  projectName?: string,
   fileExtension?: string
 ): string {
-  const project = readProjectConfiguration(tree, projectName);
-  if (!project) throw new Error(`Project does not exist: ${projectName}`);
   const { name: routePath } = names(path.replace(/^\//, '').replace(/\/$/, ''));
-  const normalizedRoutePath = normalizeRoutePath(routePath);
 
+  if (!projectName) {
+    return appendRouteFileExtension(tree, routePath, fileExtension);
+  } else {
+    const project = readProjectConfiguration(tree, projectName);
+    if (!project) throw new Error(`Project does not exist: ${projectName}`);
+    const normalizedRoutePath = normalizeRoutePath(routePath);
+    const fileName = appendRouteFileExtension(
+      tree,
+      normalizedRoutePath,
+      fileExtension
+    );
+
+    return joinPathFragments(
+      resolveRemixAppDirectory(tree, projectName),
+      'routes',
+      fileName
+    );
+  }
+}
+
+function appendRouteFileExtension(
+  tree: Tree,
+  routePath: string,
+  fileExtension?: string
+) {
   // if no file extension specified, let's try to find it
   if (!fileExtension) {
     // see if the path already has it
-    const extensionMatch = path.match(/(\.[^.]+)$/);
+    const extensionMatch = routePath.match(/(\.[^.]+)$/);
 
     if (extensionMatch) {
       fileExtension = extensionMatch[0];
     } else {
       // look for either .ts or .tsx to exist in tree
-      if (tree.exists(`${normalizedRoutePath}.ts`)) {
+      if (tree.exists(`${routePath}.ts`)) {
         fileExtension = '.ts';
       } else {
         // default to .tsx if nothing else found
@@ -43,15 +65,9 @@ export function resolveRemixRouteFile(
     }
   }
 
-  const fileName = normalizedRoutePath.endsWith(fileExtension)
-    ? normalizedRoutePath
-    : `${normalizedRoutePath}${fileExtension}`;
-
-  return joinPathFragments(
-    resolveRemixAppDirectory(tree, projectName),
-    'routes',
-    fileName
-  );
+  return routePath.endsWith(fileExtension)
+    ? routePath
+    : `${routePath}${fileExtension}`;
 }
 
 export function normalizeRoutePath(path: string) {

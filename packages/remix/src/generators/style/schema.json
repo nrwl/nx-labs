@@ -5,8 +5,8 @@
   "type": "object",
   "examples": [
     {
-      "command": "g style --project=webapp --path='path/to/page'",
-      "description": "Generate route at /path/to/page"
+      "command": "g style --path='apps/demo/app/routes/path/to/page.tsx'",
+      "description": "Generate route at apps/demo/app/routes/path/to/page.tsx"
     }
   ],
   "properties": {
@@ -17,7 +17,15 @@
         "$source": "argv",
         "index": 0
       },
-      "x-prompt": "What is the path of the route? (e.g. 'foo/bar')"
+      "x-prompt": "What is the path of the route? (e.g. 'apps/demo/app/routes/foo/bar.tsx')"
+    },
+    "nameAndDirectoryFormat": {
+      "description": "Whether to generate the styles in the path as provided, relative to the current working directory and ignoring the project (`as-provided`) or generate it using the project and directory relative to the workspace root (`derived`).",
+      "type": "string",
+      "enum": [
+        "as-provided",
+        "derived"
+      ]
     },
     "project": {
       "type": "string",
@@ -26,8 +34,11 @@
         "$source": "projectName"
       },
       "x-prompt": "What project is this route in?",
-      "pattern": "^[a-zA-Z].*$"
+      "pattern": "^[a-zA-Z].*$",
+      "x-deprecated": "Provide the `path` option instead and use the `as-provided` format. The project will be determined from the path provided. It will be removed in Nx v18."
     }
   },
-  "required": ["project", "path"]
+  "required": [
+    "path"
+  ]
 }

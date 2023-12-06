@@ -6,11 +6,10 @@ import { resolveRemixRouteFile } from '../../../utils/remix-route-utils';
 import { MetaSchema } from '../schema';
 
 export async function v2MetaGenerator(tree: Tree, schema: MetaSchema) {
-  const routeFilePath = resolveRemixRouteFile(
-    tree,
-    schema.path,
-    schema.project
-  );
+  const routeFilePath =
+    schema.nameAndDirectoryFormat === 'as-provided'
+      ? schema.path
+      : resolveRemixRouteFile(tree, schema.path, schema.project);
 
   if (!tree.exists(routeFilePath)) {
     throw new Error(

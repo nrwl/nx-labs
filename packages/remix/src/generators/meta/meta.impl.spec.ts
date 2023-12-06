@@ -77,4 +77,20 @@ describe('meta', () => {
     expect(content).toMatch(`export const meta: V2_MetaFunction`);
     expect(content).toMatch(`return [`);
   });
+
+  it('--nameAndDirectoryFormat=as=provided', async () => {
+    await metaGenerator(tree, {
+      path: 'apps/demo/app/routes/example.tsx',
+      nameAndDirectoryFormat: 'as-provided',
+      version: '2',
+    });
+
+    const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+    expect(content).toMatch(
+      `import type { V2_MetaFunction } from '@remix-run/node';`
+    );
+
+    expect(content).toMatch(`export const meta: V2_MetaFunction`);
+    expect(content).toMatch(`return [`);
+  });
 });
