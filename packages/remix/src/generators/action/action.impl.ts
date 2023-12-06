@@ -6,11 +6,10 @@ import { resolveRemixRouteFile } from '../../utils/remix-route-utils';
 import { LoaderSchema } from './schema';
 
 export default async function (tree: Tree, schema: LoaderSchema) {
-  const routeFilePath = resolveRemixRouteFile(
-    tree,
-    schema.path,
-    schema.project
-  );
+  const routeFilePath =
+    schema.nameAndDirectoryFormat === 'as-provided'
+      ? schema.path
+      : resolveRemixRouteFile(tree, schema.path, schema.project);
 
   if (!tree.exists(routeFilePath)) {
     throw new Error(

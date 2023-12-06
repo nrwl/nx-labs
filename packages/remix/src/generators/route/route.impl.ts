@@ -101,7 +101,7 @@ export default async function (tree: Tree, options: RemixRouteSchema) {
   if (options.action) {
     await ActionGenerator(tree, {
       path: routeFilePath,
-      project: projectName,
+      nameAndDirectoryFormat: 'as-provided',
     });
   }
 

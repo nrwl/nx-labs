@@ -67,4 +67,24 @@ describe('action', () => {
       });
     });
   });
+
+  it('--nameAndDirectoryFormat=as-provided', async () => {
+    // ACT
+    await actionGenerator(tree, {
+      path: 'apps/demo/app/routes/example.tsx',
+    });
+    // ASSERT
+    const content = tree.read('apps/demo/app/routes/example.tsx', 'utf-8');
+    const useActionData = `const actionMessage = useActionData<typeof action>();`;
+    const actionFunction = `export const action = async ({ request }: ActionArgs)`;
+    expect(content).toMatch(`import { json } from '@remix-run/node';`);
+    expect(content).toMatch(
+      `import type { ActionArgs } from '@remix-run/node';`
+    );
+    expect(content).toMatch(
+      `import { useActionData } from '@remix-run/react';`
+    );
+    expect(content).toMatch(useActionData);
+    expect(content).toMatch(actionFunction);
+  });
 });
