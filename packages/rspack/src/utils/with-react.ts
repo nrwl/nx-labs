@@ -35,6 +35,7 @@ export function withReact(opts = {}) {
           {
             test: /\.jsx$/,
             loader: 'builtin:swc-loader',
+            exclude: /node_modules/,
             options: {
               jsc: {
                 parser: {
@@ -44,6 +45,7 @@ export function withReact(opts = {}) {
                 transform: {
                   react,
                 },
+                externalHelpers: true,
               },
             },
             type: 'javascript/auto',
@@ -51,6 +53,7 @@ export function withReact(opts = {}) {
           {
             test: /\.tsx$/,
             loader: 'builtin:swc-loader',
+            exclude: /node_modules/,
             options: {
               jsc: {
                 parser: {
@@ -60,6 +63,7 @@ export function withReact(opts = {}) {
                 transform: {
                   react,
                 },
+                externalHelpers: true,
               },
             },
             type: 'javascript/auto',

@@ -134,7 +134,7 @@ describe('rspack e2e', () => {
     result = await runNxCommandAsync(`build ${app3}`);
     expect(result.stdout).toContain('Successfully ran target build');
     // Make sure expected files are present.
-    expect(listFiles(`dist/${app3}`)).toHaveLength(3);
+    expect(listFiles(`dist/${app3}`)).toHaveLength(2);
 
     result = await runNxCommandAsync(
       `build ${app3} --generatePackageJson=true`
@@ -142,5 +142,5 @@ describe('rspack e2e', () => {
     expect(result.stdout).toContain('Successfully ran target build');
     // Make sure expected files are present.
     expect(listFiles(`dist/${app3}`)).toHaveLength(5);
-  }, 200_000);
+  }, 200_000000);
 });

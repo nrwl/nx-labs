@@ -132,8 +132,23 @@ export function withNx(_opts = {}) {
       module: {
         rules: [
           {
+            test: /\.js$/,
+            loader: 'builtin:swc-loader',
+            exclude: /node_modules/,
+            options: {
+              jsc: {
+                parser: {
+                  syntax: 'ecmascript',
+                },
+                externalHelpers: true,
+              },
+            },
+            type: 'javascript/auto',
+          },
+          {
             test: /\.ts$/,
             loader: 'builtin:swc-loader',
+            exclude: /node_modules/,
             options: {
               jsc: {
                 parser: {
@@ -143,7 +158,8 @@ export function withNx(_opts = {}) {
                 transform: {
                   legacyDecorator: true,
                   decoratorMetadata: true
-                }
+                },
+                externalHelpers: true,
               },
             },
             type: 'javascript/auto',
@@ -168,13 +184,6 @@ export function withNx(_opts = {}) {
         preset: 'normal',
       },
     };
-
-    if (options.optimization) {
-      updated.optimization = {
-        ...config.optimization,
-        minimize: true,
-      };
-    }
 
     return updated;
   };
