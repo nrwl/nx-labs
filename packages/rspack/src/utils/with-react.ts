@@ -26,8 +26,8 @@ export function withReact(opts = {}) {
       ...config,
       plugins: [
         ...(config.plugins || []),
-        new ReactRefreshPlugin(),
-      ],
+        isDev && new ReactRefreshPlugin(),
+      ].filter(Boolean),
       module: {
         ...config.module,
         rules: [

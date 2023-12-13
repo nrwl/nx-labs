@@ -45,18 +45,6 @@ export function withWeb(opts: WithWebOptions = {}) {
         rules: [
           ...(config.module.rules || []),
           {
-            test: /\.ts$/,
-            loader: 'builtin:swc-loader',
-            options: {
-              jsc: {
-                parser: {
-                  syntax: 'typescript',
-                },
-              },
-            },
-            type: 'javascript/auto',
-          },
-          {
             test: /\.css$/,
             type: opts?.cssModules ? 'css/module' : undefined,
           },

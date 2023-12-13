@@ -129,7 +129,27 @@ export function withNx(_opts = {}) {
         port: 4200,
         hot: true,
       } as any,
-      module: {},
+      module: {
+        rules: [
+          {
+            test: /\.ts$/,
+            loader: 'builtin:swc-loader',
+            options: {
+              jsc: {
+                parser: {
+                  syntax: 'typescript',
+                  decorators: true
+                },
+                transform: {
+                  legacyDecorator: true,
+                  decoratorMetadata: true
+                }
+              },
+            },
+            type: 'javascript/auto',
+          },
+        ]
+      },
       plugins: plugins,
       resolve: {
         // There are some issues resolving workspace libs in a monorepo.
