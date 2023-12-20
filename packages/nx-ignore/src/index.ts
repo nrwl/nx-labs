@@ -154,10 +154,8 @@ function installTempNx(root: string, plugins: string[]): string | null {
       json.dependencies['@swc/core'] = deps['@swc/core'];
       json.dependencies['@swc-node/register'] = deps['@swc-node/register'];
     }
-    let devkitNeeded = false;
     plugins.forEach((plugin) => {
       if (deps[plugin]) {
-        devkitNeeded = true;
         json.dependencies[plugin] = deps[plugin];
         logDebug(`≫ Adding plugin ${plugin}@${deps[plugin]}`);
       } else {
@@ -166,7 +164,9 @@ function installTempNx(root: string, plugins: string[]): string | null {
         );
       }
     });
-    if (devkitNeeded) {
+    // Plugins that extend the graph usually need devkit
+    if (plugins.length > 0) {
+      logDebug(`≫ Adding @nx/devkit`);
       json.dependencies['@nx/devkit'] = deps['nx'];
     }
     writeFileSync(join(tmpPath, 'package.json'), JSON.stringify(json));
