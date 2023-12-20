@@ -149,6 +149,11 @@ function installTempNx(root: string, plugins: string[]): string | null {
       nx: deps['nx'],
       typescript: deps['typescript'],
     };
+    // SWC is required when transpiling local plugins
+    if (deps['@swc/core'] && deps['@swc-node/register']) {
+      json.dependencies['@swc/core'] = deps['@swc/core'];
+      json.dependencies['@swc-node/register'] = deps['@swc-node/register'];
+    }
     let devkitNeeded = false;
     plugins.forEach((plugin) => {
       if (deps[plugin]) {
