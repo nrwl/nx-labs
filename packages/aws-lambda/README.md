@@ -1,5 +1,7 @@
 # @nx/aws-lambda
 
+> ⚠️ The AWS Lambda plugin is deprecated and will no longer receive updates. We are committed to providing high-quality tooling to community, and we no longer have the capacity to keep this plugin updated.
+
 ## Setup
 
 Create a new Nx worksapce if you don't already have one.
@@ -11,7 +13,6 @@ npx create-nx-workspace@latest aws-lambda-demo --preset=@nx/aws-lambda:preset
 Now, you can go into the `aws-lambda-demo` folder and start development.
 
 **Note:** You must have [SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html#install-sam-cli-instructions) installed and `esbuild` available in your PATH before you start building / deploying your functions.
-
 
 You can do this by running
 

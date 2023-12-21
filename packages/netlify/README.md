@@ -1,5 +1,7 @@
 # @nx/netlify
 
+> ⚠️ The Netlify plugin is deprecated and will no longer receive updates. We are committed to providing high-quality tooling to community, and we no longer have the capacity to keep this plugin updated.
+
 ## Setup
 
 Create a new Nx worksapce if you don't already have one.
