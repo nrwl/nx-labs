@@ -38,8 +38,6 @@
     "@nx/vite": "17.0.1",
     "@nx/workspace": "17.0.1",
     "@phenomnomnominal/tsquery": "^5.0.1",
-    "@remix-run/dev": "2.3.0",
-    "@remix-run/node": "2.3.0",
     "@rspack/core": "^0.4.4",
     "@rspack/dev-server": "^0.4.4",
     "@rspack/plugin-minify": "^0.4.4",

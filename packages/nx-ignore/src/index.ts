@@ -149,10 +149,13 @@ function installTempNx(root: string, plugins: string[]): string | null {
       nx: deps['nx'],
       typescript: deps['typescript'],
     };
-    let devkitNeeded = false;
+    // SWC is required when transpiling local plugins
+    if (deps['@swc/core'] && deps['@swc-node/register']) {
+      json.dependencies['@swc/core'] = deps['@swc/core'];
+      json.dependencies['@swc-node/register'] = deps['@swc-node/register'];
+    }
     plugins.forEach((plugin) => {
       if (deps[plugin]) {
-        devkitNeeded = true;
         json.dependencies[plugin] = deps[plugin];
         logDebug(`≫ Adding plugin ${plugin}@${deps[plugin]}`);
       } else {
@@ -161,16 +164,27 @@ function installTempNx(root: string, plugins: string[]): string | null {
         );
       }
     });
-    if (devkitNeeded) {
+    // Plugins that extend the graph usually need devkit
+    if (plugins.length > 0) {
+      logDebug(`≫ Adding @nx/devkit`);
       json.dependencies['@nx/devkit'] = deps['nx'];
     }
     writeFileSync(join(tmpPath, 'package.json'), JSON.stringify(json));
 
-    if (existsSync(join(root, 'yarn.lock'))) {
+    if (
+      existsSync(join(root, 'yarn.lock')) &&
+      isPackageManagerInstalled(`yarn`)
+    ) {
+      logDebug(`Using yarn to install Nx.`);
       execSync(`yarn install`, { cwd: tmpPath });
-    } else if (existsSync(join(root, 'pnpm-lock.yaml'))) {
+    } else if (
+      existsSync(join(root, 'pnpm-lock.yaml')) &&
+      isPackageManagerInstalled(`pnpm`)
+    ) {
+      logDebug(`Using pnpm to install Nx.`);
       execSync(`pnpm install --force`, { cwd: tmpPath });
     } else {
+      logDebug(`Using npm to install Nx.`);
       execSync(`npm install --force`, { cwd: tmpPath });
     }
     moveSync(join(tmpPath, 'node_modules'), join(root, 'node_modules'));
@@ -181,6 +195,19 @@ function installTempNx(root: string, plugins: string[]): string | null {
   }
 
   return null;
+}
+
+function isPackageManagerInstalled(pm: 'yarn' | 'pnpm'): boolean {
+  try {
+    const version = execSync(`${pm} --version`, {
+      stdio: 'pipe',
+    })?.toString();
+    logDebug(`Found ${pm} version ${version}.`);
+    return true;
+  } catch {
+    logDebug(`Could not find ${pm}. Check that it is installed.`);
+    return false;
+  }
 }
 
 function commitHasSkipMessage(message: string): boolean {
