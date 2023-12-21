@@ -1,5 +1,7 @@
 # @nx/deno
 
+> ⚠️ The Deno plugin is deprecated and will no longer receive updates. We are committed to providing high-quality tooling to community, and we no longer have the capacity to keep this plugin updated.
+
 [Deno](https://deno.com/runtime) is a JavaScript runtime that provides great tooling and hassle-free deployment.
 
 The following guides show you how to create a new Deno project and deploy to either [Deno Deploy](https://deno.com/deploy) or [Netlify](https://www.netlify.com/).
