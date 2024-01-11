@@ -57,11 +57,7 @@ if (!parsedArgs.local) {
 function updatePackageJsonFiles(parsedVersion, isLocal) {
   let pkgFiles = [
     'package.json',
-    'dist/npm/aws-lambda/package.json',
-    'dist/npm/netlify/package.json',
-    'dist/npm/deno/package.json',
     'dist/npm/nx-ignore/package.json',
-    'dist/npm/remix/package.json',
     'dist/npm/rspack/package.json',
   ];
   if (isLocal) {
