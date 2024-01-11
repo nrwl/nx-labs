@@ -15,5 +15,5 @@ nx publish [plugin] -ver=[version] --tag=[tag]
 
 
 # For example
-nx publish nx-remix --ver=1.0.0-alpha.2 --tag=next
+nx publish nx-rspack --ver=1.0.0-alpha.2 --tag=next
 ```

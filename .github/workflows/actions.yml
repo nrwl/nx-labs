@@ -34,7 +34,7 @@ jobs:
       - run: npx nx affected --target=lint --parallel --max-parallel=3
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - run: npx nx affected --target=test --parallel --max-parallel=2
-      - run: npx nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e,gatsby-e2e
+      - run: npx nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e
       - run: npx nx-cloud stop-all-agents
   nightly:
     runs-on: ubuntu-latest
@@ -57,7 +57,7 @@ jobs:
       - run: yarn
       - run: deno info && deno --version
       - run: npx nx run-many -t=build,test,lint --parallel --max-parallel=3
-      - run: npx nx affected -t=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e,gatsby-e2e
+      - run: npx nx affected -t=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e
       - run: npx nx-cloud stop-all-agents
   pr:
     runs-on: ubuntu-latest
@@ -81,7 +81,7 @@ jobs:
       - run: npx nx affected --target=lint --parallel --max-parallel=3
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - run: npx nx affected --target=test --parallel --max-parallel=2
-      - run: npx nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e,gatsby-e2e
+      - run: npx nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e
       - run: npx nx-cloud stop-all-agents
   agents:
     runs-on: ubuntu-latest

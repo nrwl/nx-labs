@@ -28,7 +28,7 @@ for (const deps of [json.dependencies, json.devDependencies, json.peerDependenci
 
 writeFileSync(`package.json`, JSON.stringify(json, null, 2));
 
-// USAGE example: NPM_OTP=381781 node tools/scripts/publish.mjs remix 15.8.5 latest
+// USAGE example: NPM_OTP=381781 node tools/scripts/publish.mjs rspack 15.8.5 latest
 execSync(
   `npm publish --access public --tag ${tag} --otp ${process.env.NPM_OTP}`
 );
