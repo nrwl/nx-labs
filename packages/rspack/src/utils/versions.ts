@@ -1,8 +1,8 @@
-export const rspackCoreVersion = '~0.4.4';
-export const rspackDevServerVersion = '~0.4.4';
+export const rspackCoreVersion = '~0.5.1';
+export const rspackDevServerVersion = '~0.5.1';
 
-export const rspackPluginMinifyVersion = '~0.4.4';
-export const rspackPluginReactRefreshVersion = '~0.4.4';
+export const rspackPluginMinifyVersion = '~0.5.1';
+export const rspackPluginReactRefreshVersion = '~0.5.1';
 export const lessLoaderVersion = '~11.1.3';
 
 export const reactVersion = '~18.2.0';
@@ -23,3 +23,5 @@ export const eslintPluginImportVersion = '2.27.5';
 export const eslintPluginJsxA11yVersion = '6.7.1';
 export const eslintPluginReactVersion = '7.32.2';
 export const eslintPluginReactHooksVersion = '4.6.0';
+
+export const swcHelpersVersion = '~0.5.2';
