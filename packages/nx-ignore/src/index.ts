@@ -116,10 +116,12 @@ function logDebug(s: string) {
   if (isVerbose) console.log(s);
 }
 
-function findThirdPartyPlugins(root: string) {
+function findThirdPartyPlugins(root: string): string[] {
   const nxJson = require(join(root, 'nx.json'));
   return (
-    nxJson.plugins?.filter((plugin: string) => !plugin.startsWith('.')) ?? []
+    nxJson.plugins
+      ?.map((p: any) => p.plugin ?? p)
+      ?.filter((plugin: string) => !plugin.startsWith('.')) ?? []
   );
 }
 
