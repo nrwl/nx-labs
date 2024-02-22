@@ -8,7 +8,8 @@
       "executor": "@nx/jest:jest",
       "options": {
         "jestConfig": "e2e/nx-ignore-e2e/jest.config.js",
-        "runInBand": true
+        "runInBand": true,
+        "passWithNoTests": false
       },
       "dependsOn": ["nx-ignore:build"]
     }

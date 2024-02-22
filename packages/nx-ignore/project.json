@@ -11,16 +11,12 @@
         "outputPath": "dist/packages/nx-ignore",
         "main": "packages/nx-ignore/src/index.ts",
         "tsConfig": "packages/nx-ignore/tsconfig.lib.json",
-        "assets": ["packages/nx-ignore/*.md", "LICENSE"],
-        "updateBuildableProjectDepsInPackageJson": true
+        "assets": ["packages/nx-ignore/*.md", "LICENSE"]
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/nx-ignore/**/*.ts"]
-      }
+      "outputs": ["{options.outputFile}"]
     },
     "publish": {
       "executor": "nx:run-commands",
