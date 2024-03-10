@@ -157,6 +157,12 @@ function installTempNx(root: string, plugins: string[]): string | null {
       json.dependencies['@swc-node/register'] = deps['@swc-node/register'];
     }
     plugins.forEach((plugin) => {
+      // Normalize deep imports into the package to install (e.g. `@nx/next/plugin` into `@nx/next`)
+      if (plugin.startsWith('@')) {
+        plugin = plugin.split('/').slice(0, 2).join('/');
+      } else {
+        plugin = plugin.split('/')[0];
+      }
       if (deps[plugin]) {
         json.dependencies[plugin] = deps[plugin];
         logDebug(`≫ Adding plugin ${plugin}@${deps[plugin]}`);
