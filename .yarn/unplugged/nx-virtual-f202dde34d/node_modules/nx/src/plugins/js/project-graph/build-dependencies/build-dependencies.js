@@ -1,0 +1,33 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.buildExplicitDependencies = void 0;
+const explicit_project_dependencies_1 = require("./explicit-project-dependencies");
+const explicit_package_json_dependencies_1 = require("./explicit-package-json-dependencies");
+function buildExplicitDependencies(jsPluginConfig, ctx) {
+    if (totalNumberOfFilesToProcess(ctx) === 0)
+        return [];
+    let dependencies = [];
+    if (jsPluginConfig.analyzeSourceFiles === undefined ||
+        jsPluginConfig.analyzeSourceFiles === true) {
+        let tsExists = false;
+        try {
+            require.resolve('typescript');
+            tsExists = true;
+        }
+        catch { }
+        if (tsExists) {
+            dependencies = dependencies.concat((0, explicit_project_dependencies_1.buildExplicitTypeScriptDependencies)(ctx));
+        }
+    }
+    if (jsPluginConfig.analyzePackageJson === undefined ||
+        jsPluginConfig.analyzePackageJson === true) {
+        dependencies = dependencies.concat((0, explicit_package_json_dependencies_1.buildExplicitPackageJsonDependencies)(ctx));
+    }
+    return dependencies;
+}
+exports.buildExplicitDependencies = buildExplicitDependencies;
+function totalNumberOfFilesToProcess(ctx) {
+    let totalNumOfFilesToProcess = 0;
+    Object.values(ctx.filesToProcess.projectFileMap).forEach((t) => (totalNumOfFilesToProcess += t.length));
+    return totalNumOfFilesToProcess;
+}

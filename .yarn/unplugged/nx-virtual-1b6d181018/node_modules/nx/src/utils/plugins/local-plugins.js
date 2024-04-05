@@ -1,0 +1,58 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.listLocalWorkspacePlugins = exports.getLocalWorkspacePlugins = void 0;
+const chalk = require("chalk");
+const output_1 = require("../output");
+const shared_1 = require("./shared");
+const fileutils_1 = require("../fileutils");
+const path_1 = require("path");
+const workspace_root_1 = require("../workspace-root");
+const fs_1 = require("fs");
+const plugin_capabilities_1 = require("./plugin-capabilities");
+async function getLocalWorkspacePlugins(projectsConfiguration, nxJson) {
+    const plugins = new Map();
+    for (const project of Object.values(projectsConfiguration.projects)) {
+        const packageJsonPath = (0, path_1.join)(workspace_root_1.workspaceRoot, project.root, 'package.json');
+        if ((0, fs_1.existsSync)(packageJsonPath)) {
+            const packageJson = (0, fileutils_1.readJsonFile)(packageJsonPath);
+            const includeRuntimeCapabilities = nxJson?.plugins?.some((p) => (typeof p === 'string' ? p : p.plugin).startsWith(packageJson.name));
+            const capabilities = await (0, plugin_capabilities_1.getPluginCapabilities)(workspace_root_1.workspaceRoot, packageJson.name, projectsConfiguration.projects, includeRuntimeCapabilities);
+            if (capabilities &&
+                (Object.keys(capabilities.executors ?? {}).length ||
+                    Object.keys(capabilities.generators ?? {}).length ||
+                    capabilities.projectGraphExtension ||
+                    capabilities.projectInference)) {
+                plugins.set(packageJson.name, {
+                    ...capabilities,
+                    name: packageJson.name,
+                });
+            }
+        }
+    }
+    return plugins;
+}
+exports.getLocalWorkspacePlugins = getLocalWorkspacePlugins;
+function listLocalWorkspacePlugins(installedPlugins) {
+    const bodyLines = [];
+    for (const [, p] of installedPlugins) {
+        const capabilities = [];
+        if ((0, shared_1.hasElements)(p.executors)) {
+            capabilities.push('executors');
+        }
+        if ((0, shared_1.hasElements)(p.generators)) {
+            capabilities.push('generators');
+        }
+        if (p.projectGraphExtension) {
+            capabilities.push('graph-extension');
+        }
+        if (p.projectInference) {
+            capabilities.push('project-inference');
+        }
+        bodyLines.push(`${chalk.bold(p.name)} (${capabilities.join()})`);
+    }
+    output_1.output.log({
+        title: `Local workspace plugins:`,
+        bodyLines: bodyLines,
+    });
+}
+exports.listLocalWorkspacePlugins = listLocalWorkspacePlugins;

@@ -1,0 +1,18 @@
+import type { NxJsonConfiguration } from './nx-json';
+import { ProjectsConfigurations } from './workspace-json-project-json';
+/**
+ * @deprecated This will be removed in v19. Use {@link readProjectsConfigurationFromProjectGraph} instead.
+ */
+export declare class Workspaces {
+    private root;
+    constructor(root: string);
+    /**
+     * @deprecated Use {@link readProjectsConfigurationFromProjectGraph} instead.
+     */
+    readWorkspaceConfiguration(): ProjectsConfigurations & NxJsonConfiguration;
+}
+/**
+ * Pulled from toFileName in names from @nx/devkit.
+ * Todo: Should refactor, not duplicate.
+ */
+export declare function toProjectName(fileName: string): string;
