@@ -90,12 +90,20 @@ async function main() {
   logDebug(`\n≫ Comparing ${baseSha}...${headSha}\n`);
 
   const graphJsonPath = join(tmpdir(), '.nx-affected-graph.json');
-  execSync(
-    `npx nx affected:graph --base=${baseSha} --head=${headSha} --file=${graphJsonPath}`,
-    {
-      cwd: root,
-    }
-  );
+  try {
+    execSync(
+      `npx nx affected:graph --base=${baseSha} --head=${headSha} --file=${graphJsonPath}`,
+      {
+        cwd: root,
+      }
+    );
+  } catch (e: any) {
+    if (e.stdout) console.error(e.stdout.toString());
+    if (e.stderr) console.error(e.stderr.toString());
+    exitWithoutBuild(
+      `🛑 - Build cancelled due to the error above (Hint: commit with "[nx deploy]" to force deployment)`
+    );
+  }
   const projects = JSON.parse(
     readFileSync(graphJsonPath).toString()
   ).affectedProjects;
