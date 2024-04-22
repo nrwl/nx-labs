@@ -6,6 +6,7 @@ import {
   runCommand,
   tmpProjPath,
   uniq,
+  updateFile,
 } from '@nx/plugin/testing';
 
 describe('nx-ignore e2e', () => {
@@ -73,4 +74,40 @@ describe('nx-ignore e2e', () => {
       expect(result).toMatch(/Forced build/);
     });
   }, 120_000);
+
+  describe('Installation strategies', () => {
+    it('should perform a slim installation when Nx plugins are not used', () => {
+      runCommand(`git commit -m "test" --allow-empty`, {});
+
+      const result = runCommand(`npx nx-ignore ${proj} --verbose`, {});
+      expect(result).toMatch(/slim installation/);
+    });
+
+    it('should perform a full installation when Nx plugins are used', () => {
+      updateFile('nx.json', (s) => {
+        const json = JSON.parse(s);
+        json.plugins = ['@nx/jest/plugin'];
+        return JSON.stringify(json);
+      });
+      runCommand(`git commit -m "test" --allow-empty`, {});
+
+      const result = runCommand(`npx nx-ignore ${proj} --verbose`, {});
+      expect(result).toMatch(/full installation/);
+    });
+
+    it('should perform a slim installation when --slim-install is used', () => {
+      updateFile('nx.json', (s) => {
+        const json = JSON.parse(s);
+        json.plugins = ['@nx/jest/plugin'];
+        return JSON.stringify(json);
+      });
+      runCommand(`git commit -m "test" --allow-empty`, {});
+
+      const result = runCommand(
+        `npx nx-ignore ${proj} --slim-install --verbose`,
+        {}
+      );
+      expect(result).toMatch(/slim installation/);
+    });
+  });
 });
