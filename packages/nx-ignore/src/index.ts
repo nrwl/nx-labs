@@ -33,6 +33,9 @@ const userDefinedPlugins = userDefinedPluginsArg
   ? userDefinedPluginsArg.slice(10).split(',')
   : null;
 const isVerbose = args.some((s) => s === '--verbose');
+const isSlimInstall = args.some(
+  (s) => s === '--slim-install' || s === '--slimInstall'
+);
 const headSha = 'HEAD';
 const userDefinedRoot = customRoot ? customRoot.slice(7) : null;
 let baseSha = customBase ? customBase.slice(7) : defaultBase || 'HEAD^';
@@ -62,7 +65,7 @@ async function main() {
   logDebug(`≫ Workspace root is ${root}`);
 
   const plugins = userDefinedPlugins ?? findThirdPartyPlugins(root);
-  const nxVersion = installTempNx(root, plugins);
+  const nxVersion = ensureNxInstallation(root, plugins);
 
   if (!nxVersion) {
     console.log('≫ Cannot find installed Nx');
@@ -127,7 +130,46 @@ function findThirdPartyPlugins(root: string): string[] {
 
 // This function ensures that Nx is installed in the workspace.
 // Returns the version of Nx if found, null otherwise.
-function installTempNx(root: string, plugins: string[]): string | null {
+function ensureNxInstallation(root: string, plugins: string[]): string | null {
+  // When plugins are used, we cannot reliably find all transient dependencies, thus we default to full installation.
+  // This will make the install slower, so users can pass --slim-install to force a slim installation if it works for their repo.
+  if (plugins.length > 0 && !isSlimInstall) {
+    logDebug(
+      'Performing a full installation because Nx plugins are used. Override this behavior with `--slim-install`.'
+    );
+    return fullNxInstallation(root);
+  } else {
+    logDebug(`Performing a slim installation of Nx and necessary plugins.`);
+    return slimNxInstallation(root, plugins);
+  }
+}
+
+function fullNxInstallation(root: string): string | null {
+  const packageJson = require(join(root, 'package.json'));
+  const deps = {
+    ...packageJson.dependencies,
+    ...packageJson.devDependencies,
+  };
+  if (
+    existsSync(join(root, 'yarn.lock')) &&
+    isPackageManagerInstalled(`yarn`)
+  ) {
+    logDebug(`Using yarn to install Nx.`);
+    execSync(`yarn install`, { cwd: root });
+  } else if (
+    existsSync(join(root, 'pnpm-lock.yaml')) &&
+    isPackageManagerInstalled(`pnpm`)
+  ) {
+    logDebug(`Using pnpm to install Nx.`);
+    execSync(`pnpm install --force`, { cwd: root });
+  } else {
+    logDebug(`Using npm to install Nx.`);
+    execSync(`npm install --force`, { cwd: root });
+  }
+  return deps['nx'] || null;
+}
+
+function slimNxInstallation(root: string, plugins: string[]): string | null {
   try {
     const packageJson = require(join(root, 'package.json'));
     const deps = {

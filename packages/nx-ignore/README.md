@@ -17,6 +17,7 @@ For Vercel, under the `Settings > Git` section, use this script in `Ignored Buil
 - `--base` - Set a custom base SHA to compare changes (defaults to `CACHED_COMMIT_REF` on Netlify or `VERCEL_GIT_PREVIOUS_SHA` on Vercel)
 - `--plugins` - List of Nx plugins required (i.e. plugins that extend the Nx graph). Default plugins are read from nx.json.
 - `--root` - Set a custom workspace root (defaults to current working directory).
+- `--slim-install` - Install only Nx and necessary plugins to speed up the script (defaults to true when not using plugin, and false when plugins are used).
 - `--verbose` - Log more details information for debugging purposes.
 
 ### Skipping and forcing deployment
