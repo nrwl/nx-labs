@@ -45,7 +45,7 @@ The `nx-ignore` command uses Nx to determine whether the current commit affects 
 
 When `plugins` are used in `nx.json`, Nx infers projects and targets through those plugins via their corresponding configuration files. For example, `@nx/next/plugin` infers projects and targets from `next.config.js` files. This means that modules imported in `next.config.js` must be present in order for Nx to work correctly.
 
-If you run into the `Failed to process project graph` error, it means that some of the packages are missing. To debug what packages are missing, run `npx nx-ignore@latest <app> --verbose --slim-install` locally, and you should see and error with the missing package. You can also run `npx nx show projects` to debug any missing packages, after running the `npx nx-ignore` command.
+If you run into the `Failed to process project graph` error, it means that some of the packages are missing. To debug what packages are missing, run `npx nx-ignore@latest <app> --verbose --slim-install` locally, and you should see an error with the missing package. You can also run `npx nx show projects` to debug any missing packages, after running the `npx nx-ignore` command.
 
 Use the `--additional-packages` option to install the missing packages as detected above. For example,
 

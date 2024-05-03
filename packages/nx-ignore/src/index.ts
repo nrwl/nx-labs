@@ -270,7 +270,7 @@ function slimNxInstallation(root: string, plugins: string[]): string | null {
 function detectRequiredPackages(root: string): Record<string, string> {
   const knownPackagesUsedByConfigFilesForTargetInference = [
     /^nx$/,
-    /@nx\/eslint-plugin/,
+    /@nx\//,
     /^typescript$/,
     /@typescript-eslint\//,
     /^@swc\/core$/,
