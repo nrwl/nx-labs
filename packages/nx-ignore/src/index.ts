@@ -32,7 +32,18 @@ const userDefinedPluginsArg = args.find(
 const userDefinedPlugins = userDefinedPluginsArg
   ? userDefinedPluginsArg.slice(10).split(',')
   : null;
+const userDefinedPackagesArg = args.find(
+  (s) =>
+    s.startsWith('--additional-packages=') ||
+    s.startsWith('--additional-packages ')
+) as string;
+const userDefinedPackages = userDefinedPackagesArg
+  ? userDefinedPackagesArg.slice(10).split(',')
+  : null;
 const isVerbose = args.some((s) => s === '--verbose');
+// This is always "true" when running on Netlify
+// See: https://docs.netlify.com/configure-builds/environment-variables/#build-metadata
+const isNetlify = !!process.env.NETLIFY;
 const isSlimInstall = args.some(
   (s) => s === '--slim-install' || s === '--slimInstall'
 );
@@ -104,7 +115,7 @@ async function main() {
     if (e.stdout) console.error(e.stdout.toString());
     if (e.stderr) console.error(e.stderr.toString());
     exitWithoutBuild(
-      `🛑 - Build cancelled due to the error above (Hint: commit with "[nx deploy]" to force deployment)`
+      `🛑 - Build cancelled due to the error above, you may need to use --additional-packages option if using Nx plugins to infer targets e.g. Project Crystal (Hint: commit with "[nx deploy]" to force deployment if necessary)`
     );
   }
   const projects = JSON.parse(
@@ -141,13 +152,18 @@ function findThirdPartyPlugins(root: string): string[] {
 function ensureNxInstallation(root: string, plugins: string[]): string | null {
   // When plugins are used, we cannot reliably find all transient dependencies, thus we default to full installation.
   // This will make the install slower, so users can pass --slim-install to force a slim installation if it works for their repo.
-  if (plugins.length > 0 && !isSlimInstall) {
+  if (isNetlify) {
+    logDebug(
+      'Performing a slim installation of Nx because Netlify times out during full installation.'
+    );
+    return slimNxInstallation(root, plugins);
+  } else if (plugins.length > 0 && !isSlimInstall) {
     logDebug(
       'Performing a full installation because Nx plugins are used. Override this behavior with `--slim-install`.'
     );
     return fullNxInstallation(root);
   } else {
-    logDebug(`Performing a slim installation of Nx and necessary plugins.`);
+    logDebug(`Performing a slim installation of Nx.`);
     return slimNxInstallation(root, plugins);
   }
 }
@@ -194,18 +210,13 @@ function slimNxInstallation(root: string, plugins: string[]): string | null {
     const originalPackageJson = JSON.parse(
       readFileSync(join(root, 'package.json'))
     );
-    const json: any = {
+    const json: { name: string; dependencies: Record<string, string> } = {
       name: originalPackageJson.name,
+      dependencies: detectRequiredPackages(root),
     };
-    json.dependencies = {
-      nx: deps['nx'],
-      typescript: deps['typescript'],
-    };
-    // SWC is required when transpiling local plugins
-    if (deps['@swc/core'] && deps['@swc-node/register']) {
-      json.dependencies['@swc/core'] = deps['@swc/core'];
-      json.dependencies['@swc-node/register'] = deps['@swc-node/register'];
-    }
+
+    logDebug(`≫ Adding packages: ${Object.keys(json.dependencies).join(',')}`);
+
     plugins.forEach((plugin) => {
       // Normalize deep imports into the package to install (e.g. `@nx/next/plugin` into `@nx/next`)
       if (plugin.startsWith('@')) {
@@ -248,11 +259,62 @@ function slimNxInstallation(root: string, plugins: string[]): string | null {
     moveSync(join(tmpPath, 'node_modules'), join(root, 'node_modules'));
 
     return deps['nx'];
-  } catch {
+  } catch (e) {
+    logDebug(`Error: ${e}`);
     // nothing
   }
 
   return null;
+}
+
+function detectRequiredPackages(root: string): Record<string, string> {
+  const knownPackagesUsedByConfigFilesForTargetInference = [
+    /^nx$/,
+    /@nx\/eslint-plugin/,
+    /^typescript$/,
+    /@typescript-eslint\//,
+    /^@swc\/core$/,
+    /^@swc-node\/register$/,
+    /^cypress$/,
+    /@cypress\//,
+    /^cypress-/,
+    /^eslint-/,
+    /^jest$/,
+    /^jest-/,
+    /^next$/,
+    /^nuxt$/,
+    /@playwright\//,
+    /@rollup\//,
+    /^rollup-plugin-/,
+    /^vite$/,
+    /^vite-plugin-/,
+    /@vitejs\//,
+  ];
+  const packages: Record<string, string> = {};
+  const packageJson = require(join(root, 'package.json'));
+
+  // Find common packages required by Nx plugins and their corresponding config files.
+  // e.g. `@nx/playwright/plugin` reads `playwright.config.ts` which requires `@playwright/test`
+  const deps = {
+    ...packageJson.dependencies,
+    ...packageJson.devDependencies,
+  };
+
+  for (const pkg of userDefinedPackages ?? []) {
+    if (deps[pkg]) {
+      packages[pkg] = deps[pkg];
+    }
+  }
+
+  for (const pkg of Object.keys(deps)) {
+    if (
+      knownPackagesUsedByConfigFilesForTargetInference.some((r) => r.test(pkg))
+    ) {
+      packages[pkg] = deps[pkg];
+    }
+  }
+
+  return packages;
 }
 
 function isPackageManagerInstalled(pm: 'yarn' | 'pnpm'): boolean {

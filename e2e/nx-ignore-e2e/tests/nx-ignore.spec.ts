@@ -42,11 +42,11 @@ describe('nx-ignore e2e', () => {
     writeFileSync(join(projRoot, 'main.ts'), `console.log('bye');\n`);
     runCommand('git commit -am "update main"', {});
 
-    let result = runCommand(`npx nx-ignore ${proj}`, {});
+    let result = runCommand(`npx nx-ignore ${proj} --verbose`, {});
     expect(result).toMatch(/Build can proceed/);
 
     runCommand('git commit -m "nothing" --allow-empty', {});
-    result = runCommand(`npx nx-ignore ${proj}`, {});
+    result = runCommand(`npx nx-ignore ${proj} --verbose`, {});
     expect(result).toMatch(/Build cancelled/);
   }, 120_000);
 
@@ -107,6 +107,94 @@ describe('nx-ignore e2e', () => {
         `npx nx-ignore ${proj} --slim-install --verbose`,
         {}
       );
+      expect(result).toMatch(/slim installation/);
+    });
+
+    it('should perform a slim installation when on Netlify', () => {
+      // Add plugins and corresponding config files.
+      updateFile('nx.json', (s) => {
+        const json = JSON.parse(s);
+        json.plugins = [
+          '@nx/playwright/plugin',
+          '@nx/jest/plugin',
+          '@nx/next/plugin',
+        ];
+        return JSON.stringify(json);
+      });
+      updateFile('package.json', (s) => {
+        const json = JSON.parse(s);
+        json.dependencies['jest-environment-jsdom'] = '*';
+        json.dependencies['jest'] = '*';
+        json.dependencies['cypress'] = '*';
+        json.dependencies['@playwright/test'] = '*';
+        return JSON.stringify(json);
+      });
+      updateFile(
+        `jest.config.ts`,
+        `
+        import type { Config } from 'jest';
+        export const nxPreset: Config = {
+          // This is one of the patterns that jest finds by default https://jestjs.io/docs/configuration#testmatch-arraystring
+          testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
+          resolver: '@nx/jest/plugins/resolver',
+          moduleFileExtensions: ['ts', 'js', 'mjs', 'html'],
+          coverageReporters: ['html'],
+          transform: {
+            '^.+\\\\.(ts|js|html)$': [
+              'ts-jest',
+              { tsconfig: '<rootDir>/tsconfig.spec.json' },
+            ],
+          },
+          testEnvironment: 'jsdom',
+          testEnvironmentOptions: {
+            customExportConditions: ['node', 'require', 'default'],
+          },
+        };`
+      );
+      updateFile(
+        `playwright.config.ts`,
+        `
+        import { defineConfig, devices } from '@playwright/test';
+        export default defineConfig({
+          testDir: './src',
+          outputDir: './dist/.playwright/test-output',
+          use: {
+            baseURL: 'http://localhost:4200',
+            // how long each page.goto can take before timing out
+            navigationTimeout: process.env.CI ? 30_000 : undefined,
+            /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+            trace: 'on-first-retry',
+          },
+          webServer: {
+            command: 'pnpm exec nx run demo:start',
+            url: 'http://localhost:4200',
+            reuseExistingServer: !process.env.CI,
+            timeout: 120_000,
+          },
+          projects: [
+            {
+              name: 'chromium',
+              use: { ...devices['Desktop Chrome'] },
+            },
+          ],
+        });`
+      );
+      updateFile(
+        'next.config.js',
+        `
+          // This could be used to determine phases, etc.
+          const constants = require('next/constants');
+          const { withNx } = require('@nx/next/plugins/with-nx');
+          module.exports = withNx({});`
+      );
+
+      runCommand(`git commit -m "test" --allow-empty`, {});
+
+      const result = runCommand(`npx nx-ignore ${proj} --verbose`, {
+        env: {
+          NETLIFY: 'true',
+        },
+      });
       expect(result).toMatch(/slim installation/);
     });
   });
