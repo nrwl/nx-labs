@@ -106,7 +106,9 @@ async function main() {
   const graphJsonPath = join(tmpdir(), '.nx-affected-graph.json');
   try {
     execSync(
-      `npx nx affected:graph --base=${baseSha} --head=${headSha} --file=${graphJsonPath}`,
+      `npx nx affected:graph --base=${baseSha} --head=${headSha} --file=${graphJsonPath}${
+        isVerbose ? ' --verbose' : ''
+      }`,
       {
         cwd: root,
       }
@@ -115,7 +117,7 @@ async function main() {
     if (e.stdout) console.error(e.stdout.toString());
     if (e.stderr) console.error(e.stderr.toString());
     exitWithoutBuild(
-      `🛑 - Build cancelled due to the error above, you may need to use --additional-packages option if using Nx plugins to infer targets e.g. Project Crystal (Hint: commit with "[nx deploy]" to force deployment if necessary)`
+      `🛑 - Build cancelled due to the error above. You may need to use --additional-packages option if using Nx plugins to infer targets e.g. Project Crystal. (Hint: commit with "[nx deploy]" to force deployment if necessary)`
     );
   }
   const projects = JSON.parse(
@@ -273,12 +275,13 @@ function detectRequiredPackages(root: string): Record<string, string> {
     /@nx\//,
     /^typescript$/,
     /@typescript-eslint\//,
-    /^@swc\/core$/,
-    /^@swc-node\/register$/,
+    /^@swc\//,
+    /^@swc-node\//,
     /^cypress$/,
     /@cypress\//,
     /^cypress-/,
     /^eslint-/,
+    /^enhanced-resolve$/,
     /^jest$/,
     /^jest-/,
     /-jest$/, // ts-jest, babel-jest
