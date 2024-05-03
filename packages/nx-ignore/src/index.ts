@@ -281,6 +281,7 @@ function detectRequiredPackages(root: string): Record<string, string> {
     /^eslint-/,
     /^jest$/,
     /^jest-/,
+    /-jest$/, // ts-jest, babel-jest
     /^next$/,
     /^nuxt$/,
     /@playwright\//,
