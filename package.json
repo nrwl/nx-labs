@@ -22,7 +22,7 @@
     "tslib": "^2.3.0",
     "yargs-parser": "^21.1.1"
   },
-  "packageManager": "yarn@1.22.19",
+  "packageManager": "yarn@4.1.1",
   "devDependencies": {
     "@nx/cypress": "18.1.0-beta.2",
     "@nx/detox": "18.1.0-beta.2",
@@ -45,7 +45,7 @@
     "@swc-node/register": "1.8.0",
     "@types/fs-extra": "^11.0.1",
     "@types/jest": "29.4.0",
-    "@types/node": "18.16.9",
+    "@types/node": "^20.12.4",
     "@types/webpack-sources": "^3.2.1",
     "@typescript-eslint/eslint-plugin": "6.21.0",
     "@typescript-eslint/parser": "6.21.0",

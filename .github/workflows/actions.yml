@@ -15,92 +15,77 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request'  && github.event_name != 'schedule' }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout [main]
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v2
-      - uses: denoland/setup-deno@v1
-        with:
-          deno-version: '^1.3'
-      - uses: actions/setup-node@v1
+        uses: nrwl/nx-set-shas@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '18'
-      - run: yarn
-      - run: deno info && deno --version
-      - run: npx nx affected --target=lint --parallel --max-parallel=3
-      - run: npx nx affected --target=build --parallel --max-parallel=3
-      - run: npx nx affected --target=test --parallel --max-parallel=2
-      - run: npx nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e
-      - run: npx nx-cloud stop-all-agents
+      - run: yarn --immutable
+      - run: yarn nx affected --target=lint --parallel --max-parallel=3
+      - run: yarn nx affected --target=build --parallel --max-parallel=3
+      - run: yarn nx affected --target=test --parallel --max-parallel=2
+      - run: yarn nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e
+      - run: yarn nx-cloud stop-all-agents
   nightly:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'schedule' }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout [main]
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v2
-      - uses: denoland/setup-deno@v1
-        with:
-          deno-version: '^1.3'
-      - uses: actions/setup-node@v1
+        uses: nrwl/nx-set-shas@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '18'
-      - run: yarn
-      - run: deno info && deno --version
-      - run: npx nx run-many -t=build,test,lint --parallel --max-parallel=3
-      - run: npx nx affected -t=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e
-      - run: npx nx-cloud stop-all-agents
+      - run: yarn --immutable
+      - run: yarn nx run-many -t=build,test,lint --parallel --max-parallel=3
+      - run: yarn nx affected -t=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e
+      - run: yarn nx-cloud stop-all-agents
   pr:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v2
-      - uses: denoland/setup-deno@v1
-        with:
-          deno-version: '^1.3'
-      - uses: actions/setup-node@v1
+        uses: nrwl/nx-set-shas@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '18'
-      - run: yarn
-      - run: deno info && deno --version
-      - run: npx nx affected --target=lint --parallel --max-parallel=3
-      - run: npx nx affected --target=build --parallel --max-parallel=3
-      - run: npx nx affected --target=test --parallel --max-parallel=2
-      - run: npx nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e
-      - run: npx nx-cloud stop-all-agents
+      - run: yarn --immutable
+      - run: yarn nx affected --target=lint --parallel --max-parallel=3
+      - run: yarn nx affected --target=build --parallel --max-parallel=3
+      - run: yarn nx affected --target=test --parallel --max-parallel=2
+      - run: yarn nx affected --target=e2e --parallel --max-parallel=1 --exclude=nx-ignore-e2e
+      - run: yarn nx-cloud stop-all-agents
   agents:
     runs-on: ubuntu-latest
     name: Agent 1
     timeout-minutes: 60
     strategy:
       matrix:
-        agent: [ 1, 2, 3 ]
+        agent: [1, 2, 3]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - uses: denoland/setup-deno@v1
-        with:
-          deno-version: '^1.3'
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v4
         with:
           node-version: '18'
-      - run: yarn
+      - run: yarn --immutable
       - name: Start Nx Agent ${{ matrix.agent }}
-        run: npx nx-cloud start-agent
+        run: yarn nx-cloud start-agent

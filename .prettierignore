@@ -4,3 +4,8 @@
 /coverage
 
 /.nx/cache
+.pnp.cjs
+.pnp.loader.mjs
+/.yarn
+
+/.nx/cache

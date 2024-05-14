@@ -1,0 +1,10 @@
+import type { NxWorkspaceFilesExternals } from '../native';
+export declare function setupWorkspaceContext(workspaceRoot: string): void;
+export declare function getNxWorkspaceFilesFromContext(workspaceRoot: string, projectRootMap: Record<string, string>): import("../native").NxWorkspaceFiles;
+export declare function globWithWorkspaceContext(workspaceRoot: string, globs: string[], exclude?: string[]): string[];
+export declare function hashWithWorkspaceContext(workspaceRoot: string, globs: string[], exclude?: string[]): string;
+export declare function updateFilesInContext(updatedFiles: string[], deletedFiles: string[]): Record<string, string>;
+export declare function getAllFileDataInContext(workspaceRoot: string): import("../native").FileData[];
+export declare function getFilesInDirectoryUsingContext(workspaceRoot: string, dir: string): string[];
+export declare function updateProjectFiles(projectRootMappings: Record<string, string>, rustReferences: NxWorkspaceFilesExternals, updatedFiles: Record<string, string>, deletedFiles: string[]): import("../native").UpdatedWorkspaceFiles;
+export declare function resetWorkspaceContext(): void;
