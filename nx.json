@@ -1,7 +1,4 @@
 {
-  "affected": {
-    "defaultBase": "main"
-  },
   "tasksRunnerOptions": {
     "default": {
       "options": {
@@ -46,5 +43,6 @@
       "cache": true
     }
   },
-  "nxCloudAccessToken": "MDRmYzUxMmYtNTQwZi00MjZkLTg0ZTYtMzc5Y2RhOTE4YTc2fHJlYWQtd3JpdGU="
+  "nxCloudAccessToken": "MDRmYzUxMmYtNTQwZi00MjZkLTg0ZTYtMzc5Y2RhOTE4YTc2fHJlYWQtd3JpdGU=",
+  "defaultBase": "main"
 }
