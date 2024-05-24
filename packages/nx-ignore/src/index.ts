@@ -105,14 +105,18 @@ async function main() {
 
   const graphJsonPath = join(tmpdir(), '.nx-affected-graph.json');
   try {
-    execSync(
-      `npx nx affected:graph --base=${baseSha} --head=${headSha} --file=${graphJsonPath}${
-        isVerbose ? ' --verbose' : ''
-      }`,
-      {
-        cwd: root,
-      }
-    );
+    const majorVersion = parseInt(nxVersion.match(/^(\d+)\./)?.[1] ?? '0');
+    const cmd =
+      majorVersion >= 19
+        ? `npx nx graph --affected --base=${baseSha} --head=${headSha} --file=${graphJsonPath}${
+            isVerbose ? ' --verbose' : ''
+          }`
+        : `npx nx affected:graph --base=${baseSha} --head=${headSha} --file=${graphJsonPath}${
+            isVerbose ? ' --verbose' : ''
+          }`;
+    execSync(cmd, {
+      cwd: root,
+    });
   } catch (e: any) {
     if (e.stdout) console.error(e.stdout.toString());
     if (e.stderr) console.error(e.stderr.toString());
