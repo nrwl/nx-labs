@@ -58,6 +58,54 @@ if (!project) {
 
 main();
 
+function getAffectedProjects(nxVersion: string, root: string): string[] {
+  const graphJsonPath = join(tmpdir(), '.nx-affected-graph.json');
+  const majorVersion = parseInt(nxVersion.match(/^(\d+)\./)?.[1] ?? '0');
+  // TODO(v20): Once Nx 16 is out of LTS, we can just use `show projects` since it prints to a single line.
+  // In Nx 16 it printed on multiple lines, thus we cannot strip out warnings if they are preset.
+  if (majorVersion >= 19) {
+    // For Nx 19+ the `affected:graph` command no longer works, thus we should read in the JSON
+    // output of `show projects --affected -json`.
+    const result = execSync(`npx nx show projects --affected --json`, {
+      cwd: root,
+    })
+      .toString()
+      .trim();
+    /*
+       The result should be a valid JSON e.g. `["app1", "app2", "app3"]`.
+       However, if Nx or Node prints a warning, then only the last line should be parsed.
+
+       e.g.
+       ```
+       (node:38133) [DEP0000] DeprecationWarning: Blah blah blah
+       (Use `node --trace-deprecation ...` to show where the warning was created)
+       ["app1", "app2", "app3"]
+       ```
+     */
+    return JSON.parse(result.split('\n').at(-1));
+  } else {
+    // For Nx < 19, print affected graph to disk and read the affected projects back.
+    // This avoids potential warnings logged to terminal by Nx or Node that will mess up JSON parsing.
+    try {
+      execSync(
+        `npx nx affected:graph --base=${baseSha} --head=${headSha} --file=${graphJsonPath}${
+          isVerbose ? ' --verbose' : ''
+        }`,
+        {
+          cwd: root,
+        }
+      );
+    } catch (e: any) {
+      if (e.stdout) console.error(e.stdout.toString());
+      if (e.stderr) console.error(e.stderr.toString());
+      exitWithoutBuild(
+        `🛑 - Build cancelled due to the error above. You may need to use --additional-packages option if using Nx plugins to infer targets e.g. Project Crystal. (Hint: commit with "[nx deploy]" to force deployment if necessary)`
+      );
+    }
+    return JSON.parse(readFileSync(graphJsonPath).toString()).affectedProjects;
+  }
+}
+
 async function main() {
   const commitMessage = execSync(`git log -1 --pretty='%B'`).toString();
 
@@ -103,31 +151,7 @@ async function main() {
 
   logDebug(`\n≫ Comparing ${baseSha}...${headSha}\n`);
 
-  const graphJsonPath = join(tmpdir(), '.nx-affected-graph.json');
-  try {
-    const majorVersion = parseInt(nxVersion.match(/^(\d+)\./)?.[1] ?? '0');
-    const cmd =
-      majorVersion >= 19
-        ? `npx nx graph --affected --base=${baseSha} --head=${headSha} --file=${graphJsonPath}${
-            isVerbose ? ' --verbose' : ''
-          }`
-        : `npx nx affected:graph --base=${baseSha} --head=${headSha} --file=${graphJsonPath}${
-            isVerbose ? ' --verbose' : ''
-          }`;
-    execSync(cmd, {
-      cwd: root,
-    });
-  } catch (e: any) {
-    if (e.stdout) console.error(e.stdout.toString());
-    if (e.stderr) console.error(e.stderr.toString());
-    exitWithoutBuild(
-      `🛑 - Build cancelled due to the error above. You may need to use --additional-packages option if using Nx plugins to infer targets e.g. Project Crystal. (Hint: commit with "[nx deploy]" to force deployment if necessary)`
-    );
-  }
-  const projects = JSON.parse(
-    readFileSync(graphJsonPath).toString()
-  ).affectedProjects;
-
+  const projects = getAffectedProjects(nxVersion, root);
   logDebug(`≫ Affected projects:\n  - ${projects.join('\n  - ')}\n`);
 
   // Clean up temporary node_modules that we installed Nx to.
