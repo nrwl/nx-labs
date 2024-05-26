@@ -1,0 +1,9 @@
+{
+  "executors": {
+    "test": {
+      "implementation": "./src/executors/test/executor",
+      "schema": "./src/executors/test/schema.json",
+      "description": "Test with Bun test"
+    }
+  }
+}
