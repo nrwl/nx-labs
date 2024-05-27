@@ -66,11 +66,16 @@ function getAffectedProjects(nxVersion: string, root: string): string[] {
   if (majorVersion >= 19) {
     // For Nx 19+ the `affected:graph` command no longer works, thus we should read in the JSON
     // output of `show projects --affected -json`.
-    const result = execSync(`npx nx show projects --affected --json`, {
-      cwd: root,
-    })
+    const result = execSync(
+      `npx nx show projects --affected --json --base=${baseSha} --head=${headSha}`,
+      {
+        cwd: root,
+      }
+    )
       .toString()
       .trim();
+
+    logDebug(`Affected result: ${result}`);
     /*
        The result should be a valid JSON e.g. `["app1", "app2", "app3"]`.
        However, if Nx or Node prints a warning, then only the last line should be parsed.
