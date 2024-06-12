@@ -1,0 +1,13 @@
+{
+  "name": "@nx/bun",
+  "version": "0.0.1",
+  "dependencies": {
+    "@nx/js": "~19.1.0",
+    "@nx/devkit": "~19.1.0",
+    "tslib": "^2.3.0"
+  },
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "executors": "./executors.json"
+}

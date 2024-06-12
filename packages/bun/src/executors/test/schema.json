@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "Test executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "bail": {
+      "description": "abort the test run early after a pre-determined number of test failures. By default Bun will run all tests and report all failures, but sometimes in CI environments it's preferable to terminate earlier to reduce CPU usage.",
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "default": true
+    },
+    "watch": {
+      "type": "boolean",
+      "description": "to watch for changes and re-run tests."
+    },
+    "preload": {
+      "type": "string",
+      "description": "Bun test lifecycle hooks in separate files"
+    },
+    "timeout": {
+      "description": "specify a per-test timeout in milliseconds. If a test times out, it will be marked as failed. The default value is 5000.",
+      "type": "number",
+      "default": 5000
+    },
+    "rerun-each": {
+      "type": "number",
+      "description": "run each test multiple times. This is useful for detecting flaky or non-deterministic test failures."
+    },
+    "update-snapshots": {
+      "type": "boolean",
+      "description": "Update Bun snapshots.",
+      "default": false
+    },
+    "smol": {
+      "type": "boolean",
+      "description": "In memory-constrained environments, use the smol flag to reduce memory usage at a cost to performance.",
+      "default": false
+    },
+    "config": {
+      "type": "string",
+      "description": "Config file to load bun from (e.g. -c bunfig.toml"
+    },
+    "bun": {
+      "type": "boolean",
+      "description": "Force a script or package to use Bun.js instead of Node.js (via symlinking node)",
+      "default": false
+    },
+    "tsConfig": {
+      "type": "string",
+      "description": "Load tsconfig from path instead of cwd/tsconfig.json"
+    }
+  },
+  "required": []
+}
