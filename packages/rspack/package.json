@@ -32,6 +32,10 @@
     "@rspack/plugin-react-refresh": "^0.7.5",
     "@rspack/plugin-minify": "^0.7.5"
   },
+  "peerDependencies": {
+    "@module-federation/enhanced": "~0.6.0",
+    "@module-federation/node": "~2.5.10"
+  },
   "nx-migrations": {
     "migrations": "./migrations.json"
   }

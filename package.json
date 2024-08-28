@@ -24,6 +24,8 @@
   },
   "packageManager": "yarn@1.22.19",
   "devDependencies": {
+    "@module-federation/enhanced": "~0.6.0",
+    "@module-federation/node": "~2.5.10",
     "@nx/cypress": "19.5.7",
     "@nx/detox": "19.5.7",
     "@nx/devkit": "19.5.7",
