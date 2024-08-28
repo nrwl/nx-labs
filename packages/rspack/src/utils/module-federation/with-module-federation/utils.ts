@@ -120,12 +120,10 @@ export async function getModuleFederationConfig(
   let mappedRemotes = {};
 
   if (mfConfig.remotes && mfConfig.remotes.length > 0) {
-    const isLibraryTypeVar = mfConfig.library?.type === 'var';
     mappedRemotes = mapRemotesFunction(
       mfConfig.remotes,
       'js',
-      determineRemoteUrlFunction,
-      isLibraryTypeVar
+      determineRemoteUrlFunction
     );
   }
 

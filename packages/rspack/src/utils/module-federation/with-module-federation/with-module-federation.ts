@@ -1,6 +1,8 @@
 import { ModuleFederationPlugin } from '@module-federation/enhanced/rspack';
 import type { Configuration } from '@rspack/core';
 import { DefinePlugin } from '@rspack/core';
+import { join } from 'path';
+import { SharedConfigContext } from '../../model';
 import {
   ModuleFederationConfig,
   NxModuleFederationConfigOverride,
@@ -28,7 +30,14 @@ export async function withModuleFederation(
     await getModuleFederationConfig(options);
   const isGlobal = isVarOrWindow(options.library?.type);
 
-  return function makeConfig(config: Configuration): Configuration {
+  return function makeConfig(
+    config: Configuration,
+    { context }: SharedConfigContext
+  ): Configuration {
+    config.context = join(
+      context.root,
+      context.projectGraph.nodes[context.projectName].data.root
+    );
     config.output.uniqueName = options.name;
     config.output.publicPath = 'auto';
 
@@ -49,15 +58,9 @@ export async function withModuleFederation(
       config.optimization.runtimeChunk = 'single';
     }
 
-    config.experiments = {
-      ...config.experiments,
-      outputModule: !isGlobal,
-    };
-
     config.plugins.push(
       new ModuleFederationPlugin({
         name: options.name,
-        library: options.library ?? { type: 'module' },
         filename: 'remoteEntry.js',
         exposes: options.exposes,
         remotes: mappedRemotes,

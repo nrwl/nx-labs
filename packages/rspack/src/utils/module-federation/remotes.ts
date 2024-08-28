@@ -1,5 +1,5 @@
-import { Remotes } from './models';
 import { extname } from 'path';
+import { Remotes } from './models';
 
 /**
  * Map remote names to a format that can be understood and used by Module
@@ -12,24 +12,15 @@ import { extname } from 'path';
 export function mapRemotes(
   remotes: Remotes,
   remoteEntryExt: 'js' | 'mjs',
-  determineRemoteUrl: (remote: string) => string,
-  isRemoteGlobal = false
+  determineRemoteUrl: (remote: string) => string
 ): Record<string, string> {
   const mappedRemotes = {};
 
   for (const remote of remotes) {
     if (Array.isArray(remote)) {
-      mappedRemotes[remote[0]] = handleArrayRemote(
-        remote,
-        remoteEntryExt,
-        isRemoteGlobal
-      );
+      mappedRemotes[remote[0]] = handleArrayRemote(remote, remoteEntryExt);
     } else if (typeof remote === 'string') {
-      mappedRemotes[remote] = handleStringRemote(
-        remote,
-        determineRemoteUrl,
-        isRemoteGlobal
-      );
+      mappedRemotes[remote] = handleStringRemote(remote, determineRemoteUrl);
     }
   }
 
@@ -39,8 +30,7 @@ export function mapRemotes(
 // Helper function to deal with remotes that are arrays
 function handleArrayRemote(
   remote: [string, string],
-  remoteEntryExt: 'js' | 'mjs',
-  isRemoteGlobal: boolean
+  remoteEntryExt: 'js' | 'mjs'
 ): string {
   const [remoteName, remoteLocation] = remote;
   const remoteLocationExt = extname(remoteLocation);
@@ -54,9 +44,7 @@ function handleArrayRemote(
     ? remoteLocation.slice(0, -1)
     : remoteLocation;
 
-  const globalPrefix = isRemoteGlobal
-    ? `${remoteName.replace(/-/g, '_')}@`
-    : '';
+  const globalPrefix = `${remoteName.replace(/-/g, '_')}@`;
 
   // if the remote is defined with anything other than http then we assume it's a promise based remote
   // In that case we should use what the user provides as the remote location
@@ -70,10 +58,9 @@ function handleArrayRemote(
 // Helper function to deal with remotes that are strings
 function handleStringRemote(
   remote: string,
-  determineRemoteUrl: (remote: string) => string,
-  isRemoteGlobal: boolean
+  determineRemoteUrl: (remote: string) => string
 ): string {
-  const globalPrefix = isRemoteGlobal ? `${remote.replace(/-/g, '_')}@` : '';
+  const globalPrefix = `${remote.replace(/-/g, '_')}@`;
 
   return `${globalPrefix}${determineRemoteUrl(remote)}`;
 }

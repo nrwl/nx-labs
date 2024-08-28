@@ -1,6 +1,6 @@
 import { logger, type ProjectGraph } from '@nx/devkit';
 import { registerTsProject } from '@nx/js/src/internal';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import { existsSync, readFileSync } from 'fs';
 import { findMatchingProjects } from 'nx/src/utils/find-matching-projects';
 import { join } from 'path';

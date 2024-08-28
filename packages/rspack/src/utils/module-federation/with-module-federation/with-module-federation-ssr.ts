@@ -1,4 +1,6 @@
 import { DefinePlugin } from '@rspack/core';
+import { join } from 'path';
+import { SharedConfigContext } from '../../model';
 import {
   ModuleFederationConfig,
   NxModuleFederationConfigOverride,
@@ -18,7 +20,11 @@ export async function withModuleFederationForSSR(
       isServer: true,
     });
 
-  return (config) => {
+  return (config, { context }: SharedConfigContext) => {
+    config.context = join(
+      context.root,
+      context.projectGraph.nodes[context.projectName].data.root
+    );
     config.target = false;
     config.output.uniqueName = options.name;
     config.optimization = {
