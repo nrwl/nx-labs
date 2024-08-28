@@ -1,11 +1,18 @@
 import { ExecutorContext } from '@nx/devkit';
-import { Compiler, MultiCompiler, rspack } from '@rspack/core';
+import {
+  Compiler,
+  type Configuration,
+  MultiCompiler,
+  rspack,
+} from '@rspack/core';
 import * as path from 'path';
 import { RspackExecutorSchema } from '../executors/rspack/schema';
 import { resolveUserDefinedRspackConfig } from './resolve-user-defined-rspack-config';
 
 export async function createCompiler(
-  options: RspackExecutorSchema,
+  options: RspackExecutorSchema & {
+    devServer?: any;
+  },
   context: ExecutorContext
 ): Promise<Compiler | MultiCompiler> {
   const pathToConfig = path.join(context.root, options.rspackConfig);
@@ -23,11 +30,15 @@ export async function createCompiler(
     userDefinedConfig = await userDefinedConfig;
   }
 
-  let config = {};
+  let config: Configuration = {};
   if (typeof userDefinedConfig === 'function') {
-    config = await userDefinedConfig({}, { options, context });
+    config = await userDefinedConfig(
+      { devServer: options.devServer },
+      { options, context }
+    );
   } else {
     config = userDefinedConfig;
+    config.devServer ??= options.devServer;
   }
 
   return rspack(config);

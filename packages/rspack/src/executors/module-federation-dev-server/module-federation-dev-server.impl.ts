@@ -43,12 +43,6 @@ type ModuleFederationDevServerOptions = DevServerExecutorSchema & {
   parallel?: number;
   staticRemotesPort?: number;
   pathToManifestFile?: string;
-
-  // Dev Server Specific Options
-  host?: string;
-  ssl?: boolean;
-  sslKey?: string;
-  sslCert?: string;
 };
 
 function getBuildOptions(buildTarget: string, context: ExecutorContext) {

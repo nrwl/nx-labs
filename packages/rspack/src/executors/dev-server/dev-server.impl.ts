@@ -8,6 +8,7 @@ import { Configuration } from '@rspack/core';
 import { RspackDevServer } from '@rspack/dev-server';
 import { createCompiler, isMultiCompiler } from '../../utils/create-compiler';
 import { isMode } from '../../utils/mode-utils';
+import { getDevServerOptions } from './lib/get-dev-server-config';
 import { DevServerExecutorSchema } from './schema';
 
 type DevServer = Configuration['devServer'];
@@ -26,12 +27,14 @@ export default async function* runExecutor(
     context.projectGraph
   );
 
-  let devServerConfig: DevServer = {
-    port: options.port ?? 4200,
-    hot: true,
-  };
-
   const buildOptions = readTargetOptions<any>(buildTarget, context);
+
+  let devServerConfig: DevServer = getDevServerOptions(
+    context.root,
+    options,
+    buildOptions
+  );
+
   const compiler = await createCompiler(
     { ...buildOptions, devServer: devServerConfig, mode: options.mode },
     context

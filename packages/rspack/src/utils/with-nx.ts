@@ -59,12 +59,14 @@ export function withNx(_opts = {}) {
       );
     }
 
-    plugins.push(new rspack.CopyRspackPlugin({
-      patterns: getCopyPatterns(
-        normalizeAssets(options.assets, context.root, sourceRoot)
-      ),
-    }));
-    plugins.push(new rspack.ProgressPlugin())
+    plugins.push(
+      new rspack.CopyRspackPlugin({
+        patterns: getCopyPatterns(
+          normalizeAssets(options.assets, context.root, sourceRoot)
+        ),
+      })
+    );
+    plugins.push(new rspack.ProgressPlugin());
 
     options.fileReplacements.forEach((item) => {
       alias[item.replace] = item.with;
@@ -126,8 +128,9 @@ export function withNx(_opts = {}) {
             : '[name][ext]',
       },
       devServer: {
-        port: 4200,
-        hot: true,
+        ...(config.devServer ?? {}),
+        port: config.devServer?.port ?? 4200,
+        hot: config.devServer?.hot ?? true,
       } as any,
       module: {
         rules: [
@@ -153,18 +156,18 @@ export function withNx(_opts = {}) {
               jsc: {
                 parser: {
                   syntax: 'typescript',
-                  decorators: true
+                  decorators: true,
                 },
                 transform: {
                   legacyDecorator: true,
-                  decoratorMetadata: true
+                  decoratorMetadata: true,
                 },
                 externalHelpers: true,
               },
             },
             type: 'javascript/auto',
           },
-        ]
+        ],
       },
       plugins: plugins,
       resolve: {
@@ -173,7 +176,7 @@ export function withNx(_opts = {}) {
         // once I can reproduce a small example repo with rspack only.
         alias,
         // We need to define the extensions that rspack can resolve
-        extensions: ["...", ".ts", ".tsx", ".jsx"]
+        extensions: ['...', '.ts', '.tsx', '.jsx'],
         // tsConfigPath: path.join(context.root, options.tsConfig),
       },
       infrastructureLogging: {
