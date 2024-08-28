@@ -27,7 +27,7 @@ export default async function* runExecutor(
     context.projectGraph
   );
 
-  const buildOptions = readTargetOptions<any>(buildTarget, context);
+  const buildOptions = readTargetOptions(buildTarget, context);
 
   let devServerConfig: DevServer = getDevServerOptions(
     context.root,
@@ -52,10 +52,10 @@ export default async function* runExecutor(
   };
 
   return yield* createAsyncIterable(({ next }) => {
-    const server: any = new RspackDevServer(
+    const server = new RspackDevServer(
       {
         ...devServerConfig,
-        onListening: (server: any) => {
+        onListening: () => {
           next({
             success: true,
             baseUrl: `http://localhost:${options.port ?? 4200}`,

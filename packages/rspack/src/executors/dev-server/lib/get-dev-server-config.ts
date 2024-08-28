@@ -1,7 +1,7 @@
 import { logger } from '@nx/devkit';
+import type { Configuration as RspackDevServerConfiguration } from '@rspack/dev-server';
 import { readFileSync } from 'fs';
 import * as path from 'path';
-import type { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
 import { RspackExecutorSchema } from '../../rspack/schema';
 import { DevServerExecutorSchema } from '../schema';
 import { buildServePath } from './serve-path';
@@ -10,7 +10,7 @@ export function getDevServerOptions(
   root: string,
   serveOptions: DevServerExecutorSchema,
   buildOptions: RspackExecutorSchema
-): WebpackDevServerConfiguration {
+): RspackDevServerConfiguration {
   const servePath = buildServePath(buildOptions);
 
   let scriptsOptimization: boolean;
@@ -24,7 +24,7 @@ export function getDevServerOptions(
     scriptsOptimization = stylesOptimization = false;
   }
 
-  const config: WebpackDevServerConfiguration = {
+  const config: RspackDevServerConfiguration = {
     host: serveOptions.host,
     port: serveOptions.port,
     headers: { 'Access-Control-Allow-Origin': '*' },
@@ -35,9 +35,10 @@ export function getDevServerOptions(
       disableDotRule: true,
       htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
     },
-    onListening(server: any) {
+    onListening(server) {
       const isHttps =
-        server.options.https || server.options.server?.type === 'https';
+        server.options.https ||
+        (server.options.server as { type: string })?.type === 'https';
       logger.info(
         `NX Web Development Server is listening at ${
           isHttps ? 'https' : 'http'

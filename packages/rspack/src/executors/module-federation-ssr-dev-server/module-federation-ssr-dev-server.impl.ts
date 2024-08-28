@@ -254,7 +254,7 @@ export default async function* moduleFederationSsrDevServer(
   const options = normalizeOptions(ssrDevServerOptions);
   // Force Node to resolve to look for the nx binary that is inside node_modules
   const nxBin = require.resolve('nx/bin/nx');
-  const iter: any = ssrDevServerExecutor(options, context);
+  const iter = ssrDevServerExecutor(options, context);
   const projectConfig =
     context.projectsConfigurations.projects[context.projectName];
   const buildOptions = getBuildOptions(options.browserTarget, context);

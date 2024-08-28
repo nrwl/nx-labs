@@ -1,9 +1,9 @@
+import { joinPathFragments, readJsonFile, workspaceRoot } from '@nx/devkit';
+import { existsSync, lstatSync, readdirSync } from 'fs';
+import { PackageJson, readModulePackageJson } from 'nx/src/utils/package-json';
+import { dirname, join, relative } from 'path';
 import type { WorkspaceLibrary } from './models';
 import { WorkspaceLibrarySecondaryEntryPoint } from './models';
-import { dirname, join, relative } from 'path';
-import { existsSync, lstatSync, readdirSync } from 'fs';
-import { readJsonFile, joinPathFragments, workspaceRoot } from '@nx/devkit';
-import { PackageJson, readModulePackageJson } from 'nx/src/utils/package-json';
 
 export function collectWorkspaceLibrarySecondaryEntryPoints(
   library: WorkspaceLibrary,
@@ -79,7 +79,9 @@ export function recursivelyCollectSecondaryEntryPointsFromDirectory(
         if (name === entryPointName) {
           collectedPackages.push({ name, version: pkgVersion });
         }
-      } catch {}
+      } catch {
+        // do nothing
+      }
     } else if (mainEntryPointExports) {
       // if the package.json doesn't exist, check if the directory is
       // exported by the main entry point

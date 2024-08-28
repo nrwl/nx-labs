@@ -317,6 +317,6 @@ function getEmptySharedLibrariesConfig() {
     getAliases: () => ({}),
     getLibraries: () => ({}),
     getReplacementPlugin: () =>
-      new NormalModuleReplacementPlugin(/./, () => {}),
+      new NormalModuleReplacementPlugin(/./, () => undefined),
   };
 }

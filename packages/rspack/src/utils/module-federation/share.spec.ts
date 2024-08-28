@@ -84,7 +84,7 @@ describe('MF Share Utils', () => {
 
     it('should handle path mappings with wildcards correctly in non-buildable libraries', () => {
       // ARRANGE
-      jest.spyOn(fs, 'existsSync').mockImplementation((file: string) => true);
+      jest.spyOn(fs, 'existsSync').mockImplementation(() => true);
       jest.spyOn(tsUtils, 'readTsPathMappings').mockReturnValue({
         '@myorg/shared': ['/libs/shared/src/index.ts'],
         '@myorg/shared/*': ['/libs/shared/src/lib/*'],
