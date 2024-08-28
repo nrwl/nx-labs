@@ -1,7 +1,6 @@
 import { ModuleFederationPlugin } from '@module-federation/enhanced/rspack';
 import type { Configuration } from '@rspack/core';
 import { DefinePlugin } from '@rspack/core';
-import { join } from 'path';
 import { SharedConfigContext } from '../../model';
 import {
   ModuleFederationConfig,
@@ -34,10 +33,6 @@ export async function withModuleFederation(
     config: Configuration,
     { context }: SharedConfigContext
   ): Configuration {
-    config.context = join(
-      context.root,
-      context.projectGraph.nodes[context.projectName].data.root
-    );
     config.output.uniqueName = options.name;
     config.output.publicPath = 'auto';
 
@@ -88,6 +83,7 @@ export async function withModuleFederation(
                 ),
               ]
             : configOverride?.runtimePlugins,
+        virtualRuntimeEntry: true,
       }),
       sharedLibraries.getReplacementPlugin()
     );

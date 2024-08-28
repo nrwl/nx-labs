@@ -1,5 +1,4 @@
 import { DefinePlugin } from '@rspack/core';
-import { join } from 'path';
 import { SharedConfigContext } from '../../model';
 import {
   ModuleFederationConfig,
@@ -21,11 +20,7 @@ export async function withModuleFederationForSSR(
     });
 
   return (config, { context }: SharedConfigContext) => {
-    config.context = join(
-      context.root,
-      context.projectGraph.nodes[context.projectName].data.root
-    );
-    config.target = false;
+    config.target = 'async-node';
     config.output.uniqueName = options.name;
     config.optimization = {
       ...(config.optimization ?? {}),
@@ -34,7 +29,7 @@ export async function withModuleFederationForSSR(
 
     config.plugins.push(
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      new (require('@module-federation/node').UniversalFederationPlugin)(
+      new (require('@module-federation/enhanced/rspack').ModuleFederationPlugin)(
         {
           name: options.name,
           filename: 'remoteEntry.js',
@@ -42,9 +37,6 @@ export async function withModuleFederationForSSR(
           remotes: mappedRemotes,
           shared: {
             ...sharedDependencies,
-          },
-          library: {
-            type: 'commonjs-module',
           },
           isServer: true,
           /**
@@ -56,11 +48,16 @@ export async function withModuleFederationForSSR(
             !options.disableNxRuntimeLibraryControlPlugin
               ? [
                   ...(configOverride?.runtimePlugins ?? []),
+                  require.resolve('@module-federation/node/runtimePlugin'),
                   require.resolve(
                     '@nx/rspack/src/utils/module-federation/plugins/runtime-library-control.plugin.js'
                   ),
                 ]
-              : configOverride?.runtimePlugins,
+              : [
+                  ...(configOverride?.runtimePlugins ?? []),
+                  require.resolve('@module-federation/node/runtimePlugin'),
+                ],
+          virtualRuntimeEntry: true,
         },
         {}
       ),

@@ -7,6 +7,7 @@ import {
 } from '@rspack/core';
 import { LicenseWebpackPlugin } from 'license-webpack-plugin';
 import * as path from 'path';
+import { join } from 'path';
 import { GeneratePackageJsonPlugin } from '../plugins/generate-package-json-plugin';
 import { getCopyPatterns } from './get-copy-patterns';
 import { SharedConfigContext } from './model';
@@ -91,18 +92,17 @@ export function withNx(_opts = {}) {
       ...config,
       target: options.target,
       mode: options.mode,
-      context: context.root,
+      entry: {},
+      context: join(
+        context.root,
+        context.projectGraph.nodes[context.projectName].data.root
+      ),
       devtool:
         options.sourceMap === 'hidden'
           ? ('hidden-source-map' as const)
           : options.sourceMap
           ? ('source-map' as const)
           : (false as const),
-      entry: {
-        main: {
-          import: [path.join(context.root, options.main)],
-        },
-      },
       output: {
         path: path.join(context.root, options.outputPath),
         publicPath: '/',
@@ -189,6 +189,13 @@ export function withNx(_opts = {}) {
         preset: 'normal',
       },
     };
+
+    const mainEntry = options.main
+      ? options.outputFileName
+        ? path.parse(options.outputFileName).name
+        : 'main'
+      : 'main';
+    updated.entry[mainEntry] = path.resolve(context.root, options.main);
 
     return updated;
   };
