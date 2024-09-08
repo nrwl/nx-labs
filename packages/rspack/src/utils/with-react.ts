@@ -1,8 +1,10 @@
 import { Configuration } from '@rspack/core';
 import { SharedConfigContext } from './model';
-import { withWeb } from './with-web';
+import { withWeb, WithWebOptions } from './with-web';
 
-export function withReact(opts = {}) {
+export type WithReactOptions = Omit<WithWebOptions, 'cssModules'>;
+
+export function withReact(opts:WithWebOptions = {}) {
   return function makeConfig(
     config: Configuration,
     { options, context }: SharedConfigContext

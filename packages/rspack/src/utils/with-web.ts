@@ -7,6 +7,7 @@ export interface WithWebOptions {
     includePaths?: string[];
   };
   cssModules?: boolean;
+  htmlPlugins?: false | Configuration['plugins'];
 }
 
 export function withWeb(opts: WithWebOptions = {}) {
@@ -51,9 +52,11 @@ export function withWeb(opts: WithWebOptions = {}) {
           {
             test: /\.css$/,
             type: 'css',
-            use: [{
-              loader: require.resolve('postcss-loader'),
-            }]
+            use: [
+              {
+                loader: require.resolve('postcss-loader'),
+              },
+            ],
           },
           {
             test: /\.scss$|\.sass$/,
@@ -107,14 +110,24 @@ export function withWeb(opts: WithWebOptions = {}) {
       },
       plugins: [
         ...config.plugins,
-        new rspack.HtmlRspackPlugin({
-          template: options.indexHtml
-            ? path.join(context.root, options.indexHtml)
-            : path.join(projectRoot, 'src/index.html'),
-        }),
+        ...(() => {
+          if (opts.htmlPlugins === false) {
+            return [];
+          }
+          if (opts.htmlPlugins) {
+            return opts.htmlPlugins;
+          }
+          return [
+            new rspack.HtmlRspackPlugin({
+              template: options.indexHtml
+                ? path.join(context.root, options.indexHtml)
+                : path.join(projectRoot, 'src/index.html'),
+            }),
+          ];
+        })(),
         new rspack.DefinePlugin({
           'process.env.NODE_ENV': isProd ? "'production'" : "'development'",
-        })
+        }),
       ],
     };
   };
