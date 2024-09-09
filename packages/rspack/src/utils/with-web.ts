@@ -41,6 +41,9 @@ export function withWeb(opts: WithWebOptions = {}) {
 
     return {
       ...config,
+      experiments: {
+        css: true,
+      },
       module: {
         ...config.module,
         rules: [
