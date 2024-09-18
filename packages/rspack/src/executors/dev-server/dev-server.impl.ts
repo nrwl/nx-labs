@@ -49,7 +49,6 @@ export default async function* runExecutor(
   devServerConfig = {
     ...devServerConfig,
     ...firstCompiler.options.devServer,
-    port: devServerConfig.port,
   };
 
   const baseUrl = `http://localhost:${options.port ?? 4200}`;
