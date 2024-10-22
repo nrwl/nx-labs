@@ -15,8 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nx/nx-ignore": ["packages/nx-ignore/src/index.ts"],
-      "@nx/rspack": ["packages/rspack/src/index.ts"]
+      "@nx/nx-ignore": ["packages/nx-ignore/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
