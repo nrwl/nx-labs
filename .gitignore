@@ -42,3 +42,6 @@ Thumbs.db
 ./migrations.json
 .nx/workspace-data
 .nx/cache
+
+vite.config.*.timestamp*
+vitest.config.*.timestamp*
