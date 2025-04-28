@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@nx/composer": ["packages/composer/src/index.ts"],
       "@nx/nx-ignore": ["packages/nx-ignore/src/index.ts"]
     }
   },
