@@ -1,13 +1,12 @@
 import { execSync } from 'child_process';
-import { mkdirSync, rmSync } from 'fs';
-import { dirname, join } from 'path';
+import { cleanupTestProject, createTestProject, getNxVersion } from './utils';
 
 describe('composer', () => {
   let projectDirectory: string;
 
   beforeAll(() => {
-    projectDirectory = createTestProject();
-
+    const nxVersion = getNxVersion();
+    projectDirectory = createTestProject(nxVersion);
     // The plugin has been built and published to a local registry in the jest globalSetup
     // Install the plugin built with the latest source code into the test repo
     execSync(`yarn add -D -W @nx/composer@e2e`, {
@@ -18,13 +17,7 @@ describe('composer', () => {
   });
 
   afterAll(() => {
-    if (projectDirectory) {
-      // Cleanup the test project
-      rmSync(projectDirectory, {
-        recursive: true,
-        force: true,
-      });
-    }
+    cleanupTestProject(projectDirectory);
   });
 
   it('should be installed', () => {
@@ -35,33 +28,3 @@ describe('composer', () => {
     });
   });
 });
-
-/**
- * Creates a test project with create-nx-workspace and installs the plugin
- * @returns The directory where the test project was created
- */
-function createTestProject() {
-  const projectName = 'test-project';
-  const projectDirectory = join(process.cwd(), 'tmp', projectName);
-
-  // Ensure projectDirectory is empty
-  rmSync(projectDirectory, {
-    recursive: true,
-    force: true,
-  });
-  mkdirSync(dirname(projectDirectory), {
-    recursive: true,
-  });
-
-  execSync(
-    `npx create-nx-workspace@latest ${projectName} --preset apps --nxCloud=skip --no-interactive`,
-    {
-      cwd: dirname(projectDirectory),
-      stdio: 'inherit',
-      env: process.env,
-    }
-  );
-  console.log(`Created test project in "${projectDirectory}"`);
-
-  return projectDirectory;
-}
