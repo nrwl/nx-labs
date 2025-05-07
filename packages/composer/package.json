@@ -5,6 +5,8 @@
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
   "dependencies": {
+    "@nx/devkit": "21.0.0",
     "tslib": "^2.3.0"
-  }
+  },
+  "generators": "./generators.json"
 }
