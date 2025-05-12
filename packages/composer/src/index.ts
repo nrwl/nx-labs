@@ -14,8 +14,10 @@ import { calculateHashForCreateNodes } from '@nx/devkit/src/utils/calculate-hash
 import { hashObject } from 'nx/src/hasher/file-hasher';
 import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ComposerPluginOptions {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface NormalizedOptions {}
 
 type ComposerTargets = Pick<ProjectConfiguration, 'targets' | 'metadata'>;
