@@ -5,6 +5,7 @@ import {
   type CreateNodesV2,
   type ProjectConfiguration,
   readJsonFile,
+  type TargetConfiguration,
   writeJsonFile,
 } from '@nx/devkit';
 import { calculateHashForCreateNodes } from '@nx/devkit/src/utils/calculate-hash-for-create-nodes';
@@ -24,6 +25,11 @@ export interface ComposerJson {
   'autoload-dev'?: Record<string, unknown>;
   scripts?: Record<string, string | string[]>;
   'scripts-descriptions'?: Record<string, string>;
+  extra?: {
+    nx?: {
+      targets?: Record<string, TargetConfiguration>;
+    };
+  };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -138,6 +144,17 @@ async function buildTargets(
           technologies: ['composer'],
           description: composerJson['scripts-descriptions']?.[name],
         },
+      };
+    }
+  }
+
+  if (composerJson.extra?.nx?.targets) {
+    for (const [name, config] of Object.entries(
+      composerJson.extra.nx.targets
+    )) {
+      result.targets[name] = {
+        ...result.targets[name],
+        ...config,
       };
     }
   }

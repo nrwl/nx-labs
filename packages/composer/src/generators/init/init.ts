@@ -26,7 +26,7 @@ export async function initGenerator(tree: Tree, options: InitGeneratorSchema) {
     );
   }
 
-  if (!options.skipPackageJson) {
+  if (!options.skipPackageJson && tree.exists('package.json')) {
     tasks.push(
       addDependenciesToPackageJson(
         tree,
