@@ -9,7 +9,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "packages/composer-e2e/jest.config.ts",
+        "jestConfig": "e2e/composer-e2e/jest.config.ts",
         "runInBand": true
       },
       "dependsOn": ["^build"]
