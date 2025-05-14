@@ -1,5 +1,11 @@
 {
   "generators": {
+    "init": {
+      "factory": "./src/generators/init/init",
+      "schema": "./src/generators/init/schema.json",
+      "description": "Initializes Composer in the current workspace",
+      "hidden": true
+    },
     "library": {
       "factory": "./src/generators/library/library",
       "schema": "./src/generators/library/schema.json",

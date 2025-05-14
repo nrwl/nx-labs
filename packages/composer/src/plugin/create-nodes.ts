@@ -1,21 +1,33 @@
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-
 import {
-  CreateNodesContext,
+  type CreateNodesContext,
   createNodesFromFiles,
-  CreateNodesV2,
-  ProjectConfiguration,
+  type CreateNodesFunction,
+  type CreateNodesV2,
+  type ProjectConfiguration,
   readJsonFile,
   writeJsonFile,
 } from '@nx/devkit';
 import { calculateHashForCreateNodes } from '@nx/devkit/src/utils/calculate-hash-for-create-nodes';
+import { existsSync, readdirSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 
 import { hashObject } from 'nx/src/hasher/file-hasher';
 import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
 
+export interface ComposerJson {
+  name: string;
+  description?: string;
+  type?: string;
+  require?: Record<string, string>;
+  'require-dev'?: Record<string, string>;
+  autoload?: Record<string, unknown>;
+  'autoload-dev'?: Record<string, unknown>;
+  scripts?: Record<string, string | string[]>;
+  'scripts-descriptions'?: Record<string, string>;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface ComposerPluginOptions {}
+export interface ComposerPluginOptions {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface NormalizedOptions {}
@@ -45,8 +57,7 @@ export const createNodesV2: CreateNodesV2<ComposerPluginOptions> = [
     const targetsCache = readTargetsCache(cachePath);
     try {
       return await createNodesFromFiles(
-        (configFile, options, context) =>
-          createNodesInternal(configFile, options ?? {}, context, targetsCache),
+        makeCreateNodesFromComposerJson(targetsCache),
         configFilePaths,
         options,
         context
@@ -57,62 +68,81 @@ export const createNodesV2: CreateNodesV2<ComposerPluginOptions> = [
   },
 ];
 
-async function createNodesInternal(
-  configFilePath: string,
-  options: ComposerPluginOptions,
-  context: CreateNodesContext,
+function makeCreateNodesFromComposerJson(
   targetsCache: Record<string, ComposerTargets>
-) {
-  const projectRoot = dirname(configFilePath);
+): CreateNodesFunction {
+  return async (
+    configFilePath: string,
+    options: ComposerPluginOptions,
+    context: CreateNodesContext
+  ) => {
+    const projectRoot = dirname(configFilePath);
 
-  const siblingFiles = readdirSync(join(context.workspaceRoot, projectRoot));
-  if (!siblingFiles.includes('composer.json')) {
-    return {};
-  }
+    const siblingFiles = readdirSync(join(context.workspaceRoot, projectRoot));
+    if (!siblingFiles.includes('composer.json')) {
+      return {};
+    }
 
-  const normalizedOptions = normalizeOptions(options);
-  const composerJson = JSON.parse(
-    readFileSync(
+    const normalizedOptions = normalizeOptions(options);
+    const composerJson = readJsonFile<ComposerJson>(
       join(context.workspaceRoot, projectRoot, 'composer.json')
-    ).toString()
-  );
-  const hash = await calculateHashForCreateNodes(
-    projectRoot,
-    normalizedOptions,
-    context,
-    ['composer.json']
-  );
+    );
+    const hash = await calculateHashForCreateNodes(
+      projectRoot,
+      normalizedOptions,
+      context,
+      ['composer.json', 'composer.lock']
+    );
 
-  targetsCache[hash] ??= await buildTargets(
-    configFilePath,
-    projectRoot,
-    normalizedOptions,
-    context
-  );
-  const { targets, metadata } = targetsCache[hash];
+    targetsCache[hash] ??= await buildTargets(
+      composerJson,
+      projectRoot,
+      normalizedOptions,
+      context
+    );
+    const { targets, metadata } = targetsCache[hash];
 
-  return {
-    projects: {
-      [projectRoot]: {
-        name: composerJson.name,
-        root: projectRoot,
-        targets,
-        metadata,
+    return {
+      projects: {
+        [projectRoot]: {
+          name: composerJson.name,
+          root: projectRoot,
+          targets,
+          metadata,
+        },
       },
-    },
+    };
   };
 }
 
 async function buildTargets(
-  configFilePath: string,
+  composerJson: ComposerJson,
   projectRoot: string,
   options: NormalizedOptions,
   context: CreateNodesContext
 ): Promise<ComposerTargets> {
-  return {
+  const result: ComposerTargets = {
     targets: {},
     metadata: {},
   };
+
+  if (composerJson.scripts) {
+    for (const [name, commands] of Object.entries(composerJson.scripts)) {
+      result.targets[name] = {
+        executor: 'nx:run-commands',
+        options: {
+          command: commands,
+          cwd: projectRoot,
+        },
+        metadata: {
+          technologies: ['composer'],
+          description: composerJson['scripts-descriptions']?.[name],
+        },
+      };
+    }
+  }
+
+  return result;
 }
 
 function normalizeOptions(options: ComposerPluginOptions): NormalizedOptions {
