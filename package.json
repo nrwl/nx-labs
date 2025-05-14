@@ -77,5 +77,8 @@
     "tslib": "^2.3.0",
     "typescript": "5.7.3",
     "verdaccio": "6.1.2"
+  },
+  "nx": {
+    "includedScripts": []
   }
 }

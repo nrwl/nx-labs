@@ -54,8 +54,13 @@
   "nxCloudAccessToken": "MDRmYzUxMmYtNTQwZi00MjZkLTg0ZTYtMzc5Y2RhOTE4YTc2fHJlYWQtd3JpdGU=",
   "defaultBase": "main",
   "release": {
+    "projects": ["packages/*"],
+    "projectsRelationship": "independent",
     "version": {
-      "preVersionCommand": "yarn nx run-many -t build"
+      "preVersionCommand": "yarn nx run-many -t build",
+      "currentVersionResolver": "registry",
+      "preserveLocalDependencyProtocols": false,
+      "manifestRootsToUpdate": ["dist/packages/{projectName}"]
     }
   }
 }
