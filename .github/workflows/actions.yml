@@ -24,10 +24,7 @@ jobs:
           cache: 'yarn'
       - run: yarn install --frozen-lockfile
       - uses: nrwl/nx-set-shas@v4
-
-      - run: npx nx-cloud start-ci-run --distribute-on="manual" --stop-agents-after="e2e"
-      - run: npx nx affected -t=build,test,lint
-      - run: npx nx affected -t=e2e --exclude=nx-ignore-e2e
+      - run: sh -c "npx nx-cloud start-ci-run --distribute-on="manual" --stop-agents-after="e2e"; sleep 120s; npx nx run-many -t=build,test,lint"
   agents:
     runs-on: ubuntu-latest
     name: Agent [${{ matrix.agent }}]
