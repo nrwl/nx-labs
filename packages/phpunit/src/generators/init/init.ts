@@ -1,3 +1,4 @@
+import { initGenerator as composerInitGenerator } from '@nx/composer/generators';
 import {
   addDependenciesToPackageJson,
   createProjectGraphAsync,
@@ -22,9 +23,14 @@ export async function initGenerator(tree: Tree, options: InitGeneratorSchema) {
 
   if (!usePlugins) {
     throw new Error(
-      `Cannot add @nx/composer plugin unless NX_ADD_PLUGINS is set to true or useInferencePlugins is not set to false in nx.json.`
+      `Cannot add @nx/phpunit plugin unless NX_ADD_PLUGINS is set to true or useInferencePlugins is not set to false in nx.json.`
     );
   }
+
+  await composerInitGenerator(tree, {
+    skipFormat: true,
+    skipPackageJson: options.skipPackageJson,
+  });
 
   if (!options.skipPackageJson && tree.exists('package.json')) {
     tasks.push(
@@ -32,7 +38,7 @@ export async function initGenerator(tree: Tree, options: InitGeneratorSchema) {
         tree,
         {},
         {
-          '@nx/composer': version,
+          '@nx/phpunit': version,
         },
         undefined
       )
@@ -42,11 +48,10 @@ export async function initGenerator(tree: Tree, options: InitGeneratorSchema) {
   await addPlugin(
     tree,
     await createProjectGraphAsync(),
-    '@nx/composer',
+    '@nx/phpunit',
     createNodesV2,
     {
-      installTargetName: ['install', 'composer:install', 'composer-install'],
-      updateTargetName: ['update', 'composer:update', 'composer-update'],
+      targetName: ['test', 'phpunit:test', 'phpunit-test'],
     },
     false
   );

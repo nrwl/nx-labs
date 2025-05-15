@@ -17,11 +17,15 @@ import { hashObject } from 'nx/src/hasher/file-hasher';
 import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
 import { ComposerJson, ComposerLock } from '../utils/model';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ComposerPluginOptions {}
+export interface ComposerPluginOptions {
+  installTargetName?: string | false;
+  updateTargetName?: string | false;
+}
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface NormalizedOptions {}
+interface NormalizedOptions {
+  installTargetName: string | false;
+  updateTargetName: string | false;
+}
 
 type ComposerTargets = Pick<ProjectConfiguration, 'targets' | 'metadata'>;
 
@@ -129,8 +133,7 @@ function makeCreateNodesFromComposerJson(
     const hash = await calculateHashForCreateNodes(
       projectRoot,
       normalizedOptions,
-      context,
-      ['composer.json', 'composer.lock']
+      context
     );
 
     targetsCache[hash] ??= await buildTargets(
@@ -167,13 +170,10 @@ async function buildTargets(
   };
 
   if (composerJson.scripts) {
-    const allScriptNames = new Set(Object.keys(composerJson.scripts));
     for (const [name, _commands] of Object.entries(composerJson.scripts)) {
-      const commands = calculateCommands(_commands, allScriptNames);
       result.targets[name] = {
-        executor: 'nx:run-commands',
+        command: `composer ${name}`,
         options: {
-          commands,
           cwd: projectRoot,
         },
         metadata: {
@@ -184,57 +184,28 @@ async function buildTargets(
     }
   }
 
-  if (composerJson.extra?.nx?.targets) {
-    for (const [name, config] of Object.entries(
-      composerJson.extra.nx.targets
-    )) {
-      result.targets[name] = {
-        ...result.targets[name],
-        ...config,
-      };
-    }
+  if (options.installTargetName !== false) {
+    result.targets[options.installTargetName] = {
+      command: 'composer install',
+      options: {
+        cwd: projectRoot,
+      },
+    };
+  }
+  if (options.updateTargetName !== false) {
+    result.targets[options.updateTargetName] = {
+      command: 'composer update',
+      options: {
+        cwd: projectRoot,
+      },
+    };
   }
 
   return result;
 }
 
 function normalizeOptions(options: ComposerPluginOptions): NormalizedOptions {
-  return {
-    ...options,
-  };
-}
-
-/**
- *  If the command starts with "@" it can be a command or a script. If it's a script, then we need to run it through Nx since it matches a target.
- */
-function calculateCommands(
-  commands: string | string[],
-  allScriptNames: Set<string>
-): string[] {
-  const result: string[] = [];
-  if (typeof commands === 'string') {
-    collectCommands(commands, allScriptNames, result);
-  } else {
-    for (const command of commands) {
-      collectCommands(command, allScriptNames, result);
-    }
-  }
-  return result;
-}
-
-function collectCommands(
-  command: string,
-  allScriptNames: Set<string>,
-  collectedCommands = [] as string[]
-): void {
-  if (!command.startsWith('@')) {
-    collectedCommands.push(command);
-    return;
-  }
-  const rest = command.slice(1);
-  if (allScriptNames.has(rest)) {
-    collectedCommands.push(`nx ${rest}`);
-  } else {
-    collectedCommands.push(rest);
-  }
+  options.installTargetName ??= 'install';
+  options.updateTargetName ??= 'update';
+  return options as NormalizedOptions;
 }
