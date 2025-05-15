@@ -7,8 +7,9 @@ import {
   validateDependency,
 } from '@nx/devkit';
 
-import { dirname, join } from 'node:path';
-import { globWithWorkspaceContext } from 'nx/src/utils/workspace-context';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { ComposerJson } from '../utils/model';
 import { ComposerPluginOptions } from './create-nodes';
 
 export const createDependencies: CreateDependencies<
@@ -17,71 +18,45 @@ export const createDependencies: CreateDependencies<
   options: ComposerPluginOptions,
   context: CreateDependenciesContext
 ) => {
-  const files = await globWithWorkspaceContext(context.workspaceRoot, [
-    '**/composer.json',
-  ]);
   const dependencies: Array<StaticDependency> = [];
+  for (const [name, proj] of Object.entries(context.projects)) {
+    const projectRoot = proj.root;
+    const composerFilePath = join(
+      context.workspaceRoot,
+      projectRoot,
+      'composer.json'
+    );
 
-  for (const file of files) {
-    const json = readJsonFile(join(context.workspaceRoot, file));
+    if (!existsSync(composerFilePath)) continue;
+    const json = readJsonFile<ComposerJson>(composerFilePath);
     const deps = {
       ...json['require'],
       ...json['require-dev'],
     };
     Object.keys(deps).forEach((d) => {
-      const source = Object.values(context.projects).find(
-        (proj) => proj.root === dirname(file)
-      );
-      if (!source) return;
+      const sourceFile =
+        projectRoot === '.' ? 'composer.json' : `${projectRoot}/composer.json`;
       if (context.projects[d]) {
         const dependency: StaticDependency = {
-          source: source.name,
+          source: proj.name,
           target: d,
           type: DependencyType.static,
-          sourceFile: file,
+          sourceFile,
+        };
+        validateDependency(dependency, context);
+        dependencies.push(dependency);
+      }
+      if (context.externalNodes[`packagist:${d}`]) {
+        const dependency: StaticDependency = {
+          source: proj.name,
+          target: `packagist:${d}`,
+          type: DependencyType.static,
+          sourceFile,
         };
         validateDependency(dependency, context);
         dependencies.push(dependency);
       }
     });
   }
-  // dependenciesFromReport.forEach((dependencyFromPlugin: StaticDependency) => {
-  //   try {
-  //     const source =
-  //       relative(workspaceRoot, dependencyFromPlugin.source) || '.';
-  //     const sourceProjectName =
-  //       Object.values(context.projects).find(
-  //         (project) => source === project.root
-  //       )?.name ?? dependencyFromPlugin.source;
-  //     const target =
-  //       relative(workspaceRoot, dependencyFromPlugin.target) || '.';
-  //     const targetProjectName =
-  //       Object.values(context.projects).find(
-  //         (project) => target === project.root
-  //       )?.name ?? dependencyFromPlugin.target;
-  //     if (
-  //       !sourceProjectName ||
-  //       !targetProjectName ||
-  //       !existsSync(dependencyFromPlugin.sourceFile)
-  //     ) {
-  //       return;
-  //     }
-  //     const dependency: StaticDependency = {
-  //       source: sourceProjectName,
-  //       target: targetProjectName,
-  //       type: DependencyType.static,
-  //       sourceFile: normalizePath(
-  //         relative(workspaceRoot, dependencyFromPlugin.sourceFile)
-  //       ),
-  //     };
-  //     validateDependency(dependency, context);
-  //     dependencies.push(dependency);
-  //   } catch {
-  //     logger.warn(
-  //       `Unable to parse dependency from gradle plugin: ${dependencyFromPlugin.source} -> ${dependencyFromPlugin.target}`
-  //     );
-  //   }
-  // });
-
   return dependencies;
 };

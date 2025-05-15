@@ -1,6 +1,8 @@
 import { execSync } from 'child_process';
 import { cleanupTestProject, createTestProject, getNxVersion } from './utils';
 
+// TODO: Add tests that actually invoke composer and php, but we need to make sure agents are set up correctly.
+// For now we're checking most things manually.
 describe('composer', () => {
   let projectDirectory: string;
 
