@@ -12,6 +12,7 @@ import { calculateHashForCreateNodes } from '@nx/devkit/src/utils/calculate-hash
 import { existsSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
+import { toProjectName } from 'nx/src/config/to-project-name';
 import { hashObject } from 'nx/src/hasher/file-hasher';
 import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
 
@@ -111,7 +112,7 @@ function makeCreateNodesFromComposerJson(
     return {
       projects: {
         [projectRoot]: {
-          name: composerJson.name,
+          name: composerJson.name ?? toProjectName(projectRoot),
           root: projectRoot,
           targets,
           metadata,
