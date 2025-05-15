@@ -31,7 +31,10 @@ describe('@nx/composer:init', () => {
     expect(nxJson.plugins).toMatchInlineSnapshot(`
       Array [
         Object {
-          "options": Object {},
+          "options": Object {
+            "installTargetName": "install",
+            "updateTargetName": "update",
+          },
           "plugin": "@nx/composer",
         },
       ]
@@ -51,7 +54,10 @@ describe('@nx/composer:init', () => {
       Array [
         "foo",
         Object {
-          "options": Object {},
+          "options": Object {
+            "installTargetName": "install",
+            "updateTargetName": "update",
+          },
           "plugin": "@nx/composer",
         },
       ]

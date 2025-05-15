@@ -31,7 +31,16 @@ describe('@nx/phpunit:init', () => {
     expect(nxJson.plugins).toMatchInlineSnapshot(`
       Array [
         Object {
-          "options": Object {},
+          "options": Object {
+            "installTargetName": "install",
+            "updateTargetName": "update",
+          },
+          "plugin": "@nx/composer",
+        },
+        Object {
+          "options": Object {
+            "targetName": "test",
+          },
           "plugin": "@nx/phpunit",
         },
       ]
@@ -51,7 +60,16 @@ describe('@nx/phpunit:init', () => {
       Array [
         "foo",
         Object {
-          "options": Object {},
+          "options": Object {
+            "installTargetName": "install",
+            "updateTargetName": "update",
+          },
+          "plugin": "@nx/composer",
+        },
+        Object {
+          "options": Object {
+            "targetName": "test",
+          },
           "plugin": "@nx/phpunit",
         },
       ]
