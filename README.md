@@ -11,9 +11,8 @@ nx g @nx/plugin:plugin [new plugin]
 ## Publishing a plugin
 
 ```bash
-nx publish [plugin] -ver=[version] --tag=[tag]
-
+nx release <ver> -p <project>
 
 # For example
-nx publish nx-rspack --ver=1.0.0-alpha.2 --tag=next
+nx release 0.21.0 -p composer
 ```

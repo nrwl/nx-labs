@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "$id": "library",
+  "title": "Create a PHP library using Composer",
+  "type": "object",
+  "properties": {
+    "directory": {
+      "type": "string",
+      "description": "The directory where the library will be created.",
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      },
+      "x-prompt": "In what directory should the library be created?"
+    },
+    "vendorName": {
+      "type": "string",
+      "description": "The vendor name of the library. Combined with the project name, it will form the full package name for the library. Defaults to the vendor name in the root, or 'source' if no vendor name is found."
+    },
+    "projectName": {
+      "type": "string",
+      "description": "The project name of the library. When prefixed with the vendor name, it will form the full package name for the library. Defaults to the directory name."
+    }
+  },
+  "required": ["directory"]
+}

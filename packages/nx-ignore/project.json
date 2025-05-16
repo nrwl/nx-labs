@@ -18,14 +18,9 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
     },
-    "publish": {
-      "executor": "nx:run-commands",
+    "nx-release-publish": {
       "options": {
-        "parallel": false,
-        "commands": [
-          "nx build nx-ignore",
-          "node tools/scripts/publish.mjs nx-ignore {args.ver} {args.tag}"
-        ]
+        "packageRoot": "dist/{projectRoot}"
       }
     }
   },
