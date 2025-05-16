@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/schema",
-  "$id": "NxPlaywrightInit",
-  "title": "Playwright Init Generator",
-  "description": "Initializes a Playwright project in the current workspace.",
+  "$id": "NxComposerInit",
+  "title": "Composer Init Generator",
+  "description": "Initializes a Composer project in the current workspace.",
   "type": "object",
   "properties": {
     "skipFormat": {
