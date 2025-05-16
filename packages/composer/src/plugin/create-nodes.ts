@@ -55,8 +55,20 @@ function calculateExternalNodes(
       if (composerJson.name) {
         componentNames.add(composerJson.name);
       }
+      const deps = {
+        ...composerJson['require'],
+        ...composerJson['require-dev'],
+      };
+      for (const dep of Object.keys(deps)) {
+        const versions = packageVersions.get(dep) ?? [];
+        // We don't know what the version will resolve as yet without the lockfile.
+        // We still want to collect the dependency since many repos don't commit their lockfile,
+        // and it'll be impossible to collect external deps without doing this.
+        versions.push('*');
+        packageVersions.set(dep, versions);
+      }
     } else {
-      // add the version to the package map (there may be multiple versions of the same package)
+      // Add the version to the package map (there may be multiple versions of the same package)
       const composerLock = readJsonFile<ComposerLock>(configFilePath);
       if (composerLock.packages) {
         for (const pkg of composerLock.packages) {
@@ -71,9 +83,10 @@ function calculateExternalNodes(
   for (const [name, versions] of packageVersions.entries()) {
     if (componentNames.has(name)) continue;
     for (const version of versions) {
-      const key = result[name]
-        ? `packagist:${name}@${version}`
-        : `packagist:${name}`;
+      const key =
+        // If the version is collected as '*' from composer.json, create the name as version-agnostic
+        // This doesn't affect the existing PHP/composer support, but opens the possibility to make affected logic smarter.
+        version === '*' ? `packagist:${name}` : `packagist:${name}@${version}`;
       result[key] = {
         type: 'packagist',
         name: key,
