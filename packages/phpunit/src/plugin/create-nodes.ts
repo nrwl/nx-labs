@@ -21,10 +21,12 @@ import { ComposerJson } from '../utils/model';
 
 export interface ComposerPluginOptions {
   targetName?: string;
+  testCommand?: string;
 }
 
 interface NormalizedOptions {
   targetName: string;
+  testCommand?: string;
 }
 
 type ComposerTargets = Pick<ProjectConfiguration, 'targets' | 'metadata'>;
@@ -73,16 +75,46 @@ function makeCreateNodesFromComposerJson(
     context: CreateNodesContext
   ) => {
     const projectRoot = dirname(configFilePath);
+    const normalizedOptions = normalizeOptions(options);
+
+    let projectName: string;
+    let useRootComposerJson = false;
+
     // The lockfile is just used to parse out external dependencies, we'll create the projects from composer.json only.
     const siblingFiles = readdirSync(join(context.workspaceRoot, projectRoot));
-    if (!siblingFiles.includes('composer.json')) {
+    if (
+      !siblingFiles.includes('composer.json') &&
+      !siblingFiles.includes('project.json')
+    ) {
       return {};
     }
 
-    const normalizedOptions = normalizeOptions(options);
-    const composerJson = readJsonFile<ComposerJson>(
-      join(context.workspaceRoot, projectRoot, 'composer.json')
+    // If `project.json` does not provide the name, we have to read it from `composer.json` or else graph creation fails.
+    if (existsSync(join(context.workspaceRoot, projectRoot, 'composer.json'))) {
+      const composerJson = readJsonFile<ComposerJson>(
+        join(context.workspaceRoot, projectRoot, 'composer.json')
+      );
+      projectName = composerJson.name ?? toProjectName(projectRoot);
+      useRootComposerJson = true;
+    }
+
+    let composerJson = readJsonFile<ComposerJson>(
+      useRootComposerJson
+        ? join(context.workspaceRoot, 'composer.json')
+        : join(context.workspaceRoot, projectRoot, 'composer.json')
     );
+    let testPkg = getTestPackageName(composerJson);
+    if (!useRootComposerJson && !testPkg) {
+      useRootComposerJson = true;
+      composerJson = readJsonFile<ComposerJson>(
+        join(context.workspaceRoot, 'composer.json')
+      );
+      testPkg = getTestPackageName(composerJson);
+    }
+    if (!testPkg) {
+      return {};
+    }
+
     const hash = await calculateHashForCreateNodes(
       projectRoot,
       normalizedOptions,
@@ -91,6 +123,8 @@ function makeCreateNodesFromComposerJson(
 
     targetsCache[hash] ??= await buildTargets(
       composerJson,
+      useRootComposerJson,
+      testPkg,
       projectRoot,
       normalizedOptions,
       context
@@ -100,7 +134,7 @@ function makeCreateNodesFromComposerJson(
     return {
       projects: {
         [projectRoot]: {
-          name: composerJson.name ?? toProjectName(projectRoot),
+          name: projectName,
           root: projectRoot,
           targets,
           metadata,
@@ -112,6 +146,8 @@ function makeCreateNodesFromComposerJson(
 
 async function buildTargets(
   composerJson: ComposerJson,
+  isRootComposerJson: boolean,
+  testPkg: string,
   projectRoot: string,
   options: NormalizedOptions,
   context: CreateNodesContext
@@ -120,31 +156,50 @@ async function buildTargets(
     targets: {},
     metadata: {},
   };
-  if (
-    composerJson['require']?.['phpunit/phpunit'] ||
-    composerJson['require-dev']?.['phpunit/phpunit']
-  ) {
+  if (options.testCommand) {
     result.targets[options.targetName] = createPhpUnitTarget(
-      `./vendor/bin/phpunit`,
+      isRootComposerJson
+        ? `${options.testCommand} ${projectRoot}`
+        : options.testCommand,
       projectRoot,
+      isRootComposerJson ? '.' : projectRoot,
       context
     );
-  } else if (
-    composerJson['require']?.['symfony/phpunit-bridge'] ||
-    composerJson['require-dev']?.['symfony/phpunit-bridge']
-  ) {
+  } else if (testPkg === 'phpunit/phpunit') {
     result.targets[options.targetName] = createPhpUnitTarget(
-      `./vendor/bin/simple-phpunit`,
+      isRootComposerJson
+        ? `/vendor/bin/phpunit ${projectRoot}`
+        : `./vendor/bin/phpunit`,
       projectRoot,
+      isRootComposerJson ? '.' : projectRoot,
+      context
+    );
+  } else if (testPkg === 'symfony/phpunit-bridge') {
+    result.targets[options.targetName] = createPhpUnitTarget(
+      isRootComposerJson
+        ? `./vendor/bin/simple-phpunit ${projectRoot}`
+        : `./vendor/bin/simple-phpunit`,
+      projectRoot,
+      isRootComposerJson ? '.' : projectRoot,
       context
     );
   }
   return result;
 }
 
+function getTestPackageName(composerJson: ComposerJson): string | null {
+  for (const pkg of ['phpunit/phpunit', 'symfony/phpunit-bridge']) {
+    if (composerJson['require']?.[pkg] || composerJson['require-dev']?.[pkg]) {
+      return pkg;
+    }
+  }
+  return null;
+}
+
 function createPhpUnitTarget(
   command: string,
   projectRoot: string,
+  cwd: string,
   context: CreateNodesContext
 ) {
   const namedInputs = getNamedInputs(projectRoot, context);
@@ -154,7 +209,7 @@ function createPhpUnitTarget(
     dependsOn: ['install', 'composer:install', 'composer-install'],
     inputs: getInputs(namedInputs),
     options: {
-      cwd: projectRoot,
+      cwd,
     },
     metadata: {
       technologies: ['phpunit'],
