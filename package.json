@@ -66,6 +66,7 @@
     "kill-port": "^2.0.1",
     "license-webpack-plugin": "^4.0.2",
     "metro-resolver": "0.71.0",
+    "minimatch": "9.0.3",
     "nx": "21.0.3",
     "prettier": "2.6.2",
     "prettier-plugin-organize-imports": "^3.2.1",
