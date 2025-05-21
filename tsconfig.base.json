@@ -15,6 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@nx/composer/generators": ["packages/composer/src/generators/index.ts"],
+      "@nx/composer": ["packages/composer/src/index.ts"],
+      "@nx/phpunit": ["packages/phpunit/src/index.ts"],
+      "@nx/phpunit/generators": ["packages/phpunit/src/generators/index.ts"],
       "@nx/nx-ignore": ["packages/nx-ignore/src/index.ts"]
     }
   },

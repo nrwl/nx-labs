@@ -44,8 +44,23 @@
     "@nx/eslint:lint": {
       "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
       "cache": true
+    },
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^default"]
     }
   },
   "nxCloudAccessToken": "MDRmYzUxMmYtNTQwZi00MjZkLTg0ZTYtMzc5Y2RhOTE4YTc2fHJlYWQtd3JpdGU=",
-  "defaultBase": "main"
+  "defaultBase": "main",
+  "release": {
+    "projects": ["packages/*"],
+    "projectsRelationship": "independent",
+    "version": {
+      "preVersionCommand": "yarn nx run-many -t build",
+      "currentVersionResolver": "registry",
+      "preserveLocalDependencyProtocols": false,
+      "manifestRootsToUpdate": ["dist/packages/{projectName}"]
+    }
+  }
 }

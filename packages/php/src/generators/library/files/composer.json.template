@@ -1,0 +1,6 @@
+{
+  "name": "<%= vendorName %>/<%= projectName %>",
+  "require": {
+    "php": ">=<%= minimumPhpVersion %>"
+  }
+}
