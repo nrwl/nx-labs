@@ -29,17 +29,40 @@ describe('@nx/php:init', () => {
         skipPackageJson: false,
       });
       const nxJson = readNxJson(tree);
-      expect(nxJson.plugins).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "options": Object {
-              "ignorePattern": "**/{tests,fixtures}/**",
-              "installTargetName": "install",
-              "updateTargetName": "update",
-            },
-            "plugin": "@nx/php/composer",
+      expect(nxJson).toMatchInlineSnapshot(`
+        Object {
+          "affected": Object {
+            "defaultBase": "main",
           },
-        ]
+          "namedInputs": Object {
+            "default": Array [
+              "{projectRoot}/**/*",
+            ],
+            "production": Array [
+              "default",
+              "!{projectRoot}/**/*.md",
+              "!{projectRoot}/(test|tests|Test|Tests)/**/*",
+            ],
+          },
+          "plugins": Array [
+            Object {
+              "options": Object {
+                "ignorePattern": "**/{tests,fixtures}/**",
+                "installTargetName": "install",
+                "updateTargetName": "update",
+              },
+              "plugin": "@nx/php/composer",
+            },
+          ],
+          "targetDefaults": Object {
+            "build": Object {
+              "cache": true,
+            },
+            "lint": Object {
+              "cache": true,
+            },
+          },
+        }
       `);
     });
 

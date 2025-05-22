@@ -162,6 +162,7 @@ async function buildTargets(
       isRootComposerJson
         ? `${options.testCommand} -c ${projectRoot}`
         : options.testCommand,
+      testPkg,
       projectRoot,
       isRootComposerJson ? '.' : projectRoot,
       context
@@ -171,6 +172,7 @@ async function buildTargets(
       isRootComposerJson
         ? `./vendor/bin/phpunit -c ${projectRoot}`
         : `./vendor/bin/phpunit`,
+      testPkg,
       projectRoot,
       isRootComposerJson ? '.' : projectRoot,
       context
@@ -180,6 +182,7 @@ async function buildTargets(
       isRootComposerJson
         ? `./vendor/bin/simple-phpunit -c ${projectRoot}`
         : `./vendor/bin/simple-phpunit`,
+      testPkg,
       projectRoot,
       isRootComposerJson ? '.' : projectRoot,
       context
@@ -199,6 +202,7 @@ function getTestPackageName(composerJson: ComposerJson): string | null {
 
 function createPhpUnitTarget(
   command: string,
+  testPkg: string,
   projectRoot: string,
   cwd: string,
   context: CreateNodesContext
@@ -208,7 +212,7 @@ function createPhpUnitTarget(
     command,
     cache: true,
     dependsOn: ['install', 'composer:install', 'composer-install'],
-    inputs: getInputs(namedInputs),
+    inputs: getInputs(namedInputs, testPkg),
     options: {
       cwd,
     },
@@ -233,11 +237,13 @@ function normalizeOptions(options: ComposerPluginOptions): NormalizedOptions {
 }
 
 function getInputs(
-  namedInputs: NxJsonConfiguration['namedInputs']
+  namedInputs: NxJsonConfiguration['namedInputs'],
+  testPkg: string
 ): TargetConfiguration['inputs'] {
   return [
     ...('production' in namedInputs
       ? ['default', '^production']
       : ['default', '^default']),
+    { externalDependencies: [testPkg] },
   ];
 }
