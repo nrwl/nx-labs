@@ -14,6 +14,7 @@ import { existsSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
 import { getNamedInputs } from '@nx/devkit/src/utils/get-named-inputs';
+import { minimatch } from 'minimatch';
 import { toProjectName } from 'nx/src/config/to-project-name';
 import { hashObject } from 'nx/src/hasher/file-hasher';
 import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
@@ -89,6 +90,11 @@ function makeCreateNodesFromComposerJson(
     ) {
       return {};
     }
+    if (
+      configFilePath.startsWith('vendor/') ||
+      minimatch(configFilePath, `${projectRoot}/vendor/**`)
+    )
+      return {};
 
     // If `project.json` does not provide the name, we have to read it from `composer.json` or else graph creation fails.
     if (existsSync(join(context.workspaceRoot, projectRoot, 'composer.json'))) {
