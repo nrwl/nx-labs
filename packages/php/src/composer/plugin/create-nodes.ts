@@ -1,22 +1,22 @@
 import {
-  type CreateNodesContext,
-  createNodesFromFiles,
-  type CreateNodesFunction,
-  type CreateNodesV2,
-  type ProjectConfiguration,
-  type ProjectGraphExternalNode,
-  readJsonFile,
-  writeJsonFile,
+type CreateNodesContext,
+createNodesFromFiles,
+type CreateNodesFunction,
+type CreateNodesV2,
+type ProjectConfiguration,
+type ProjectGraphExternalNode,
+readJsonFile,
+writeJsonFile,
 } from '@nx/devkit';
 import { calculateHashForCreateNodes } from '@nx/devkit/src/utils/calculate-hash-for-create-nodes';
 import { minimatch } from 'minimatch';
 import { existsSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { dirname,join } from 'node:path';
 import { toProjectName } from 'nx/src/config/to-project-name';
 import { hashObject } from 'nx/src/hasher/file-hasher';
 import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
 import { maybeGetLockFiles } from '../../utils/create-nodes';
-import { ComposerJson, ComposerLock } from '../../utils/model';
+import { ComposerJson,ComposerLock } from '../../utils/model';
 
 export interface ComposerPluginOptions {
   installTargetName?: string | false;
@@ -138,9 +138,17 @@ function makeCreateNodesFromComposerJson(
     context: CreateNodesContext
   ) => {
     const projectRoot = dirname(configFilePath);
+    // In case users use "@nx/php/composer" in nx.json without passing in options.
+    options = options ?? {};
 
     // The lockfile is just used to parse out external dependencies, we'll create the projects from composer.json only.
     if (configFilePath.endsWith('.lock')) return {};
+
+    if (
+      configFilePath.startsWith('vendor/') ||
+      minimatch(configFilePath, `${projectRoot}/vendor/**`)
+    )
+      return {};
 
     if (
       options.ignorePattern &&
