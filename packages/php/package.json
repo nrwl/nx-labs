@@ -14,6 +14,7 @@
     "./package.json": "./package.json",
     "./composer": "./src/composer/index.js",
     "./generators": "./src/generators/index.js",
-    "./phpunit": "./src/phpunit/index.js"
+    "./phpunit": "./src/phpunit/index.js",
+    "./laravel": "./src/laravel/index.js"
   }
 }
