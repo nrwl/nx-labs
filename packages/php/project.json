@@ -24,22 +24,22 @@
         "assets": [
           "packages/php/*.md",
           {
-            "input": "./packages/php/src",
+            "input": "packages/php/src",
             "glob": "**/!(*.ts)",
             "output": "./src"
           },
           {
-            "input": "./packages/php/src",
+            "input": "packages/php/src",
             "glob": "**/*.d.ts",
             "output": "./src"
           },
           {
-            "input": "./packages/php",
+            "input": "packages/php",
             "glob": "generators.json",
             "output": "."
           },
           {
-            "input": "./packages/php",
+            "input": "packages/php",
             "glob": "executors.json",
             "output": "."
           }

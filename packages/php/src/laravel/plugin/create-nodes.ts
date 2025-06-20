@@ -8,11 +8,12 @@ import {
   getPackageManagerCommand,
   readJsonFile,
 } from '@nx/devkit';
-import { dirname, join } from 'node:path';
 import { existsSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { toProjectName } from 'nx/src/config/to-project-name';
 import { hashObject } from 'nx/src/hasher/file-hasher';
 import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
-import { getNamedInputs } from '@nx/devkit/src/utils/get-named-inputs';
+import { ComposerJson } from '../../utils/model';
 
 export interface LaravelPluginOptions {
   serveTargetName?: string;
@@ -24,13 +25,15 @@ export interface LaravelPluginOptions {
   routeListTargetName?: string;
 }
 
-export const createLaravelNode: CreateNodesFunction<LaravelPluginOptions> = async (
+export const createLaravelNode: CreateNodesFunction<
+  LaravelPluginOptions
+> = async (
   configFile: string,
   options: LaravelPluginOptions,
   context: CreateNodesContext
 ) => {
   const projectPath = dirname(configFile);
-  
+
   if (!isLaravelProject(projectPath, context.workspaceRoot)) {
     return {};
   }
@@ -54,9 +57,11 @@ export const createLaravelNode: CreateNodesFunction<LaravelPluginOptions> = asyn
 
 function isLaravelProject(projectPath: string, workspaceRoot: string): boolean {
   const absoluteProjectPath = join(workspaceRoot, projectPath);
-  
-  // Check for artisan file
-  if (!existsSync(join(absoluteProjectPath, 'artisan'))) {
+
+  if (
+    !existsSync(join(absoluteProjectPath, 'artisan')) ||
+    !existsSync(join(absoluteProjectPath, 'composer.json'))
+  ) {
     return false;
   }
 
@@ -94,22 +99,20 @@ function isLaravelProject(projectPath: string, workspaceRoot: string): boolean {
 }
 
 async function createProject(
-  projectPath: string,
+  projectRoot: string,
   options: LaravelPluginOptions,
   context: CreateNodesContext,
   pmc: ReturnType<typeof getPackageManagerCommand>
 ): Promise<ProjectConfiguration & { name: string }> {
-  const absoluteProjectPath = join(context.workspaceRoot, projectPath);
-  const projectName = projectPath.split('/').pop();
-
-  const namedInputs = getNamedInputs(projectPath, context);
+  const absoluteProjectPath = join(context.workspaceRoot, projectRoot);
+  const projectName = projectRoot.split('/').pop();
 
   const targets: Record<string, TargetConfiguration> = {};
 
   targets[options.serveTargetName] = {
     command: 'php artisan serve',
     options: {
-      cwd: projectPath,
+      cwd: projectRoot,
     },
     metadata: {
       technologies: ['php', 'laravel'],
@@ -129,7 +132,7 @@ async function createProject(
   targets[options.migrateTargetName] = {
     command: 'php artisan migrate',
     options: {
-      cwd: projectPath,
+      cwd: projectRoot,
     },
     dependsOn: ['^install'],
     metadata: {
@@ -150,7 +153,7 @@ async function createProject(
   targets[options.migrateFreshTargetName] = {
     command: 'php artisan migrate:fresh --seed',
     options: {
-      cwd: projectPath,
+      cwd: projectRoot,
     },
     dependsOn: ['^install'],
     metadata: {
@@ -166,7 +169,7 @@ async function createProject(
   targets[options.tinkerTargetName] = {
     command: 'php artisan tinker',
     options: {
-      cwd: projectPath,
+      cwd: projectRoot,
     },
     metadata: {
       technologies: ['php', 'laravel'],
@@ -181,7 +184,7 @@ async function createProject(
   targets[options.queueWorkTargetName] = {
     command: 'php artisan queue:work',
     options: {
-      cwd: projectPath,
+      cwd: projectRoot,
     },
     metadata: {
       technologies: ['php', 'laravel'],
@@ -200,9 +203,10 @@ async function createProject(
   };
 
   targets[options.cacheClearTargetName] = {
-    command: 'php artisan cache:clear && php artisan config:clear && php artisan route:clear && php artisan view:clear',
+    command:
+      'php artisan cache:clear && php artisan config:clear && php artisan route:clear && php artisan view:clear',
     options: {
-      cwd: projectPath,
+      cwd: projectRoot,
     },
     metadata: {
       technologies: ['php', 'laravel'],
@@ -217,7 +221,7 @@ async function createProject(
   targets[options.routeListTargetName] = {
     command: 'php artisan route:list',
     options: {
-      cwd: projectPath,
+      cwd: projectRoot,
     },
     metadata: {
       technologies: ['php', 'laravel'],
@@ -240,14 +244,19 @@ async function createProject(
     try {
       const composer = readJsonFile(composerPath);
       if (composer.scripts) {
-        for (const [scriptName, scriptCommand] of Object.entries(composer.scripts)) {
-          if (typeof scriptCommand === 'string' && scriptCommand.includes('artisan')) {
+        for (const [scriptName, scriptCommand] of Object.entries(
+          composer.scripts
+        )) {
+          if (
+            typeof scriptCommand === 'string' &&
+            scriptCommand.includes('artisan')
+          ) {
             const targetName = scriptName.replace(/:/g, '-');
             if (!targets[targetName]) {
               targets[targetName] = {
                 command: scriptCommand,
                 options: {
-                  cwd: projectPath,
+                  cwd: projectRoot,
                 },
                 metadata: {
                   technologies: ['php', 'laravel'],
@@ -263,15 +272,21 @@ async function createProject(
     }
   }
 
+  const composerJson = readJsonFile<ComposerJson>(
+    join(context.workspaceRoot, projectRoot, 'composer.json')
+  );
+
   return {
-    name: projectName,
-    root: projectPath,
+    name: composerJson.name ?? toProjectName(projectRoot),
+    root: projectRoot,
     projectType: 'application',
     targets,
   };
 }
 
-function normalizeOptions(options: LaravelPluginOptions): Required<LaravelPluginOptions> {
+function normalizeOptions(
+  options: LaravelPluginOptions
+): Required<LaravelPluginOptions> {
   return {
     serveTargetName: options.serveTargetName ?? 'serve',
     migrateTargetName: options.migrateTargetName ?? 'migrate',
@@ -284,14 +299,14 @@ function normalizeOptions(options: LaravelPluginOptions): Required<LaravelPlugin
 }
 
 export const createNodesV2: CreateNodesV2<LaravelPluginOptions> = [
-  '*/artisan',
+  '**/artisan',
   async (configFiles, options, context) => {
     const optionsHash = hashObject(options ?? {});
     const cachePath = join(
       workspaceDataDirectory,
       `laravel-${optionsHash}.hash`
     );
-    
+
     return await createNodesFromFiles(
       createLaravelNode,
       configFiles,

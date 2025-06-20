@@ -1,35 +1,25 @@
-import {
-  addDependenciesToPackageJson,
-  readNxJson,
-  Tree,
-  updateNxJson,
-} from '@nx/devkit';
+import { createProjectGraphAsync, type Tree } from '@nx/devkit';
+import { addPlugin } from '@nx/devkit/src/utils/add-plugin';
 import { createNodesV2 } from '../../../laravel';
 
-export function addLaravelPlugin(
+export async function addLaravelPlugin(
   tree: Tree,
-  options: { skipPluginSetup?: boolean }
-) {
-  if (options.skipPluginSetup) {
-    return;
-  }
-
-  const nxJson = readNxJson(tree);
-
-  nxJson.plugins ??= [];
-
-  if (
-    !nxJson.plugins.some((p) =>
-      typeof p === 'string'
-        ? p === '@nx/php/laravel'
-        : p.plugin === '@nx/php/laravel'
-    )
-  ) {
-    nxJson.plugins.push({
-      plugin: '@nx/php/laravel',
-      options: {},
-    });
-
-    updateNxJson(tree, nxJson);
-  }
+  _options: { skipPackageJson?: boolean }
+): Promise<void> {
+  await addPlugin(
+    tree,
+    await createProjectGraphAsync(),
+    '@nx/php/laravel',
+    createNodesV2,
+    {
+      serveTargetName: ['serve'],
+      migrateTargetName: ['migrate'],
+      migrateFreshTargetName: ['migrate-fresh'],
+      tinkerTargetName: ['tinker'],
+      queueWorkTargetName: ['queue-work'],
+      cacheClearTargetName: ['cache-clear'],
+      routeListTargetName: ['route-list'],
+    },
+    false
+  );
 }
