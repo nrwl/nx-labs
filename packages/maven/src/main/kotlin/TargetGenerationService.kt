@@ -22,11 +22,11 @@ class TargetGenerationService(
 ) {
 
     private val dynamicGoalAnalysis = DynamicGoalAnalysisService(
-        session, 
+        session,
         executionPlanAnalysisService,
         executionPlanAnalysisService.getLifecycleExecutor(),
         executionPlanAnalysisService.getDefaultLifecycles(),
-        log!!, 
+        log!!,
         verbose
     )
 
@@ -82,16 +82,16 @@ class TargetGenerationService(
         applicablePhases.forEach { phase ->
             // Phase targets depend on individual goal targets (not batch execution)
             val goalsToComplete = executionPlanAnalysisService.getGoalsCompletedByPhase(project, phase)
-            
+
             val target = if (goalsToComplete.isNotEmpty()) {
                 // Phase targets are just entry points - they depend on individual goal targets
                 TargetConfiguration("nx:noop").apply {
                     options = linkedMapOf()
-                    
+
                     // Convert goal names to target names and set as dependencies
                     val goalTargetDependencies = mutableListOf<Any>()
                     goalsToComplete.forEach { goalName ->
-                        // goalName is in format "pluginArtifactId:goalName" 
+                        // goalName is in format "pluginArtifactId:goalName"
                         val targetName = getTargetNameFromGoal(goalName, project)
                         if (allTargets.containsKey(targetName)) {
                             goalTargetDependencies.add(targetName)
@@ -116,7 +116,7 @@ class TargetGenerationService(
             // Enable caching for appropriate phases
             val cacheEnabled = shouldEnableCachingForPhase(phase)
             target.cache = true  // Test: Force cache to true
-            
+
             if (verbose) {
                 log?.info("DEBUG: Setting cache for phase '$phase' to: $cacheEnabled (forced to true)")
             }
@@ -131,7 +131,7 @@ class TargetGenerationService(
             target.metadata = metadata
 
             phaseTargets[phase] = target
-            
+
             if (verbose) {
                 log?.debug("Generated phase target '$phase' depending on goals: ${target.dependsOn}")
             }
@@ -139,7 +139,7 @@ class TargetGenerationService(
 
         return phaseTargets
     }
-    
+
     /**
      * Convert a goal name to target name. Since getGoalsCompletedByPhase now returns
      * properly formatted target names with execution IDs, we can use them as-is.
@@ -208,8 +208,8 @@ class TargetGenerationService(
     ): TargetConfiguration {
         val pluginKey = "${plugin.groupId}:${plugin.artifactId}"
 
-        val target = TargetConfiguration("@nx-quarkus/maven-plugin:maven-batch")
-        
+        val target = TargetConfiguration("@nx/maven:maven-batch")
+
         if (verbose) {
             log?.info("DEBUG: Creating goal target with TypeScript executor: $pluginKey:$goal")
         }
@@ -219,12 +219,11 @@ class TargetGenerationService(
         } else {
             "$pluginKey:$goal"
         }
-        
+
         val options = linkedMapOf<String, Any>(
             "goals" to listOf(goalWithExecution),
             "projectRoot" to actualProjectPath,
             "verbose" to verbose,
-            "mavenPluginPath" to "maven-plugin",
             "failOnError" to true
         )
         target.options = options
@@ -242,7 +241,7 @@ class TargetGenerationService(
         // Enable caching for appropriate goals
         val cacheEnabled = shouldEnableCaching(goal)
         target.cache = true  // Test: Force cache to true
-        
+
         if (verbose) {
             log?.info("DEBUG: Setting cache for goal '$goal' to: $cacheEnabled (forced to true)")
         }
@@ -296,8 +295,8 @@ class TargetGenerationService(
     ): TargetConfiguration {
         val pluginKey = "${plugin.groupId}:${plugin.artifactId}"
 
-        val target = TargetConfiguration("@nx-quarkus/maven-plugin:maven-batch")
-        
+        val target = TargetConfiguration("@nx/maven:maven-batch")
+
         if (verbose) {
             log?.info("DEBUG: Creating simple goal target with TypeScript executor: $pluginKey:$goal")
         }
@@ -323,7 +322,7 @@ class TargetGenerationService(
         // Enable caching for appropriate goals
         val cacheEnabled = shouldEnableCaching(goal)
         target.cache = true  // Test: Force cache to true
-        
+
         if (verbose) {
             log?.info("DEBUG: Setting cache for simple goal '$goal' to: $cacheEnabled (forced to true)")
         }
@@ -348,26 +347,26 @@ class TargetGenerationService(
      */
     private fun getSmartInputsForGoal(goal: String, project: MavenProject, projectRootToken: String): MutableList<String> {
         val inputs = mutableListOf<String>()
-        
+
         // Always include POM
         inputs.add("$projectRootToken/pom.xml")
-        
+
         // Get dynamic analysis of goal behavior
         val behavior = dynamicGoalAnalysis.analyzeGoal(goal, project)
-        
+
         if (behavior.processesSources()) {
             // Use actual source directories from Maven configuration
-            val sourcePaths = behavior.getSourcePaths().ifEmpty { 
+            val sourcePaths = behavior.getSourcePaths().ifEmpty {
                 project.compileSourceRoots.toMutableList()
             }
-            
+
             sourcePaths.forEach { sourcePath: String ->
                 val relativePath = getRelativePathFromProject(sourcePath, project)
                 if (relativePath?.isNotEmpty() == true) {
                     inputs.add("$projectRootToken/$relativePath/**/*")
                 }
             }
-            
+
             // Add test sources for test-related goals
             if (behavior.isTestRelated()) {
                 project.testCompileSourceRoots.forEach { testSourceRoot ->
@@ -378,20 +377,20 @@ class TargetGenerationService(
                 }
             }
         }
-        
+
         if (behavior.needsResources()) {
             // Use actual resource directories from Maven configuration
             val resourcePaths = behavior.getResourcePaths().ifEmpty {
                 (project.build?.resources?.mapNotNull { it.directory } ?: emptyList()).toMutableList()
             }
-            
+
             resourcePaths.forEach { resourcePath: String ->
                 val relativePath = getRelativePathFromProject(resourcePath, project)
                 if (relativePath?.isNotEmpty() == true) {
                     inputs.add("$projectRootToken/$relativePath/**/*")
                 }
             }
-            
+
             // Test resources for test-related goals
             if (behavior.isTestRelated()) {
                 project.build?.testResources?.forEach { resource ->
@@ -404,19 +403,19 @@ class TargetGenerationService(
                 }
             }
         }
-        
+
         return inputs
     }
 
     // Removed hardcoded goal classification methods:
     // - isSourceProcessingGoal() - replaced by dynamicGoalAnalysis.analyzeGoal()
-    // - isTestGoal() - replaced by GoalBehavior.isTestRelated() 
+    // - isTestGoal() - replaced by GoalBehavior.isTestRelated()
     // - needsResources() - replaced by GoalBehavior.needsResources()
-    // 
+    //
     // These methods used hardcoded string patterns and have been replaced with
     // dynamic Maven API-based analysis that uses actual plugin configuration,
     // lifecycle phases, and MojoExecution information.
-    
+
     /**
      * Convert an absolute or relative path from Maven configuration to a relative path
      * from the project base directory.
@@ -425,11 +424,11 @@ class TargetGenerationService(
         if (pathString.isNullOrBlank()) {
             return null
         }
-        
+
         return try {
             val projectBase = project.basedir.toPath().toAbsolutePath()
             val targetPath = Paths.get(pathString)
-            
+
             if (targetPath.isAbsolute) {
                 // Convert absolute path to relative
                 if (targetPath.startsWith(projectBase)) {
@@ -474,13 +473,13 @@ class TargetGenerationService(
 
     /**
      * Determine if caching should be enabled for a given Maven goal.
-     * 
+     *
      * Caching is enabled for:
      * - Build goals (compile, testCompile, jar, war, package, etc.)
-     * - Test goals (test, integration-test, etc.) 
+     * - Test goals (test, integration-test, etc.)
      * - Analysis goals (enforce, checkstyle, spotbugs, etc.)
      * - Documentation goals (javadoc, site, etc.)
-     * 
+     *
      * Caching is disabled for:
      * - Runtime goals (dev, run, exec, etc.)
      * - Deployment goals (deploy, release, etc.)
@@ -501,13 +500,13 @@ class TargetGenerationService(
             goal.endsWith(":jar-no-fork") || goal == "jar-no-fork" -> true
             goal.contains("process-classes") || goal.contains("process-sources") -> true
             goal.contains("process-resources") || goal.contains("generate-") -> true
-            
-            // Test goals - cacheable  
+
+            // Test goals - cacheable
             goal.endsWith(":test") || goal == "test" -> true
             goal.contains("integration-test") -> true
             goal.endsWith(":verify") || goal == "verify" -> true
             goal.contains("jacoco") -> true
-            
+
             // Analysis and quality goals - cacheable
             goal.endsWith(":enforce") || goal == "enforce" -> true
             goal.endsWith(":check") || goal.contains("checkstyle") || goal.contains("spotbugs") -> true
@@ -515,24 +514,24 @@ class TargetGenerationService(
             goal.contains("dependency") && (goal.contains("analyze") || goal.contains("tree")) -> true
             goal.contains("versions") && goal.contains("display") -> true
             goal.contains("forbiddenapis") -> true
-            
+
             // Documentation goals - cacheable
             goal.contains("javadoc") || goal.contains("site") -> true
-            
+
             // Resource processing goals - cacheable
             goal.endsWith(":resources") || goal.endsWith(":testResources") -> true
             goal.contains("copy-resources") -> true
-            
+
             // Build metadata goals - cacheable
             goal.endsWith(":create") || goal == "create" -> true
             goal.contains("buildnumber") -> true
             goal.contains("properties") && goal.contains("set") -> true
             goal.contains("formatter") && goal.contains("format") -> true
             goal.contains("impsort") -> true
-            
+
             // Extension/plugin specific goals that are cacheable
             goal.contains("extension-descriptor") -> true
-            
+
             // Runtime and deployment goals - not cacheable
             goal.endsWith(":dev") || goal == "dev" -> false
             goal.endsWith(":run") || goal == "run" -> false
@@ -540,16 +539,16 @@ class TargetGenerationService(
             goal.contains("spring-boot:run") || goal.contains("quarkus:dev") -> false
             goal.contains("quarkus:run") || goal.contains("tomcat:run") -> false
             goal.contains("jetty:run") -> false
-            
+
             // Deployment goals - not cacheable
             goal.endsWith(":deploy") || goal == "deploy" -> false
             goal.endsWith(":install") || goal == "install" -> false
             goal.contains("release") -> false
-            
+
             // Interactive goals - not cacheable
             goal.contains("archetype:generate") -> false
             goal.contains("dependency:resolve-sources") -> false
-            
+
             // Default to cacheable for unknown goals
             // This is safe because most Maven goals are deterministic
             else -> true
@@ -558,13 +557,13 @@ class TargetGenerationService(
 
     /**
      * Determine if caching should be enabled for a given Maven lifecycle phase.
-     * 
+     *
      * Caching is enabled for phases that represent deterministic build steps:
      * - Compilation phases (compile, test-compile)
      * - Test phases (test, integration-test, verify)
      * - Package phases (package, prepare-package)
      * - Processing phases (process-sources, process-resources, etc.)
-     * 
+     *
      * Caching is disabled for phases that involve external systems or runtime:
      * - Deployment phases (deploy, install)
      * - Interactive phases
@@ -575,22 +574,22 @@ class TargetGenerationService(
         }
         return when (phase) {
             // Build phases - cacheable
-            "validate", "initialize", "generate-sources", "process-sources", 
+            "validate", "initialize", "generate-sources", "process-sources",
             "generate-resources", "process-resources", "compile", "process-classes",
             "generate-test-sources", "process-test-sources", "generate-test-resources",
             "process-test-resources", "test-compile", "process-test-classes",
             "test", "prepare-package", "package", "pre-integration-test",
             "integration-test", "post-integration-test", "verify" -> true
-            
+
             // Clean phases - cacheable (deterministic)
             "pre-clean", "clean", "post-clean" -> true
-            
+
             // Site phases - cacheable
             "pre-site", "site", "post-site" -> true
-            
+
             // Deployment phases - not cacheable (external systems)
             "install", "deploy", "site-deploy" -> false
-            
+
             // Default to cacheable for unknown phases
             else -> true
         }

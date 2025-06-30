@@ -23,11 +23,6 @@
       "description": "Enable verbose output",
       "default": false
     },
-    "mavenPluginPath": {
-      "type": "string",
-      "description": "Path to the Maven plugin directory containing the batch executor",
-      "default": "maven-plugin"
-    },
     "outputFile": {
       "type": "string",
       "description": "Optional file to write execution results"

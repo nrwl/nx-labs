@@ -61,6 +61,9 @@
       "currentVersionResolver": "registry",
       "preserveLocalDependencyProtocols": false,
       "manifestRootsToUpdate": ["dist/packages/{projectName}"]
+    },
+    "git": {
+      "tag": false
     }
   }
 }

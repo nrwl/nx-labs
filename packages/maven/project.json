@@ -1,7 +1,7 @@
 {
-  "name": "php",
+  "name": "maven",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/php/src",
+  "sourceRoot": "packages/maven/src",
   "projectType": "library",
   "release": {
     "version": {
@@ -17,29 +17,31 @@
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
+      "dependsOn": ["compile-java", "^build"],
       "options": {
-        "outputPath": "dist/packages/php",
-        "main": "packages/php/src/index.ts",
-        "tsConfig": "packages/php/tsconfig.lib.json",
+        "outputPath": "dist/packages/maven",
+        "main": "packages/maven/src/index.ts",
+        "tsConfig": "packages/maven/tsconfig.lib.json",
         "assets": [
-          "packages/php/*.md",
+          "packages/maven/target/**/*",
+          "packages/maven/*.md",
           {
-            "input": "./packages/php/src",
+            "input": "./packages/maven/src",
             "glob": "**/!(*.ts)",
             "output": "./src"
           },
           {
-            "input": "./packages/php/src",
+            "input": "./packages/maven/src",
             "glob": "**/*.d.ts",
             "output": "./src"
           },
           {
-            "input": "./packages/php",
+            "input": "./packages/maven",
             "glob": "generators.json",
             "output": "."
           },
           {
-            "input": "./packages/php",
+            "input": "./packages/maven",
             "glob": "executors.json",
             "output": "."
           }
@@ -58,7 +60,13 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "packages/php/jest.config.ts"
+        "jestConfig": "packages/maven/jest.config.ts"
+      }
+    },
+    "compile-java": {
+      "command": "rm -rf target && mvn clean install -DskipTests",
+      "options": {
+        "cwd": "{projectRoot}"
       }
     }
   }

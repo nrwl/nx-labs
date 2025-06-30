@@ -181,9 +181,9 @@ async function runMavenAnalysis(options: MavenPluginOptions): Promise<any> {
   const isVerbose = options.verbose || process.env.NX_VERBOSE_LOGGING === 'true' || process.argv.includes('--verbose');
 
   // Check if Java analyzer is available
-  if (!findJavaAnalyzer()) {
-    throw new Error('Maven analyzer not found. Please ensure maven-plugin is compiled.');
-  }
+  // if (!findJavaAnalyzer()) {
+  //   throw new Error('Maven analyzer not found. Please ensure maven-plugin is compiled.');
+  // }
 
   if (isVerbose) {
     console.log(`Running Maven analysis with verbose logging enabled...`);
@@ -194,7 +194,7 @@ async function runMavenAnalysis(options: MavenPluginOptions): Promise<any> {
   // Build Maven command arguments
   // Use the custom nx:analyze goal from our Java Maven plugin
   const mavenArgs = [
-    'io.quarkus:maven-plugin:999-SNAPSHOT:analyze',
+    'dev.nx:maven-plugin:999-SNAPSHOT:analyze',
     `-Dnx.outputFile=${outputFile}`,
     `-Dnx.verbose=${isVerbose}`
   ];
