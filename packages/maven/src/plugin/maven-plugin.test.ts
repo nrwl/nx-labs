@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeAll } from 'vitest';
 import { createNodesV2, createDependencies, MavenPluginOptions } from '.';
 import { CreateNodesContextV2, CreateDependenciesContext } from '@nx/devkit';
 
@@ -11,7 +10,6 @@ describe('Maven Plugin', () => {
     const context: CreateNodesContextV2 = {
       nxJsonConfiguration: {},
       workspaceRoot,
-      configFiles: ['pom.xml']
     };
 
     const options: MavenPluginOptions = {
