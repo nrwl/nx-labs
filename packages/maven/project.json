@@ -17,13 +17,13 @@
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
-      "dependsOn": ["compile-java", "^build"],
+      "dependsOn": ["copy-target", "^build"],
       "options": {
         "outputPath": "dist/packages/maven",
+        "clean": false,
         "main": "packages/maven/src/index.ts",
         "tsConfig": "packages/maven/tsconfig.lib.json",
         "assets": [
-          "packages/maven/target/**/*",
           "packages/maven/*.md",
           {
             "input": "./packages/maven/src",
@@ -68,6 +68,10 @@
       "options": {
         "cwd": "{projectRoot}"
       }
+    },
+    "copy-target": {
+      "dependsOn": ["compile-java"],
+      "command": "cp -r {projectRoot}/target dist/{projectRoot}"
     }
   }
 }
