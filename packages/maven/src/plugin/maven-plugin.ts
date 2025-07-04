@@ -8,19 +8,17 @@ import {
   writeJsonFile,
 } from '@nx/devkit';
 import { dirname, join } from 'path';
+import { platform } from 'os';
 import { existsSync, readFileSync } from 'fs';
 import { spawn } from 'child_process';
 import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
 import { calculateHashForCreateNodes } from '@nx/devkit/src/utils/calculate-hash-for-create-nodes';
 
 export interface MavenPluginOptions {
-  mavenExecutable?: string;
   verbose?: boolean;
 }
 
-const DEFAULT_OPTIONS: MavenPluginOptions = {
-  mavenExecutable: 'mvn',
-};
+const DEFAULT_OPTIONS: MavenPluginOptions = {};
 
 // Global cache to avoid running Maven analysis multiple times
 let globalAnalysisCache: any = null;
@@ -99,7 +97,7 @@ export const createNodesV2: CreateNodesV2 = [
     }
 
     // Run analysis if not cached
-    const result = await runMavenAnalysis(opts);
+    const result = await runMavenAnalysis(opts, context);
 
     // Cache the complete result
     cache[cacheKey] = result;
@@ -153,7 +151,7 @@ export const createDependencies: CreateDependencies = async (options, context) =
     }
 
     // Run analysis if not cached - this should rarely happen since createNodesV2 runs first
-    const result = await runMavenAnalysis(opts);
+    const result = await runMavenAnalysis(opts, context);
 
     // Cache the complete result
     cache[cacheKey] = result;
@@ -172,10 +170,26 @@ export const createDependencies: CreateDependencies = async (options, context) =
 };
 
 /**
+ * Detect Maven executable (wrapper or system Maven)
+ */
+function detectMavenExecutable(workspaceRoot: string): string {
+  const isWindows = platform() === 'win32';
+  const wrapperFile = isWindows ? 'mvnw.cmd' : 'mvnw';
+  const wrapperPath = join(workspaceRoot, wrapperFile);
+  
+  if (existsSync(wrapperPath)) {
+    return wrapperPath;
+  }
+  
+  return 'mvn';
+}
+
+/**
  * Run Maven analysis using Java plugin
  */
-async function runMavenAnalysis(options: MavenPluginOptions): Promise<any> {
+async function runMavenAnalysis(options: MavenPluginOptions, context: CreateNodesContextV2): Promise<any> {
   const outputFile = join(workspaceDataDirectory, 'maven-analysis.json');
+  const mavenExecutable = detectMavenExecutable(context.workspaceRoot);
 
   // Check if verbose mode is enabled
   const isVerbose = options.verbose || process.env.NX_VERBOSE_LOGGING === 'true' || process.argv.includes('--verbose');
@@ -187,7 +201,7 @@ async function runMavenAnalysis(options: MavenPluginOptions): Promise<any> {
 
   if (isVerbose) {
     console.log(`Running Maven analysis with verbose logging enabled...`);
-    console.log(`Maven executable: ${options.mavenExecutable}`);
+    console.log(`Maven executable: ${mavenExecutable}`);
     console.log(`Output file: ${outputFile}`);
   }
 
@@ -203,7 +217,7 @@ async function runMavenAnalysis(options: MavenPluginOptions): Promise<any> {
   // These warnings are normal in large multi-module projects and don't affect functionality
 
   if (isVerbose) {
-    console.log(`Executing Maven command: ${options.mavenExecutable} ${mavenArgs.join(' ')}`);
+    console.log(`Executing Maven command: ${mavenExecutable} ${mavenArgs.join(' ')}`);
     console.log(`Working directory: ${workspaceRoot}`);
   } else {
     mavenArgs.push('-q');
@@ -211,8 +225,8 @@ async function runMavenAnalysis(options: MavenPluginOptions): Promise<any> {
 
   // Run Maven plugin
   await new Promise<void>((resolve, reject) => {
-    const child = spawn(options.mavenExecutable, mavenArgs, {
-      cwd: workspaceRoot,
+    const child = spawn(mavenExecutable, mavenArgs, {
+      cwd: context.workspaceRoot,
       stdio: 'inherit'
     });
 
@@ -245,23 +259,6 @@ async function runMavenAnalysis(options: MavenPluginOptions): Promise<any> {
   return JSON.parse(jsonContent);
 }
 
-/**
- * Find the compiled Java Maven analyzer
- */
-function findJavaAnalyzer(): string | null {
-  const possiblePaths = [
-    join(__dirname, 'target/classes'),
-    join(__dirname, 'target/maven-plugin-999-SNAPSHOT.jar'),
-  ];
-
-  for (const path of possiblePaths) {
-    if (existsSync(path)) {
-      return path;
-    }
-  }
-
-  return null;
-}
 
 
 /**
