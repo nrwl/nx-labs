@@ -5,6 +5,7 @@ A sophisticated Nx plugin that integrates Maven projects into the Nx ecosystem, 
 ## Overview
 
 This plugin bridges the gap between Maven and Nx by:
+
 - Analyzing Maven projects using official Maven APIs
 - Generating Nx project graphs from Maven dependencies
 - Providing batch executors that preserve Maven session context
@@ -15,6 +16,7 @@ This plugin bridges the gap between Maven and Nx by:
 ### Core Components
 
 #### 1. TypeScript Graph Plugin (`maven-plugin.ts`)
+
 - **Purpose**: Main entry point for Nx integration
 - **Responsibilities**:
   - Implements Nx's `createNodesV2` and `createDependencies` interfaces
@@ -22,6 +24,7 @@ This plugin bridges the gap between Maven and Nx by:
   - Coordinates with Java analyzer for project discovery
 
 #### 2. Java/Kotlin Analyzer (`src/main/kotlin/`)
+
 - **Purpose**: Maven project analysis using official Maven APIs
 - **Key Components**:
   - `NxAnalyzerMojo.kt`: Maven plugin that orchestrates analysis
@@ -30,6 +33,7 @@ This plugin bridges the gap between Maven and Nx by:
   - `MavenUtils.kt`: Utility functions for Maven project introspection
 
 #### 3. Batch Maven Executor (`src/executors/maven-batch/`)
+
 - **Purpose**: Executes Maven goals with Nx's batch execution capabilities
 - **Features**:
   - Preserves Maven session context across multiple goals
@@ -56,12 +60,14 @@ Project Graph ← Cached Results ← JSON Output ← Project Analysis
 ### Initial Setup
 
 1. **Compile the Java components**:
+
    ```bash
    cd maven-plugin
    mvn clean compile
    ```
 
 2. **Copy dependencies** (required for batch executor):
+
    ```bash
    mvn dependency:copy-dependencies
    ```
@@ -91,10 +97,10 @@ Add the plugin to your `nx.json`:
 
 #### Plugin Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `mavenExecutable` | string | `"mvn"` | Path to Maven executable |
-| `verbose` | boolean | `false` | Enable verbose logging |
+| Option            | Type    | Default | Description              |
+| ----------------- | ------- | ------- | ------------------------ |
+| `mavenExecutable` | string  | `"mvn"` | Path to Maven executable |
+| `verbose`         | boolean | `false` | Enable verbose logging   |
 
 ## Usage
 
@@ -109,7 +115,7 @@ nx show projects
 # Generate project graph
 nx graph --file graph.json
 
-# View detailed project information  
+# View detailed project information
 nx show projects --verbose
 ```
 
@@ -147,19 +153,20 @@ Use the maven-batch executor for complex workflows:
 
 #### Batch Executor Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `goals` | string[] | required | Maven goals to execute |
-| `projectRoot` | string | `"."` | Project root directory |
-| `verbose` | boolean | `false` | Enable verbose output |
-| `timeout` | number | `300000` | Timeout in milliseconds |
-| `failOnError` | boolean | `true` | Fail on Maven errors |
+| Option        | Type     | Default  | Description             |
+| ------------- | -------- | -------- | ----------------------- |
+| `goals`       | string[] | required | Maven goals to execute  |
+| `projectRoot` | string   | `"."`    | Project root directory  |
+| `verbose`     | boolean  | `false`  | Enable verbose output   |
+| `timeout`     | number   | `300000` | Timeout in milliseconds |
+| `failOnError` | boolean  | `true`   | Fail on Maven errors    |
 
 ## Advanced Features
 
 ### Session Context Preservation
 
 Traditional Maven goal execution in separate processes loses session context:
+
 ```bash
 # ❌ This fails because install can't find the JAR
 mvn jar:jar    # Creates JAR, sets project.artifact.file
@@ -167,6 +174,7 @@ mvn install:install  # New session, JAR context lost
 ```
 
 Our batch executor preserves session context:
+
 ```bash
 # ✅ This works because both goals share the same session
 java -cp ... NxMavenBatchExecutor "jar:jar,install:install" "." false
@@ -190,7 +198,7 @@ The plugin automatically generates:
       "options": {
         "goals": [
           "clean:clean",
-          "compile:compile", 
+          "compile:compile",
           "org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
         ],
         "timeout": 600000,
@@ -213,7 +221,7 @@ The plugin automatically generates:
 The plugin implements multi-level caching:
 
 1. **Global In-Memory Cache**: Fastest access for repeated operations
-2. **File-based Cache**: Persistent cache between Nx runs  
+2. **File-based Cache**: Persistent cache between Nx runs
 3. **Hash-based Invalidation**: Automatic cache invalidation on changes
 
 Cache is stored in: `${workspaceDataDirectory}/maven-analysis-cache.json`
@@ -336,6 +344,7 @@ interface MavenGoalResult {
 ### Common Issues
 
 #### Plugin Not Found
+
 ```bash
 # Ensure plugin is compiled
 mvn clean compile
@@ -344,6 +353,7 @@ nx reset
 ```
 
 #### Cache Issues
+
 ```bash
 # Clear Maven analysis cache
 rm -rf .nx/cache/maven-analysis-cache.json
@@ -352,19 +362,23 @@ nx reset
 ```
 
 #### Build Cache Problems
+
 ```bash
 # Disable build cache temporarily
 GRADLE_ENTERPRISE_BUILD_CACHE_ENABLED=false mvn clean compile
 ```
 
 #### Dependencies Missing
+
 ```bash
 # Copy Maven dependencies for batch executor
 mvn dependency:copy-dependencies
 ```
 
 #### Session Context Issues
+
 If individual goals fail due to missing artifacts, use the batch executor:
+
 ```json
 {
   "options": {
@@ -398,11 +412,13 @@ nx show projects --verbose
 ### Commit Guidelines
 
 1. **Always run end-to-end tests** before committing:
+
    ```bash
    npm run test:e2e
    ```
 
 2. **Follow conventional commit format**:
+
    ```
    feat: add support for Maven profiles
    fix: resolve dependency resolution issues

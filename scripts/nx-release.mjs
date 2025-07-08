@@ -55,18 +55,35 @@ if (!parsedArgs.local) {
 }
 
 function updatePackageJsonFiles(parsedVersion, isLocal) {
-  let pkgFiles = [
-    'package.json',
-    'dist/npm/nx-ignore/package.json',
-    'dist/npm/rspack/package.json',
-  ];
+  let pkgFiles = ['package.json'];
+
+  // Dynamically discover packages in dist/npm
+  if (fs.existsSync('dist/npm')) {
+    const distPackages = fs
+      .readdirSync('dist/npm', { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
+
+    distPackages.forEach((pkg) => {
+      const packageJsonPath = `dist/npm/${pkg}/package.json`;
+      if (fs.existsSync(packageJsonPath)) {
+        pkgFiles.push(packageJsonPath);
+      }
+    });
+  }
+
   if (isLocal) {
     pkgFiles = pkgFiles.filter((f) => f !== 'package.json');
   }
+
   pkgFiles.forEach((p) => {
-    const content = JSON.parse(fs.readFileSync(p).toString());
-    content.version = parsedVersion.version;
-    fs.writeFileSync(p, JSON.stringify(content, null, 2));
+    if (fs.existsSync(p)) {
+      const content = JSON.parse(fs.readFileSync(p).toString());
+      content.version = parsedVersion.version;
+      fs.writeFileSync(p, JSON.stringify(content, null, 2));
+    } else {
+      console.warn(`Warning: Package file ${p} does not exist, skipping...`);
+    }
   });
 }
 

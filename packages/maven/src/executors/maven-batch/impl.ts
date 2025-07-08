@@ -1,2 +1,2 @@
 // Re-export the executor for Nx
-export { default, batchMavenExecutor } from './executor';
+export { batchMavenExecutor, default } from './executor';

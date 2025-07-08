@@ -1,1 +1,1 @@
-export { default, batchMavenExecutor } from './executor';
+export { batchMavenExecutor, default } from './executor';

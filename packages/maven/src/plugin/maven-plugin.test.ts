@@ -1,5 +1,5 @@
-import { createNodesV2, createDependencies, MavenPluginOptions } from '.';
-import { CreateNodesContextV2, CreateDependenciesContext } from '@nx/devkit';
+import { CreateDependenciesContext, CreateNodesContextV2 } from '@nx/devkit';
+import { createDependencies, createNodesV2, MavenPluginOptions } from '.';
 
 describe('Maven Plugin', () => {
   const workspaceRoot = __dirname;
@@ -14,7 +14,7 @@ describe('Maven Plugin', () => {
 
     const options: MavenPluginOptions = {
       mavenExecutable: 'mvn',
-      verbose: false
+      verbose: false,
     };
 
     analysisResults = await createNodesV2[1](['pom.xml'], options, context);
@@ -63,10 +63,10 @@ describe('Maven Plugin', () => {
         // Independent projects (ARC CDI)
         'io.quarkus.arc:arc-parent',
         'io.quarkus.arc:arc',
-        'io.quarkus.arc:arc-processor'
+        'io.quarkus.arc:arc-processor',
       ];
 
-      expectedProjects.forEach(project => {
+      expectedProjects.forEach((project) => {
         expect(allProjectNames.has(project)).toBe(true);
       });
     });
@@ -97,11 +97,11 @@ describe('Maven Plugin', () => {
         externalNodes: {},
         projects: {},
         fileMap: { nonProjectFiles: [], projectFileMap: {} },
-        filesToProcess: { nonProjectFiles: [], projectFileMap: {} }
+        filesToProcess: { nonProjectFiles: [], projectFileMap: {} },
       };
 
       const options: MavenPluginOptions = {
-        mavenExecutable: 'non-existent-command'
+        mavenExecutable: 'non-existent-command',
       };
 
       const result = await createDependencies(options, context);

@@ -5,9 +5,9 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>dev.nx</groupId>
-    <artifactId>maven-plugin</artifactId>
-    <version>999-SNAPSHOT</version>
+    <groupId>dev.nx.maven</groupId>
+    <artifactId>project-graph</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <properties>

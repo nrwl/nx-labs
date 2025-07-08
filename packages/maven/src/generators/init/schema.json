@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "NxMavenInit",
+  "title": "Initialize Maven plugin",
+  "description": "Initialize Maven plugin for an Nx workspace",
+  "type": "object",
+  "properties": {
+    "skipFormat": {
+      "type": "boolean",
+      "description": "Skip formatting files",
+      "default": false,
+      "x-priority": "internal"
+    },
+    "skipPackageJson": {
+      "type": "boolean",
+      "description": "Don't add dependencies to package.json",
+      "default": false,
+      "x-priority": "internal"
+    },
+    "keepExistingVersions": {
+      "type": "boolean",
+      "description": "Keep existing dependency versions",
+      "default": false,
+      "x-priority": "internal"
+    },
+    "updatePackageScripts": {
+      "type": "boolean",
+      "description": "Update package.json scripts with inferred targets",
+      "default": false,
+      "x-priority": "internal"
+    },
+    "mavenExecutable": {
+      "type": "string",
+      "description": "Path to Maven executable",
+      "default": "mvn",
+      "x-priority": "important"
+    }
+  },
+  "additionalProperties": false
+}

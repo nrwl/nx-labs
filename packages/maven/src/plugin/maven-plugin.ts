@@ -1,18 +1,18 @@
 import {
   CreateDependencies,
-  CreateNodesV2,
   CreateNodesContextV2,
   CreateNodesResultV2,
-  workspaceRoot,
+  CreateNodesV2,
   readJsonFile,
+  workspaceRoot,
   writeJsonFile,
 } from '@nx/devkit';
-import { dirname, join } from 'path';
-import { platform } from 'os';
-import { existsSync, readFileSync } from 'fs';
-import { spawn } from 'child_process';
-import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
 import { calculateHashForCreateNodes } from '@nx/devkit/src/utils/calculate-hash-for-create-nodes';
+import { spawn } from 'child_process';
+import { existsSync, readFileSync } from 'fs';
+import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
+import { platform } from 'os';
+import { join } from 'path';
 
 export interface MavenPluginOptions {
   verbose?: boolean;
@@ -47,17 +47,21 @@ function writeMavenCache(cachePath: string, cache: Record<string, any>) {
 export const createNodesV2: CreateNodesV2 = [
   '**/pom.xml',
   async (configFiles, options, context): Promise<CreateNodesResultV2> => {
-    const opts: MavenPluginOptions = { ...DEFAULT_OPTIONS, ...(options as MavenPluginOptions) };
+    const opts: MavenPluginOptions = {
+      ...DEFAULT_OPTIONS,
+      ...(options as MavenPluginOptions),
+    };
 
     if (opts.verbose) {
       console.log(`Maven plugin found ${configFiles.length} pom.xml files`);
     }
 
     // Filter out unwanted pom.xml files
-    const filteredFiles = configFiles.filter(file =>
-      !file.includes('maven-script/') &&
-      !file.includes('target/') &&
-      !file.includes('node_modules/')
+    const filteredFiles = configFiles.filter(
+      (file) =>
+        !file.includes('maven-script/') &&
+        !file.includes('target/') &&
+        !file.includes('node_modules/')
     );
 
     if (filteredFiles.length === 0) {
@@ -114,8 +118,14 @@ export const createNodesV2: CreateNodesV2 = [
 /**
  * Create dependencies using Java analysis results
  */
-export const createDependencies: CreateDependencies = async (options, context) => {
-  const opts: MavenPluginOptions = { ...DEFAULT_OPTIONS, ...(options as MavenPluginOptions) };
+export const createDependencies: CreateDependencies = async (
+  options,
+  context
+) => {
+  const opts: MavenPluginOptions = {
+    ...DEFAULT_OPTIONS,
+    ...(options as MavenPluginOptions),
+  };
 
   try {
     // Generate cache key based on pom.xml files and options
@@ -142,7 +152,9 @@ export const createDependencies: CreateDependencies = async (options, context) =
     // Check if we have valid cached results
     if (cache[cacheKey]) {
       if (opts.verbose) {
-        console.log('Using cached Maven analysis results for createDependencies');
+        console.log(
+          'Using cached Maven analysis results for createDependencies'
+        );
       }
       // Store in global cache for faster subsequent access
       globalAnalysisCache = cache[cacheKey];
@@ -162,7 +174,6 @@ export const createDependencies: CreateDependencies = async (options, context) =
     globalCacheKey = cacheKey;
 
     return result.createDependencies || [];
-
   } catch (error) {
     console.error(`Maven dependency analysis failed:`, error.message);
     return [];
@@ -176,23 +187,29 @@ function detectMavenExecutable(workspaceRoot: string): string {
   const isWindows = platform() === 'win32';
   const wrapperFile = isWindows ? 'mvnw.cmd' : 'mvnw';
   const wrapperPath = join(workspaceRoot, wrapperFile);
-  
+
   if (existsSync(wrapperPath)) {
     return wrapperPath;
   }
-  
+
   return 'mvn';
 }
 
 /**
  * Run Maven analysis using Java plugin
  */
-async function runMavenAnalysis(options: MavenPluginOptions, context: CreateNodesContextV2): Promise<any> {
+async function runMavenAnalysis(
+  options: MavenPluginOptions,
+  context: CreateNodesContextV2
+): Promise<any> {
   const outputFile = join(workspaceDataDirectory, 'maven-analysis.json');
   const mavenExecutable = detectMavenExecutable(context.workspaceRoot);
 
   // Check if verbose mode is enabled
-  const isVerbose = options.verbose || process.env.NX_VERBOSE_LOGGING === 'true' || process.argv.includes('--verbose');
+  const isVerbose =
+    options.verbose ||
+    process.env.NX_VERBOSE_LOGGING === 'true' ||
+    process.argv.includes('--verbose');
 
   // Check if Java analyzer is available
   // if (!findJavaAnalyzer()) {
@@ -210,14 +227,16 @@ async function runMavenAnalysis(options: MavenPluginOptions, context: CreateNode
   const mavenArgs = [
     'dev.nx:maven-plugin:999-SNAPSHOT:analyze',
     `-Dnx.outputFile=${outputFile}`,
-    `-Dnx.verbose=${isVerbose}`
+    `-Dnx.verbose=${isVerbose}`,
   ];
 
   // Always use quiet mode to suppress expected reactor dependency warnings
   // These warnings are normal in large multi-module projects and don't affect functionality
 
   if (isVerbose) {
-    console.log(`Executing Maven command: ${mavenExecutable} ${mavenArgs.join(' ')}`);
+    console.log(
+      `Executing Maven command: ${mavenExecutable} ${mavenArgs.join(' ')}`
+    );
     console.log(`Working directory: ${workspaceRoot}`);
   } else {
     mavenArgs.push('-q');
@@ -227,7 +246,7 @@ async function runMavenAnalysis(options: MavenPluginOptions, context: CreateNode
   await new Promise<void>((resolve, reject) => {
     const child = spawn(mavenExecutable, mavenArgs, {
       cwd: context.workspaceRoot,
-      stdio: 'inherit'
+      stdio: 'inherit',
     });
 
     // No timeout for very large codebases like Quarkus
@@ -258,8 +277,6 @@ async function runMavenAnalysis(options: MavenPluginOptions, context: CreateNode
   const jsonContent = readFileSync(outputFile, 'utf8');
   return JSON.parse(jsonContent);
 }
-
-
 
 /**
  * Plugin configuration

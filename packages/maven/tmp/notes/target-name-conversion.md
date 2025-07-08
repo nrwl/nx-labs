@@ -1,11 +1,13 @@
 # Target Name Conversion Logic
 
 ## Overview
+
 Found the key methods that handle conversion between Maven plugin goal names and Nx target names.
 
 ## Key Methods and Locations
 
 ### 1. Primary Conversion Method: `getTargetName()`
+
 **Location:** `/ExecutionPlanAnalysisService.java` lines 268-271
 
 ```java
@@ -16,11 +18,13 @@ public static String getTargetName(String artifactId, String goal) {
 ```
 
 **Example conversions:**
+
 - `maven-jar-plugin` + `jar` → `maven-jar:jar`
 - `maven-compiler-plugin` + `compile` → `maven-compiler:compile`
 - `maven-surefire-plugin` + `test` → `maven-surefire:test`
 
 ### 2. Plugin Name Normalization: `normalizePluginName()`
+
 **Location:** `/ExecutionPlanAnalysisService.java` lines 286-291
 
 ```java
@@ -33,12 +37,14 @@ public static String normalizePluginName(String artifactId) {
 ```
 
 **Example transformations:**
+
 - `maven-jar-plugin` → `maven-jar`
 - `maven-compiler-plugin` → `maven-compiler`
 - `quarkus-maven-plugin` → `quarkus`
 - `spring-boot-maven-plugin` → `spring-boot`
 
 ### 3. Reverse Conversion: `extractGoalFromTargetName()`
+
 **Location:** `/ExecutionPlanAnalysisService.java` lines 276-281
 
 ```java
@@ -51,11 +57,13 @@ public static String extractGoalFromTargetName(String targetName) {
 ```
 
 **Example extractions:**
+
 - `maven-compiler:compile` → `compile`
 - `maven-jar:jar` → `jar`
 - `maven-surefire:test` → `test`
 
 ### 4. Goal to Target Name Conversion in Phase Generation
+
 **Location:** `/TargetGenerationService.java` lines 139-149
 
 ```java
@@ -75,7 +83,9 @@ private String getTargetNameFromGoal(String goalName) {
 ## Usage Patterns
 
 ### In Target Generation
+
 1. **Plugin Goal Targets:** Line 179 in `TargetGenerationService.java`
+
    ```java
    String targetName = ExecutionPlanAnalysisService.getTargetName(plugin.getArtifactId(), goal);
    ```
@@ -86,17 +96,21 @@ private String getTargetNameFromGoal(String goalName) {
    ```
 
 ### In Analysis Service
+
 1. **Project Analysis:** Line 348 in `ExecutionPlanAnalysisService.java`
    ```java
    String targetName = getTargetName(pluginArtifactId, goal);
    ```
 
 ## Key Insight
+
 The conversion follows this pattern:
+
 - **Full Maven Goal:** `org.apache.maven.plugins:maven-jar-plugin:jar`
 - **Normalized Target:** `maven-jar:jar`
 
 The system removes:
+
 - Group ID (`org.apache.maven.plugins`)
 - `-maven-plugin` and `-plugin` suffixes from artifact ID
 - Keeps artifact ID + goal in `plugin:goal` format

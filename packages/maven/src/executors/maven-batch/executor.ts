@@ -1,8 +1,7 @@
 import { ExecutorContext, logger, TaskGraph } from '@nx/devkit';
-import { execSync } from 'child_process';
-import { join } from 'path';
 import { existsSync, writeFileSync } from 'fs';
 import { createPseudoTerminal } from 'nx/src/tasks-runner/pseudo-terminal';
+import { join } from 'path';
 
 export interface MavenBatchExecutorOptions {
   goals: string[];
@@ -45,7 +44,7 @@ export default async function runExecutor(
     projectRoot = '.',
     verbose = false,
     outputFile,
-    failOnError = true
+    failOnError = true,
   } = options;
 
   if (!goals || goals.length === 0) {
@@ -142,7 +141,9 @@ export default async function runExecutor(
       const jsonOutput = lines.slice(jsonStart, jsonEnd + 1).join('\n');
       result = JSON.parse(jsonOutput);
     } catch (parseError: any) {
-      const error = `Failed to parse batch executor output: ${parseError?.message || parseError}`;
+      const error = `Failed to parse batch executor output: ${
+        parseError?.message || parseError
+      }`;
       logger.error(error);
       logger.debug(`Raw output: ${output}`);
       return { success: false, terminalOutput: error, error };
@@ -159,10 +160,16 @@ export default async function runExecutor(
 
       result.goalResults.forEach((goalResult, index) => {
         const status = goalResult.success ? '✅' : '❌';
-        logger.info(`${status} Goal ${index + 1}: ${goalResult.goal} (${goalResult.durationMs}ms)`);
+        logger.info(
+          `${status} Goal ${index + 1}: ${goalResult.goal} (${
+            goalResult.durationMs
+          }ms)`
+        );
 
         if (!goalResult.success && goalResult.errors.length > 0) {
-          goalResult.errors.forEach(error => logger.error(`  Error: ${error}`));
+          goalResult.errors.forEach((error) =>
+            logger.error(`  Error: ${error}`)
+          );
         }
 
         if (verbose && goalResult.output.length > 0) {
@@ -192,11 +199,12 @@ export default async function runExecutor(
 
     return {
       success,
-      terminalOutput: result.goalResults.map(r => r.output.join('\n')).join('\n'),
+      terminalOutput: result.goalResults
+        .map((r) => r.output.join('\n'))
+        .join('\n'),
       output: result,
-      error: result.errorMessage
+      error: result.errorMessage,
     };
-
   } catch (error: any) {
     const errorMessage = error?.message || String(error);
     logger.error(`Maven batch executor failed: ${errorMessage}`);
@@ -208,7 +216,7 @@ export default async function runExecutor(
     return {
       success: false,
       terminalOutput: errorMessage,
-      error: errorMessage
+      error: errorMessage,
     };
   }
 }
@@ -218,7 +226,8 @@ export async function batchMavenExecutor(
   taskGraph: TaskGraph,
   inputs: Record<string, MavenBatchExecutorOptions>
 ): Promise<Record<string, { success: boolean; terminalOutput: string }>> {
-  const results: Record<string, { success: boolean; terminalOutput: string }> = {};
+  const results: Record<string, { success: boolean; terminalOutput: string }> =
+    {};
 
   try {
     // Collect ALL goals and projects from ALL tasks in the task graph
@@ -260,25 +269,31 @@ export async function batchMavenExecutor(
 
     // Execute ALL unique goals across ALL unique projects in a single batch
     const batchOptions = { ...commonOptions!, verbose };
-    const batchResult = await executeMultiProjectMavenBatch(uniqueGoals, uniqueProjects, batchOptions, process.cwd());
+    const batchResult = await executeMultiProjectMavenBatch(
+      uniqueGoals,
+      uniqueProjects,
+      batchOptions,
+      process.cwd()
+    );
 
     // All tasks get the same result (success/failure of the entire batch)
     for (const taskId of taskIds) {
       results[taskId] = {
         success: batchResult.overallSuccess,
-        terminalOutput: batchResult.goalResults.map(r => r.output.join('\n')).join('\n')
+        terminalOutput: batchResult.goalResults
+          .map((r) => r.output.join('\n'))
+          .join('\n'),
       };
     }
 
     return results;
-
   } catch (error: any) {
     console.error(error.message);
     // If batch fails, mark ALL tasks as failed
     for (const taskId of Object.keys(inputs)) {
       results[taskId] = {
         success: false,
-        terminalOutput: error?.message || String(error)
+        terminalOutput: error?.message || String(error),
       };
     }
   }
@@ -293,9 +308,7 @@ async function executeMultiProjectMavenBatch(
   options: MavenBatchExecutorOptions,
   workspaceRoot: string
 ): Promise<MavenBatchResult> {
-  const {
-    verbose = false,
-  } = options;
+  const { verbose = false } = options;
 
   // Resolve paths
   const pluginDir = join(__dirname, '../../..');
@@ -310,11 +323,15 @@ async function executeMultiProjectMavenBatch(
   const dependencyPath = join(pluginDir, 'target/dependency');
 
   if (!existsSync(batchExecutorClasspath)) {
-    throw new Error(`Maven plugin not compiled. Run 'mvn compile' in ${pluginDir}`);
+    throw new Error(
+      `Maven plugin not compiled. Run 'mvn compile' in ${pluginDir}`
+    );
   }
 
   if (!existsSync(dependencyPath)) {
-    throw new Error(`Maven dependencies not copied. Run 'mvn dependency:copy-dependencies' in ${pluginDir}`);
+    throw new Error(
+      `Maven dependencies not copied. Run 'mvn dependency:copy-dependencies' in ${pluginDir}`
+    );
   }
 
   const goalsString = goals.join(',');
@@ -368,7 +385,11 @@ async function executeMultiProjectMavenBatch(
 
     result.goalResults.forEach((goalResult, index) => {
       const status = goalResult.success ? '✅' : '❌';
-      logger.info(`${status} Goal ${index + 1}: ${goalResult.goal} (${goalResult.durationMs}ms)`);
+      logger.info(
+        `${status} Goal ${index + 1}: ${goalResult.goal} (${
+          goalResult.durationMs
+        }ms)`
+      );
     });
   }
 
@@ -376,7 +397,11 @@ async function executeMultiProjectMavenBatch(
 }
 
 // Execute Maven command with streaming output using PseudoTerminal
-async function executeWithStreaming(command: string, cwd: string, verbose: boolean): Promise<string> {
+async function executeWithStreaming(
+  command: string,
+  cwd: string,
+  verbose: boolean
+): Promise<string> {
   // Create PseudoTerminal with skipSupportCheck=true to bypass TTY requirement
   const pseudoTerminal = createPseudoTerminal(true);
   let terminalOutput = '';
@@ -393,7 +418,7 @@ async function executeWithStreaming(command: string, cwd: string, verbose: boole
     const process = pseudoTerminal.runCommand(command, {
       cwd,
       quiet: false, // Always stream output
-      tty: false
+      tty: false,
     });
 
     // Collect output for JSON parsing
@@ -413,7 +438,6 @@ async function executeWithStreaming(command: string, cwd: string, verbose: boole
     } else {
       throw new Error(`Maven command failed with exit code ${code}`);
     }
-
   } catch (error: any) {
     pseudoTerminal.shutdown(1);
     throw new Error(`Failed to execute Maven command: ${error.message}`);

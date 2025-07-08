@@ -7,11 +7,13 @@ I analyzed the Maven plugin codebase to determine if any Nx targets are currentl
 ## Key Findings
 
 ### 1. Target Naming Strategy
+
 **Current approach**: All targets use **goal-based naming**, not execution ID-based naming.
 
 The target naming pattern is: `{pluginArtifactId}:{goalName}`
 
 Examples from the core project:
+
 - `maven-compiler:compile`
 - `maven-surefire:test`
 - `maven-jar:jar`
@@ -20,6 +22,7 @@ Examples from the core project:
 ### 2. Code Analysis
 
 **Target Generation Logic** (`TargetGenerationService.kt`):
+
 ```kotlin
 fun getTargetName(artifactId: String?, goal: String): String {
     val pluginName = normalizePluginName(artifactId)
@@ -28,14 +31,16 @@ fun getTargetName(artifactId: String?, goal: String): String {
 ```
 
 **Execution Processing** (`createGoalTarget` method):
+
 - Processes `PluginExecution` objects from Maven
-- Iterates through each `execution.goals` 
+- Iterates through each `execution.goals`
 - Creates targets named by goal, not execution ID
 - Execution ID is stored in metadata but NOT used for target naming
 
 ### 3. Execution ID Usage
 
 Execution IDs are **captured in metadata only**:
+
 ```kotlin
 val metadata = TargetMetadata("goal", generateGoalDescription(plugin.artifactId, goal)).apply {
     this.plugin = pluginKey
@@ -50,8 +55,9 @@ val metadata = TargetMetadata("goal", generateGoalDescription(plugin.artifactId,
 From the `io.quarkus:quarkus-core` project:
 
 **Goal-based target names:**
+
 - `maven-enforcer:enforce` (executionId: "enforce")
-- `buildnumber:create` (executionId: "get-scm-revision") 
+- `buildnumber:create` (executionId: "get-scm-revision")
 - `maven-compiler:compile` (executionId: "default-compile")
 - `maven-source:jar-no-fork` (executionId: "attach-sources")
 

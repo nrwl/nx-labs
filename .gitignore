@@ -33,6 +33,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+/.specstory
 
 # System Files
 .DS_Store
@@ -48,3 +49,5 @@ vitest.config.*.timestamp*
 
 # Maven dirs
 target
+.cursor/
+.claude/

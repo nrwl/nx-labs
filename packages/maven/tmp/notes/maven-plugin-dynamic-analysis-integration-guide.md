@@ -7,6 +7,7 @@ This guide shows how to replace hardcoded plugin-specific logic with dynamic Mav
 ## Key Maven APIs for Plugin Introspection
 
 ### 1. MojoExecution API (Already Available)
+
 ```java
 // Access through ExecutionPlanAnalysisService
 MavenExecutionPlan executionPlan = lifecycleExecutor.calculateExecutionPlan(session, phase);
@@ -20,6 +21,7 @@ for (MojoExecution mojoExecution : executionPlan.getMojoExecutions()) {
 ```
 
 ### 2. MojoDescriptor API (Available via MojoExecution)
+
 ```java
 MojoDescriptor descriptor = mojoExecution.getMojoDescriptor();
 if (descriptor != null) {
@@ -31,12 +33,13 @@ if (descriptor != null) {
 ```
 
 ### 3. Parameter Analysis
+
 ```java
 for (Parameter parameter : descriptor.getParameters()) {
     String name = parameter.getName();
     String type = parameter.getType(); // e.g., "java.io.File"
     String description = parameter.getDescription();
-    
+
     // Check if parameter represents a file/directory
     if ("java.io.File".equals(type) || name.contains("Dir") || name.contains("File")) {
         // This parameter deals with files/directories
@@ -45,6 +48,7 @@ for (Parameter parameter : descriptor.getParameters()) {
 ```
 
 ### 4. Configuration Analysis
+
 ```java
 Xpp3Dom configuration = mojoExecution.getConfiguration();
 if (configuration != null) {
@@ -55,7 +59,7 @@ if (configuration != null) {
 private void analyzeConfigurationElement(Xpp3Dom element) {
     String name = element.getName();
     String value = element.getValue();
-    
+
     // Look for file/directory configurations
     if (name.toLowerCase().contains("dir") || name.toLowerCase().contains("path")) {
         // This configuration element deals with paths
@@ -68,6 +72,7 @@ private void analyzeConfigurationElement(Xpp3Dom element) {
 ### Replace DynamicGoalAnalysisService.analyzeMojoExecution()
 
 **Before (empty implementation):**
+
 ```java
 private GoalBehavior analyzeMojoExecution(String goal, MavenProject project) {
     GoalBehavior behavior = new GoalBehavior();
@@ -77,10 +82,11 @@ private GoalBehavior analyzeMojoExecution(String goal, MavenProject project) {
 ```
 
 **After (dynamic introspection):**
+
 ```java
 private GoalBehavior analyzeMojoExecution(String goal, MavenProject project) {
     GoalBehavior behavior = new GoalBehavior();
-    
+
     try {
         // Find MojoExecution for this goal
         MojoExecution mojoExecution = findMojoExecutionForGoal(goal, project);
@@ -89,13 +95,13 @@ private GoalBehavior analyzeMojoExecution(String goal, MavenProject project) {
             MojoDescriptor descriptor = mojoExecution.getMojoDescriptor();
             if (descriptor != null) {
                 analyzeParameters(descriptor.getParameters(), behavior);
-                
+
                 // Check dependency resolution requirements
                 if ("compile".equals(descriptor.getDependencyResolutionRequired())) {
                     behavior.setProcessesSources(true);
                 }
             }
-            
+
             // Analyze configuration
             Xpp3Dom config = mojoExecution.getConfiguration();
             if (config != null) {
@@ -105,7 +111,7 @@ private GoalBehavior analyzeMojoExecution(String goal, MavenProject project) {
     } catch (Exception e) {
         // Fall back to existing logic
     }
-    
+
     return behavior;
 }
 ```
@@ -113,16 +119,19 @@ private GoalBehavior analyzeMojoExecution(String goal, MavenProject project) {
 ## Benefits of Dynamic Introspection
 
 ### 1. Automatic Plugin Support
+
 - Works with any Maven plugin without hardcoding
 - Handles custom enterprise plugins automatically
 - Adapts to plugin configuration changes
 
 ### 2. More Accurate Analysis
+
 - Uses actual plugin metadata instead of guessing
 - Understands parameter types and requirements
 - Analyzes actual configuration values
 
 ### 3. Detailed Information
+
 - File/directory parameters and their types
 - Input vs output parameters
 - Plugin descriptions and requirements
@@ -131,13 +140,15 @@ private GoalBehavior analyzeMojoExecution(String goal, MavenProject project) {
 ## Integration Steps
 
 ### Step 1: Add MavenPluginIntrospectionService
+
 ```java
 // In NxAnalyzerMojo or service initialization
-MavenPluginIntrospectionService introspectionService = 
+MavenPluginIntrospectionService introspectionService =
     new MavenPluginIntrospectionService(session, lifecycleExecutor, getLog(), isVerbose());
 ```
 
 ### Step 2: Replace DynamicGoalAnalysisService
+
 ```java
 // Replace with EnhancedDynamicGoalAnalysisService
 EnhancedDynamicGoalAnalysisService enhancedService = new EnhancedDynamicGoalAnalysisService(
@@ -145,6 +156,7 @@ EnhancedDynamicGoalAnalysisService enhancedService = new EnhancedDynamicGoalAnal
 ```
 
 ### Step 3: Update Service Usage
+
 ```java
 // Instead of:
 GoalBehavior behavior = dynamicGoalAnalysisService.analyzeGoal(goal, project);
@@ -153,13 +165,14 @@ GoalBehavior behavior = dynamicGoalAnalysisService.analyzeGoal(goal, project);
 GoalBehavior behavior = enhancedService.analyzeGoal(goal, project);
 
 // For detailed analysis:
-MavenPluginIntrospectionService.GoalIntrospectionResult detailedResult = 
+MavenPluginIntrospectionService.GoalIntrospectionResult detailedResult =
     enhancedService.getIntrospectionResult(goal, project);
 ```
 
 ## Example Results
 
 ### Compiler Plugin Analysis
+
 ```
 Goal: compile
 Plugin: org.apache.maven.plugins:maven-compiler-plugin
@@ -175,6 +188,7 @@ Dependency resolution: compile
 ```
 
 ### Quarkus Plugin Analysis
+
 ```
 Goal: dev
 Plugin: io.quarkus:quarkus-maven-plugin
@@ -193,6 +207,7 @@ Configuration:
 ## Testing the Implementation
 
 Run the test to see dynamic introspection in action:
+
 ```bash
 mvn test -Dtest=MavenPluginIntrospectionServiceTest
 ```
@@ -202,7 +217,7 @@ This will demonstrate how the introspection service provides much more detailed 
 ## Migration Strategy
 
 1. **Phase 1**: Add introspection service alongside existing hardcoded logic
-2. **Phase 2**: Gradually replace hardcoded patterns with dynamic analysis  
+2. **Phase 2**: Gradually replace hardcoded patterns with dynamic analysis
 3. **Phase 3**: Remove hardcoded logic and rely on introspection
 4. **Phase 4**: Add additional Maven dependencies if needed for fuller PluginDescriptor access
 

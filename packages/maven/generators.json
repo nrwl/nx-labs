@@ -1,4 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/nrwl/nx/master/packages/nx/schemas/generators.json",
-  "generators": {}
+  "generators": {
+    "init": {
+      "factory": "./src/generators/init/init",
+      "schema": "./src/generators/init/schema.json",
+      "description": "Initialize Maven plugin for an Nx workspace"
+    }
+  }
 }

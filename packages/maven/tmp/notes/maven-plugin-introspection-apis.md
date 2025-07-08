@@ -7,6 +7,7 @@ Based on analysis of the current codebase and Maven's API capabilities, here are
 ## Current State
 
 The `DynamicGoalAnalysisService` currently uses hardcoded plugin-specific logic (lines 108-153) to determine goal behavior. This approach has several limitations:
+
 - Must be updated for every new plugin
 - Cannot handle custom plugins or unknown plugins well
 - Doesn't leverage Maven's built-in metadata
@@ -14,27 +15,34 @@ The `DynamicGoalAnalysisService` currently uses hardcoded plugin-specific logic 
 ## Available Maven APIs
 
 ### 1. MojoExecution API (Currently Used)
+
 The codebase already accesses `MojoExecution` objects through `ExecutionPlanAnalysisService`:
+
 - `mojoExecution.getGoal()` - Get goal name
 - `mojoExecution.getLifecyclePhase()` - Get lifecycle phase
 - `mojoExecution.getPlugin()` - Get plugin information
 - `mojoExecution.getExecutionId()` - Get execution ID
 
 ### 2. Plugin and Mojo Descriptors (Not Currently Used)
+
 Maven provides `PluginDescriptor` and `MojoDescriptor` APIs for introspection, but these require additional dependencies and plugin manager access.
 
 ### 3. Parameter Analysis via MojoExecution
+
 The `MojoExecution` object contains configuration that can be analyzed for file/directory requirements.
 
 ## Recommended Enhancements
 
 ### Phase 1: Enhance MojoExecution Analysis
+
 Leverage existing `MojoExecution` data more effectively without adding new dependencies.
 
 ### Phase 2: Add Plugin Manager Integration
+
 Add `PluginManager` component to access `PluginDescriptor` and `MojoDescriptor`.
 
 ### Phase 3: Parameter Introspection
+
 Use `@Parameter` annotations and configuration to understand file/directory requirements.
 
 ## Implementation Strategy
@@ -44,6 +52,7 @@ Focus on enhancing the existing `MojoExecution` analysis in `DynamicGoalAnalysis
 ## Key Maven APIs Discovered
 
 ### 1. MojoExecution (Already Available)
+
 - `mojoExecution.getGoal()` - Goal name
 - `mojoExecution.getLifecyclePhase()` - Lifecycle phase
 - `mojoExecution.getPlugin()` - Plugin information
@@ -51,18 +60,21 @@ Focus on enhancing the existing `MojoExecution` analysis in `DynamicGoalAnalysis
 - `mojoExecution.getConfiguration()` - Plugin configuration XML
 
 ### 2. MojoDescriptor (Available via MojoExecution)
+
 - `descriptor.getDescription()` - Mojo description
 - `descriptor.isProjectRequired()` - Whether mojo requires project
 - `descriptor.getDependencyResolutionRequired()` - Dependency resolution scope
 - `descriptor.getParameters()` - List of mojo parameters
 
 ### 3. Parameter (Available via MojoDescriptor)
+
 - `parameter.getName()` - Parameter name
 - `parameter.getType()` - Parameter type (e.g., "java.io.File")
 - `parameter.getDescription()` - Parameter description
 - Used to identify file/directory parameters dynamically
 
 ### 4. Xpp3Dom Configuration (Available via MojoExecution)
+
 - `configuration.getName()` - Configuration element name
 - `configuration.getValue()` - Configuration value
 - `configuration.getChildren()` - Child configuration elements
