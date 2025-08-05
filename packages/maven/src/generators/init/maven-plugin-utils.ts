@@ -288,7 +288,7 @@ async function addNxMavenPluginToXml(pomContent: string): Promise<string> {
   // Validate the parsed XML structure
   if (!isMavenProject(result)) {
     throw new Error(
-      'Invalid POM structure: parsed XML does not match expected Maven project format'
+      `Invalid POM structure: expected root element <project>, but found top-level keys: [${Object.keys(result).join(', ')}]`
     );
   }
 
@@ -324,6 +324,9 @@ async function addNxMavenPluginToXml(pomContent: string): Promise<string> {
   // build is an array, plugins is an array, plugin is an array
   const buildSection = ensurePath(project, ['build'], [true]);
   const pluginsSection = ensurePath(buildSection, ['plugins'], [true]);
+  if (!pluginsSection) {
+    throw new Error('Invalid POM structure: <plugins> section is missing or malformed');
+  }
   ensureArray(pluginsSection, 'plugin');
 
   // Add the Nx Maven plugin
