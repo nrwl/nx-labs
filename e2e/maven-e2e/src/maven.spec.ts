@@ -43,4 +43,13 @@ describe('maven plugin', () => {
     });
     expect(output).toContain('maven-batch');
   });
+
+  it('should run validate target with run-many', () => {
+    // Run nx run-many --target=validate --all --parallel=2
+    execSync('yarn nx run-many --target=validate --all --parallel=2', {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+  });
 });
