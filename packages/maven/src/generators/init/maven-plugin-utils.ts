@@ -175,7 +175,7 @@ async function addNxMavenPluginToPom(tree: Tree, pomPath: string) {
 
 async function addNxMavenPluginToXml(pomContent: string): Promise<string> {
   // Parse XML using xml2js
-  const result = await new Promise<unknown>((resolve, reject) => {
+  const result = await new Promise<MavenProjectXml>((resolve, reject) => {
     parseString(
       pomContent,
       {
