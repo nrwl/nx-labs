@@ -319,7 +319,18 @@ async function runMavenAnalysis(
   }
 
   const jsonContent = readFileSync(outputFile, 'utf8');
-  return JSON.parse(jsonContent);
+
+  try {
+    return JSON.parse(jsonContent);
+  } catch (parseError) {
+    const errorMessage =
+      parseError instanceof Error ? parseError.message : String(parseError);
+    throw new Error(
+      `Failed to parse Maven analysis output from ${outputFile}: ${errorMessage}. ` +
+        `The output file may contain malformed JSON or the Maven analysis may have failed. ` +
+        `Raw content (first 500 chars): ${jsonContent.substring(0, 500)}`
+    );
+  }
 }
 
 /**

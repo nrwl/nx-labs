@@ -376,7 +376,19 @@ async function executeMultiProjectMavenBatch(
   }
 
   const jsonOutput = lines.slice(jsonStart, jsonEnd + 1).join('\n');
-  const result: MavenBatchResult = JSON.parse(jsonOutput);
+
+  let result: MavenBatchResult;
+  try {
+    result = JSON.parse(jsonOutput);
+  } catch (parseError) {
+    const errorMessage =
+      parseError instanceof Error ? parseError.message : String(parseError);
+    throw new Error(
+      `Failed to parse multi-project Maven batch output: ${errorMessage}. ` +
+        `The output file may contain malformed JSON or the Maven batch execution may have failed. ` +
+        `Raw JSON content (first 500 chars): ${jsonOutput.substring(0, 500)}`
+    );
+  }
 
   if (verbose) {
     logger.info(`Multi-project Maven batch execution completed`);

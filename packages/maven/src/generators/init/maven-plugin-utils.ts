@@ -50,6 +50,53 @@ function isMavenProject(obj: unknown): obj is MavenProject {
   );
 }
 
+type XmlObject = Record<string, unknown> & { $: Record<string, unknown> };
+type XmlStructure = XmlObject | XmlObject[];
+
+/**
+ * Creates a default XML2JS object structure with required $ property.
+ * @param shouldBeArray Whether this should be wrapped in an array
+ * @returns The default structure
+ */
+function createDefaultXmlStructure(shouldBeArray: boolean): XmlStructure {
+  const defaultObj: XmlObject = { $: {} };
+  return shouldBeArray ? [defaultObj] : defaultObj;
+}
+
+/**
+ * Navigates to the next level in an XML structure, handling arrays appropriately.
+ * @param obj The current object to navigate from
+ * @param shouldBeArray Whether the current level should be treated as an array
+ * @returns The next level object to continue navigation
+ */
+function navigateToNextLevel(
+  obj: unknown,
+  shouldBeArray: boolean
+): Record<string, unknown> {
+  if (shouldBeArray && Array.isArray(obj)) {
+    return obj[0] as Record<string, unknown>;
+  }
+  return obj as Record<string, unknown>;
+}
+
+/**
+ * Ensures a single property exists in an object with the correct structure.
+ * @param obj The object to ensure the property exists in
+ * @param prop The property name
+ * @param shouldBeArray Whether this property should be an array
+ * @returns The created or existing property value
+ */
+function ensureProperty(
+  obj: Record<string, unknown>,
+  prop: string,
+  shouldBeArray: boolean
+): XmlStructure {
+  if (!obj[prop]) {
+    obj[prop] = createDefaultXmlStructure(shouldBeArray);
+  }
+  return obj[prop] as XmlStructure;
+}
+
 /**
  * Ensures a path exists in an object, creating missing parts as needed.
  * @param obj The object to ensure the path exists in
@@ -68,15 +115,11 @@ function ensurePath<T extends Record<string, unknown>>(
     const prop = path[i];
     const shouldBeArray = isArrayPath[i];
 
-    if (!current[prop]) {
-      current[prop] = shouldBeArray ? [{ $: {} }] : { $: {} };
-    }
+    // Ensure the property exists with correct structure
+    const propertyValue = ensureProperty(current, prop, shouldBeArray);
 
-    // Navigate to the next level (get first element if it's an array)
-    current =
-      shouldBeArray && Array.isArray(current[prop])
-        ? current[prop][0]
-        : current[prop];
+    // Navigate to the next level
+    current = navigateToNextLevel(propertyValue, shouldBeArray);
   }
 
   return current;
@@ -92,10 +135,53 @@ function ensureArray<T extends Record<string, unknown>>(
   prop: string
 ): void {
   if (!obj[prop]) {
-    (obj as any)[prop] = [];
+    (obj as Record<string, unknown>)[prop] = [];
   } else if (!Array.isArray(obj[prop])) {
-    (obj as any)[prop] = [obj[prop]];
+    (obj as Record<string, unknown>)[prop] = [obj[prop]];
   }
+}
+
+/**
+ * Generates detailed error information for XML parsing failures.
+ * @param error The error that occurred during XML parsing
+ * @param pomPath The path to the POM file that failed to parse
+ * @returns A detailed error message with debugging information
+ */
+function getXmlParsingErrorDetails(error: unknown, pomPath: string): string {
+  const baseMessage = `Failed to parse XML in ${pomPath}`;
+
+  if (error instanceof Error) {
+    const errorMessage = error.message;
+
+    // Common XML parsing errors and their explanations
+    if (errorMessage.includes('Unexpected close tag')) {
+      return `${baseMessage}: Mismatched XML tags detected. ${errorMessage}. Please check that all opening tags have corresponding closing tags.`;
+    }
+
+    if (
+      errorMessage.includes('Unexpected end of input') ||
+      errorMessage.includes('Unclosed tag')
+    ) {
+      return `${baseMessage}: Incomplete XML structure detected. ${errorMessage}. The XML file may be truncated or missing closing tags.`;
+    }
+
+    if (
+      errorMessage.includes('Invalid character') ||
+      errorMessage.includes('not well-formed')
+    ) {
+      return `${baseMessage}: Invalid XML characters or structure detected. ${errorMessage}. Please ensure the XML is well-formed and uses valid characters.`;
+    }
+
+    if (errorMessage.includes('Unexpected token')) {
+      return `${baseMessage}: Invalid XML syntax detected. ${errorMessage}. Please check for special characters that need to be escaped or malformed XML elements.`;
+    }
+
+    // Generic error with the original message
+    return `${baseMessage}: ${errorMessage}. Please verify that the POM file contains valid XML syntax.`;
+  }
+
+  // Fallback for non-Error objects
+  return `${baseMessage}: Unknown parsing error occurred. Please verify that the POM file contains valid XML syntax.`;
 }
 
 /**
@@ -168,7 +254,8 @@ async function addNxMavenPluginToPom(tree: Tree, pomPath: string) {
       logger.info(`Added dev.nx.maven.project-graph plugin to ${pomPath}`);
     }
   } catch (error) {
-    logger.error(`Failed to parse XML in ${pomPath}: ${error.message}`);
+    const errorDetails = getXmlParsingErrorDetails(error, pomPath);
+    logger.error(errorDetails);
     // Fallback to the original regex-based approach if XML parsing fails
     const updatedPomContent = addNxMavenPluginToXmlFallback(pomContent);
     if (updatedPomContent !== pomContent) {
