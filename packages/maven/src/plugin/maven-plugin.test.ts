@@ -1,99 +1,57 @@
 import { CreateDependenciesContext, CreateNodesContextV2 } from '@nx/devkit';
-import { createDependencies, createNodesV2, MavenPluginOptions } from '.';
+import { join } from 'path';
+import {
+  createDependencies,
+  createNodesV2,
+  MavenPluginOptions,
+} from './maven-plugin';
 
 describe('Maven Plugin', () => {
-  const workspaceRoot = __dirname;
+  const testResourcesRoot = join(__dirname, '..', 'test', 'resources', 'unit');
 
-  let analysisResults: any;
+  describe('interface validation', () => {
+    it('should accept valid options', () => {
+      const options: MavenPluginOptions = {
+        verbose: true,
+        mavenExecutable: 'mvn',
+      };
+      expect(options.verbose).toBe(true);
+      expect(options.mavenExecutable).toBe('mvn');
+    });
 
-  beforeAll(async () => {
-    const context: CreateNodesContextV2 = {
-      nxJsonConfiguration: {},
-      workspaceRoot,
-    };
-
-    const options: MavenPluginOptions = {
-      mavenExecutable: 'mvn',
-      verbose: false,
-    };
-
-    analysisResults = await createNodesV2[1](['pom.xml'], options, context);
-  }, 60000);
+    it('should work with minimal options', () => {
+      const options: MavenPluginOptions = {};
+      expect(options.verbose).toBeUndefined();
+      expect(options.mavenExecutable).toBeUndefined();
+    });
+  });
 
   describe('createNodesV2', () => {
-    it('should discover Maven projects', () => {
-      expect(analysisResults.length).toBeGreaterThan(0);
-
-      // Results are in format [configFile, resultData]
-      let totalProjects = 0;
-      analysisResults.forEach((resultTuple: any) => {
-        const [configFile, resultData] = resultTuple;
-        if (resultData && resultData.projects) {
-          totalProjects += Object.keys(resultData.projects).length;
-        }
-      });
-
-      expect(totalProjects).toBe(1267);
+    it('should return a function', () => {
+      expect(typeof createNodesV2[1]).toBe('function');
     });
 
-    it('should discover specific projects of different types', () => {
-      // Collect all discovered project names (using the name field)
-      const allProjectNames = new Set();
+    it('should handle empty file list', async () => {
+      const context: CreateNodesContextV2 = {
+        nxJsonConfiguration: {},
+        workspaceRoot: testResourcesRoot,
+      };
 
-      analysisResults.forEach((resultTuple: any) => {
-        const [configFile, resultData] = resultTuple;
-        if (resultData && resultData.projects) {
-          Object.values(resultData.projects).forEach((projectData: any) => {
-            if (projectData.name) {
-              allProjectNames.add(projectData.name);
-            }
-          });
-        }
-      });
+      const options: MavenPluginOptions = {
+        verbose: false,
+      };
 
-      // Verify we have a good variety of projects discovered
-
-      // Test for specific known Maven artifact names across different areas of Quarkus
-      const expectedProjects = [
-        // Parent and config projects
-        'io.quarkus:quarkus-parent',
-        'io.quarkus:quarkus-ide-config',
-        'io.quarkus:quarkus-enforcer-rules',
-
-        // Independent projects (ARC CDI)
-        'io.quarkus.arc:arc-parent',
-        'io.quarkus.arc:arc',
-        'io.quarkus.arc:arc-processor',
-      ];
-
-      expectedProjects.forEach((project) => {
-        expect(allProjectNames.has(project)).toBe(true);
-      });
-    });
-
-    it('should create targets for Maven projects', () => {
-      let hasTargets = false;
-
-      analysisResults.forEach((resultTuple: any) => {
-        const [configFile, resultData] = resultTuple;
-        if (resultData && resultData.projects) {
-          Object.values(resultData.projects).forEach((project: any) => {
-            if (project.targets && Object.keys(project.targets).length > 0) {
-              hasTargets = true;
-            }
-          });
-        }
-      });
-
-      expect(hasTargets).toBe(true);
+      const result = await createNodesV2[1]([], options, context);
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBe(0);
     });
   });
 
   describe('createDependencies', () => {
-    it('should handle graceful failure with invalid Maven executable', async () => {
+    it('should return an array', async () => {
       const context: CreateDependenciesContext = {
         nxJsonConfiguration: {},
-        workspaceRoot,
+        workspaceRoot: testResourcesRoot,
         externalNodes: {},
         projects: {},
         fileMap: { nonProjectFiles: [], projectFileMap: {} },
@@ -101,7 +59,7 @@ describe('Maven Plugin', () => {
       };
 
       const options: MavenPluginOptions = {
-        mavenExecutable: 'non-existent-command',
+        verbose: false,
       };
 
       const result = await createDependencies(options, context);

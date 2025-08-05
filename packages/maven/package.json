@@ -12,7 +12,8 @@
   "author": "Nx Quarkus Team",
   "license": "MIT",
   "dependencies": {
-    "@nx/devkit": "^21.0.0"
+    "@nx/devkit": "^21.0.0",
+    "tslib": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

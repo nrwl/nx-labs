@@ -46,11 +46,12 @@ async function addNxMavenPluginToPom(tree: Tree, pomPath: string) {
 
   // Check if the dev.nx.maven.project-graph plugin is already configured
   if (
-    pomContent.includes('dev.nx.maven.project-graph') ||
+    (pomContent.includes('dev.nx.maven') &&
+      pomContent.includes('project-graph')) ||
     pomContent.includes('nx.analyzer.goal')
   ) {
     logger.info(
-      `dev.nx.maven.project-graph plugin already configured in ${pomPath}`
+      'dev.nx.maven.project-graph plugin already configured in pom.xml'
     );
     return;
   }

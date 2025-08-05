@@ -9,13 +9,15 @@ import {
 } from '@nx/devkit';
 import { calculateHashForCreateNodes } from '@nx/devkit/src/utils/calculate-hash-for-create-nodes';
 import { spawn } from 'child_process';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
 import { platform } from 'os';
 import { join } from 'path';
+import { PLUGIN_VERSION } from '../utils/versions';
 
 export interface MavenPluginOptions {
   verbose?: boolean;
+  mavenExecutable?: string;
 }
 
 const DEFAULT_OPTIONS: MavenPluginOptions = {};
@@ -196,6 +198,33 @@ function detectMavenExecutable(workspaceRoot: string): string {
 }
 
 /**
+ * Find the first directory containing a pom.xml file
+ */
+function findFirstMavenProject(workspaceRoot: string): string | null {
+  // Check if there's a pom.xml in the root
+  if (existsSync(join(workspaceRoot, 'pom.xml'))) {
+    return workspaceRoot;
+  }
+
+  // Search for pom.xml in immediate subdirectories
+  try {
+    const entries = readdirSync(workspaceRoot);
+    for (const entry of entries) {
+      const fullPath = join(workspaceRoot, entry);
+      if (statSync(fullPath).isDirectory()) {
+        if (existsSync(join(fullPath, 'pom.xml'))) {
+          return fullPath;
+        }
+      }
+    }
+  } catch (error) {
+    // If we can't read the directory, continue with workspace root
+  }
+
+  return null;
+}
+
+/**
  * Run Maven analysis using Java plugin
  */
 async function runMavenAnalysis(
@@ -203,7 +232,8 @@ async function runMavenAnalysis(
   context: CreateNodesContextV2
 ): Promise<any> {
   const outputFile = join(workspaceDataDirectory, 'maven-analysis.json');
-  const mavenExecutable = detectMavenExecutable(context.workspaceRoot);
+  const mavenExecutable =
+    options.mavenExecutable || detectMavenExecutable(context.workspaceRoot);
 
   // Check if verbose mode is enabled
   const isVerbose =
@@ -225,7 +255,7 @@ async function runMavenAnalysis(
   // Build Maven command arguments
   // Use the custom nx:analyze goal from our Java Maven plugin
   const mavenArgs = [
-    'dev.nx:maven-plugin:999-SNAPSHOT:analyze',
+    `dev.nx.maven:project-graph:${PLUGIN_VERSION}:analyze`,
     `-Dnx.outputFile=${outputFile}`,
     `-Dnx.verbose=${isVerbose}`,
   ];
@@ -242,10 +272,14 @@ async function runMavenAnalysis(
     mavenArgs.push('-q');
   }
 
-  // Run Maven plugin
+  // Run Maven plugin from the directory containing the first pom.xml found
+  // The aggregator goal will discover all Maven projects from there
+  const firstPomDir = findFirstMavenProject(context.workspaceRoot);
+  const executionDir = firstPomDir || context.workspaceRoot;
+
   await new Promise<void>((resolve, reject) => {
     const child = spawn(mavenExecutable, mavenArgs, {
-      cwd: context.workspaceRoot,
+      cwd: executionDir,
       stdio: 'inherit',
     });
 

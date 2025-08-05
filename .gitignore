@@ -51,3 +51,4 @@ vitest.config.*.timestamp*
 target
 .cursor/
 .claude/
+.cursorindexingignore

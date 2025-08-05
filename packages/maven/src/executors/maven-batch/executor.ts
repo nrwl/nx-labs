@@ -343,7 +343,6 @@ async function executeMultiProjectMavenBatch(
   const command = `java -Dmaven.multiModuleProjectDirectory="${workspaceRoot}" -cp "${classpath}" NxMavenBatchExecutor "${goalsString}" "${workspaceRoot}" "${projectsString}" ${verboseFlag}`;
 
   // Execute the batch command with streaming
-  const startTime = Date.now();
   const output = await executeWithStreaming(command, pluginDir, verbose);
 
   // Parse JSON output from batch executor

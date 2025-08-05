@@ -1,4 +1,4 @@
-import { Tree } from '@nx/devkit';
+import { Tree, logger } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import {
   addMavenPlugin,
@@ -67,7 +67,7 @@ describe('maven-plugin-utils', () => {
 
   describe('addMavenPlugin', () => {
     it('should warn when no pom.xml files exist', async () => {
-      const warnSpy = jest.spyOn(require('@nx/devkit').logger, 'warn');
+      const warnSpy = jest.spyOn(logger, 'warn');
 
       await addMavenPlugin(tree, {});
 
@@ -116,7 +116,7 @@ describe('maven-plugin-utils', () => {
 </project>`;
 
       tree.write('pom.xml', pomContent);
-      const infoSpy = jest.spyOn(require('@nx/devkit').logger, 'info');
+      const infoSpy = jest.spyOn(logger, 'info');
 
       await addMavenPlugin(tree, {});
 

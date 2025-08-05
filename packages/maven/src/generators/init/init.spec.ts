@@ -1,4 +1,4 @@
-import { Tree, readJson, readNxJson } from '@nx/devkit';
+import { Tree, formatFiles, readJson, readNxJson } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { initGenerator } from './init';
 import { InitGeneratorSchema } from './schema';
@@ -100,7 +100,7 @@ describe('init generator', () => {
   });
 
   it('should skip formatting when skipFormat is true', async () => {
-    const formatSpy = jest.spyOn(require('@nx/devkit'), 'formatFiles');
+    const formatSpy = jest.spyOn({ formatFiles }, 'formatFiles');
 
     await initGenerator(tree, { skipFormat: true });
 
