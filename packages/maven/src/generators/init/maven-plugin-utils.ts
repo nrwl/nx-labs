@@ -193,6 +193,54 @@ export function getMavenAnalyzeGoal(version: string): string {
   return `dev.nx.maven:project-graph:${version}:analyze`;
 }
 
+// Maven archetype constants
+export const MAVEN_ARCHETYPE_COORDINATES = {
+  QUICKSTART: 'maven-archetype-quickstart',
+  WEBAPP: 'maven-archetype-webapp',
+  SIMPLE: 'maven-archetype-simple',
+} as const;
+
+export const DEFAULT_MAVEN_COORDINATES = {
+  GROUP_ID: 'com.example',
+  ARTIFACT_ID: 'my-app',
+} as const;
+
+/**
+ * Builds Maven archetype generation command arguments.
+ * @param options Configuration for the archetype generation
+ * @returns Array of Maven command arguments
+ */
+export function buildMavenArchetypeArgs(options: {
+  groupId?: string;
+  artifactId?: string;
+  archetypeArtifactId?: string;
+  interactiveMode?: boolean;
+  additionalProperties?: Record<string, string>;
+}): string[] {
+  const {
+    groupId = DEFAULT_MAVEN_COORDINATES.GROUP_ID,
+    artifactId = DEFAULT_MAVEN_COORDINATES.ARTIFACT_ID,
+    archetypeArtifactId = MAVEN_ARCHETYPE_COORDINATES.QUICKSTART,
+    interactiveMode = false,
+    additionalProperties = {},
+  } = options;
+
+  const args = [
+    'archetype:generate',
+    `-DgroupId=${groupId}`,
+    `-DartifactId=${artifactId}`,
+    `-DarchetypeArtifactId=${archetypeArtifactId}`,
+    `-DinteractiveMode=${interactiveMode}`,
+  ];
+
+  // Add any additional properties
+  for (const [key, value] of Object.entries(additionalProperties)) {
+    args.push(`-D${key}=${value}`);
+  }
+
+  return args;
+}
+
 export async function addMavenPlugin(tree: Tree) {
   // Find all pom.xml files in the workspace
   const pomFiles = await globAsync(tree, ['**/pom.xml']);
