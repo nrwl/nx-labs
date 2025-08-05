@@ -1,0 +1,15 @@
+target/
+dependency/
+classes/
+test-classes/
+maven-archiver/
+maven-status/
+generated-sources/
+plugin-enhanced.xml
+project-graph-*.jar
+src/main/
+src/test/
+pom.xml
+.mvn/
+mvnw
+mvnw.cmd

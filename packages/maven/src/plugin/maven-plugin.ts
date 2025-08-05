@@ -286,7 +286,6 @@ async function runMavenAnalysis(
   // The aggregator goal will discover all Maven projects from there
   const firstPomDir = findFirstMavenProject(context.workspaceRoot);
   const executionDir = firstPomDir || context.workspaceRoot;
-
   await new Promise<void>((resolve, reject) => {
     const child = spawn(mavenExecutable, mavenArgs, {
       cwd: executionDir,

@@ -71,7 +71,7 @@
     },
     "copy-target": {
       "dependsOn": ["compile-java"],
-      "command": "mkdir -p dist/{projectRoot} && cp -r {projectRoot}/target dist/{projectRoot}"
+      "command": "mkdir -p dist/{projectRoot}/target && cp {projectRoot}/target/*.jar dist/{projectRoot}/target/ && cp {projectRoot}/target/plugin-enhanced.xml dist/{projectRoot}/target/ 2>/dev/null || true"
     }
   }
 }
