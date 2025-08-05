@@ -69,7 +69,7 @@ describe('maven-plugin-utils', () => {
     it('should warn when no pom.xml files exist', async () => {
       const warnSpy = jest.spyOn(logger, 'warn');
 
-      await addMavenPlugin(tree, {});
+      await addMavenPlugin(tree);
 
       expect(warnSpy).toHaveBeenCalledWith(
         'No pom.xml files found in the workspace. Please ensure you have Maven projects configured.'
@@ -91,7 +91,7 @@ describe('maven-plugin-utils', () => {
 
       tree.write('pom.xml', pomContent);
 
-      await addMavenPlugin(tree, {});
+      await addMavenPlugin(tree);
 
       const updatedContent = tree.read('pom.xml', 'utf-8');
       expect(updatedContent).toContain('dev.nx.maven');
@@ -118,7 +118,7 @@ describe('maven-plugin-utils', () => {
       tree.write('pom.xml', pomContent);
       const infoSpy = jest.spyOn(logger, 'info');
 
-      await addMavenPlugin(tree, {});
+      await addMavenPlugin(tree);
 
       expect(infoSpy).toHaveBeenCalledWith(
         'dev.nx.maven.project-graph plugin already configured in pom.xml'

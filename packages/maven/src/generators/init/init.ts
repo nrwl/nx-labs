@@ -36,7 +36,7 @@ export async function initGenerator(
   }
 
   // 2. Add Maven plugin configuration
-  await addMavenPlugin(tree, options);
+  await addMavenPlugin(tree);
 
   // 3. Add plugin to nx.json and update configuration
   addPluginAndUpdateConfiguration(tree, options);

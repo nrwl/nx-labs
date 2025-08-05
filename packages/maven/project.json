@@ -71,7 +71,7 @@
     },
     "copy-target": {
       "dependsOn": ["compile-java"],
-      "command": "cp -r {projectRoot}/target dist/{projectRoot}"
+      "command": "mkdir -p dist/{projectRoot} && cp -r {projectRoot}/target dist/{projectRoot}"
     }
   }
 }

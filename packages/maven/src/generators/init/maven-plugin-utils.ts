@@ -3,6 +3,43 @@ import { Builder, parseString } from 'xml2js';
 import { PLUGIN_VERSION } from '../../utils/versions';
 import { InitGeneratorSchema } from './schema';
 
+interface MavenPlugin {
+  $: Record<string, unknown>;
+  groupId: string[];
+  artifactId: string[];
+  version: string[];
+  executions?: Array<{
+    $: Record<string, unknown>;
+    execution: Array<{
+      $: Record<string, unknown>;
+      id: string[];
+      goals: Array<{
+        $: Record<string, unknown>;
+        goal: string[];
+      }>;
+    }>;
+  }>;
+}
+
+interface MavenPlugins {
+  $: Record<string, unknown>;
+  plugin: MavenPlugin[];
+}
+
+interface MavenBuild {
+  $: Record<string, unknown>;
+  plugins?: MavenPlugins[];
+}
+
+interface MavenProject {
+  $: Record<string, unknown>;
+  project: {
+    $: Record<string, unknown>;
+    build?: MavenBuild[] | MavenBuild;
+    [key: string]: unknown;
+  };
+}
+
 export async function addMavenPlugin(tree: Tree) {
   // Find all pom.xml files in the workspace
   const pomFiles = await globAsync(tree, ['**/pom.xml']);
@@ -78,7 +115,7 @@ async function addNxMavenPluginToPom(tree: Tree, pomPath: string) {
 
 async function addNxMavenPluginToXml(pomContent: string): Promise<string> {
   // Parse XML using xml2js
-  const result: unknown = await new Promise((resolve, reject) => {
+  const result = await new Promise<MavenProject>((resolve, reject) => {
     parseString(
       pomContent,
       {
@@ -89,7 +126,7 @@ async function addNxMavenPluginToXml(pomContent: string): Promise<string> {
       },
       (err, result) => {
         if (err) reject(err);
-        else resolve(result);
+        else resolve(result as MavenProject);
       }
     );
   });
