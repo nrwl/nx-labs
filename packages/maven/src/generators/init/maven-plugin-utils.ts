@@ -57,8 +57,8 @@ function isMavenProject(obj: unknown): obj is MavenProject {
  * @param isArrayPath Array of booleans indicating if each path segment should be an array
  * @returns The final object in the path
  */
-function ensurePath(obj: any, path: string[], isArrayPath: boolean[]): any {
-  let current = obj;
+function ensurePath<T extends Record<string, unknown>>(obj: T, path: string[], isArrayPath: boolean[]): Record<string, unknown> {
+  let current: Record<string, unknown> = obj;
 
   for (let i = 0; i < path.length; i++) {
     const prop = path[i];
