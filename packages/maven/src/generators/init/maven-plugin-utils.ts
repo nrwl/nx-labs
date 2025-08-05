@@ -83,7 +83,7 @@ function ensurePath<T extends Record<string, unknown>>(obj: T, path: string[], i
  * @param obj The object to ensure the array property exists in
  * @param prop The property name that should be an array
  */
-function ensureArray(obj: any, prop: string): void {
+function ensureArray<T extends Record<string, unknown>>(obj: T, prop: string): void {
   if (!obj[prop]) {
     obj[prop] = [];
   } else if (!Array.isArray(obj[prop])) {
