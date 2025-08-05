@@ -3,6 +3,7 @@ import {
   CreateNodesContextV2,
   CreateNodesResultV2,
   CreateNodesV2,
+  RawProjectGraphDependency,
   readJsonFile,
   workspaceRoot,
   writeJsonFile,
@@ -20,14 +21,19 @@ export interface MavenPluginOptions {
   mavenExecutable?: string;
 }
 
+interface AnalysisCache {
+  createNodesResults?: CreateNodesResultV2;
+  createDependencies?: RawProjectGraphDependency[];
+}
+
 const DEFAULT_OPTIONS: MavenPluginOptions = {};
 
 // Global cache to avoid running Maven analysis multiple times
-let globalAnalysisCache: any = null;
+let globalAnalysisCache: AnalysisCache | null = null;
 let globalCacheKey: string | null = null;
 
 // Cache management functions
-function readMavenCache(cachePath: string): Record<string, any> {
+function readMavenCache(cachePath: string): Record<string, AnalysisCache> {
   try {
     return existsSync(cachePath) ? readJsonFile(cachePath) : {};
   } catch {
@@ -35,7 +41,10 @@ function readMavenCache(cachePath: string): Record<string, any> {
   }
 }
 
-function writeMavenCache(cachePath: string, cache: Record<string, any>) {
+function writeMavenCache(
+  cachePath: string,
+  cache: Record<string, AnalysisCache>
+) {
   try {
     writeJsonFile(cachePath, cache);
   } catch (error) {
@@ -230,7 +239,7 @@ function findFirstMavenProject(workspaceRoot: string): string | null {
 async function runMavenAnalysis(
   options: MavenPluginOptions,
   context: CreateNodesContextV2
-): Promise<any> {
+): Promise<AnalysisCache> {
   const outputFile = join(workspaceDataDirectory, 'maven-analysis.json');
   const mavenExecutable =
     options.mavenExecutable || detectMavenExecutable(context.workspaceRoot);

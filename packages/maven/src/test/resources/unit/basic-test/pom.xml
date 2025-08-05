@@ -49,12 +49,17 @@
 
             <!-- Our analyzer plugin -->
             <plugin>
-                <groupId>io.quarkus</groupId>
-                <artifactId>maven-plugin</artifactId>
-                <version>999-SNAPSHOT</version>
-                <configuration>
-                    <outputFile>${project.build.directory}/maven-analysis.json</outputFile>
-                </configuration>
+                <groupId>dev.nx.maven</groupId>
+                <artifactId>project-graph</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <id>nx-analyze</id>
+                        <goals>
+                            <goal>analyze</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -1,10 +1,9 @@
 import { Tree, globAsync, joinPathFragments, logger } from '@nx/devkit';
+import { Builder, parseString } from 'xml2js';
+import { PLUGIN_VERSION } from '../../utils/versions';
 import { InitGeneratorSchema } from './schema';
 
-export async function addMavenPlugin(
-  tree: Tree,
-  _options: InitGeneratorSchema
-) {
+export async function addMavenPlugin(tree: Tree) {
   // Find all pom.xml files in the workspace
   const pomFiles = await globAsync(tree, ['**/pom.xml']);
 
@@ -56,19 +55,124 @@ async function addNxMavenPluginToPom(tree: Tree, pomPath: string) {
     return;
   }
 
-  // Parse the XML to add the plugin
-  const updatedPomContent = addNxMavenPluginToXml(pomContent);
+  try {
+    // Parse the XML to add the plugin
+    const updatedPomContent = await addNxMavenPluginToXml(pomContent);
 
-  if (updatedPomContent !== pomContent) {
-    tree.write(pomPath, updatedPomContent);
-    logger.info(`Added dev.nx.maven.project-graph plugin to ${pomPath}`);
+    if (updatedPomContent !== pomContent) {
+      tree.write(pomPath, updatedPomContent);
+      logger.info(`Added dev.nx.maven.project-graph plugin to ${pomPath}`);
+    }
+  } catch (error) {
+    logger.error(`Failed to parse XML in ${pomPath}: ${error.message}`);
+    // Fallback to the original regex-based approach if XML parsing fails
+    const updatedPomContent = addNxMavenPluginToXmlFallback(pomContent);
+    if (updatedPomContent !== pomContent) {
+      tree.write(pomPath, updatedPomContent);
+      logger.info(
+        `Added dev.nx.maven.project-graph plugin to ${pomPath} (fallback)`
+      );
+    }
   }
 }
 
-function addNxMavenPluginToXml(pomContent: string): string {
-  // This is a simplified XML manipulation
-  // In a real implementation, you might want to use a proper XML parser
+async function addNxMavenPluginToXml(pomContent: string): Promise<string> {
+  // Parse XML using xml2js
+  const result: unknown = await new Promise((resolve, reject) => {
+    parseString(
+      pomContent,
+      {
+        preserveChildrenOrder: true,
+        explicitChildren: true,
+        explicitArray: false,
+        ignoreAttrs: false,
+      },
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      }
+    );
+  });
 
+  // Create the Nx Maven plugin configuration
+  const nxMavenPlugin = {
+    $: {},
+    groupId: ['dev.nx.maven'],
+    artifactId: ['project-graph'],
+    version: [PLUGIN_VERSION],
+    executions: [
+      {
+        $: {},
+        execution: [
+          {
+            $: {},
+            id: ['nx-analyze'],
+            goals: [
+              {
+                $: {},
+                goal: ['analyze'],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
+
+  // Navigate to the project root
+  const project = result.project;
+  if (!project) {
+    throw new Error('Invalid POM structure: missing <project> root element');
+  }
+
+  // Ensure build section exists
+  if (!project.build) {
+    project.build = [{ $: {}, plugins: [{ $: {}, plugin: [] }] }];
+  } else if (Array.isArray(project.build)) {
+    if (!project.build[0].plugins) {
+      project.build[0].plugins = [{ $: {}, plugin: [] }];
+    }
+  }
+
+  // Get the build section (handle both array and single object)
+  const buildSection = Array.isArray(project.build)
+    ? project.build[0]
+    : project.build;
+
+  // Ensure plugins section exists
+  if (!buildSection.plugins) {
+    buildSection.plugins = [{ $: {}, plugin: [] }];
+  }
+
+  // Get the plugins section (handle both array and single object)
+  const pluginsSection = Array.isArray(buildSection.plugins)
+    ? buildSection.plugins[0]
+    : buildSection.plugins;
+
+  // Ensure plugin array exists
+  if (!pluginsSection.plugin) {
+    pluginsSection.plugin = [];
+  }
+
+  // Make sure plugin is an array
+  if (!Array.isArray(pluginsSection.plugin)) {
+    pluginsSection.plugin = [pluginsSection.plugin];
+  }
+
+  // Add the Nx Maven plugin
+  pluginsSection.plugin.push(nxMavenPlugin);
+
+  // Convert back to XML
+  const builder = new Builder({
+    xmldec: { version: '1.0', encoding: 'UTF-8' },
+    renderOpts: { pretty: true, indent: '    ' },
+  });
+
+  return builder.buildObject(result);
+}
+
+// Fallback function using the original regex approach
+function addNxMavenPluginToXmlFallback(pomContent: string): string {
   // Find the <plugins> section
   const pluginsRegex = /<plugins>\s*$/gm;
   const pluginsMatch = pluginsRegex.exec(pomContent);
@@ -83,7 +187,7 @@ function addNxMavenPluginToXml(pomContent: string): string {
             <plugin>
                 <groupId>dev.nx.maven</groupId>
                 <artifactId>project-graph</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>${PLUGIN_VERSION}</version>
                 <executions>
                     <execution>
                         <id>nx-analyze</id>
@@ -125,7 +229,7 @@ function addBuildSectionWithPlugin(pomContent: string): string {
             <plugin>
                 <groupId>dev.nx.maven</groupId>
                 <artifactId>project-graph</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>${PLUGIN_VERSION}</version>
                 <executions>
                     <execution>
                         <id>nx-analyze</id>

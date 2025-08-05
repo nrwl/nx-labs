@@ -279,7 +279,6 @@ async function executeMavenBatch(goals, options, workspaceRoot) {
     devkit_1.logger.info(`  Working directory: ${pluginDir}`);
   }
   // Execute the batch command
-  const startTime = Date.now();
   const output = (0, child_process_1.execSync)(command, {
     cwd: pluginDir,
     encoding: 'utf-8',

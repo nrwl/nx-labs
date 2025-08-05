@@ -140,10 +140,10 @@ export default async function runExecutor(
 
       const jsonOutput = lines.slice(jsonStart, jsonEnd + 1).join('\n');
       result = JSON.parse(jsonOutput);
-    } catch (parseError: any) {
-      const error = `Failed to parse batch executor output: ${
-        parseError?.message || parseError
-      }`;
+    } catch (parseError: unknown) {
+      const errorMessage =
+        parseError instanceof Error ? parseError.message : String(parseError);
+      const error = `Failed to parse batch executor output: ${errorMessage}`;
       logger.error(error);
       logger.debug(`Raw output: ${output}`);
       return { success: false, terminalOutput: error, error };
@@ -205,8 +205,8 @@ export default async function runExecutor(
       output: result,
       error: result.errorMessage,
     };
-  } catch (error: any) {
-    const errorMessage = error?.message || String(error);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     logger.error(`Maven batch executor failed: ${errorMessage}`);
 
     if (verbose) {
@@ -268,7 +268,10 @@ export async function batchMavenExecutor(
     }
 
     // Execute ALL unique goals across ALL unique projects in a single batch
-    const batchOptions = { ...commonOptions!, verbose };
+    if (!commonOptions) {
+      throw new Error('No common options found for batch execution');
+    }
+    const batchOptions = { ...commonOptions, verbose };
     const batchResult = await executeMultiProjectMavenBatch(
       uniqueGoals,
       uniqueProjects,
@@ -287,13 +290,14 @@ export async function batchMavenExecutor(
     }
 
     return results;
-  } catch (error: any) {
-    console.error(error.message);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error(errorMessage);
     // If batch fails, mark ALL tasks as failed
     for (const taskId of Object.keys(inputs)) {
       results[taskId] = {
         success: false,
-        terminalOutput: error?.message || String(error),
+        terminalOutput: errorMessage,
       };
     }
   }
@@ -437,8 +441,9 @@ async function executeWithStreaming(
     } else {
       throw new Error(`Maven command failed with exit code ${code}`);
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     pseudoTerminal.shutdown(1);
-    throw new Error(`Failed to execute Maven command: ${error.message}`);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to execute Maven command: ${errorMessage}`);
   }
 }

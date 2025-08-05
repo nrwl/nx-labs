@@ -16,11 +16,13 @@
     "@swc/cli": "0.6.0",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
+    "@types/xml2js": "^0.4.14",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-is": "18.3.1",
     "storybook": "9.0.9",
     "tslib": "^2.3.0",
+    "xml2js": "^0.6.2",
     "yargs-parser": "^21.1.1"
   },
   "packageManager": "yarn@1.22.19",

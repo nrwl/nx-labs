@@ -94,7 +94,9 @@ describe('init generator', () => {
 
     const nxJson = readNxJson(tree);
     const mavenPlugins = nxJson.plugins.filter(
-      (plugin: any) => plugin.plugin === '@nx/maven' || plugin === '@nx/maven'
+      (plugin: string | { plugin: string }) =>
+        (typeof plugin === 'object' && plugin.plugin === '@nx/maven') ||
+        plugin === '@nx/maven'
     );
     expect(mavenPlugins).toHaveLength(1);
   });

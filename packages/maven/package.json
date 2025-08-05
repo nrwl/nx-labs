@@ -13,10 +13,12 @@
   "license": "MIT",
   "dependencies": {
     "@nx/devkit": "^21.0.0",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@types/xml2js": "^0.4.14",
     "typescript": "^5.0.0"
   },
   "executors": "./executors.json",
