@@ -201,7 +201,7 @@ async function addNxMavenPluginToXml(pomContent: string): Promise<string> {
   // Validate the parsed XML structure
   if (!isMavenProject(result)) {
     throw new Error(
-      'Invalid POM structure: parsed XML does not match expected Maven project format'
+      `Invalid POM structure: expected root element <project>, but found top-level keys: [${Object.keys(result).join(', ')}]`
     );
   }
 
