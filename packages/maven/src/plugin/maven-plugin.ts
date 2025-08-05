@@ -14,6 +14,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
 import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
 import { platform } from 'os';
 import { join } from 'path';
+import { getMavenAnalyzeGoal } from '../generators/init/maven-plugin-utils';
 import { PLUGIN_VERSION } from '../utils/versions';
 
 export interface MavenPluginOptions {
@@ -264,7 +265,7 @@ async function runMavenAnalysis(
   // Build Maven command arguments
   // Use the custom nx:analyze goal from our Java Maven plugin
   const mavenArgs = [
-    `dev.nx.maven:project-graph:${PLUGIN_VERSION}:analyze`,
+    getMavenAnalyzeGoal(PLUGIN_VERSION),
     `-Dnx.outputFile=${outputFile}`,
     `-Dnx.verbose=${isVerbose}`,
   ];

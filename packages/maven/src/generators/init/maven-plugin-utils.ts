@@ -40,6 +40,66 @@ interface MavenProject {
   };
 }
 
+function isMavenProject(obj: unknown): obj is MavenProject {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    'project' in obj &&
+    typeof (obj as any).project === 'object' &&
+    (obj as any).project !== null
+  );
+}
+
+/**
+ * Ensures a path exists in an object, creating missing parts as needed.
+ * @param obj The object to ensure the path exists in
+ * @param path Array of property names representing the path
+ * @param isArrayPath Array of booleans indicating if each path segment should be an array
+ * @returns The final object in the path
+ */
+function ensurePath(obj: any, path: string[], isArrayPath: boolean[]): any {
+  let current = obj;
+
+  for (let i = 0; i < path.length; i++) {
+    const prop = path[i];
+    const shouldBeArray = isArrayPath[i];
+
+    if (!current[prop]) {
+      current[prop] = shouldBeArray ? [{ $: {} }] : { $: {} };
+    }
+
+    // Navigate to the next level (get first element if it's an array)
+    current =
+      shouldBeArray && Array.isArray(current[prop])
+        ? current[prop][0]
+        : current[prop];
+  }
+
+  return current;
+}
+
+/**
+ * Ensures a property exists as an array in the given object.
+ * @param obj The object to ensure the array property exists in
+ * @param prop The property name that should be an array
+ */
+function ensureArray(obj: any, prop: string): void {
+  if (!obj[prop]) {
+    obj[prop] = [];
+  } else if (!Array.isArray(obj[prop])) {
+    obj[prop] = [obj[prop]];
+  }
+}
+
+/**
+ * Generates the Maven goal string for the Nx Maven plugin analyze goal.
+ * @param version The plugin version to use
+ * @returns The formatted Maven goal string
+ */
+export function getMavenAnalyzeGoal(version: string): string {
+  return `dev.nx.maven:project-graph:${version}:analyze`;
+}
+
 export async function addMavenPlugin(tree: Tree) {
   // Find all pom.xml files in the workspace
   const pomFiles = await globAsync(tree, ['**/pom.xml']);
@@ -115,7 +175,7 @@ async function addNxMavenPluginToPom(tree: Tree, pomPath: string) {
 
 async function addNxMavenPluginToXml(pomContent: string): Promise<string> {
   // Parse XML using xml2js
-  const result = await new Promise<MavenProject>((resolve, reject) => {
+  const result = await new Promise<unknown>((resolve, reject) => {
     parseString(
       pomContent,
       {
@@ -126,10 +186,17 @@ async function addNxMavenPluginToXml(pomContent: string): Promise<string> {
       },
       (err, result) => {
         if (err) reject(err);
-        else resolve(result as MavenProject);
+        else resolve(result);
       }
     );
   });
+
+  // Validate the parsed XML structure
+  if (!isMavenProject(result)) {
+    throw new Error(
+      'Invalid POM structure: parsed XML does not match expected Maven project format'
+    );
+  }
 
   // Create the Nx Maven plugin configuration
   const nxMavenPlugin = {
@@ -156,45 +223,14 @@ async function addNxMavenPluginToXml(pomContent: string): Promise<string> {
     ],
   };
 
-  // Navigate to the project root
+  // Navigate to the project root (now safely typed after validation)
   const project = result.project;
-  if (!project) {
-    throw new Error('Invalid POM structure: missing <project> root element');
-  }
 
-  // Ensure build section exists
-  if (!project.build) {
-    project.build = [{ $: {}, plugins: [{ $: {}, plugin: [] }] }];
-  } else if (Array.isArray(project.build)) {
-    if (!project.build[0].plugins) {
-      project.build[0].plugins = [{ $: {}, plugin: [] }];
-    }
-  }
-
-  // Get the build section (handle both array and single object)
-  const buildSection = Array.isArray(project.build)
-    ? project.build[0]
-    : project.build;
-
-  // Ensure plugins section exists
-  if (!buildSection.plugins) {
-    buildSection.plugins = [{ $: {}, plugin: [] }];
-  }
-
-  // Get the plugins section (handle both array and single object)
-  const pluginsSection = Array.isArray(buildSection.plugins)
-    ? buildSection.plugins[0]
-    : buildSection.plugins;
-
-  // Ensure plugin array exists
-  if (!pluginsSection.plugin) {
-    pluginsSection.plugin = [];
-  }
-
-  // Make sure plugin is an array
-  if (!Array.isArray(pluginsSection.plugin)) {
-    pluginsSection.plugin = [pluginsSection.plugin];
-  }
+  // Ensure build > plugins > plugin[] path exists
+  // build is an array, plugins is an array, plugin is an array
+  const buildSection = ensurePath(project, ['build'], [true]);
+  const pluginsSection = ensurePath(buildSection, ['plugins'], [true]);
+  ensureArray(pluginsSection, 'plugin');
 
   // Add the Nx Maven plugin
   pluginsSection.plugin.push(nxMavenPlugin);
