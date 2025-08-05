@@ -237,6 +237,9 @@ async function addNxMavenPluginToXml(pomContent: string): Promise<string> {
   // build is an array, plugins is an array, plugin is an array
   const buildSection = ensurePath(project, ['build'], [true]);
   const pluginsSection = ensurePath(buildSection, ['plugins'], [true]);
+  if (!pluginsSection) {
+    throw new Error('Invalid POM structure: <plugins> section is missing or malformed');
+  }
   ensureArray(pluginsSection, 'plugin');
 
   // Add the Nx Maven plugin
