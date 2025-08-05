@@ -57,7 +57,11 @@ function isMavenProject(obj: unknown): obj is MavenProject {
  * @param isArrayPath Array of booleans indicating if each path segment should be an array
  * @returns The final object in the path
  */
-function ensurePath<T extends Record<string, unknown>>(obj: T, path: string[], isArrayPath: boolean[]): Record<string, unknown> {
+function ensurePath<T extends Record<string, unknown>>(
+  obj: T,
+  path: string[],
+  isArrayPath: boolean[]
+): Record<string, unknown> {
   let current: Record<string, unknown> = obj;
 
   for (let i = 0; i < path.length; i++) {
@@ -83,11 +87,14 @@ function ensurePath<T extends Record<string, unknown>>(obj: T, path: string[], i
  * @param obj The object to ensure the array property exists in
  * @param prop The property name that should be an array
  */
-function ensureArray<T extends Record<string, unknown>>(obj: T, prop: string): void {
+function ensureArray<T extends Record<string, unknown>>(
+  obj: T,
+  prop: string
+): void {
   if (!obj[prop]) {
-    obj[prop] = [];
+    (obj as any)[prop] = [];
   } else if (!Array.isArray(obj[prop])) {
-    obj[prop] = [obj[prop]];
+    (obj as any)[prop] = [obj[prop]];
   }
 }
 
@@ -175,7 +182,7 @@ async function addNxMavenPluginToPom(tree: Tree, pomPath: string) {
 
 async function addNxMavenPluginToXml(pomContent: string): Promise<string> {
   // Parse XML using xml2js
-  const result = await new Promise<MavenProjectXml>((resolve, reject) => {
+  const result = await new Promise<MavenProject>((resolve, reject) => {
     parseString(
       pomContent,
       {
@@ -233,7 +240,7 @@ async function addNxMavenPluginToXml(pomContent: string): Promise<string> {
   ensureArray(pluginsSection, 'plugin');
 
   // Add the Nx Maven plugin
-  pluginsSection.plugin.push(nxMavenPlugin);
+  (pluginsSection.plugin as MavenPlugin[]).push(nxMavenPlugin);
 
   // Convert back to XML
   const builder = new Builder({
