@@ -51,7 +51,8 @@
       "inputs": ["default", "^default"]
     }
   },
-  "nxCloudAccessToken": "MDRmYzUxMmYtNTQwZi00MjZkLTg0ZTYtMzc5Y2RhOTE4YTc2fHJlYWQtd3JpdGU=",
+  "nxCloudId": "6768dc9d08a31c37aecb4fab",
+  "nxCloudUrl": "https://staging.nx.app",
   "defaultBase": "main",
   "release": {
     "projects": ["packages/*"],

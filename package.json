@@ -80,6 +80,7 @@
     "verdaccio": "6.1.2"
   },
   "nx": {
+    "nxCloudImplicitDependencies": ["62d013ea0852fe0a2df74438:nx"],
     "includedScripts": []
   }
 }
