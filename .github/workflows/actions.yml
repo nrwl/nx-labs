@@ -4,11 +4,10 @@ on:
     branches:
       - main
   pull_request:
-  schedule:
-    - cron: '0 0 * * *'
 
 env:
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
+  NX_CLOUD_ACCESS_TOKEN: ${{secrets.NX_CLOUD_ACCESS_TOKEN}}
 
 jobs:
   ci:
