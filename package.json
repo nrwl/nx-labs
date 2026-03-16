@@ -10,7 +10,8 @@
     "test": "nx run-many -t=test --exclude=nx-labs",
     "build-ci": "nx build",
     "test-ci": "nx test",
-    "e2e-ci": "nx e2e"
+    "e2e-ci": "nx e2e",
+    "//": "//testings"
   },
   "dependencies": {
     "@storybook/addon-interactions": "8.6.12",

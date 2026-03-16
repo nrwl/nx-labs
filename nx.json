@@ -22,11 +22,11 @@
     "build-base": {
       "cache": true
     },
-    "test": {
-      "cache": true
-    },
     "e2e": {
       "parallelism": false
+    },
+    "test": {
+      "cache": true
     },
     "@nx/jest:jest": {
       "cache": true,
