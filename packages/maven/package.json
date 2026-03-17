@@ -1,10 +1,10 @@
 {
   "name": "@nx/maven",
   "version": "1.0.0",
-  "description": "Nx Maven plugin with batch executor for Quarkus projects",
+  "description": "Nx Maven plugin with batch executor for Maven projects",
   "main": "src/index",
-  "keywords": ["nx", "maven", "quarkus", "java"],
-  "author": "Nx Quarkus Team",
+  "keywords": ["nx", "maven", "java"],
+  "author": "Nx Team",
   "license": "MIT",
   "dependencies": {
     "@nx/devkit": "^21.0.0"
