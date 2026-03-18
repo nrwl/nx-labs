@@ -1,7 +1,6 @@
 import {
-type CreateNodesContext,
+type CreateNodesContextV2,
 createNodesFromFiles,
-type CreateNodesFunction,
 type CreateNodesV2,
 type ProjectConfiguration,
 type ProjectGraphExternalNode,
@@ -131,11 +130,11 @@ export const createNodesV2: CreateNodesV2<ComposerPluginOptions> = [
 function makeCreateNodesFromComposerJson(
   targetsCache: Record<string, ComposerTargets>,
   externalNodes: Record<string, ProjectGraphExternalNode>
-): CreateNodesFunction {
+) {
   return async (
     configFilePath: string,
     options: ComposerPluginOptions,
-    context: CreateNodesContext
+    context: CreateNodesContextV2
   ) => {
     const projectRoot = dirname(configFilePath);
     // In case users use "@nx/php/composer" in nx.json without passing in options.
@@ -197,7 +196,7 @@ async function buildTargets(
   composerJson: ComposerJson,
   projectRoot: string,
   options: NormalizedOptions,
-  context: CreateNodesContext
+  context: CreateNodesContextV2
 ): Promise<ComposerTargets> {
   const result: ComposerTargets = {
     targets: {},
