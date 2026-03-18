@@ -178,7 +178,10 @@ function findThirdPartyPlugins(root: string): string[] {
   const nxJson = require(join(root, 'nx.json'));
   return (
     nxJson.plugins
-      ?.map((p: { plugin?: string } | string) => (typeof p === 'string' ? p : p.plugin) ?? p)
+      ?.map(
+        (p: { plugin?: string } | string) =>
+          (typeof p === 'string' ? p : p.plugin) ?? p
+      )
       ?.filter((plugin: string) => !plugin.startsWith('.')) ?? []
   );
 }
