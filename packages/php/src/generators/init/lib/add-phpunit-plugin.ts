@@ -7,7 +7,7 @@ import {
 
 export async function addPhpunitPlugin(
   tree: Tree,
-  _options: { skipPackageJson?: boolean }
+  _options: { skipPackageJson?: boolean } // eslint-disable-line @typescript-eslint/no-unused-vars
 ): Promise<void> {
   const phpunitConfigs = await globAsync(tree, [phpunitConfigGlob]);
   if (!phpunitConfigs.length) return;

@@ -173,8 +173,7 @@ function makeCreateNodesFromComposerJson(
     targetsCache[hash] ??= await buildTargets(
       composerJson,
       projectRoot,
-      normalizedOptions,
-      context
+      normalizedOptions
     );
     const { targets, metadata } = targetsCache[hash];
 
@@ -195,8 +194,7 @@ function makeCreateNodesFromComposerJson(
 async function buildTargets(
   composerJson: ComposerJson,
   projectRoot: string,
-  options: NormalizedOptions,
-  context: CreateNodesContextV2
+  options: NormalizedOptions
 ): Promise<ComposerTargets> {
   const result: ComposerTargets = {
     targets: {},
@@ -204,7 +202,7 @@ async function buildTargets(
   };
 
   if (composerJson.scripts) {
-    for (const [name, _commands] of Object.entries(composerJson.scripts)) {
+    for (const [name] of Object.entries(composerJson.scripts)) {
       result.targets[name] = {
         command: `composer ${name}`,
         options: {

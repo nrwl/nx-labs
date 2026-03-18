@@ -100,9 +100,10 @@ function getAffectedProjects(nxVersion: string, root: string): string[] {
           cwd: root,
         }
       );
-    } catch (e: any) {
-      if (e.stdout) console.error(e.stdout.toString());
-      if (e.stderr) console.error(e.stderr.toString());
+    } catch (e: unknown) {
+      const err = e as { stdout?: Buffer; stderr?: Buffer };
+      if (err.stdout) console.error(err.stdout.toString());
+      if (err.stderr) console.error(err.stderr.toString());
       exitWithoutBuild(
         `🛑 - Build cancelled due to the error above. You may need to use --additional-packages option if using Nx plugins to infer targets e.g. Project Crystal. (Hint: commit with "[nx deploy]" to force deployment if necessary)`
       );
@@ -177,7 +178,7 @@ function findThirdPartyPlugins(root: string): string[] {
   const nxJson = require(join(root, 'nx.json'));
   return (
     nxJson.plugins
-      ?.map((p: any) => p.plugin ?? p)
+      ?.map((p: { plugin?: string } | string) => (typeof p === 'string' ? p : p.plugin) ?? p)
       ?.filter((plugin: string) => !plugin.startsWith('.')) ?? []
   );
 }
