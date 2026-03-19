@@ -1,22 +1,21 @@
 import {
-type CreateNodesContext,
-createNodesFromFiles,
-type CreateNodesFunction,
-type CreateNodesV2,
-type ProjectConfiguration,
-type ProjectGraphExternalNode,
-readJsonFile,
-writeJsonFile,
+  type CreateNodesContextV2,
+  createNodesFromFiles,
+  type CreateNodesV2,
+  type ProjectConfiguration,
+  type ProjectGraphExternalNode,
+  readJsonFile,
+  writeJsonFile,
 } from '@nx/devkit';
 import { calculateHashForCreateNodes } from '@nx/devkit/src/utils/calculate-hash-for-create-nodes';
 import { minimatch } from 'minimatch';
 import { existsSync } from 'node:fs';
-import { dirname,join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { toProjectName } from 'nx/src/config/to-project-name';
 import { hashObject } from 'nx/src/hasher/file-hasher';
 import { workspaceDataDirectory } from 'nx/src/utils/cache-directory';
 import { maybeGetLockFiles } from '../../utils/create-nodes';
-import { ComposerJson,ComposerLock } from '../../utils/model';
+import { ComposerJson, ComposerLock } from '../../utils/model';
 
 export interface ComposerPluginOptions {
   installTargetName?: string | false;
@@ -131,11 +130,11 @@ export const createNodesV2: CreateNodesV2<ComposerPluginOptions> = [
 function makeCreateNodesFromComposerJson(
   targetsCache: Record<string, ComposerTargets>,
   externalNodes: Record<string, ProjectGraphExternalNode>
-): CreateNodesFunction {
+) {
   return async (
     configFilePath: string,
     options: ComposerPluginOptions,
-    context: CreateNodesContext
+    context: CreateNodesContextV2
   ) => {
     const projectRoot = dirname(configFilePath);
     // In case users use "@nx/php/composer" in nx.json without passing in options.
@@ -174,8 +173,7 @@ function makeCreateNodesFromComposerJson(
     targetsCache[hash] ??= await buildTargets(
       composerJson,
       projectRoot,
-      normalizedOptions,
-      context
+      normalizedOptions
     );
     const { targets, metadata } = targetsCache[hash];
 
@@ -196,8 +194,7 @@ function makeCreateNodesFromComposerJson(
 async function buildTargets(
   composerJson: ComposerJson,
   projectRoot: string,
-  options: NormalizedOptions,
-  context: CreateNodesContext
+  options: NormalizedOptions
 ): Promise<ComposerTargets> {
   const result: ComposerTargets = {
     targets: {},
@@ -205,7 +202,7 @@ async function buildTargets(
   };
 
   if (composerJson.scripts) {
-    for (const [name, _commands] of Object.entries(composerJson.scripts)) {
+    for (const [name] of Object.entries(composerJson.scripts)) {
       result.targets[name] = {
         command: `composer ${name}`,
         options: {

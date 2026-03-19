@@ -4,7 +4,7 @@ import { createNodesV2 } from '../../../composer/plugin/create-nodes';
 
 export async function addComposerPlugin(
   tree: Tree,
-  _options: { skipPackageJson?: boolean }
+  _options: { skipPackageJson?: boolean } // eslint-disable-line @typescript-eslint/no-unused-vars
 ): Promise<void> {
   await addPlugin(
     tree,

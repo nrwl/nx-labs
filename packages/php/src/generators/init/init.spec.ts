@@ -5,7 +5,7 @@ import { initGenerator } from './init';
 
 let projectGraph: ProjectGraph;
 jest.mock('@nx/devkit', () => ({
-  ...jest.requireActual<any>('@nx/devkit'),
+  ...jest.requireActual<typeof import('@nx/devkit')>('@nx/devkit'),
   createProjectGraphAsync: jest.fn().mockImplementation(async () => {
     return projectGraph;
   }),

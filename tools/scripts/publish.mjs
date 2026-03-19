@@ -18,8 +18,13 @@ const json = JSON.parse(readFileSync(`package.json`).toString());
 json.version = version;
 
 // TODO: Revisit this to make it better
-for (const deps of [json.dependencies, json.devDependencies, json.peerDependencies, json.optionalDependencies]) {
-  for (const [ dep, depVersion] of Object.entries(deps ?? {})) {
+for (const deps of [
+  json.dependencies,
+  json.devDependencies,
+  json.peerDependencies,
+  json.optionalDependencies,
+]) {
+  for (const [dep, depVersion] of Object.entries(deps ?? {})) {
     if (depVersion === '*' || depVersion.startsWith('file:')) {
       deps[dep] = version;
     }

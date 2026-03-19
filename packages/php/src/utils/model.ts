@@ -15,7 +15,7 @@ export interface ComposerLock {
   'content-hash': string;
   packages: Package[];
   'packages-dev': Package[];
-  aliases: any[];
+  aliases: unknown[];
   'minimum-stability': string;
   'stability-flags': Record<string, number>;
   'prefer-stable': boolean;
@@ -34,7 +34,7 @@ export interface Package {
   'require-dev'?: Record<string, string>;
   suggest?: Record<string, string>;
   type: string;
-  extra?: Record<string, any>;
+  extra?: Record<string, unknown>;
   autoload?: Autoload;
   'autoload-dev'?: Autoload;
   license?: string | string[];

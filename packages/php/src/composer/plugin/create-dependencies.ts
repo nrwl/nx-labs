@@ -19,7 +19,7 @@ export const createDependencies: CreateDependencies<
   context: CreateDependenciesContext
 ) => {
   const dependencies: Array<StaticDependency> = [];
-  for (const [name, proj] of Object.entries(context.projects)) {
+  for (const [, proj] of Object.entries(context.projects)) {
     const projectRoot = proj.root;
     const composerFilePath = join(
       context.workspaceRoot,

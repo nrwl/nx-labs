@@ -1,7 +1,6 @@
 import {
-  type CreateNodesContext,
+  type CreateNodesContextV2,
   createNodesFromFiles,
-  type CreateNodesFunction,
   type CreateNodesV2,
   type NxJsonConfiguration,
   type ProjectConfiguration,
@@ -70,11 +69,11 @@ export const createNodesV2: CreateNodesV2<ComposerPluginOptions> = [
 
 function makeCreateNodesFromComposerJson(
   targetsCache: Record<string, ComposerTargets>
-): CreateNodesFunction {
+) {
   return async (
     configFilePath: string,
     options: ComposerPluginOptions,
-    context: CreateNodesContext
+    context: CreateNodesContextV2
   ) => {
     const projectRoot = dirname(configFilePath);
     const normalizedOptions = normalizeOptions(options);
@@ -157,7 +156,7 @@ async function buildTargets(
   testPkg: string,
   projectRoot: string,
   options: NormalizedOptions,
-  context: CreateNodesContext
+  context: CreateNodesContextV2
 ): Promise<ComposerTargets> {
   const result: ComposerTargets = {
     targets: {},
@@ -211,7 +210,7 @@ function createPhpUnitTarget(
   testPkg: string,
   projectRoot: string,
   cwd: string,
-  context: CreateNodesContext
+  context: CreateNodesContextV2
 ) {
   const namedInputs = getNamedInputs(projectRoot, context);
   return {
