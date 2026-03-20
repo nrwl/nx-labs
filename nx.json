@@ -58,7 +58,7 @@
     "projects": ["packages/*"],
     "projectsRelationship": "independent",
     "version": {
-      "preVersionCommand": "yarn nx run-many -t build",
+      "preVersionCommand": "bunx nx run-many -t build",
       "currentVersionResolver": "registry",
       "preserveLocalDependencyProtocols": false,
       "manifestRootsToUpdate": ["dist/packages/{projectName}"]

@@ -214,6 +214,13 @@ function fullNxInstallation(root: string): string | null {
     ...packageJson.devDependencies,
   };
   if (
+    (existsSync(join(root, 'bun.lock')) ||
+      existsSync(join(root, 'bun.lockb'))) &&
+    isPackageManagerInstalled(`bun`)
+  ) {
+    logDebug(`Using bun to install Nx.`);
+    execSync(`bun install`, { cwd: root });
+  } else if (
     existsSync(join(root, 'yarn.lock')) &&
     isPackageManagerInstalled(`yarn`)
   ) {
@@ -280,6 +287,13 @@ function slimNxInstallation(root: string, plugins: string[]): string | null {
     writeFileSync(join(tmpPath, 'package.json'), JSON.stringify(json));
 
     if (
+      (existsSync(join(root, 'bun.lock')) ||
+        existsSync(join(root, 'bun.lockb'))) &&
+      isPackageManagerInstalled(`bun`)
+    ) {
+      logDebug(`Using bun to install Nx.`);
+      execSync(`bun install`, { cwd: tmpPath });
+    } else if (
       existsSync(join(root, 'yarn.lock')) &&
       isPackageManagerInstalled(`yarn`)
     ) {
@@ -358,7 +372,7 @@ function detectRequiredPackages(root: string): Record<string, string> {
   return packages;
 }
 
-function isPackageManagerInstalled(pm: 'yarn' | 'pnpm'): boolean {
+function isPackageManagerInstalled(pm: 'bun' | 'yarn' | 'pnpm'): boolean {
   try {
     const version = execSync(`${pm} --version`, {
       stdio: 'pipe',

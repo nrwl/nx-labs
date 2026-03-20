@@ -30,7 +30,7 @@
 /coverage
 /libpeerconnection.log
 npm-debug.log
-yarn-error.log
+bun-debug.log
 testem.log
 /typings
 
