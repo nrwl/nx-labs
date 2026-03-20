@@ -6,6 +6,8 @@
 /// <reference path="registry.d.ts" />
 
 import { startLocalRegistry } from '@nx/js/plugins/jest/local-registry';
+import { mkdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { releasePublish, releaseVersion } from 'nx/release';
 
 export default async () => {
@@ -13,6 +15,11 @@ export default async () => {
   const localRegistryTarget = 'nx-labs:local-registry';
   // storage folder for the local registry
   const storage = './tmp/local-registry/storage';
+  const userConfig = join(process.cwd(), 'tmp/local-registry/.npmrc');
+
+  mkdirSync(join(process.cwd(), 'tmp/local-registry'), { recursive: true });
+  process.env.npm_config_userconfig = userConfig;
+  process.env.NPM_CONFIG_USERCONFIG = userConfig;
 
   global.stopLocalRegistry = await startLocalRegistry({
     localRegistryTarget,

@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "resolveJsonModule": true,
+    "declaration": true,
+    "types": ["node"],
+    "tsBuildInfoFile": "../../dist/packages/oxlint/tsconfig.tsbuildinfo"
+  },
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/*_spec.ts",
+    "**/*_test.ts",
+    "jest.config.ts",
+    "jest.config.cts"
+  ],
+  "include": ["*.ts", "src/**/*.ts", "src/**/*.json"]
+}
