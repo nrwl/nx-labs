@@ -1,5 +1,5 @@
-import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { addProjectConfiguration, readProjectConfiguration } from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
 import { convertFromEslintGenerator } from './convert-from-eslint';
 
 describe('convertFromEslintGenerator', () => {

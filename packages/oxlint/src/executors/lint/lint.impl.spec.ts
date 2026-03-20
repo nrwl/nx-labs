@@ -1,6 +1,6 @@
 import { ExecutorContext } from '@nx/devkit';
-import { oxlintExecutor } from './lint.impl';
 import * as childProcess from 'node:child_process';
+import { oxlintExecutor } from './lint.impl';
 
 jest.mock('node:child_process', () => ({
   ...jest.requireActual('node:child_process'),

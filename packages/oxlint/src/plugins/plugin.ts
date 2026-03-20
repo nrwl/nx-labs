@@ -1,6 +1,6 @@
 import {
-  createNodesFromFiles,
   CreateNodesContextV2,
+  createNodesFromFiles,
   CreateNodesResult,
   CreateNodesV2,
   getPackageManagerCommand,
@@ -213,8 +213,8 @@ function buildOxlintTargets(
     isRootProject && standaloneSrcPath
       ? `./${standaloneSrcPath}`
       : isRootProject
-        ? '.'
-        : projectRoot;
+      ? '.'
+      : projectRoot;
   const targetConfig: TargetConfiguration = {
     command: `oxlint ${lintPath}`,
     cache: true,

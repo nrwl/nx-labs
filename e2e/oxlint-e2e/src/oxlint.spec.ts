@@ -54,7 +54,10 @@ describe('oxlint plugin', () => {
   });
 
   it('should infer an oxlint target for the generated library', () => {
-    const projectJson = runCommand('yarn nx show project lib-a --json', projectDirectory);
+    const projectJson = runCommand(
+      'yarn nx show project lib-a --json',
+      projectDirectory
+    );
     expect(projectJson).toContain('"lint"');
     expect(projectJson).toContain('oxlint lib-a');
   });

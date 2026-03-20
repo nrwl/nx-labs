@@ -7,8 +7,8 @@ import {
   Tree,
   updateProjectConfiguration,
 } from '@nx/devkit';
-import { initGenerator } from '../init/init';
 import { hasOxlintPlugin } from '../../utils/plugin';
+import { initGenerator } from '../init/init';
 
 export interface LintProjectGeneratorSchema {
   project: string;

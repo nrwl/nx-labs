@@ -1,6 +1,6 @@
 import { CreateNodesContextV2 } from '@nx/devkit';
 import { minimatch } from 'minimatch';
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createNodesV2 } from './plugin';
@@ -121,8 +121,10 @@ describe('@nx/oxlint/plugin', () => {
     context: CreateNodesContextV2,
     options = {}
   ) {
-    const aggregateProjects: Record<string, { targets: Record<string, unknown> }> =
-      {};
+    const aggregateProjects: Record<
+      string,
+      { targets: Record<string, unknown> }
+    > = {};
     const results = await createNodesV2[1](configFiles, options, context);
     for (const [, nodes] of results) {
       Object.assign(aggregateProjects, nodes.projects);

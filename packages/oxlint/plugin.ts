@@ -1,5 +1,5 @@
 export {
+  OxlintPluginOptions,
   createNodes,
   createNodesV2,
-  OxlintPluginOptions,
 } from './src/plugins/plugin';

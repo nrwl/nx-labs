@@ -17,7 +17,9 @@
     "paths": {
       "@nx/oxlint": ["packages/oxlint/index.ts"],
       "@nx/oxlint/plugin": ["packages/oxlint/plugin.ts"],
-      "@nx/oxlint/boundaries-plugin": ["packages/oxlint/src/boundaries-plugin/index.ts"],
+      "@nx/oxlint/boundaries-plugin": [
+        "packages/oxlint/src/boundaries-plugin/index.ts"
+      ],
       "@nx/composer/generators": ["packages/composer/src/generators/index.ts"],
       "@nx/composer": ["packages/composer/src/index.ts"],
       "@nx/phpunit": ["packages/phpunit/src/index.ts"],
