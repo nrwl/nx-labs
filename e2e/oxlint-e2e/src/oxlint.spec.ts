@@ -2,6 +2,7 @@ import { execSync } from 'child_process';
 import {
   cleanupTestProject,
   createTestProject,
+  getChildWorkspaceEnv,
   getNxVersion,
   runCommand,
 } from './utils';
@@ -17,13 +18,13 @@ describe('oxlint plugin', () => {
     execSync(`yarn add -D -W @nx/oxlint@e2e`, {
       cwd: projectDirectory,
       stdio: 'inherit',
-      env: process.env,
+      env: getChildWorkspaceEnv(),
     });
 
     execSync('yarn nx add @nx/oxlint --no-interactive', {
       cwd: projectDirectory,
       stdio: 'inherit',
-      env: process.env,
+      env: getChildWorkspaceEnv(),
     });
 
     execSync(
@@ -31,7 +32,7 @@ describe('oxlint plugin', () => {
       {
         cwd: projectDirectory,
         stdio: 'inherit',
-        env: process.env,
+        env: getChildWorkspaceEnv(),
       }
     );
   });
@@ -66,7 +67,7 @@ describe('oxlint plugin', () => {
     execSync('yarn nx run lib-a:lint', {
       cwd: projectDirectory,
       stdio: 'inherit',
-      env: process.env,
+      env: getChildWorkspaceEnv(),
     });
   });
 });
