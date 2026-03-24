@@ -49,3 +49,4 @@ vitest.config.*.timestamp*
 .superset/
 
 .claude/worktrees
+.nx/polygraph
