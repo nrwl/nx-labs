@@ -1,6 +1,5 @@
 {
   "name": "nx-labs",
-  "version": "1.0.0-rc.1",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -20,10 +19,8 @@
     "react-dom": "18.3.1",
     "react-is": "18.3.1",
     "storybook": "10.2.9",
-    "tslib": "^2.3.0",
     "yargs-parser": "^21.1.1"
   },
-  "packageManager": "yarn@1.22.19",
   "devDependencies": {
     "@module-federation/enhanced": "0.21.6",
     "@module-federation/node": "2.7.36",
@@ -79,6 +76,9 @@
     "tslib": "^2.3.0",
     "typescript": "5.9.3",
     "verdaccio": "6.1.2"
+  },
+  "overrides": {
+    "onetime": "5.1.2"
   },
   "nx": {
     "nxCloudImplicitDependencies": [

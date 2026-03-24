@@ -14,10 +14,10 @@ npx create-nx-workspace
 npm init nx-workspace
 ```
 
-**Using `yarn create`**
+**Using `bun`**
 
 ```bash
-yarn create nx-workspace
+bun create nx-workspace
 ```
 
 The `create-nx-workspace` command will ask you to select a preset, which will configure some plugins and create your applications to help you get started.

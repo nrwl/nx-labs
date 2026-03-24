@@ -3,13 +3,13 @@
  * It uses naming conventions to transform constants to matching node module name.
  *
  * Usage:
- *   yarn check-versions [file|package]
+ *   bun run check-versions [file|package]
  *
  * Positional arg:
  *   - [file]: relative or absolute file path to the versions file.
  *
  * Example:
- *   yarn check-versions react
+ *   bun run check-versions react
  */
 
 import { names } from '@nx/devkit';

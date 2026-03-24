@@ -28,9 +28,9 @@ if (!parsedArgs.local && !process.env.GITHUB_TOKEN_RELEASE_IT_NX) {
 
 if (parsedArgs.help) {
   console.log(`
-      Usage: yarn nx-release <version> [options]
+      Usage: bun run nx-release <version> [options]
 
-      Example: "yarn nx-release 1.0.0-beta.1"
+      Example: "bun run nx-release 1.0.0-beta.1"
 
       The acceptable format for the version number is:
       {number}.{number}.{number}[-{alpha|beta|rc}.{number}]
@@ -111,7 +111,7 @@ if (!parsedVersion.isValid) {
     `\nError:\nThe specified version is not valid. You specified: "${parsedVersion.version}"`
   );
   console.error(
-    `Please run "yarn nx-release --help" for details on the acceptable version format.\n`
+    `Please run "bun run nx-release --help" for details on the acceptable version format.\n`
   );
   process.exit(1);
 } else {
