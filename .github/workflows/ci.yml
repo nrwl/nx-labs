@@ -29,6 +29,41 @@ jobs:
       - name: Install dependencies with bun
         run: bun install --frozen-lockfile
 
+      - name: Debug native module loading
+        run: |
+          echo "=== Node version ==="
+          node --version
+          echo "=== Check native package ==="
+          ls -la node_modules/@nx/nx-linux-x64-gnu/ 2>/dev/null || echo "MISSING: @nx/nx-linux-x64-gnu"
+          ls -la node_modules/@nx/nx-linux-x64-musl/ 2>/dev/null || echo "MISSING: @nx/nx-linux-x64-musl"
+          echo "=== Check native files in nx package ==="
+          ls -la node_modules/nx/dist/src/native/*.node 2>/dev/null || echo "No .node files in nx/dist/src/native/"
+          echo "=== Try loading native module ==="
+          node -e "
+            try {
+              const binding = require('./node_modules/nx/dist/src/native/native-bindings.js');
+              console.log('native-bindings loaded, WorkspaceContext:', typeof binding.WorkspaceContext);
+              console.log('IS_WASM:', binding.IS_WASM);
+            } catch(e) {
+              console.log('native-bindings FAILED:', e.message);
+              console.log('cause:', e.cause);
+            }
+          "
+          echo "=== Try loading platform binary directly ==="
+          node -e "
+            try {
+              const b = require('@nx/nx-linux-x64-gnu');
+              console.log('gnu binding loaded, keys:', Object.keys(b).slice(0,10), '...');
+              console.log('WorkspaceContext:', typeof b.WorkspaceContext);
+            } catch(e) { console.log('gnu FAILED:', e.message); }
+            try {
+              const b = require('@nx/nx-linux-x64-musl');
+              console.log('musl binding loaded');
+            } catch(e) { console.log('musl FAILED:', e.message); }
+          "
+          echo "=== ldd check ==="
+          ldd --version 2>&1 | head -1 || true
+
       - uses: nrwl/nx-set-shas@v5
 
       - run: bunx nx-cloud record -- nx format:check
