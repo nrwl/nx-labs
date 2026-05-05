@@ -7,7 +7,7 @@ import {
   readJsonFile,
   writeJsonFile,
 } from '@nx/devkit';
-import { calculateHashForCreateNodes } from '@nx/devkit/src/utils/calculate-hash-for-create-nodes';
+import { calculateHashForCreateNodes } from '@nx/devkit/internal';
 import { minimatch } from 'minimatch';
 import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';

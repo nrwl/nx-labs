@@ -1,5 +1,5 @@
 import { createProjectGraphAsync, globAsync, type Tree } from '@nx/devkit';
-import { addPlugin } from '@nx/devkit/src/utils/add-plugin';
+import { addPlugin } from '@nx/devkit/internal';
 import {
   createNodesV2,
   phpunitConfigGlob,

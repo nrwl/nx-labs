@@ -8,11 +8,13 @@ import {
   type TargetConfiguration,
   writeJsonFile,
 } from '@nx/devkit';
-import { calculateHashForCreateNodes } from '@nx/devkit/src/utils/calculate-hash-for-create-nodes';
+import {
+  calculateHashForCreateNodes,
+  getNamedInputs,
+} from '@nx/devkit/internal';
 import { existsSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
-import { getNamedInputs } from '@nx/devkit/src/utils/get-named-inputs';
 import { minimatch } from 'minimatch';
 import { toProjectName } from 'nx/src/config/to-project-name';
 import { hashObject } from 'nx/src/hasher/file-hasher';
