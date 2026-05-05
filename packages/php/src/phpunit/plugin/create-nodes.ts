@@ -8,7 +8,10 @@ import {
   type TargetConfiguration,
   writeJsonFile,
 } from '@nx/devkit';
-import { calculateHashForCreateNodes, getNamedInputs } from '@nx/devkit/internal';
+import {
+  calculateHashForCreateNodes,
+  getNamedInputs,
+} from '@nx/devkit/internal';
 import { existsSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 

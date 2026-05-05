@@ -68,5 +68,6 @@
       "preserveLocalDependencyProtocols": false,
       "manifestRootsToUpdate": ["dist/packages/{projectName}"]
     }
-  }
+  },
+  "analytics": true
 }
