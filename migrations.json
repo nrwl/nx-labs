@@ -1,0 +1,28 @@
+{
+  "migrations": [
+    {
+      "version": "23.0.0-beta.10",
+      "requires": {
+        "jest": ">=30.0.0"
+      },
+      "description": "Update the Jest snapshot guide link in `.snap` files from the legacy `https://goo.gl/fbAQLP` URL to `https://jestjs.io/docs/snapshot-testing`, which Jest v30 now requires.",
+      "implementation": "./src/migrations/update-23-0-0/update-snapshot-guide-link",
+      "package": "@nx/jest",
+      "name": "update-snapshot-guide-link"
+    },
+    {
+      "version": "23.0.0-beta.10",
+      "description": "Safety net: ensure any remaining @nx/vite:test executor usages are swapped to @nx/vitest:test and @nx/vitest is installed.",
+      "implementation": "./src/migrations/update-23-0-0/ensure-vitest-package-migration",
+      "package": "@nx/vite",
+      "name": "ensure-vitest-package-migration-23"
+    },
+    {
+      "version": "23.0.0-beta.10",
+      "description": "Rewrites imports of `@nx/workspace/src/utilities/typescript/compilation` to `@nx/js/src/utils/typescript/compilation`, where the module now lives.",
+      "implementation": "./dist/src/migrations/update-23-0-0/move-typescript-compilation-import",
+      "package": "@nx/workspace",
+      "name": "23-0-0-move-typescript-compilation-import"
+    }
+  ]
+}
