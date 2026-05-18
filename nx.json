@@ -11,24 +11,30 @@
     "libsDir": "packages"
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "targetDefaults": {
-    "build": {
+  "targetDefaults": [
+    {
+      "target": "build",
       "dependsOn": ["^build", "build-base"],
       "cache": true
     },
-    "publish": {
+    {
+      "target": "publish",
       "dependsOn": ["build"]
     },
-    "build-base": {
+    {
+      "target": "build-base",
       "cache": true
     },
-    "test": {
+    {
+      "target": "test",
       "cache": true
     },
-    "e2e": {
+    {
+      "target": "e2e",
       "parallelism": false
     },
-    "@nx/jest:jest": {
+    {
+      "executor": "@nx/jest:jest",
       "cache": true,
       "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"],
       "options": {
@@ -41,7 +47,8 @@
         }
       }
     },
-    "@nx/eslint:lint": {
+    {
+      "executor": "@nx/eslint:lint",
       "inputs": [
         "default",
         "^default",
@@ -50,12 +57,13 @@
       ],
       "cache": true
     },
-    "@nx/js:tsc": {
+    {
+      "executor": "@nx/js:tsc",
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["default", "^default"]
     }
-  },
+  ],
   "nxCloudId": "6768dc9d08a31c37aecb4fab",
   "nxCloudUrl": "https://staging.nx.app",
   "defaultBase": "main",
