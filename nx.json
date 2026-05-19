@@ -68,8 +68,18 @@
   "nxCloudUrl": "https://staging.nx.app",
   "defaultBase": "main",
   "release": {
-    "projects": ["packages/*"],
+    "projects": ["php"],
     "projectsRelationship": "independent",
+    "git": {
+      "commit": false,
+      "tag": true
+    },
+    "changelog": {
+      "projectChangelogs": {
+        "file": false,
+        "createRelease": "github"
+      }
+    },
     "version": {
       "preVersionCommand": "bunx nx run-many -t build",
       "currentVersionResolver": "registry",

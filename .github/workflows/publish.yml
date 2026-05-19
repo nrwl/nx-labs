@@ -1,0 +1,61 @@
+name: publish
+
+on:
+  # Manual trigger only — a maintainer starts a release from the Actions tab.
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version specifier (e.g. "1.2.3", "1.2.3-beta.1", or a bump like "patch"/"minor"/"prerelease")'
+        required: true
+        type: string
+      dry-run:
+        description: 'Dry run — build and preview the release without publishing or pushing anything. Uncheck to perform a real release.'
+        required: false
+        default: true
+        type: boolean
+
+run-name: ${{ inputs.dry-run && format('Release Dry-Run ({0})', inputs.version) || format('Release {0}', inputs.version) }}
+
+jobs:
+  publish:
+    name: Publish
+    # Prevent forks from ever running the publish workflow.
+    if: ${{ github.repository_owner == 'nrwl' }}
+    runs-on: ubuntu-latest
+    # Deployment environment — configure required reviewers / branch
+    # restrictions on the "npm-registry" environment in repo settings to
+    # gate every publish behind a human approval.
+    environment: npm-registry
+    permissions:
+      # Required for npm OIDC trusted publishing (no stored npm token) + provenance.
+      id-token: write
+      # Required for nx release to push the changelog commit, git tags, and GitHub release.
+      contents: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          # Full history + tags so nx release can resolve previous versions and generate the changelog.
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Setup dev tools with mise
+        uses: jdx/mise-action@146a28175021df8ca24f8ee1828cc2a60f980bd5 # v3
+
+      # OIDC trusted publishing + provenance requires a recent npm.
+      - name: Use latest npm
+        run: npm install -g npm@latest
+
+      - name: Install dependencies with bun
+        run: bun install --frozen-lockfile
+
+      - name: Release
+        run: |
+          bunx nx release ${{ inputs.version }} --yes ${{ inputs.dry-run && '--dry-run' || '' }}
