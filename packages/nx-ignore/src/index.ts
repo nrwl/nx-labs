@@ -30,7 +30,7 @@ const userDefinedPluginsArg = args.find(
   (s) => s.startsWith('--plugins=') || s.startsWith('--plugins ')
 ) as string;
 const userDefinedPlugins = userDefinedPluginsArg
-  ? userDefinedPluginsArg.slice(10).split(',')
+  ? userDefinedPluginsArg.slice("--plugins=".length).split(',')
   : null;
 const userDefinedPackagesArg = args.find(
   (s) =>
@@ -38,7 +38,7 @@ const userDefinedPackagesArg = args.find(
     s.startsWith('--additional-packages ')
 ) as string;
 const userDefinedPackages = userDefinedPackagesArg
-  ? userDefinedPackagesArg.slice(10).split(',')
+  ? userDefinedPackagesArg.slice("--additional-packages=".length).split(',')
   : null;
 const isVerbose = args.some((s) => s === '--verbose');
 // This is always "true" when running on Netlify
@@ -48,8 +48,8 @@ const isSlimInstall = args.some(
   (s) => s === '--slim-install' || s === '--slimInstall'
 );
 const headSha = 'HEAD';
-const userDefinedRoot = customRoot ? customRoot.slice(7) : null;
-let baseSha = customBase ? customBase.slice(7) : defaultBase || 'HEAD^';
+const userDefinedRoot = customRoot ? customRoot.slice("--root=".length) : null;
+let baseSha = customBase ? customBase.slice("--base=".length) : defaultBase || 'HEAD^';
 
 if (!project) {
   console.log('≫ No project passed to nx-ignore script');
