@@ -1,7 +1,7 @@
 import {
-  type CreateNodesContextV2,
+  type CreateNodes,
+  type CreateNodesContext,
   createNodesFromFiles,
-  type CreateNodesV2,
   type NxJsonConfiguration,
   type ProjectConfiguration,
   readJsonFile,
@@ -47,7 +47,7 @@ function writeTargetsToCache(
 
 export const phpunitConfigGlob = '**/phpunit.xml{,.dist}';
 
-export const createNodesV2: CreateNodesV2<ComposerPluginOptions> = [
+export const createNodesV2: CreateNodes<ComposerPluginOptions> = [
   phpunitConfigGlob,
   async (configFilePaths, options, context) => {
     const optionsHash = hashObject(options ?? {});
@@ -75,7 +75,7 @@ function makeCreateNodesFromComposerJson(
   return async (
     configFilePath: string,
     options: ComposerPluginOptions,
-    context: CreateNodesContextV2
+    context: CreateNodesContext
   ) => {
     const projectRoot = dirname(configFilePath);
     const normalizedOptions = normalizeOptions(options);
@@ -158,7 +158,7 @@ async function buildTargets(
   testPkg: string,
   projectRoot: string,
   options: NormalizedOptions,
-  context: CreateNodesContextV2
+  context: CreateNodesContext
 ): Promise<ComposerTargets> {
   const result: ComposerTargets = {
     targets: {},
@@ -212,7 +212,7 @@ function createPhpUnitTarget(
   testPkg: string,
   projectRoot: string,
   cwd: string,
-  context: CreateNodesContextV2
+  context: CreateNodesContext
 ) {
   const namedInputs = getNamedInputs(projectRoot, context);
   return {

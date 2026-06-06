@@ -1,7 +1,7 @@
 import {
-  type CreateNodesContextV2,
+  type CreateNodes,
+  type CreateNodesContext,
   createNodesFromFiles,
-  type CreateNodesV2,
   type ProjectConfiguration,
   type ProjectGraphExternalNode,
   readJsonFile,
@@ -102,7 +102,7 @@ function calculateExternalNodes(
   return result;
 }
 
-export const createNodesV2: CreateNodesV2<ComposerPluginOptions> = [
+export const createNodesV2: CreateNodes<ComposerPluginOptions> = [
   composerJsonGlob,
   async (configFilePaths, options, context) => {
     const optionsHash = hashObject(options ?? {});
@@ -134,7 +134,7 @@ function makeCreateNodesFromComposerJson(
   return async (
     configFilePath: string,
     options: ComposerPluginOptions,
-    context: CreateNodesContextV2
+    context: CreateNodesContext
   ) => {
     const projectRoot = dirname(configFilePath);
     // In case users use "@nx/php/composer" in nx.json without passing in options.
