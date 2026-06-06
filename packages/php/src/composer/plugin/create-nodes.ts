@@ -1,12 +1,4 @@
-import {
-  type CreateNodesContextV2,
-  createNodesFromFiles,
-  type CreateNodesV2,
-  type ProjectConfiguration,
-  type ProjectGraphExternalNode,
-  readJsonFile,
-  writeJsonFile,
-} from '@nx/devkit';
+import { type CreateNodesContext, createNodesFromFiles, type CreateNodes, type ProjectConfiguration, type ProjectGraphExternalNode, readJsonFile, writeJsonFile } from '@nx/devkit';
 import { calculateHashForCreateNodes } from '@nx/devkit/internal';
 import { minimatch } from 'minimatch';
 import { existsSync } from 'node:fs';
