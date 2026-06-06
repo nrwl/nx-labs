@@ -1,4 +1,11 @@
-import { type CreateNodesContext, createNodesFromFiles, type CreateNodes, type NxJsonConfiguration, type ProjectConfiguration, readJsonFile, type TargetConfiguration, writeJsonFile } from '@nx/devkit';
+import {
+  createNodesFromFiles,
+  type NxJsonConfiguration,
+  type ProjectConfiguration,
+  readJsonFile,
+  type TargetConfiguration,
+  writeJsonFile,
+} from '@nx/devkit';
 import {
   calculateHashForCreateNodes,
   getNamedInputs,
