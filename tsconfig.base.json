@@ -20,7 +20,10 @@
       "@nx/phpunit": ["packages/phpunit/src/index.ts"],
       "@nx/phpunit/generators": ["packages/phpunit/src/generators/index.ts"],
       "@nx/nx-ignore": ["packages/nx-ignore/src/index.ts"]
-    }
+    },
+    "ignoreDeprecations": "6.0",
+    "strict": false,
+    "noUncheckedSideEffectImports": false
   },
   "exclude": ["node_modules", "tmp"]
 }

@@ -13,11 +13,16 @@
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build", "build-base"],
+      "dependsOn": [
+        "^build",
+        "build-base"
+      ],
       "cache": true
     },
     "publish": {
-      "dependsOn": ["build"]
+      "dependsOn": [
+        "build"
+      ]
     },
     "build-base": {
       "cache": true
@@ -30,7 +35,11 @@
     },
     "@nx/jest:jest": {
       "cache": true,
-      "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"],
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/jest.preset.js"
+      ],
       "options": {
         "passWithNoTests": true
       },
@@ -45,22 +54,29 @@
       "inputs": [
         "default",
         "^default",
-        "{workspaceRoot}/.eslintrc.json",
+        "{workspaceRoot}/eslint.config.mjs",
         "{workspaceRoot}/tools/eslint-rules/**/*"
       ],
       "cache": true
     },
     "@nx/js:tsc": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["default", "^default"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "default",
+        "^default"
+      ]
     }
   },
   "nxCloudId": "6768dc9d08a31c37aecb4fab",
   "nxCloudUrl": "https://staging.nx.app",
   "defaultBase": "main",
   "release": {
-    "projects": ["php"],
+    "projects": [
+      "php"
+    ],
     "projectsRelationship": "independent",
     "git": {
       "commit": false,
@@ -76,7 +92,9 @@
       "preVersionCommand": "bunx nx run-many -t build",
       "currentVersionResolver": "registry",
       "preserveLocalDependencyProtocols": false,
-      "manifestRootsToUpdate": ["dist/packages/{projectName}"]
+      "manifestRootsToUpdate": [
+        "dist/packages/{projectName}"
+      ]
     }
   },
   "analytics": true
