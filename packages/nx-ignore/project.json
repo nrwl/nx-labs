@@ -7,24 +7,17 @@
   "targets": {
     "build": {
       "executor": "@nx/js:swc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/nx-ignore",
         "main": "packages/nx-ignore/src/index.ts",
         "tsConfig": "packages/nx-ignore/tsconfig.lib.json",
-        "assets": [
-          "packages/nx-ignore/*.md",
-          "LICENSE"
-        ]
+        "assets": ["packages/nx-ignore/*.md", "LICENSE"]
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     },
     "nx-release-publish": {
       "options": {

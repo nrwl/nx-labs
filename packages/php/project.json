@@ -8,18 +8,14 @@
       "currentVersionResolver": "git-tag",
       "fallbackCurrentVersionResolver": "disk",
       "preserveLocalDependencyProtocols": false,
-      "manifestRootsToUpdate": [
-        "dist/{projectRoot}"
-      ]
+      "manifestRootsToUpdate": ["dist/{projectRoot}"]
     }
   },
   "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/php",
         "main": "packages/php/src/index.ts",
@@ -59,9 +55,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "packages/php/jest.config.ts"
       }
