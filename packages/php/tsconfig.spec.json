@@ -5,7 +5,8 @@
     "module": "commonjs",
     "moduleResolution": "node10",
     "resolveJsonModule": true,
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "ignoreDeprecations": "6.0"
   },
   "include": [
     "jest.config.ts",
