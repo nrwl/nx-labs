@@ -23,7 +23,9 @@
     },
     "ignoreDeprecations": "6.0",
     "strict": false,
-    "noUncheckedSideEffectImports": false
+    "noUncheckedSideEffectImports": false,
+    "types": ["*"],
+    "esModuleInterop": false
   },
   "exclude": ["node_modules", "tmp"]
 }
