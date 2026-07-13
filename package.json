@@ -18,7 +18,7 @@
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "react-is": "19.2.7",
-    "storybook": "10.2.9",
+    "storybook": "10.2.10",
     "yargs-parser": "^21.1.1"
   },
   "devDependencies": {
@@ -64,7 +64,7 @@
     "kill-port": "^2.0.1",
     "license-webpack-plugin": "^4.0.2",
     "metro-resolver": "0.71.0",
-    "minimatch": "9.0.3",
+    "minimatch": "^9.0.7",
     "nx": "23.1.0-rc.3",
     "prettier": "2.6.2",
     "prettier-plugin-organize-imports": "^3.2.1",
