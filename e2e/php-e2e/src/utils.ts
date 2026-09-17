@@ -31,7 +31,7 @@ export function createTestProject(nxVersion: string) {
   });
 
   execSync(
-    `npx -y create-nx-workspace@${nxVersion} ${projectName} --preset apps --nxCloud=skip --no-interactive`,
+    `npx -y create-nx-workspace@${nxVersion} ${projectName} --preset apps --nxCloud=skip --skipGit --no-interactive`,
     {
       cwd: dirname(projectDirectory),
       stdio: 'inherit',
