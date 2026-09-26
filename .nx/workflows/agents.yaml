@@ -22,5 +22,5 @@ launch-templates:
     image: 'us-east1-docker.pkg.dev/nxcloudoperations/nx-cloud/nx-agents-base-images:ubuntu22.04-node20.19-v1'
     init-steps: *common-init-steps
     env:
-      # Hash tasks from Nx Cloud I/O snapshots (ultracache).
-      NX_IO_SNAPSHOTS: 'true'
+      # Record and hash tasks with Nx Cloud I/O snapshots (ultracache).
+      NX_CLOUD_USE_IO_SNAPSHOTS: 'true'
