@@ -11,6 +11,10 @@ permissions:
 
 env:
   NX_CLOUD_ACCESS_TOKEN: ${{secrets.NX_CLOUD_ACCESS_TOKEN}}
+  # Select affected tasks instead of whole projects.
+  NX_LEGACY_AFFECTED: 'false'
+  # Record and hash tasks with Nx Cloud I/O snapshots (ultracache).
+  NX_CLOUD_USE_IO_SNAPSHOTS: 'true'
 
 jobs:
   main:
