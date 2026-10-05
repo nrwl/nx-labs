@@ -23,4 +23,4 @@ launch-templates:
     init-steps: *common-init-steps
     env:
       # Record and hash tasks with Nx Cloud I/O snapshots (ultracache).
-      NX_CLOUD_USE_IO_SNAPSHOTS: 'true'
+      NX_CLOUD_USE_ULTRACACHE: 'true'
