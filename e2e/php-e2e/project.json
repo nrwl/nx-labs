@@ -6,12 +6,13 @@
   "implicitDependencies": ["php"],
   "targets": {
     "e2e": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}",
+        "{workspaceRoot}/coverage/packages/php-e2e"
+      ],
       "dependsOn": ["^build"],
       "options": {
-        "jestConfig": "e2e/php-e2e/jest.config.ts",
-        "runInBand": true
+        "passWithNoTests": true
       }
     },
     "lint": {

@@ -25,22 +25,25 @@
     "test": {
       "cache": true
     },
-    "e2e": {
-      "parallelism": false
-    },
-    "@nx/jest:jest": {
-      "cache": true,
-      "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"],
-      "options": {
-        "passWithNoTests": true
+    "e2e": [
+      {
+        "parallelism": false
       },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
+      {
+        "filter": {
+          "plugin": "@nx/jest/plugin"
+        },
+        "configurations": {
+          "ci": {
+            "ci": true,
+            "coverage": true
+          }
+        },
+        "options": {
+          "runInBand": true
         }
       }
-    },
+    ],
     "@nx/eslint:lint": {
       "inputs": [
         "default",
@@ -82,5 +85,21 @@
   "analytics": true,
   "affected": {
     "legacy": true
-  }
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/jest/plugin",
+      "options": {
+        "targetName": "e2e"
+      },
+      "include": ["e2e/nx-ignore-e2e/**/*", "e2e/php-e2e/**/*"]
+    },
+    {
+      "plugin": "@nx/jest/plugin",
+      "options": {
+        "targetName": "test"
+      },
+      "include": ["packages/php/**/*"]
+    }
+  ]
 }
