@@ -79,5 +79,8 @@
       "manifestRootsToUpdate": ["dist/packages/{projectName}"]
     }
   },
-  "analytics": true
+  "analytics": true,
+  "affected": {
+    "legacy": true
+  }
 }
