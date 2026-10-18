@@ -50,9 +50,6 @@
         "packageRoot": "dist/{projectRoot}"
       }
     },
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
     "test": {
       "options": {
         "passWithNoTests": true

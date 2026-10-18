@@ -44,15 +44,6 @@
         }
       }
     ],
-    "@nx/eslint:lint": {
-      "inputs": [
-        "default",
-        "^default",
-        "{workspaceRoot}/eslint.config.mjs",
-        "{workspaceRoot}/tools/eslint-rules/**/*"
-      ],
-      "cache": true
-    },
     "@nx/js:tsc": {
       "cache": true,
       "dependsOn": ["^build"],
@@ -100,6 +91,17 @@
         "targetName": "test"
       },
       "include": ["packages/php/**/*"]
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      },
+      "include": [
+        "e2e/php-e2e/**/*",
+        "packages/nx-ignore/**/*",
+        "packages/php/**/*"
+      ]
     }
   ]
 }
