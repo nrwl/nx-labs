@@ -5,10 +5,14 @@
 
 /// <reference path="registry.d.ts" />
 
+import { workspaceRoot } from '@nx/devkit';
 import { startLocalRegistry } from '@nx/js/plugins/jest/local-registry';
 import { releasePublish, releaseVersion } from 'nx/release';
 
 export default async () => {
+  // Nested nx commands (e.g. the release preVersionCommand) must run from the workspace root.
+  process.chdir(workspaceRoot);
+
   // local registry target to run
   const localRegistryTarget = 'nx-labs:local-registry';
   // storage folder for the local registry

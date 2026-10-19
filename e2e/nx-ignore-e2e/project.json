@@ -7,13 +7,10 @@
   "implicitDependencies": ["nx-ignore"],
   "targets": {
     "e2e": {
-      "executor": "@nx/jest:jest",
+      "dependsOn": ["nx-ignore:build"],
       "options": {
-        "jestConfig": "e2e/nx-ignore-e2e/jest.config.js",
-        "runInBand": true,
         "passWithNoTests": false
-      },
-      "dependsOn": ["nx-ignore:build"]
+      }
     }
   }
 }
