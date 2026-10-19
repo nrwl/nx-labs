@@ -74,9 +74,6 @@
     }
   },
   "analytics": true,
-  "affected": {
-    "legacy": true
-  },
   "plugins": [
     {
       "plugin": "@nx/jest/plugin",
