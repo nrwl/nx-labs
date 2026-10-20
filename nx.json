@@ -52,6 +52,7 @@
   },
   "nxCloudId": "6768dc9d08a31c37aecb4fab",
   "nxCloudUrl": "https://staging.nx.app",
+  "bust": 1,
   "defaultBase": "main",
   "release": {
     "projects": ["php"],
