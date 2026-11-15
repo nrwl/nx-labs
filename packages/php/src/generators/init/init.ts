@@ -9,6 +9,7 @@ import {
 import { version } from '../../../package.json';
 import { addComposerPlugin } from './lib/add-composer-plugin';
 import { addPhpunitPlugin } from './lib/add-phpunit-plugin';
+import { addLaravelPlugin } from './lib/add-laravel-plugin';
 import { InitGeneratorSchema } from './schema';
 
 export async function initGenerator(tree: Tree, options: InitGeneratorSchema) {
@@ -37,6 +38,7 @@ export async function initGenerator(tree: Tree, options: InitGeneratorSchema) {
   }
   await addComposerPlugin(tree, options);
   await addPhpunitPlugin(tree, options);
+  await addLaravelPlugin(tree, options);
 
   updateNxJsonConfiguration(tree);
 
