@@ -27,3 +27,11 @@ logs:
   type: stdout
   format: pretty
   level: http
+
+# jwt tokens make verdaccio 7+ treat the placeholder npm auth token set by nx
+# as anonymous instead of rejecting it
+security:
+  api:
+    jwt:
+      sign:
+        expiresIn: 7d
